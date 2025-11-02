@@ -97,8 +97,10 @@ public class SyncService {
             utilService.delayedAction(commandResponseRetriever::execute, i * 1000L);
         }
 
-        storage.getPlayerFactionCache().clear();
-        utilService.delayedAction(api::postFactions, commandResponseRetrievers.size() * 1000L + 1200);
+        utilService.delayedAction(() -> {
+            api.postFactions();
+            storage.getPlayerFactionCache().clear();
+        }, commandResponseRetrievers.size() * 1000L + 1200);
     }
 
     public void syncFactionSpecificData() {
