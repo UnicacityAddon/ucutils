@@ -75,6 +75,8 @@
     "pkutils.options.widgets.car_locked.options.style.value.minimalistic.tooltip": "Minimaler Text Stil (🔒/🔓)",
     "pkutils.options.widgets.date_time.options.name": "Datum & Uhrzeit",
     "pkutils.options.widgets.date_time.options.tooltip": "Zeigt das aktuelle Datum und die aktuelle Uhrzeit",
+    "pkutils.options.widgets.hearth.options.name": "Herzen",
+    "pkutils.options.widgets.hearth.options.tooltip": "Zeigt die Anzahl der Herzen und den Absorptionsstatus an",
     "pkutils.options.widgets.money.options.name": "Geld",
     "pkutils.options.widgets.money.options.tooltip": "Zeigt das Bargeld und Geld auf der Bank an",
     "pkutils.options.widgets.payday.options.name": "PayDay",

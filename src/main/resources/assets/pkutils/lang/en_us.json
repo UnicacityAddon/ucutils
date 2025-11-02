@@ -77,6 +77,8 @@
     "pkutils.options.widgets.car_locked.options.style.value.minimalistic.tooltip": "Minimalistic text style (🔒/🔓)",
     "pkutils.options.widgets.date_time.options.name": "Date & Time",
     "pkutils.options.widgets.date_time.options.tooltip": "Shows the current date and time",
+    "pkutils.options.widgets.hearth.options.name": "Hearth",
+    "pkutils.options.widgets.hearth.options.tooltip": "Shows the hearth amount and the absorption state",
     "pkutils.options.widgets.money.options.name": "Money",
     "pkutils.options.widgets.money.options.tooltip": "Shows your current money on the hand and in the bank",
     "pkutils.options.widgets.payday.options.name": "PayDay",
