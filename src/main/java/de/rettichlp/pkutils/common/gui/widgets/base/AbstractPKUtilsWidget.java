@@ -90,6 +90,7 @@ public abstract class AbstractPKUtilsWidget<C extends PKUtilsWidgetConfiguration
 
             try {
                 this.widgetConfiguration = widgetConfigurationClass.getConstructor().newInstance();
+                this.widgetConfiguration.setEnabled(getDefaultEnabled());
                 this.widgetConfiguration.setX(getDefaultX());
                 this.widgetConfiguration.setY(getDefaultY());
             } catch (Exception e) {
@@ -138,6 +139,12 @@ public abstract class AbstractPKUtilsWidget<C extends PKUtilsWidgetConfiguration
         }
 
         return alignment;
+    }
+
+    private boolean getDefaultEnabled() {
+        return ofNullable(this.getClass().getAnnotation(PKUtilsWidget.class))
+                .map(PKUtilsWidget::defaultEnabled)
+                .orElse(false);
     }
 
     private double getDefaultX() {

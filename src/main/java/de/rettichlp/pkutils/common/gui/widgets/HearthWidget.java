@@ -19,7 +19,7 @@ import static net.minecraft.util.Formatting.GRAY;
 import static net.minecraft.util.Formatting.RED;
 import static net.minecraft.util.Formatting.YELLOW;
 
-@PKUtilsWidget(registryName = "hearth", defaultX = 4.0, defaultY = 4.0)
+@PKUtilsWidget(registryName = "hearth", defaultX = 4.0, defaultY = 4.0, defaultEnabled = false)
 public class HearthWidget extends AbstractPKUtilsTextWidget<HearthWidget.Configuration> {
 
     @Override
