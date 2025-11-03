@@ -14,4 +14,6 @@ public @interface PKUtilsWidget {
     double defaultX() default 0.0;
 
     double defaultY() default 0.0;
+
+    boolean defaultEnabled() default true;
 }
