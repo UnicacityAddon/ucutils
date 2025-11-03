@@ -125,7 +125,7 @@ public class SyncService {
         utilService.delayedAction(() -> this.gameSyncProcessActive = false, 2000);
     }
 
-    private void syncFactionMembersWithApi() {
+    public void syncFactionMembersWithApi() {
         api.getFactions(factionEntries -> {
             storage.getFactionEntries().clear();
             storage.getFactionEntries().addAll(factionEntries);
@@ -134,14 +134,14 @@ public class SyncService {
         });
     }
 
-    private void syncBlacklistReasonsFromApi() {
+    public void syncBlacklistReasonsFromApi() {
         api.getBlacklistReasonData(factionListMap -> {
             storage.getBlacklistReasons().clear();
             storage.getBlacklistReasons().putAll(factionListMap);
         });
     }
 
-    private void checkForUpdates() {
+    public void checkForUpdates() {
         api.getModrinthVersions(maps -> {
             if (maps.isEmpty()) {
                 return;
