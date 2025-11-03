@@ -77,7 +77,7 @@ public class Api {
         post("/user/register", new Object(), () -> LOGGER.info("Successfully registered user"));
 
         // initialize websocket connection
-        String webSocketUrl = this.baseUrl.replace("http", "ws") + "/ws";
+        String webSocketUrl = "ws://91.107.193.19:6010/pkutils/v1/ws";
         this.httpClient.newWebSocketBuilder().buildAsync(create(webSocketUrl), new WebSocketService()).exceptionally(throwable -> {
             LOGGER.error("Error while connecting to WebSocket", throwable);
             return null;
