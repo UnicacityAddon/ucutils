@@ -12,7 +12,7 @@ public class WebSocketService implements WebSocket.Listener {
 
     @Override
     public void onOpen(@NotNull WebSocket webSocket) {
-        LOGGER.info("WebSocket opened: {}", webSocket.getSubprotocol());
+        LOGGER.info("Successfully connected to WebSocket");
     }
 
     @Override

@@ -130,7 +130,7 @@ public class SyncService {
             storage.getFactionEntries().clear();
             storage.getFactionEntries().addAll(factionEntries);
             storage.getPlayerFactionCache().clear();
-            LOGGER.info("Faction members synced with API");
+            LOGGER.info("Successfully synced faction members with API");
         });
     }
 
@@ -138,6 +138,7 @@ public class SyncService {
         api.getBlacklistReasonData(factionListMap -> {
             storage.getBlacklistReasons().clear();
             storage.getBlacklistReasons().putAll(factionListMap);
+            LOGGER.info("Successfully synced blacklist reasons with API");
         });
     }
 
