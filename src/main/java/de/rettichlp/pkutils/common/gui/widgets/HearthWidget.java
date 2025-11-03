@@ -8,7 +8,6 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
-import org.jetbrains.annotations.NotNull;
 
 import java.awt.Color;
 
@@ -27,17 +26,11 @@ public class HearthWidget extends AbstractPKUtilsTextWidget<HearthWidget.Configu
         ClientPlayerEntity player = MinecraftClient.getInstance().player;
         assert player != null; // cannot be null at this point
 
-        float health = player.getHealth();
         float absorptionAmount = player.getAbsorptionAmount();
+        float overallAmount = player.getHealth() + absorptionAmount;
 
-        String healthString = healthToString(health);
-        MutableText text = of(healthString).copy().formatted(GRAY);
-
-        if (absorptionAmount > 0) {
-            String absorptionString = healthToString(absorptionAmount);
-            text.append(of(" " + absorptionString).copy().formatted(YELLOW));
-        }
-
+        String overallAmountString = format("%.1f", overallAmount / 2).replaceAll(",0$", "");
+        MutableText text = of(overallAmountString).copy().formatted(absorptionAmount > 0 ? YELLOW : GRAY);
         return text.append(of("❤").copy().formatted(RED));
     }
 
@@ -59,10 +52,6 @@ public class HearthWidget extends AbstractPKUtilsTextWidget<HearthWidget.Configu
     @Override
     public Text getTooltip() {
         return translatable("pkutils.options.widgets.hearth.options.tooltip");
-    }
-
-    private @NotNull String healthToString(float health) {
-        return format("%.1f", health).replaceAll(",0$", "");
     }
 
     @AllArgsConstructor
