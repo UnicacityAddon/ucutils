@@ -13,18 +13,14 @@ public class WebSocketService implements WebSocket.Listener {
     @Override
     public void onOpen(@NotNull WebSocket webSocket) {
         LOGGER.info("Successfully connected to WebSocket");
+        WebSocket.Listener.super.onOpen(webSocket);
     }
 
     @Override
     public CompletionStage<?> onText(WebSocket webSocket, CharSequence data, boolean last) {
         LOGGER.info("WebSocket data received: {}", data);
 
-        if (!(data instanceof String message)) {
-            LOGGER.warn("Received non-string WebSocket message, ignoring");
-            return WebSocket.Listener.super.onText(webSocket, data, last);
-        }
-
-        WebSocketMessageType webSocketMessageType = WebSocketMessageType.valueOf(message);
+        WebSocketMessageType webSocketMessageType = WebSocketMessageType.valueOf((String) data);
         switch (webSocketMessageType) {
             case REQUEST_UPDATE_FACTION_MEMBERS -> syncService.syncFactionMembersWithApi();
             case REQUEST_UPDATE_BLACKLIST_REASONS -> syncService.syncBlacklistReasonsFromApi();
