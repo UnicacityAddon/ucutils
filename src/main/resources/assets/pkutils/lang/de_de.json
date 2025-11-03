@@ -54,6 +54,8 @@
     "pkutils.options.nametag.additional.houseban.tooltip": "Zeigt Spieler mit Hausverbot an",
     "pkutils.options.nametag.additional.wanted.name": "Gesucht",
     "pkutils.options.nametag.additional.wanted.tooltip": "Zeigt gesuchte Spieler an",
+    "pkutils.options.nametag.additional.afk.name": "AFK",
+    "pkutils.options.nametag.additional.afk.tooltip": "Zeigt AFK Spieler an",
     "pkutils.options.notification_sounds.name": "Benachrichtigungstöne",
     "pkutils.options.notification_sounds.tooltip": "Spielt Töne für einige Benachrichtigungen ab",
     "pkutils.options.reinforcement_style.name": "Reinforcement Stil",
