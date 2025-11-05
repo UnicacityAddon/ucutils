@@ -15,6 +15,7 @@ import de.rettichlp.pkutils.common.models.BlacklistReason;
 import de.rettichlp.pkutils.common.models.EquipEntry;
 import de.rettichlp.pkutils.common.models.Faction;
 import de.rettichlp.pkutils.common.models.FactionEntry;
+import de.rettichlp.pkutils.common.services.WebSocketService;
 import lombok.Getter;
 import net.minecraft.client.MinecraftClient;
 import org.jetbrains.annotations.Contract;
@@ -80,7 +81,15 @@ public class Api {
             .create();
 
     public void postUserRegister() {
+        // register user
         post("/user/register", new Object(), () -> LOGGER.info("Successfully registered user"));
+
+        // initialize websocket connection
+        String webSocketUrl = "ws://91.107.193.19:6010/pkutils/v1/ws";
+        this.httpClient.newWebSocketBuilder().buildAsync(create(webSocketUrl), new WebSocketService()).exceptionally(throwable -> {
+            LOGGER.error("Error while connecting to WebSocket", throwable);
+            return null;
+        });
     }
 
     public void getUserInfo(String playerName, Consumer<GetUserInfoResponse> callback) {
