@@ -88,7 +88,7 @@ public class PKUtils implements ModInitializer {
 
         String addressString = networkHandler.getConnection().getAddress().toString(); // tcp.punicakitty.de./50.114.4.xxx:25565
         // for LabyMod players, there is no dot at the end of the domain
-        if (!addressString.matches("tcp\\.punicakitty\\.de\\.?/50\\.114\\.4\\.\\d+:25565")) {
+        if (!addressString.matches("tcp\\.punicakitty\\.de\\.?/\\d+\\.\\d+\\.\\d+\\.\\d+:25565")) {
             LOGGER.warn("Not connected to PunicaKitty: {}", addressString);
             return false;
         }
