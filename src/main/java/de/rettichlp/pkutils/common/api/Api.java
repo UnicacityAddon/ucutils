@@ -6,6 +6,7 @@ import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonPrimitive;
 import com.google.gson.JsonSerializer;
 import com.google.gson.reflect.TypeToken;
+import com.mojang.authlib.GameProfile;
 import de.rettichlp.pkutils.common.api.response.ErrorResponse;
 import de.rettichlp.pkutils.common.api.response.GetUserInfoResponse;
 import de.rettichlp.pkutils.common.api.response.WeeklyTime;
@@ -16,7 +17,6 @@ import de.rettichlp.pkutils.common.models.Faction;
 import de.rettichlp.pkutils.common.models.FactionEntry;
 import lombok.Getter;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.session.Session;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 
@@ -30,6 +30,7 @@ import java.time.LocalTime;
 import java.time.chrono.ChronoLocalDateTime;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 import java.util.function.Consumer;
 
 import static de.rettichlp.pkutils.PKUtils.LOGGER;
@@ -47,9 +48,15 @@ import static java.util.Optional.ofNullable;
 
 public class Api {
 
-    private static final String SESSION_TOKEN = ofNullable(MinecraftClient.getInstance())
-            .map(MinecraftClient::getSession)
-            .map(Session::getAccessToken)
+    private static final String MINECRAFT_UUID_STRING = ofNullable(MinecraftClient.getInstance())
+            .map(MinecraftClient::getGameProfile)
+            .map(GameProfile::getId)
+            .map(UUID::toString)
+            .orElse("");
+
+    private static final String MINECRAFT_NAME = ofNullable(MinecraftClient.getInstance())
+            .map(MinecraftClient::getGameProfile)
+            .map(GameProfile::getName)
             .orElse("");
 
     private final HttpClient httpClient = HttpClient.newBuilder().build();
@@ -57,7 +64,8 @@ public class Api {
     private final HttpRequest.Builder requestBuilder = HttpRequest.newBuilder()
             .header("Accept", "application/json")
             .header("Content-Type", "application/json")
-            .header("X-Minecraft-Session-Token", SESSION_TOKEN)
+            .header("X-Minecraft-UUID", MINECRAFT_UUID_STRING)
+            .header("X-Minecraft-Name", MINECRAFT_NAME)
             .header("X-PKU-Version", valueOf(utilService.getVersion()));
 
     @Getter
