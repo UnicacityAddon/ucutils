@@ -44,6 +44,7 @@ public class PlayerListener implements IAbsorptionGetListener, IMessageReceiveLi
     // dead
     private static final Pattern DEAD_PATTERN = compile("^Du bist nun für (?<minutes>\\d+) Minuten auf dem Friedhof$");
     private static final Pattern DEAD_DESPAWN_PATTERN = compile("^Verdammt\\.{3} mein Kopf dröhnt so\\.{3}$");
+    private static final Pattern DEAD_AREVIVE_PATTERN = compile("^Du wurdest von (?:\\[PK])?(?<playerName>[a-zA-Z0-9_]+) wiederbelebt\\.$");
 
     // jail
     private static final Pattern JAIL_PATTERN = compile("^\\[Gefängnis] Du bist nun für (?<minutes>\\d+) Minuten im Gefängnis\\.$");
@@ -68,6 +69,12 @@ public class PlayerListener implements IAbsorptionGetListener, IMessageReceiveLi
         Matcher afkEndMatcher = AFK_END_PATTERN.matcher(message);
         if (afkEndMatcher.find()) {
             storage.setAfk(false);
+            return true;
+        }
+
+        Matcher deadAReviveMatcher = DEAD_AREVIVE_PATTERN.matcher(message);
+        if (deadAReviveMatcher.find()) {
+            storage.getActiveShutdowns().removeIf(shutdownReason -> shutdownReason == CEMETERY);
             return true;
         }
 
