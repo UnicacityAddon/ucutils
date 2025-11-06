@@ -8,6 +8,7 @@ import com.google.gson.JsonSerializer;
 import com.google.gson.reflect.TypeToken;
 import com.mojang.authlib.GameProfile;
 import de.rettichlp.pkutils.common.api.response.ErrorResponse;
+import de.rettichlp.pkutils.common.api.response.FactionPlayerDataResponse;
 import de.rettichlp.pkutils.common.api.response.GetUserInfoResponse;
 import de.rettichlp.pkutils.common.api.response.WeeklyTime;
 import de.rettichlp.pkutils.common.models.ActivityEntry;
@@ -61,7 +62,7 @@ public class Api {
             .orElse("");
 
     private final HttpClient httpClient = HttpClient.newBuilder().build();
-    private final String baseUrl = "https://pkutils.rettichlp.de/v1"; //http://localhost:6010/pkutils/v1
+    private final String baseUrl = "https://pkutils.rettichlp.de"; //http://localhost:6010/pkutils
     private final HttpRequest.Builder requestBuilder = HttpRequest.newBuilder()
             .header("Accept", "application/json")
             .header("Content-Type", "application/json")
@@ -80,9 +81,13 @@ public class Api {
             .registerTypeAdapter(LocalTime.class, (JsonSerializer<LocalTime>) (src, typeOfSrc, context) -> new JsonPrimitive(src.toString()))
             .create();
 
+    public void getUserInfo(String playerName, Consumer<GetUserInfoResponse> callback) {
+        get("/v1/user/info?playerName=" + playerName, new TypeToken<>() {}, callback);
+    }
+
     public void postUserRegister() {
         // register user
-        post("/user/register", new Object(), () -> LOGGER.info("Successfully registered user"));
+        post("/v1/user/register", new Object(), () -> LOGGER.info("Successfully registered user"));
 
         // initialize websocket connection
         String webSocketUrl = "ws://91.107.193.19:6010/pkutils/v1/ws";
@@ -92,62 +97,42 @@ public class Api {
         });
     }
 
-    public void getUserInfo(String playerName, Consumer<GetUserInfoResponse> callback) {
-        get("/user/info?playerName=" + playerName, new TypeToken<>() {}, callback);
+    public void getFactionMembers(Consumer<List<FactionEntry>> callback) {
+        get("/v2/faction/members", new TypeToken<>() {}, callback);
     }
 
-    public void getActivity(Instant from, Instant to, Consumer<List<ActivityEntry>> callback) {
-        get("/activity?from=" + from + "&to=" + to, new TypeToken<>() {}, callback);
+    public void postFactionMembers() {
+        post("/v2/faction/members", storage.getFactionEntries(), () -> {});
     }
 
-    public void getActivityPlayer(Instant from, Instant to, String playerName, Consumer<List<ActivityEntry>> callback) {
-        get("/activity/" + playerName + "?from=" + from + "&to=" + to, new TypeToken<>() {}, callback);
-    }
-
-    public void getActivityPlayers(ChronoLocalDateTime<LocalDate> from,
-                                   ChronoLocalDateTime<LocalDate> to,
-                                   Iterable<String> playerNames,
-                                   Consumer<Map<String, Map<String, Integer>>> callback) {
+    public void getFactionPlayerData(ChronoLocalDateTime<LocalDate> from,
+                                     ChronoLocalDateTime<LocalDate> to,
+                                     Iterable<String> playerNames,
+                                     Consumer<List<FactionPlayerDataResponse>> callback) {
         String playerNamesParam = join(",", playerNames);
         Instant fromInstant = from.atZone(utilService.getServerZoneId()).toInstant();
         Instant toInstant = to.atZone(utilService.getServerZoneId()).toInstant();
-        get("/activity/users?playerNames=" + playerNamesParam + "&from=" + fromInstant + "&to=" + toInstant, new TypeToken<>() {}, callback);
+        get("/v2/faction/playerdata?playerNames=" + playerNamesParam + "&from=" + fromInstant + "&to=" + toInstant, new TypeToken<>() {}, callback);
     }
 
-    public void getActivityResetTime(Faction faction, Consumer<WeeklyTime> callback) {
-        get("/activity/resettime?faction=" + faction, new TypeToken<>() {}, callback);
+    public void getFactionResetTime(Faction faction, Consumer<WeeklyTime> callback) {
+        get("/v2/faction/resettime?faction=" + faction, new TypeToken<>() {}, callback);
     }
 
-    public void postActivityAdd(ActivityEntry.Type activityType) {
+    public void putFactionActivityAdd(ActivityEntry.Type type) {
         if (!storage.isPunicaKitty()) {
             return;
         }
 
-        post("/activity/add", Map.of("activityType", activityType), () -> notificationService.sendInfoNotification(activityType.getSuccessMessage()));
+        put("/v2/faction/activity/add?type=" + type, null, () -> notificationService.sendInfoNotification(type.getSuccessMessage()));
     }
 
-    public void getEquip(Instant from, Instant to, Consumer<List<EquipEntry>> callback) {
-        get("/equip?from=" + from + "&to=" + to, new TypeToken<>() {}, callback);
-    }
-
-    public void getEquipPlayer(Instant from, Instant to, String playerName, Consumer<List<EquipEntry>> callback) {
-        get("/equip/" + playerName + "?from=" + from + "&to=" + to, new TypeToken<>() {}, callback);
-    }
-
-    public void postEquipAdd(EquipEntry.Type equipType) {
+    public void putFactionEquipAdd(EquipEntry.Type type) {
         if (!storage.isPunicaKitty()) {
             return;
         }
 
-        post("/equip/add", Map.of("equipType", equipType), () -> notificationService.sendInfoNotification(equipType.getSuccessMessage()));
-    }
-
-    public void getFactions(Consumer<List<FactionEntry>> callback) {
-        get("/factions", new TypeToken<>() {}, callback);
-    }
-
-    public void postFactions() {
-        post("/factions", storage.getFactionEntries(), () -> {});
+        put("/v2/faction/equip/add?type=" + type, null, () -> notificationService.sendInfoNotification(type.getSuccessMessage()));
     }
 
     public void getBlacklistReasonData(Consumer<Map<Faction, List<BlacklistReason>>> callback) {
@@ -165,6 +150,18 @@ public class Api {
                 .build();
 
         sendRequest(httpRequest, typeToken, callback);
+    }
+
+    private void put(String uri, Object bodyObject, Runnable runnable) {
+        String jsonString = this.gson.toJson(bodyObject);
+        HttpRequest.BodyPublisher body = ofString(jsonString);
+
+        HttpRequest httpRequest = this.requestBuilder.copy()
+                .uri(create(this.baseUrl + uri))
+                .PUT(body)
+                .build();
+
+        sendRequest(httpRequest, null, object -> runnable.run());
     }
 
     private void post(String uri, Object bodyObject, Runnable runnable) {

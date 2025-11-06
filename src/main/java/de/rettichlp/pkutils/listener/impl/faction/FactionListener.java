@@ -93,13 +93,13 @@ public class FactionListener implements IKeyPressListener, IMessageReceiveListen
             this.lastFactionScreenExecution = currentTimeMillis();
 
             Faction faction = storage.getFaction(player.getGameProfile().getName());
-            api.getActivityResetTime(faction, weeklyTime -> {
+            api.getFactionResetTime(faction, weeklyTime -> {
                 MinecraftClient client = MinecraftClient.getInstance();
 
                 LocalDateTime to = weeklyTime.nextOccurrence();
                 LocalDateTime from = to.minusWeeks(1);
-                api.getActivityPlayers(from, to, faction.getMembers().stream().map(FactionMember::playerName).toList(), activities -> client.execute(() -> {
-                    FactionScreen factionScreen = new FactionScreen(faction, RANK, DESCENDING, activities, from, to, 0);
+                api.getFactionPlayerData(from, to, faction.getMembers().stream().map(FactionMember::playerName).toList(), factionPlayerDataResponse -> client.execute(() -> {
+                    FactionScreen factionScreen = new FactionScreen(faction, RANK, DESCENDING, factionPlayerDataResponse, from, to, 0);
                     client.setScreen(factionScreen);
                 }));
             });
@@ -241,7 +241,7 @@ public class FactionListener implements IKeyPressListener, IMessageReceiveListen
         Matcher equipMatcher = EQUIP_PATTERN.matcher(message);
         if (equipMatcher.find()) {
             String type = equipMatcher.group("type");
-            fromDisplayName(type).ifPresent(api::postEquipAdd);
+            fromDisplayName(type).ifPresent(api::putFactionEquipAdd);
             return true;
         }
 
@@ -287,7 +287,7 @@ public class FactionListener implements IKeyPressListener, IMessageReceiveListen
                 })
                 .forEach(reinforcement -> {
                     reinforcement.setAddedAsActivity(true);
-                    api.postActivityAdd(ActivityEntry.Type.REINFORCEMENT);
+                    api.putFactionActivityAdd(ActivityEntry.Type.REINFORCEMENT);
                     LOGGER.info("Reinforcement reached, tracked activity");
                 });
 

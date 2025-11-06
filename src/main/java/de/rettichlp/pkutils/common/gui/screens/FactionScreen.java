@@ -1,5 +1,6 @@
 package de.rettichlp.pkutils.common.gui.screens;
 
+import de.rettichlp.pkutils.common.api.response.FactionPlayerDataResponse;
 import de.rettichlp.pkutils.common.gui.screens.components.TableHeaderTextWidget;
 import de.rettichlp.pkutils.common.models.ActivityEntry;
 import de.rettichlp.pkutils.common.models.Faction;
@@ -40,6 +41,7 @@ import static java.util.Arrays.stream;
 import static java.util.Collections.emptySet;
 import static java.util.Comparator.comparing;
 import static java.util.Comparator.comparingInt;
+import static java.util.Comparator.comparingLong;
 import static java.util.stream.Collectors.toCollection;
 import static net.minecraft.client.gui.widget.DirectionalLayoutWidget.horizontal;
 import static net.minecraft.client.gui.widget.DirectionalLayoutWidget.vertical;
@@ -55,7 +57,7 @@ public class FactionScreen extends OptionsScreen {
     private final Faction faction;
     private final SortingType sortingType;
     private final TableHeaderTextWidget.SortingDirection sortingDirection;
-    private final Map<String, Map<String, Integer>> activities;
+    private final List<FactionPlayerDataResponse> factionPlayerDataResponses;
     private final LocalDateTime from;
     private final LocalDateTime to;
 
@@ -64,7 +66,7 @@ public class FactionScreen extends OptionsScreen {
     public FactionScreen(Faction faction,
                          SortingType sortingType,
                          TableHeaderTextWidget.SortingDirection sortingDirection,
-                         Map<String, Map<String, Integer>> activities,
+                         List<FactionPlayerDataResponse> factionPlayerDataResponses,
                          LocalDateTime from,
                          LocalDateTime to,
                          int offset) {
@@ -72,7 +74,7 @@ public class FactionScreen extends OptionsScreen {
         this.faction = faction;
         this.sortingType = sortingType;
         this.sortingDirection = sortingDirection;
-        this.activities = activities;
+        this.factionPlayerDataResponses = factionPlayerDataResponses;
         this.from = from;
         this.to = to;
         this.offset = offset;
@@ -111,14 +113,14 @@ public class FactionScreen extends OptionsScreen {
 
         this.offset = max(0, min(getSortedFactionMembers().size() - getPageLimit(), this.offset + operant));
 
-        this.client.setScreen(new FactionScreen(this.faction, this.sortingType, this.sortingDirection, this.activities, this.from, this.to, this.offset));
+        this.client.setScreen(new FactionScreen(this.faction, this.sortingType, this.sortingDirection, this.factionPlayerDataResponses, this.from, this.to, this.offset));
 
         return mouseScroll;
     }
 
     private void getActivitiesAndReopen(LocalDateTime newFrom, LocalDateTime newTo) {
-        api.getActivityPlayers(newFrom, newTo, this.faction.getMembers().stream().map(FactionMember::playerName).toList(), activities -> this.client.execute(() -> {
-            FactionScreen factionScreen = new FactionScreen(this.faction, this.sortingType, this.sortingDirection, activities, newFrom, newTo, 0);
+        api.getFactionPlayerData(newFrom, newTo, this.faction.getMembers().stream().map(FactionMember::playerName).toList(), factionPlayerDataResponses -> this.client.execute(() -> {
+            FactionScreen factionScreen = new FactionScreen(this.faction, this.sortingType, this.sortingDirection, factionPlayerDataResponses, newFrom, newTo, 0);
             this.client.setScreen(factionScreen);
         }));
     }
@@ -130,7 +132,7 @@ public class FactionScreen extends OptionsScreen {
                 .map(FactionEntry::members)
                 .orElse(emptySet());
 
-        return this.sortingType.apply(factionMembers, this.activities, this.sortingDirection);
+        return this.sortingType.apply(factionMembers, this.factionPlayerDataResponses, this.sortingDirection);
     }
 
     private @NotNull DirectionalLayoutWidget getHeaderDirectionalLayoutWidget() {
@@ -150,17 +152,17 @@ public class FactionScreen extends OptionsScreen {
 
         DirectionalLayoutWidget directionalLayoutWidget2 = directionalLayoutWidget.add(horizontal().spacing(8), positioner -> positioner.marginBottom(16));
 
-        TableHeaderTextWidget nameTableHeaderTextWidget = new TableHeaderTextWidget(of("Name"), sortingDirection -> this.client.setScreen(new FactionScreen(this.faction, NAME, sortingDirection, this.activities, this.from, this.to, this.offset)), this.sortingType == NAME ? this.sortingDirection : NONE);
+        TableHeaderTextWidget nameTableHeaderTextWidget = new TableHeaderTextWidget(of("Name"), sortingDirection -> this.client.setScreen(new FactionScreen(this.faction, NAME, sortingDirection, this.factionPlayerDataResponses, this.from, this.to, this.offset)), this.sortingType == NAME ? this.sortingDirection : NONE);
         nameTableHeaderTextWidget.setWidth(80);
         directionalLayoutWidget2.add(nameTableHeaderTextWidget);
 
-        TableHeaderTextWidget rangTableHeaderTextWidget = new TableHeaderTextWidget(of("Rang"), sortingDirection -> this.client.setScreen(new FactionScreen(this.faction, RANK, sortingDirection, this.activities, this.from, this.to, this.offset)), this.sortingType == RANK ? this.sortingDirection : NONE);
+        TableHeaderTextWidget rangTableHeaderTextWidget = new TableHeaderTextWidget(of("Rang"), sortingDirection -> this.client.setScreen(new FactionScreen(this.faction, RANK, sortingDirection, this.factionPlayerDataResponses, this.from, this.to, this.offset)), this.sortingType == RANK ? this.sortingDirection : NONE);
         rangTableHeaderTextWidget.setWidth(80);
         directionalLayoutWidget2.add(rangTableHeaderTextWidget);
 
         activityTypes.forEach(type -> {
             SortingType sortingType = SortingType.valueOf(type.name());
-            TableHeaderTextWidget activityTableHeaderTextWidget = new TableHeaderTextWidget(of(type.getDisplayName()), sortingDirection -> this.client.setScreen(new FactionScreen(this.faction, sortingType, sortingDirection, this.activities, this.from, this.to, this.offset)), this.sortingType == sortingType ? this.sortingDirection : NONE);
+            TableHeaderTextWidget activityTableHeaderTextWidget = new TableHeaderTextWidget(of(type.getDisplayName()), sortingDirection -> this.client.setScreen(new FactionScreen(this.faction, sortingType, sortingDirection, this.factionPlayerDataResponses, this.from, this.to, this.offset)), this.sortingType == sortingType ? this.sortingDirection : NONE);
             activityTableHeaderTextWidget.setWidth(80);
             directionalLayoutWidget2.add(activityTableHeaderTextWidget, Positioner::alignHorizontalCenter);
         });
@@ -172,9 +174,14 @@ public class FactionScreen extends OptionsScreen {
         DirectionalLayoutWidget directionalLayoutWidget = vertical().spacing(4);
 
         getSortedFactionMembers().stream().skip(this.offset).limit(getPageLimit()).forEach(factionMember -> {
-            Formatting color = player.getGameProfile().getName().equals(factionMember.playerName()) ? GREEN : WHITE;
+            String minecraftName = player.getGameProfile().getName();
+            Formatting color = minecraftName.equals(factionMember.playerName()) ? GREEN : WHITE;
 
-            Map<String, Integer> playerActivities = this.activities.getOrDefault(factionMember.playerName(), new HashMap<>());
+            Map<String, Long> playerActivities = this.factionPlayerDataResponses.stream()
+                    .filter(factionPlayerDataResponse -> factionPlayerDataResponse.getMinecraftName().equals(minecraftName))
+                    .findFirst()
+                    .map(FactionPlayerDataResponse::getActivityCount)
+                    .orElse(new HashMap<>());
 
             DirectionalLayoutWidget memberDirectionalLayoutWidget = directionalLayoutWidget.add(horizontal().spacing(8), positioner -> positioner.marginTop(4));
 
@@ -187,7 +194,7 @@ public class FactionScreen extends OptionsScreen {
             memberDirectionalLayoutWidget.add(rangTextWidget);
 
             getActivityTypes().forEach(type -> {
-                int activityAmount = playerActivities.getOrDefault(type.name(), 0);
+                long activityAmount = playerActivities.getOrDefault(type.name(), 0L);
                 TextWidget activityEntryTextWidget = new TextWidget(of(valueOf(activityAmount)).copy().formatted(color), TEXT_RENDERER);
                 activityEntryTextWidget.setWidth(80);
                 memberDirectionalLayoutWidget.add(activityEntryTextWidget);
@@ -222,13 +229,16 @@ public class FactionScreen extends OptionsScreen {
 
         @Contract("_, _, _ -> new")
         public @NotNull Set<FactionMember> apply(Collection<FactionMember> factionMembers,
-                                                 Map<String, Map<String, Integer>> activities,
+                                                 List<FactionPlayerDataResponse> factionPlayerDataResponses,
                                                  TableHeaderTextWidget.SortingDirection sortingDirection) {
             Comparator<FactionMember> factionMemberComparator = switch (this) {
                 case NAME -> comparing(FactionMember::playerName);
                 case RANK -> comparingInt(FactionMember::rank);
-                default ->
-                        comparingInt(factionMember -> activities.getOrDefault(factionMember.playerName(), new HashMap<>()).getOrDefault(this.name(), 0));
+                default -> comparingLong(factionMember -> factionPlayerDataResponses.stream()
+                        .filter(factionPlayerDataResponse -> factionPlayerDataResponse.getMinecraftName().equals(factionMember.playerName()))
+                        .findFirst()
+                        .map(FactionPlayerDataResponse::getActivityCount)
+                        .orElse(new HashMap<>()).getOrDefault(name(), 0L));
             };
 
             factionMemberComparator = sortingDirection.apply(factionMemberComparator);

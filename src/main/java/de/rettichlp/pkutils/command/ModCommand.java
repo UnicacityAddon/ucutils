@@ -58,7 +58,7 @@ public class ModCommand extends CommandBase {
                                     stream(ActivityEntry.Type.values())
                                             .filter(activityType -> activityType.name().equals(activityTypeString.toUpperCase()))
                                             .findFirst()
-                                            .ifPresent(api::postActivityAdd);
+                                            .ifPresent(api::putFactionActivityAdd);
 
                                     return 1;
                                 })))

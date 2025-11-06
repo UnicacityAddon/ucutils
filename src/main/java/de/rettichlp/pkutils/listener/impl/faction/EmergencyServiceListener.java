@@ -67,7 +67,7 @@ public class EmergencyServiceListener implements IMessageReceiveListener, INaviS
 
         Matcher serviceDoneMatcher = SERVICE_DONE_PATTERN.matcher(message);
         if (serviceDoneMatcher.find()) {
-            api.postActivityAdd(EMERGENCY_SERVICE);
+            api.putFactionActivityAdd(EMERGENCY_SERVICE);
             this.activeService = false;
             return true;
         }
