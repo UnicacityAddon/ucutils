@@ -98,7 +98,7 @@ public class SyncService {
         }
 
         utilService.delayedAction(() -> {
-            api.postFactions();
+            api.postFactionMembers();
             storage.getPlayerFactionCache().clear();
         }, commandResponseRetrievers.size() * 1000L + 1200);
     }
@@ -126,7 +126,7 @@ public class SyncService {
     }
 
     public void syncFactionMembersWithApi() {
-        api.getFactions(factionEntries -> {
+        api.getFactionMembers(factionEntries -> {
             storage.getFactionEntries().clear();
             storage.getFactionEntries().addAll(factionEntries);
             storage.getPlayerFactionCache().clear();

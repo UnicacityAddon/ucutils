@@ -8,6 +8,7 @@ import com.google.gson.JsonSerializer;
 import com.google.gson.reflect.TypeToken;
 import com.mojang.authlib.GameProfile;
 import de.rettichlp.pkutils.common.api.response.ErrorResponse;
+import de.rettichlp.pkutils.common.api.response.FactionPlayerDataResponse;
 import de.rettichlp.pkutils.common.api.response.GetUserInfoResponse;
 import de.rettichlp.pkutils.common.api.response.WeeklyTime;
 import de.rettichlp.pkutils.common.models.ActivityEntry;
@@ -81,12 +82,12 @@ public class Api {
             .create();
 
     public void getUserInfo(String playerName, Consumer<GetUserInfoResponse> callback) {
-        get("/user/info?playerName=" + playerName, new TypeToken<>() {}, callback);
+        get("/v1/user/info?playerName=" + playerName, new TypeToken<>() {}, callback);
     }
 
     public void postUserRegister() {
         // register user
-        post("/user/register", new Object(), () -> LOGGER.info("Successfully registered user"));
+        post("/v1/user/register", new Object(), () -> LOGGER.info("Successfully registered user"));
 
         // initialize websocket connection
         String webSocketUrl = "ws://91.107.193.19:6010/pkutils/v1/ws";
@@ -107,7 +108,7 @@ public class Api {
     public void getFactionPlayerData(ChronoLocalDateTime<LocalDate> from,
                                      ChronoLocalDateTime<LocalDate> to,
                                      Iterable<String> playerNames,
-                                     Consumer<Map<String, Map<String, Integer>>> callback) {
+                                     Consumer<List<FactionPlayerDataResponse>> callback) {
         String playerNamesParam = join(",", playerNames);
         Instant fromInstant = from.atZone(utilService.getServerZoneId()).toInstant();
         Instant toInstant = to.atZone(utilService.getServerZoneId()).toInstant();

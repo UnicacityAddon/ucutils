@@ -1,43 +1,28 @@
 package de.rettichlp.pkutils.command.faction;
 
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
-import de.rettichlp.pkutils.common.models.EquipEntry;
 import de.rettichlp.pkutils.common.models.Faction;
 import de.rettichlp.pkutils.common.models.FactionMember;
 import de.rettichlp.pkutils.common.registry.CommandBase;
 import de.rettichlp.pkutils.common.registry.PKUtilsCommand;
 import net.fabricmc.fabric.api.client.command.v2.FabricClientCommandSource;
-import net.minecraft.text.Text;
 import org.jetbrains.annotations.NotNull;
 
-import java.time.ZonedDateTime;
 import java.util.List;
-import java.util.Map;
 
 import static com.mojang.brigadier.arguments.IntegerArgumentType.integer;
 import static com.mojang.brigadier.arguments.StringArgumentType.getString;
 import static com.mojang.brigadier.arguments.StringArgumentType.word;
 import static com.mojang.brigadier.suggestion.Suggestions.empty;
-import static de.rettichlp.pkutils.PKUtils.api;
 import static de.rettichlp.pkutils.PKUtils.commandService;
 import static de.rettichlp.pkutils.PKUtils.messageService;
 import static de.rettichlp.pkutils.PKUtils.player;
 import static de.rettichlp.pkutils.PKUtils.storage;
-import static de.rettichlp.pkutils.PKUtils.utilService;
 import static de.rettichlp.pkutils.common.models.Faction.NULL;
 import static java.lang.Integer.MIN_VALUE;
-import static java.time.DayOfWeek.FRIDAY;
-import static java.time.ZonedDateTime.now;
-import static java.time.temporal.TemporalAdjusters.nextOrSame;
-import static java.util.stream.Collectors.counting;
-import static java.util.stream.Collectors.groupingBy;
 import static net.fabricmc.fabric.api.client.command.v2.ClientCommandManager.argument;
 import static net.fabricmc.fabric.api.client.command.v2.ClientCommandManager.literal;
 import static net.minecraft.command.CommandSource.suggestMatching;
-import static net.minecraft.text.Text.of;
-import static net.minecraft.util.Formatting.DARK_GRAY;
-import static net.minecraft.util.Formatting.GRAY;
-import static net.minecraft.util.Formatting.WHITE;
 
 @PKUtilsCommand(label = "equipped")
 public class EquippedCommand extends CommandBase {
@@ -48,9 +33,7 @@ public class EquippedCommand extends CommandBase {
                 .then(argument("weeksAgo", integer(MIN_VALUE, 0))
                         .suggests((context, builder) -> suggestMatching(List.of("0", "-1", "-2", "-3", "-4", "-5"), builder))
                         .executes(context -> {
-                            int weeksAgo = context.getArgument("weeksAgo", Integer.class);
-                            fetchAndShowEntriesFor(weeksAgo);
-                            return 1;
+                            throw new IllegalStateException("Not implemented yet");
                         }))
                 .then(literal("player")
                         .then(argument("player", word())
@@ -88,9 +71,7 @@ public class EquippedCommand extends CommandBase {
                                                 return 1;
                                             }
 
-                                            fetchAndShowEntriesFor(targetName, weeksAgo);
-
-                                            return 1;
+                                            throw new IllegalStateException("Not implemented yet");
                                         }))
                                 .executes(context -> {
                                     String playerName = player.getGameProfile().getName();
@@ -105,74 +86,10 @@ public class EquippedCommand extends CommandBase {
                                         return 1;
                                     }
 
-                                    fetchAndShowEntriesFor(targetName, 0);
-
-                                    return 1;
+                                    throw new IllegalStateException("Not implemented yet");
                                 })))
                 .executes(context -> {
-                    fetchAndShowEntriesFor(0);
-                    return 1;
+                    throw new IllegalStateException("Not implemented yet");
                 });
     }
-
-    private void fetchAndShowEntriesFor(int relativeWeekIndex) {
-        Range range = getRange(relativeWeekIndex);
-        api.getEquip(range.fromZonedDateTime().toInstant(), range.toZonedDateTime.toInstant(), entries -> {
-            // summarize by type
-            Map<EquipEntry.Type, Long> amountPerType = entries.stream()
-                    .collect(groupingBy(EquipEntry::type, counting()));
-
-            player.sendMessage(Text.empty(), false);
-            messageService.sendModMessage("Equip:", false);
-            amountPerType.forEach((type, amount) -> messageService.sendModMessage(Text.empty()
-                    .append(of(type.getDisplayName()).copy().formatted(GRAY))
-                    .append(of(":").copy().formatted(DARK_GRAY)).append(" ")
-                    .append(of(amount + "x").copy().formatted(WHITE)), false));
-            player.sendMessage(Text.empty(), false);
-        });
-    }
-
-    private void fetchAndShowEntriesFor(String playerName, int relativeWeekIndex) {
-        Range range = getRange(relativeWeekIndex);
-        api.getEquipPlayer(range.fromZonedDateTime().toInstant(), range.toZonedDateTime.toInstant(), playerName, entries -> {
-            // summarize by type
-            Map<EquipEntry.Type, Long> activityAmountPerType = entries.stream()
-                    .collect(groupingBy(EquipEntry::type, counting()));
-
-            player.sendMessage(Text.empty(), false);
-            messageService.sendModMessage("Equip von " + playerName + ":", false);
-            activityAmountPerType.forEach((type, amount) -> messageService.sendModMessage(Text.empty()
-                    .append(of(type.getDisplayName()).copy().formatted(GRAY))
-                    .append(of(":").copy().formatted(DARK_GRAY)).append(" ")
-                    .append(of(amount + "x").copy().formatted(WHITE)), false));
-            player.sendMessage(Text.empty(), false);
-        });
-    }
-
-    private @NotNull Range getRange(int relativeWeekIndex) {
-        ZonedDateTime now = now(utilService.getServerZoneId());
-
-        // friday 20 o'clock
-        ZonedDateTime friday20 = now
-                .with(nextOrSame(FRIDAY))
-                .withHour(20)
-                .withMinute(0)
-                .withSecond(0)
-                .withNano(0);
-
-        ZonedDateTime fromZonedDateTime;
-        ZonedDateTime toZonedDateTime;
-
-        if (now.isBefore(friday20)) {
-            fromZonedDateTime = friday20.minusWeeks(1).plusWeeks(relativeWeekIndex);
-            toZonedDateTime = friday20.plusWeeks(relativeWeekIndex);
-        } else {
-            fromZonedDateTime = friday20.plusWeeks(relativeWeekIndex);
-            toZonedDateTime = friday20.plusWeeks(1).plusWeeks(relativeWeekIndex);
-        }
-
-        return new Range(fromZonedDateTime, toZonedDateTime);
-    }
-
-    private record Range(ZonedDateTime fromZonedDateTime, ZonedDateTime toZonedDateTime) {}
 }
