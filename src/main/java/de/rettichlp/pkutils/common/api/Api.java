@@ -150,22 +150,6 @@ public class Api {
         post("/factions", storage.getFactionEntries(), () -> {});
     }
 
-    public void getMinusPoints(Consumer<Integer> callback) {
-        get("/police/minuspoints", new TypeToken<>() {}, callback);
-    }
-
-    public void getMinusPointsPlayer(String playerName, Consumer<Integer> callback) {
-        get("/police/minuspoints/" + playerName, new TypeToken<>() {}, callback);
-    }
-
-    public void postMinusPointsModify(String playerName, int amount) {
-        if (!storage.isPunicaKitty()) {
-            return;
-        }
-
-        post("/police/minuspoints/" + playerName + "/modify?amount=" + amount, amount, () -> notificationService.sendInfoNotification("Punkte erfolgreich angepasst"));
-    }
-
     public void getBlacklistReasonData(Consumer<Map<Faction, List<BlacklistReason>>> callback) {
         get("https://gist.githubusercontent.com/rettichlp/54e97f4dbb3988bf22554c01d62af666/raw/pkutils-blacklistreasons.json", new TypeToken<>() {}, callback);
     }
