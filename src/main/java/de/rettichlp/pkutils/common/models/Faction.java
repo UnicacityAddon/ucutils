@@ -31,7 +31,7 @@ import static net.minecraft.util.Formatting.YELLOW;
 @AllArgsConstructor
 public enum Faction {
 
-    NULL("", "Keine Auswahl", false, GRAY, ""),
+    NULL("", "Keine Fraktion", false, GRAY, ""),
     FBI("fbi", "F.B.I.", false, DARK_BLUE, "✯"),
     POLIZEI("polizei", "Polizei", false, BLUE, "✯"),
     RETTUNGSDIENST("rettungsdienst", "Rettungsdienst", false, DARK_RED, "✚"),

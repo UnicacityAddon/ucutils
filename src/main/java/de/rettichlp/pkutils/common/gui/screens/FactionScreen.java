@@ -68,7 +68,7 @@ public class FactionScreen extends OptionsScreen {
                          LocalDateTime from,
                          LocalDateTime to,
                          int offset) {
-        super(new GameMenuScreen(true), of("Faction Members"));
+        super(new GameMenuScreen(true), of(faction.getDisplayName()));
         this.faction = faction;
         this.sortingType = sortingType;
         this.sortingDirection = sortingDirection;
@@ -118,7 +118,7 @@ public class FactionScreen extends OptionsScreen {
         }));
     }
 
-    private Set<FactionMember> getSortedFactionMembers() {
+    private @NotNull Set<FactionMember> getSortedFactionMembers() {
         Set<FactionMember> factionMembers = storage.getFactionEntries().stream()
                 .filter(factionEntry -> factionEntry.faction() == this.faction)
                 .findFirst()
