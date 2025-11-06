@@ -118,16 +118,6 @@ public class FactionScreen extends OptionsScreen {
         }));
     }
 
-    private @NotNull Set<FactionMember> getSortedFactionMembers() {
-        Set<FactionMember> factionMembers = storage.getFactionEntries().stream()
-                .filter(factionEntry -> factionEntry.faction() == this.faction)
-                .findFirst()
-                .map(FactionEntry::members)
-                .orElse(emptySet());
-
-        return this.sortingType.apply(factionMembers, this.factionPlayerDataResponses, this.sortingDirection);
-    }
-
     private @NotNull DirectionalLayoutWidget getHeaderDirectionalLayoutWidget() {
         List<ActivityEntry.Type> activityTypes = getActivityTypes();
 
@@ -195,6 +185,16 @@ public class FactionScreen extends OptionsScreen {
         });
 
         return directionalLayoutWidget;
+    }
+
+    private @NotNull Set<FactionMember> getSortedFactionMembers() {
+        Set<FactionMember> factionMembers = storage.getFactionEntries().stream()
+                .filter(factionEntry -> factionEntry.faction() == this.faction)
+                .findFirst()
+                .map(FactionEntry::members)
+                .orElse(emptySet());
+
+        return this.sortingType.apply(factionMembers, this.factionPlayerDataResponses, this.sortingDirection);
     }
 
     private int getPageLimit() {
