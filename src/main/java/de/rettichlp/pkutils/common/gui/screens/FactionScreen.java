@@ -88,8 +88,8 @@ public class FactionScreen extends OptionsScreen {
 
         directionalLayoutWidget.add(weekSelectionWidget, Positioner::alignHorizontalCenter);
 
-        directionalLayoutWidget.add(getHeaderDirectionalLayoutWidget(), positioner -> positioner.marginBottom(4));
-        directionalLayoutWidget.add(getMemberDirectionalLayoutWidget());
+        directionalLayoutWidget.add(getHeaderDirectionalLayoutWidget(), positioner -> positioner.marginBottom(4).alignHorizontalCenter());
+        directionalLayoutWidget.add(getMemberDirectionalLayoutWidget(), Positioner::alignHorizontalCenter);
         directionalLayoutWidget.forEachChild(this::addDrawableChild);
     }
 
