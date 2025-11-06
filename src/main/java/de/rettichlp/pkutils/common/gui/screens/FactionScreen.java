@@ -2,6 +2,7 @@ package de.rettichlp.pkutils.common.gui.screens;
 
 import de.rettichlp.pkutils.common.api.response.FactionPlayerDataResponse;
 import de.rettichlp.pkutils.common.gui.screens.components.TableHeaderTextWidget;
+import de.rettichlp.pkutils.common.gui.screens.components.WeekSelectionWidget;
 import de.rettichlp.pkutils.common.models.ActivityEntry;
 import de.rettichlp.pkutils.common.models.Faction;
 import de.rettichlp.pkutils.common.models.FactionEntry;
@@ -27,9 +28,7 @@ import java.util.Map;
 import java.util.Set;
 
 import static de.rettichlp.pkutils.PKUtils.api;
-import static de.rettichlp.pkutils.PKUtils.messageService;
 import static de.rettichlp.pkutils.PKUtils.player;
-import static de.rettichlp.pkutils.PKUtils.renderService;
 import static de.rettichlp.pkutils.PKUtils.storage;
 import static de.rettichlp.pkutils.common.gui.screens.FactionScreen.SortingType.NAME;
 import static de.rettichlp.pkutils.common.gui.screens.FactionScreen.SortingType.RANK;
@@ -45,7 +44,6 @@ import static java.util.Comparator.comparingLong;
 import static java.util.stream.Collectors.toCollection;
 import static net.minecraft.client.gui.widget.DirectionalLayoutWidget.horizontal;
 import static net.minecraft.client.gui.widget.DirectionalLayoutWidget.vertical;
-import static net.minecraft.text.Text.empty;
 import static net.minecraft.text.Text.of;
 import static net.minecraft.util.Formatting.GREEN;
 import static net.minecraft.util.Formatting.WHITE;
@@ -84,16 +82,11 @@ public class FactionScreen extends OptionsScreen {
     public void initBody() {
         DirectionalLayoutWidget directionalLayoutWidget = this.layout.addBody(vertical().spacing(4));
 
-        DirectionalLayoutWidget directionalLayoutWidget1 = directionalLayoutWidget.add(horizontal().spacing(8), Positioner::alignHorizontalCenter);
+        WeekSelectionWidget weekSelectionWidget = new WeekSelectionWidget(this.from, this.to,
+                button -> getActivitiesAndReopen(this.from.minusWeeks(1), this.to.minusWeeks(1)),
+                button -> getActivitiesAndReopen(this.from.plusWeeks(1), this.to.plusWeeks(1)));
 
-        renderService.addButton(directionalLayoutWidget1, of("←"), button -> getActivitiesAndReopen(this.from.minusWeeks(1), this.to.minusWeeks(1)), 20);
-
-        renderService.addButton(directionalLayoutWidget1, empty()
-                .append(of(messageService.dateTimeToFriendlyString(this.from)))
-                .append(" - ")
-                .append(of(messageService.dateTimeToFriendlyString(this.to))), button -> {}, 400);
-
-        renderService.addButton(directionalLayoutWidget1, of("→"), button -> getActivitiesAndReopen(this.from.plusWeeks(1), this.to.plusWeeks(1)), 20);
+        directionalLayoutWidget.add(weekSelectionWidget, Positioner::alignHorizontalCenter);
 
         directionalLayoutWidget.add(getHeaderDirectionalLayoutWidget(), positioner -> positioner.marginBottom(4));
         directionalLayoutWidget.add(getMemberDirectionalLayoutWidget());
