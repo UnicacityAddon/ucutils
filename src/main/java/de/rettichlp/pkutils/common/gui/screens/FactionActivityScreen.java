@@ -10,6 +10,7 @@ import de.rettichlp.pkutils.common.models.FactionMember;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.widget.DirectionalLayoutWidget;
+import net.minecraft.client.gui.widget.EmptyWidget;
 import net.minecraft.client.gui.widget.Positioner;
 import net.minecraft.client.gui.widget.TextWidget;
 import net.minecraft.util.Formatting;
@@ -83,7 +84,8 @@ public class FactionActivityScreen extends FactionScreen {
 
         directionalLayoutWidget.add(weekSelectionWidget, Positioner::alignHorizontalCenter);
 
-        directionalLayoutWidget.add(getHeaderDirectionalLayoutWidget(), positioner -> positioner.marginBottom(4).alignHorizontalCenter());
+        directionalLayoutWidget.add(new EmptyWidget(0, 4));
+        directionalLayoutWidget.add(getHeaderDirectionalLayoutWidget(), Positioner::alignHorizontalCenter);
         directionalLayoutWidget.add(getMemberDirectionalLayoutWidget(), Positioner::alignHorizontalCenter);
         directionalLayoutWidget.forEachChild(this::addDrawableChild);
     }
