@@ -172,18 +172,18 @@ public class FactionActivityScreen extends FactionScreen {
         DirectionalLayoutWidget directionalLayoutWidget = vertical().spacing(4);
 
         getSortedFactionMembers().stream().skip(this.offset).limit(pageLimit()).forEach(factionMember -> {
-            String minecraftName = player.getGameProfile().getName();
-            Formatting color = minecraftName.equals(factionMember.playerName()) ? GREEN : WHITE;
+            String factionMemberMinecraftName = factionMember.playerName();
+            Formatting color = player.getGameProfile().getName().equals(factionMemberMinecraftName) ? GREEN : WHITE;
 
             Map<String, Long> playerActivities = this.factionPlayerDataResponses.stream()
-                    .filter(factionPlayerDataResponse -> factionPlayerDataResponse.getMinecraftName().equals(minecraftName))
+                    .filter(factionPlayerDataResponse -> factionPlayerDataResponse.getMinecraftName().equals(factionMemberMinecraftName))
                     .findFirst()
                     .map(FactionPlayerDataResponse::getActivityCount)
                     .orElse(new HashMap<>());
 
             DirectionalLayoutWidget memberDirectionalLayoutWidget = directionalLayoutWidget.add(horizontal().spacing(8), positioner -> positioner.marginTop(4));
 
-            TextWidget nameTextWidget = new TextWidget(of(factionMember.playerName()).copy().formatted(color), TEXT_RENDERER);
+            TextWidget nameTextWidget = new TextWidget(of(factionMemberMinecraftName).copy().formatted(color), TEXT_RENDERER);
             nameTextWidget.setWidth(80);
             memberDirectionalLayoutWidget.add(nameTextWidget);
 
