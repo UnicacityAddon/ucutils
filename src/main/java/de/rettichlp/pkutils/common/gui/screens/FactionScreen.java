@@ -17,7 +17,6 @@ import static de.rettichlp.pkutils.common.gui.screens.components.TableHeaderText
 import static java.lang.Math.max;
 import static java.lang.Math.min;
 import static net.minecraft.client.gui.widget.DirectionalLayoutWidget.horizontal;
-import static net.minecraft.text.Text.empty;
 import static net.minecraft.text.Text.of;
 import static net.minecraft.text.Text.translatable;
 
@@ -63,6 +62,7 @@ public abstract class FactionScreen extends OptionsScreen {
         DirectionalLayoutWidget directionalLayoutWidget = horizontal().spacing(8);
 
         renderService.addButton(directionalLayoutWidget, translatable("pkutils.screen.faction.button.activity.name"), button -> {
+            close();
             api.getFactionPlayerData(this.from, this.to, this.faction.getMembers().stream().map(FactionMember::playerName).toList(), factionPlayerDataResponse -> this.client.execute(() -> {
                 FactionActivityScreen factionActivityScreen = new FactionActivityScreen(this.faction, this.from, this.to, factionPlayerDataResponse, RANK, DESCENDING);
                 this.client.setScreen(factionActivityScreen);
@@ -72,6 +72,7 @@ public abstract class FactionScreen extends OptionsScreen {
         directionalLayoutWidget.add(new EmptyWidget(132, 0));
 
         ButtonWidget buttonWidget = directionalLayoutWidget.add(new ButtonWidget.Builder(translatable("pkutils.screen.faction.button.blacklist.name"), button -> {
+            close();
             api.getBlacklistReasons(this.faction, blacklistReasons -> this.client.execute(() -> {
                 FactionBlacklistReasonScreen factionScreen = new FactionBlacklistReasonScreen(this.faction, this.from, this.to, blacklistReasons);
                 this.client.setScreen(factionScreen);

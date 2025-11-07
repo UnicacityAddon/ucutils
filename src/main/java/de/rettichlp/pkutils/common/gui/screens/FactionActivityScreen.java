@@ -84,7 +84,7 @@ public class FactionActivityScreen extends FactionScreen {
 
         directionalLayoutWidget.add(weekSelectionWidget, Positioner::alignHorizontalCenter);
 
-        directionalLayoutWidget.add(new EmptyWidget(0, 4));
+        directionalLayoutWidget.add(new EmptyWidget(0, 4)); // spacing
         directionalLayoutWidget.add(getHeaderDirectionalLayoutWidget(), Positioner::alignHorizontalCenter);
         directionalLayoutWidget.add(getMemberDirectionalLayoutWidget(), Positioner::alignHorizontalCenter);
         directionalLayoutWidget.forEachChild(this::addDrawableChild);
