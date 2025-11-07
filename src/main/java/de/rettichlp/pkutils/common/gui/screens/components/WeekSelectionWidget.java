@@ -26,10 +26,7 @@ public class WeekSelectionWidget extends ClickableWidget {
                                ButtonWidget.PressAction onPressNext) {
         super(0, 0, 456, 20, empty());
 
-        renderService.addButton(this.internalLayout, of("←"), button -> {
-            System.out.println("Previous week");
-            onPressPrevious.onPress(button);
-        }, 20);
+        renderService.addButton(this.internalLayout, of("←"), onPressPrevious, 20);
 
         renderService.addButton(this.internalLayout, empty()
                 .append(of(messageService.dateTimeToFriendlyString(from)))

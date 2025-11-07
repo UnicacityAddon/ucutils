@@ -102,7 +102,7 @@ public class Api {
     }
 
     public void postFactionMembers() {
-        post("/v2/faction/members", storage.getFactionEntries(), () -> {});
+        post("/v2/faction/members", storage.getFactionEntries(), () -> LOGGER.info("Successfully updated faction members"));
     }
 
     public void getFactionPlayerData(ChronoLocalDateTime<LocalDate> from,
