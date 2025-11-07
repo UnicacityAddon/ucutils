@@ -1,16 +1,14 @@
 package de.rettichlp.pkutils.common.models;
 
 import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.ToString;
+import lombok.Data;
 
-@Getter
-@ToString
+@Data
 @AllArgsConstructor
 public class BlacklistReason {
 
     private final String reason;
     private final boolean outlaw;
-    private final int kills;
-    private final int price;
+    private int kills;
+    private int price;
 }

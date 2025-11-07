@@ -1,7 +1,7 @@
 package de.rettichlp.pkutils.listener.impl.faction;
 
 import de.rettichlp.pkutils.common.Storage;
-import de.rettichlp.pkutils.common.gui.screens.FactionScreen;
+import de.rettichlp.pkutils.common.gui.screens.FactionActivityScreen;
 import de.rettichlp.pkutils.common.models.ActivityEntry;
 import de.rettichlp.pkutils.common.models.BlackMarket;
 import de.rettichlp.pkutils.common.models.Faction;
@@ -35,7 +35,7 @@ import static de.rettichlp.pkutils.PKUtils.player;
 import static de.rettichlp.pkutils.PKUtils.storage;
 import static de.rettichlp.pkutils.common.Storage.ToggledChat.NONE;
 import static de.rettichlp.pkutils.common.configuration.options.Options.ReinforcementType.UNICACITYADDON;
-import static de.rettichlp.pkutils.common.gui.screens.FactionScreen.SortingType.RANK;
+import static de.rettichlp.pkutils.common.gui.screens.FactionActivityScreen.SortingType.RANK;
 import static de.rettichlp.pkutils.common.gui.screens.components.TableHeaderTextWidget.SortingDirection.DESCENDING;
 import static de.rettichlp.pkutils.common.models.EquipEntry.Type.fromDisplayName;
 import static de.rettichlp.pkutils.common.models.Faction.FBI;
@@ -99,8 +99,8 @@ public class FactionListener implements IKeyPressListener, IMessageReceiveListen
                 LocalDateTime to = weeklyTime.nextOccurrence();
                 LocalDateTime from = to.minusWeeks(1);
                 api.getFactionPlayerData(from, to, faction.getMembers().stream().map(FactionMember::playerName).toList(), factionPlayerDataResponse -> client.execute(() -> {
-                    FactionScreen factionScreen = new FactionScreen(faction, RANK, DESCENDING, factionPlayerDataResponse, from, to, 0);
-                    client.setScreen(factionScreen);
+                    FactionActivityScreen factionActivityScreen = new FactionActivityScreen(faction, from, to, factionPlayerDataResponse, RANK, DESCENDING);
+                    client.setScreen(factionActivityScreen);
                 }));
             });
         }

@@ -96,5 +96,11 @@
     "pkutils.purity.bad": "Schlechte",
 
     "pkutils.screen.data_usage_confirmation.message": "PKUtils kommuniziert mit einem externen Server. Dies ist notwendig, damit einige Funktionen richtig arbeiten. Mit dem Klick auf Zustimmen stimmst du der Datennutzung zu.",
+    "pkutils.screen.faction.button.activity.name": "Aktivitäten",
+    "pkutils.screen.faction.button.equip.name": "Equip",
+    "pkutils.screen.faction.button.blacklist.name": "Blacklist Gründe",
+    "pkutils.screen.faction.blacklist.header.reason": "Grund",
+    "pkutils.screen.faction.blacklist.header.price": "Preis",
+    "pkutils.screen.faction.blacklist.header.kills": "Tode",
     "pkutils.screen.shutdown_abort.button.name": "Herunterfahren abbrechen"
 }
