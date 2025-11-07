@@ -97,6 +97,14 @@ public class Api {
         });
     }
 
+    public void getBlacklistReasons(@NotNull Faction faction, Consumer<List<BlacklistReason>> callback) {
+        get("/v1/blacklist/reasons?faction=" + faction.name(), new TypeToken<>() {}, callback);
+    }
+
+    public void postBlacklistReasons(@NotNull Faction faction, List<BlacklistReason> blacklistReasons) {
+        post("/v1/blacklist/reasons?faction=" + faction.name(), blacklistReasons, () -> LOGGER.info("Successfully updated blacklist reasons"));
+    }
+
     public void getFactionMembers(Consumer<List<FactionEntry>> callback) {
         get("/v2/faction/members", new TypeToken<>() {}, callback);
     }
@@ -105,8 +113,8 @@ public class Api {
         post("/v2/faction/members", storage.getFactionEntries(), () -> LOGGER.info("Successfully updated faction members"));
     }
 
-    public void getFactionPlayerData(ChronoLocalDateTime<LocalDate> from,
-                                     ChronoLocalDateTime<LocalDate> to,
+    public void getFactionPlayerData(@NotNull ChronoLocalDateTime<LocalDate> from,
+                                     @NotNull ChronoLocalDateTime<LocalDate> to,
                                      Iterable<String> playerNames,
                                      Consumer<List<FactionPlayerDataResponse>> callback) {
         String playerNamesParam = join(",", playerNames);
