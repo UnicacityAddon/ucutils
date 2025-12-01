@@ -94,12 +94,11 @@ public class WidgetOptionsPositionScreen extends UCUtilsScreen {
         // draw border around the selected widget
         double x = widgetConfiguration.getX();
         double y = widgetConfiguration.getY();
-        // FIXME context.drawBorder((int) x, (int) y, this.selectedWidget.getWidth(), this.selectedWidget.getHeight(), GREEN.getRGB());
 
         // draw widget location text box
         Text widgetLocationText = of("X: " + x + " Y: " + y + " (W: " + this.selectedWidget.getWidth() + " H: " + this.selectedWidget.getHeight() + ")");
         context.fill(textX - TEXT_BOX_PADDING, textY - TEXT_BOX_PADDING, textX + this.textRenderer.getWidth(widgetLocationText) + TEXT_BOX_PADDING, textY + this.textRenderer.fontHeight + TEXT_BOX_PADDING, renderService.getSecondaryColor(BLACK).getRGB());
-        context.drawText(this.textRenderer, widgetLocationText, textX, textY, 0xFFFFFF, false);
+        context.drawText(this.textRenderer, widgetLocationText, textX, textY, 0xFFFFFFFF, false);
 
         // draw widget center lines
         double centerX = x + (this.selectedWidget.getWidth() / 2.0);

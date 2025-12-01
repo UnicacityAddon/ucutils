@@ -52,10 +52,5 @@ public class AlignVerticalWidget extends AlignWidget<AbstractUCUtilsWidget> {
             ucUtilsWidget.draw(drawContext, x + alignmentXModifier, yOffset, alignment);
             yOffset += ucUtilsWidget.getHeight();
         }
-
-        // debug: draw outline
-        if (renderService.isDebugEnabled()) {
-            // FIXME drawContext.drawBorder(x, y, getWidth(), getHeight(), new Color(0, 255, 0).getRGB());
-        }
     }
 }

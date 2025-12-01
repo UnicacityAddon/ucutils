@@ -91,6 +91,6 @@ public class BombListener implements IMessageReceiveListener, IHudRenderListener
         int x = (client.getWindow().getScaledWidth() - textWidth) / 2;
         int y = 15;
 
-        drawContext.drawTextWithShadow(textRenderer, timerText, x, y, 0xFFFFFF);
+        drawContext.drawTextWithShadow(textRenderer, timerText, x, y, 0xFFFFFFFF);
     }
 }
