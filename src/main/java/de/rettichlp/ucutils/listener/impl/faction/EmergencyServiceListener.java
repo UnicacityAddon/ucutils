@@ -21,12 +21,12 @@ import static java.util.regex.Pattern.compile;
 @UCUtilsListener
 public class EmergencyServiceListener implements IMessageReceiveListener, INaviSpotReachedListener {
 
-    private static final Pattern SERVICE_PATTERN = compile("Ein Notruf von (?:\\[PK])?(?<playerName>[a-zA-Z0-9_]+) \\((?<message>.+)\\)\\.");
-    private static final Pattern SERVICE_ACCEPTED_PATTERN = compile("^(?:HQ: )?(?:\\[PK])?(?<playerName>[a-zA-Z0-9_]+) hat den Notruf von (?:\\[PK])?(?<senderName>[a-zA-Z0-9_]+) angenommen\\.$");
-    private static final Pattern SERVICE_REQUEUED_PATTERN = compile("^(?:\\[PK])?(?<playerName>[a-zA-Z0-9_]+) hat den Notruf von (?:\\[PK])?(?<senderName>[a-zA-Z0-9_]+) erneut geöffnet\\.$");
-    private static final Pattern SERVICE_DONE_PATTERN = compile("^Du hast den Service von (?:\\[PK])?(?<playerName>[a-zA-Z0-9_]+) als 'Erledigt' markiert\\.$");
-    private static final Pattern SERVICE_ABORTED_PATTERN = compile("^Der Service von (?:\\[PK])?(?<playerName>[a-zA-Z0-9_]+) wurde abgebrochen\\.$");
-    private static final Pattern SERVICE_DELETED_PATTERN = compile("^(?:\\[PK])?(?<playerName>[a-zA-Z0-9_]+) hat den Notruf von (?:\\[PK])?(?<senderName>[a-zA-Z0-9_]+) gelöscht\\.$");
+    private static final Pattern SERVICE_PATTERN = compile("Ein Notruf von (?:\\[UC])?(?<playerName>[a-zA-Z0-9_]+) \\((?<message>.+)\\)\\.");
+    private static final Pattern SERVICE_ACCEPTED_PATTERN = compile("^(?:HQ: )?(?:\\[UC])?(?<playerName>[a-zA-Z0-9_]+) hat den Notruf von (?:\\[UC])?(?<senderName>[a-zA-Z0-9_]+) angenommen\\.$");
+    private static final Pattern SERVICE_REQUEUED_PATTERN = compile("^(?:\\[UC])?(?<playerName>[a-zA-Z0-9_]+) hat den Notruf von (?:\\[UC])?(?<senderName>[a-zA-Z0-9_]+) erneut geöffnet\\.$");
+    private static final Pattern SERVICE_DONE_PATTERN = compile("^Du hast den Service von (?:\\[UC])?(?<playerName>[a-zA-Z0-9_]+) als 'Erledigt' markiert\\.$");
+    private static final Pattern SERVICE_ABORTED_PATTERN = compile("^Der Service von (?:\\[UC])?(?<playerName>[a-zA-Z0-9_]+) wurde abgebrochen\\.$");
+    private static final Pattern SERVICE_DELETED_PATTERN = compile("^(?:\\[UC])?(?<playerName>[a-zA-Z0-9_]+) hat den Notruf von (?:\\[UC])?(?<senderName>[a-zA-Z0-9_]+) gelöscht\\.$");
     private static final Pattern SERVICE_COUNT_PATTERN = compile("^Offene Notrufe \\((?<count>\\d+)\\)$");
     private static final Pattern SERVICE_NONE_PATTERN = compile("^Fehler: Es ist kein Service offen\\.$");
 

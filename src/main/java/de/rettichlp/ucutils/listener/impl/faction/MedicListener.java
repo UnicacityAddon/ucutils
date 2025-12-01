@@ -37,14 +37,14 @@ import static net.minecraft.util.Formatting.AQUA;
 @UCUtilsListener
 public class MedicListener implements IMessageReceiveListener {
 
-    private static final Pattern MEDIC_BANDAGE_PATTERN = compile("^(?:\\[PK])?(?<playerName>[a-zA-Z0-9_]+) hat dich bandagiert\\.$");
-    private static final Pattern MEDIC_PILL_PATTERN = compile("^\\[Medic] Doktor (?:\\[PK])?(?<playerName>[a-zA-Z0-9_]+) hat dir Schmerzpillen verabreicht\\.$");
+    private static final Pattern MEDIC_BANDAGE_PATTERN = compile("^(?:\\[UC])?(?<playerName>[a-zA-Z0-9_]+) hat dich bandagiert\\.$");
+    private static final Pattern MEDIC_PILL_PATTERN = compile("^\\[Medic] Doktor (?:\\[UC])?(?<playerName>[a-zA-Z0-9_]+) hat dir Schmerzpillen verabreicht\\.$");
     private static final Pattern MEDIC_REVIVE_START = compile("^Du beginnst mit der Wiederbelebung\\.$");
     private static final Pattern HOUSEBAN_HEADER_PATTERN = compile("^Hausverbote \\(Rettungsdienst\\):$");
-    private static final Pattern HOUSEBAN_ENTRY_PATTERN = compile("^§[aec4](?:\\[PK])?(?<playerName>[a-zA-Z0-9_]+) \\| (?:\\[PK])?(?<issuerPlayerName>[a-zA-Z0-9_]+) \\| (?<reasons>.+) \\| (?<expireDateDay>\\d+)\\.(?<expireDateMonth>\\d+)\\.(?<expireDateYear>\\d+) (?<expireTimeHour>\\d+):(?<expireTimeMinute>\\d+) §8\\[§4Entfernen§8]$");
-    private static final Pattern HOUSEBAN_ADD_PATTERN = compile("^(?:\\[PK])?(?<issuerPlayerName>[a-zA-Z0-9_]+) hat (?:\\[PK])?(?<playerName>[a-zA-Z0-9_]+) ein Hausverbot erteilt\\. \\((?<reason>.+) \\| Ende: (?<expireDateDay>\\d+)\\.(?<expireDateMonth>\\d+)\\.(?<expireDateYear>\\d+) (?<expireTimeHour>\\d+):(?<expireTimeMinute>\\d+)\\)$");
+    private static final Pattern HOUSEBAN_ENTRY_PATTERN = compile("^§[aec4](?:\\[UC])?(?<playerName>[a-zA-Z0-9_]+) \\| (?:\\[UC])?(?<issuerPlayerName>[a-zA-Z0-9_]+) \\| (?<reasons>.+) \\| (?<expireDateDay>\\d+)\\.(?<expireDateMonth>\\d+)\\.(?<expireDateYear>\\d+) (?<expireTimeHour>\\d+):(?<expireTimeMinute>\\d+) §8\\[§4Entfernen§8]$");
+    private static final Pattern HOUSEBAN_ADD_PATTERN = compile("^(?:\\[UC])?(?<issuerPlayerName>[a-zA-Z0-9_]+) hat (?:\\[UC])?(?<playerName>[a-zA-Z0-9_]+) ein Hausverbot erteilt\\. \\((?<reason>.+) \\| Ende: (?<expireDateDay>\\d+)\\.(?<expireDateMonth>\\d+)\\.(?<expireDateYear>\\d+) (?<expireTimeHour>\\d+):(?<expireTimeMinute>\\d+)\\)$");
     private static final Pattern KARMA_GET_PATTERN = compile("^\\[Karma] \\+\\d Karma$");
-    private static final Pattern FIRST_AID_PATTERN = compile("^\\[Erste-Hilfe] (?:\\[PK])?(?<playerName>[a-zA-Z0-9_]+) hat dir ein Erste-Hilfe-Schein für 14 Tage ausgestellt\\.$");
+    private static final Pattern FIRST_AID_PATTERN = compile("^\\[Erste-Hilfe] (?:\\[UC])?(?<playerName>[a-zA-Z0-9_]+) hat dir ein Erste-Hilfe-Schein für 14 Tage ausgestellt\\.$");
     private static final Pattern FIRST_AID_LICENCES_PATTERN = compile("^- Erste-Hilfe-Schein: Vorhanden$");
 
     private LocalDateTime lastReviveStartetAt = MIN;

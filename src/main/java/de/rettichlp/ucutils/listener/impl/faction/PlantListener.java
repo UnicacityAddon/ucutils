@@ -59,9 +59,9 @@ import static net.minecraft.util.Formatting.RED;
 public class PlantListener implements IBlockRightClickListener, IEntityRenderListener, IMessageReceiveListener, IScreenOpenListener {
 
     private static final String PLANT_TEXT = "Plantage";
-    private static final Pattern PLANT_PLANT_PATTERN = compile("^\\[Plantage] (?:\\[PK])?(?<playerName>[a-zA-Z0-9_]+) hat eine (Kräuter|Pulver)-Plantage gesetzt\\. \\[\\d+/10]$");
-    private static final Pattern PLANT_WATER_PATTERN = compile("^\\[Plantage] Eine (Kräuter|Pulver)-Plantage wurde von (?:\\[PK])?(?<playerName>[a-zA-Z0-9_]+) gewässert\\.$");
-    private static final Pattern PLANT_FERTILIZE_PATTERN = compile("^\\[Plantage] Eine (Kräuter|Pulver)-Plantage wurde von (?:\\[PK])?(?<playerName>[a-zA-Z0-9_]+) gedüngt\\.$");
+    private static final Pattern PLANT_PLANT_PATTERN = compile("^\\[Plantage] (?:\\[UC])?(?<playerName>[a-zA-Z0-9_]+) hat eine (Kräuter|Pulver)-Plantage gesetzt\\. \\[\\d+/10]$");
+    private static final Pattern PLANT_WATER_PATTERN = compile("^\\[Plantage] Eine (Kräuter|Pulver)-Plantage wurde von (?:\\[UC])?(?<playerName>[a-zA-Z0-9_]+) gewässert\\.$");
+    private static final Pattern PLANT_FERTILIZE_PATTERN = compile("^\\[Plantage] Eine (Kräuter|Pulver)-Plantage wurde von (?:\\[UC])?(?<playerName>[a-zA-Z0-9_]+) gedüngt\\.$");
 
     private static final int PLANT_WATERING_INTERVAL_MINUTES = 40;
     private static final int PLANT_FERTILIZING_INTERVAL_MINUTES = 45;

@@ -44,14 +44,14 @@ public class PlayerListener implements IAbsorptionGetListener, IMessageReceiveLi
     // dead
     private static final Pattern DEAD_PATTERN = compile("^Du bist nun für (?<minutes>\\d+) Minuten auf dem Friedhof$");
     private static final Pattern DEAD_DESPAWN_PATTERN = compile("^Verdammt\\.{3} mein Kopf dröhnt so\\.{3}$");
-    private static final Pattern DEAD_AREVIVE_PATTERN = compile("^Du wurdest von (?:\\[PK])?(?<playerName>[a-zA-Z0-9_]+) wiederbelebt\\.$");
+    private static final Pattern DEAD_AREVIVE_PATTERN = compile("^Du wurdest von (?:\\[UC])?(?<playerName>[a-zA-Z0-9_]+) wiederbelebt\\.$");
 
     // jail
     private static final Pattern JAIL_PATTERN = compile("^\\[Gefängnis] Du bist nun für (?<minutes>\\d+) Minuten im Gefängnis\\.$");
     private static final Pattern JAIL_UNJAIL_PATTERN = compile("^\\[Gefängnis] Du bist nun wieder frei!$");
 
     // pray
-    private static final Pattern PRAY_START_PATTERN = compile("^\\[Kirche] Du fängst an für (?:\\[PK])?(?<playerName>[a-zA-Z0-9_]+) zu beten\\.$");
+    private static final Pattern PRAY_START_PATTERN = compile("^\\[Kirche] Du fängst an für (?:\\[UC])?(?<playerName>[a-zA-Z0-9_]+) zu beten\\.$");
 
     @Override
     public void onAbsorptionGet() {

@@ -29,8 +29,8 @@ import static net.minecraft.command.CommandSource.suggestMatching;
 @UCUtilsCommand(label = "eigenbedarf")
 public class PersonalUseCommand extends CommandBase implements IMessageReceiveListener {
 
-    private static final Pattern DEAL_ACCEPTED = compile("^\\[Deal] (?:\\[PK])?(?<playerName>[a-zA-Z0-9_]+) hat den Deal angenommen\\.$");
-    private static final Pattern DEAL_DECLINED = compile("^(?:\\[PK])?(?<playerName>[a-zA-Z0-9_]+) hat das Angebot abgelehnt\\.$");
+    private static final Pattern DEAL_ACCEPTED = compile("^\\[Deal] (?:\\[UC])?(?<playerName>[a-zA-Z0-9_]+) hat den Deal angenommen\\.$");
+    private static final Pattern DEAL_DECLINED = compile("^(?:\\[UC])?(?<playerName>[a-zA-Z0-9_]+) hat das Angebot abgelehnt\\.$");
 
     private List<String> commands = new ArrayList<>();
 

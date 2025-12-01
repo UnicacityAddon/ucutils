@@ -39,26 +39,26 @@ import static net.minecraft.util.TypeFilter.instanceOf;
 @UCUtilsListener
 public class WantedListener implements IMessageReceiveListener {
 
-    private static final Pattern WANTED_GIVEN_POINTS_PATTERN = compile("^HQ: (?:\\[PK])?([a-zA-Z0-9_]+)'s momentanes WantedLevel: (\\d+)$");
-    private static final Pattern WANTED_GIVEN_REASON_PATTERN = compile("^HQ: Gesuchter: (?:\\[PK])?(?<playerName>[a-zA-Z0-9_]+)\\. Grund: (?<reason>.+)$");
+    private static final Pattern WANTED_GIVEN_POINTS_PATTERN = compile("^HQ: (?:\\[UC])?([a-zA-Z0-9_]+)'s momentanes WantedLevel: (\\d+)$");
+    private static final Pattern WANTED_GIVEN_REASON_PATTERN = compile("^HQ: Gesuchter: (?:\\[UC])?(?<playerName>[a-zA-Z0-9_]+)\\. Grund: (?<reason>.+)$");
     private static final Pattern WANTED_REASON_PATTERN = compile("^HQ: Fahndungsgrund: (?<reason>.+) \\| Fahndungszeit: (?<time>.+)$");
-    private static final Pattern WANTED_DELETE_PATTERN = compile("^HQ: (?:\\[PK])?(?<playerName>[a-zA-Z0-9_]+) hat (?:\\[PK])?(?<targetName>[a-zA-Z0-9_]+)(?:'s)* Akten gelöscht, over\\.$");
-    private static final Pattern WANTED_KILL_PATTERN = compile("^HQ: (?:\\[PK])?(?<targetName>[a-zA-Z0-9_]+) wurde von (?:\\[PK])?(?<playerName>[a-zA-Z0-9_]+) getötet\\.$");
-    private static final Pattern WANTED_ARREST_PATTERN = compile("^HQ: (?:\\[PK])?(?<targetName>[a-zA-Z0-9_]+) wurde von (?:\\[PK])?(?<playerName>[a-zA-Z0-9_]+) eingesperrt\\.$");
-    private static final Pattern WANTED_UNARREST_PATTERN = compile("^HQ: (?:\\[PK])?(?<playerName>[a-zA-Z0-9_]+) hat (?:\\[PK])?(?<targetName>[a-zA-Z0-9_]+) aus dem Gefängnis entlassen\\.$");
+    private static final Pattern WANTED_DELETE_PATTERN = compile("^HQ: (?:\\[UC])?(?<playerName>[a-zA-Z0-9_]+) hat (?:\\[UC])?(?<targetName>[a-zA-Z0-9_]+)(?:'s)* Akten gelöscht, over\\.$");
+    private static final Pattern WANTED_KILL_PATTERN = compile("^HQ: (?:\\[UC])?(?<targetName>[a-zA-Z0-9_]+) wurde von (?:\\[UC])?(?<playerName>[a-zA-Z0-9_]+) getötet\\.$");
+    private static final Pattern WANTED_ARREST_PATTERN = compile("^HQ: (?:\\[UC])?(?<targetName>[a-zA-Z0-9_]+) wurde von (?:\\[UC])?(?<playerName>[a-zA-Z0-9_]+) eingesperrt\\.$");
+    private static final Pattern WANTED_UNARREST_PATTERN = compile("^HQ: (?:\\[UC])?(?<playerName>[a-zA-Z0-9_]+) hat (?:\\[UC])?(?<targetName>[a-zA-Z0-9_]+) aus dem Gefängnis entlassen\\.$");
     private static final Pattern WANTED_LIST_HEADER_PATTERN = compile("Online Spieler mit WantedPunkten:");
-    private static final Pattern WANTED_LIST_ENTRY_PATTERN = compile("- (?:\\[PK])?(?<playerName>[a-zA-Z0-9_]+) \\| (?<wantedPointAmount>\\d+) \\| (?<reason>.+)(?<afk> \\| AFK|)");
-    private static final Pattern LICENSE_DRIVING_GIVE_PATTERN = compile("^(Agent|Agentin|Beamter|Beamtin) (?:\\[PK])?(?<playerName>[a-zA-Z0-9_]+) hat (?:\\[PK])?(?<targetName>[a-zA-Z0-9_]+)(?:'s)* Führerschein zurückgegeben\\.$");
-    private static final Pattern LICENSE_DRIVING_TAKE_PATTERN = compile("^(Agent|Agentin|Beamter|Beamtin) (?:\\[PK])?(?<playerName>[a-zA-Z0-9_]+) hat (?:\\[PK])?(?<targetName>[a-zA-Z0-9_]+)(?:'s)* Führerschein abgenommen\\.$");
-    private static final Pattern LICENSE_GUN_GIVE_PATTERN = compile("^(Agent|Agentin|Beamter|Beamtin) (?:\\[PK])?(?<playerName>[a-zA-Z0-9_]+) hat (?:\\[PK])?(?<targetName>[a-zA-Z0-9_]+)(?:'s)* Waffenschein zurückgegeben\\.$");
-    private static final Pattern LICENSE_GUN_TAKE_PATTERN = compile("^(Agent|Agentin|Beamter|Beamtin) (?:\\[PK])?(?<playerName>[a-zA-Z0-9_]+) hat (?:\\[PK])?(?<targetName>[a-zA-Z0-9_]+)(?:'s)* Waffenschein abgenommen\\.$");
-    private static final Pattern TAKE_GUNS_PATTERN = compile("^(Beamter|Beamtin) (?:\\[PK])?(?<playerName>[a-zA-Z0-9_]+) hat (?:\\[PK])?(?<targetName>[a-zA-Z0-9_]+) (seine|ihre) Waffen abgenommen\\.$");
-    private static final Pattern TAKE_DRUGS_PATTERN = compile("^(Beamter|Beamtin) (?:\\[PK])?(?<playerName>[a-zA-Z0-9_]+) hat (?:\\[PK])?(?<targetName>[a-zA-Z0-9_]+) (seine|ihre) Drogen abgenommen.$");
-    private static final Pattern CAR_CHECK_PATTERN = compile("^Das Fahrzeug mit dem Kennzeichen [A-Z0-9-]+ gehört (?:\\[PK])?(?<playerName>[a-zA-Z0-9_]+)\\.$");
-    private static final Pattern CAR_PARKTICKET_PATTERN = compile("^HQ: (?:\\[PK])?(?<playerName>[a-zA-Z0-9_]+) hat ein Strafzettel an das Fahrzeug \\[(?<plate>[A-Z0-9-]+)] vergeben\\.$");
-    private static final Pattern CAR_PARKTICKET_REMOVE_PATTERN = compile("^HQ: (?:\\[PK])?(?<playerName>[a-zA-Z0-9_]+) hat ein Strafzettel von dem Fahrzeug \\[(?<plate>[A-Z0-9-]+)] entfernt\\.$");
-    private static final Pattern SEARCH_TRUNK_PATTERN = compile("^HQ: (?:\\[PK])?(?<playerName>[a-zA-Z0-9_]+) hat den Kofferraum vom Fahrzeug (?<plate>.+) durchsucht, over\\.$");
-    private static final Pattern TRACKER_AGENT_PATTERN = compile("^HQ: (Agent|Agentin) (?:\\[PK])?(?<playerName>[a-zA-Z0-9_]+) hat ein Peilsender an (?:\\[PK])?(?<targetName>[a-zA-Z0-9_]+) befestigt, over\\.$");
+    private static final Pattern WANTED_LIST_ENTRY_PATTERN = compile("- (?:\\[UC])?(?<playerName>[a-zA-Z0-9_]+) \\| (?<wantedPointAmount>\\d+) \\| (?<reason>.+)(?<afk> \\| AFK|)");
+    private static final Pattern LICENSE_DRIVING_GIVE_PATTERN = compile("^(Agent|Agentin|Beamter|Beamtin) (?:\\[UC])?(?<playerName>[a-zA-Z0-9_]+) hat (?:\\[UC])?(?<targetName>[a-zA-Z0-9_]+)(?:'s)* Führerschein zurückgegeben\\.$");
+    private static final Pattern LICENSE_DRIVING_TAKE_PATTERN = compile("^(Agent|Agentin|Beamter|Beamtin) (?:\\[UC])?(?<playerName>[a-zA-Z0-9_]+) hat (?:\\[UC])?(?<targetName>[a-zA-Z0-9_]+)(?:'s)* Führerschein abgenommen\\.$");
+    private static final Pattern LICENSE_GUN_GIVE_PATTERN = compile("^(Agent|Agentin|Beamter|Beamtin) (?:\\[UC])?(?<playerName>[a-zA-Z0-9_]+) hat (?:\\[UC])?(?<targetName>[a-zA-Z0-9_]+)(?:'s)* Waffenschein zurückgegeben\\.$");
+    private static final Pattern LICENSE_GUN_TAKE_PATTERN = compile("^(Agent|Agentin|Beamter|Beamtin) (?:\\[UC])?(?<playerName>[a-zA-Z0-9_]+) hat (?:\\[UC])?(?<targetName>[a-zA-Z0-9_]+)(?:'s)* Waffenschein abgenommen\\.$");
+    private static final Pattern TAKE_GUNS_PATTERN = compile("^(Beamter|Beamtin) (?:\\[UC])?(?<playerName>[a-zA-Z0-9_]+) hat (?:\\[UC])?(?<targetName>[a-zA-Z0-9_]+) (seine|ihre) Waffen abgenommen\\.$");
+    private static final Pattern TAKE_DRUGS_PATTERN = compile("^(Beamter|Beamtin) (?:\\[UC])?(?<playerName>[a-zA-Z0-9_]+) hat (?:\\[UC])?(?<targetName>[a-zA-Z0-9_]+) (seine|ihre) Drogen abgenommen.$");
+    private static final Pattern CAR_CHECK_PATTERN = compile("^Das Fahrzeug mit dem Kennzeichen [A-Z0-9-]+ gehört (?:\\[UC])?(?<playerName>[a-zA-Z0-9_]+)\\.$");
+    private static final Pattern CAR_PARKTICKET_PATTERN = compile("^HQ: (?:\\[UC])?(?<playerName>[a-zA-Z0-9_]+) hat ein Strafzettel an das Fahrzeug \\[(?<plate>[A-Z0-9-]+)] vergeben\\.$");
+    private static final Pattern CAR_PARKTICKET_REMOVE_PATTERN = compile("^HQ: (?:\\[UC])?(?<playerName>[a-zA-Z0-9_]+) hat ein Strafzettel von dem Fahrzeug \\[(?<plate>[A-Z0-9-]+)] entfernt\\.$");
+    private static final Pattern SEARCH_TRUNK_PATTERN = compile("^HQ: (?:\\[UC])?(?<playerName>[a-zA-Z0-9_]+) hat den Kofferraum vom Fahrzeug (?<plate>.+) durchsucht, over\\.$");
+    private static final Pattern TRACKER_AGENT_PATTERN = compile("^HQ: (Agent|Agentin) (?:\\[UC])?(?<playerName>[a-zA-Z0-9_]+) hat ein Peilsender an (?:\\[UC])?(?<targetName>[a-zA-Z0-9_]+) befestigt, over\\.$");
 
     private long activeCheck = 0;
 

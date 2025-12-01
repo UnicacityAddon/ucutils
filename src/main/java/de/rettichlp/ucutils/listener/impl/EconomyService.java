@@ -32,14 +32,14 @@ public class EconomyService implements IMessageReceiveListener {
     // bank
     private static final Pattern BANK_STATEMENT_PATTERN = compile("^Ihr Bankguthaben beträgt: \\+(?<amount>\\d+)\\$$");
     private static final Pattern BANK_NEW_BALANCE_PAYDAY_PATTERN = compile("^Neuer Betrag: (?<amount>\\d+)\\$ \\([+-]\\d+\\$\\)$");
-    private static final Pattern BANK_TRANSFER_TO_PATTERN = compile("^Du hast (?:\\[PK])?(?<playerName>[a-zA-Z0-9_]+) (?<amount>\\d+)\\$ überwiesen\\.$");
-    private static final Pattern BANK_TRANSFER_GET_PATTERN = compile("^(?:\\[PK])?(?<playerName>[a-zA-Z0-9_]+) hat dir (?<amount>\\d+)\\$ überwiesen\\.$");
+    private static final Pattern BANK_TRANSFER_TO_PATTERN = compile("^Du hast (?:\\[UC])?(?<playerName>[a-zA-Z0-9_]+) (?<amount>\\d+)\\$ überwiesen\\.$");
+    private static final Pattern BANK_TRANSFER_GET_PATTERN = compile("^(?:\\[UC])?(?<playerName>[a-zA-Z0-9_]+) hat dir (?<amount>\\d+)\\$ überwiesen\\.$");
 
     // cash
-    private static final Pattern CASH_GIVE_PATTERN = compile("^Du hast (?:\\[PK])?(?<playerName>[a-zA-Z0-9_]+) (?<amount>\\d+)\\$ gegeben\\.$");
-    private static final Pattern CASH_TAKE_PATTERN = compile("^(?:\\[PK])?(?<playerName>[a-zA-Z0-9_]+) hat dir (?<amount>\\d+)\\$ gegeben\\.$");
-    private static final Pattern CASH_TO_FBANK_PATTERN = compile("^\\[F-Bank] (?:\\[PK])?(?<playerName>[a-zA-Z0-9_]+) hat (?<amount>\\d+)\\$ in die F-Bank eingezahlt\\.$");
-    private static final Pattern CASH_FROM_FBANK_PATTERN = compile("^\\[F-Bank] (?:\\[PK])?(?<playerName>[a-zA-Z0-9_]+) hat (?<amount>\\d+)\\$ aus der F-Bank ausgezahlt\\.$");
+    private static final Pattern CASH_GIVE_PATTERN = compile("^Du hast (?:\\[UC])?(?<playerName>[a-zA-Z0-9_]+) (?<amount>\\d+)\\$ gegeben\\.$");
+    private static final Pattern CASH_TAKE_PATTERN = compile("^(?:\\[UC])?(?<playerName>[a-zA-Z0-9_]+) hat dir (?<amount>\\d+)\\$ gegeben\\.$");
+    private static final Pattern CASH_TO_FBANK_PATTERN = compile("^\\[F-Bank] (?:\\[UC])?(?<playerName>[a-zA-Z0-9_]+) hat (?<amount>\\d+)\\$ in die F-Bank eingezahlt\\.$");
+    private static final Pattern CASH_FROM_FBANK_PATTERN = compile("^\\[F-Bank] (?:\\[UC])?(?<playerName>[a-zA-Z0-9_]+) hat (?<amount>\\d+)\\$ aus der F-Bank ausgezahlt\\.$");
     private static final Pattern CASH_TO_BANK_PATTERN = compile("^Einzahlung: \\+(?<amount>\\d+)\\$$");
     private static final Pattern CASH_FROM_BANK_PATTERN = compile("^Auszahlung: -(?<amount>\\d+)\\$$");
     private static final Pattern CASH_GET_PATTERN = compile("^\\+(?<amount>\\d+)\\$$");
@@ -56,7 +56,7 @@ public class EconomyService implements IMessageReceiveListener {
     private static final Pattern EXP_PATTERN = compile("(?<amount>[+-]\\d+) Exp!( \\(x(?<multiplier>\\d)\\))?");
     private static final Pattern LOTTO_WIN_PATTERN = compile("^\\[Lotto] Du hast im Lotto gewonnen! \\((?<amount>\\d+)\\$\\)$");
     private static final Pattern MEDIC_DESPAWNED_PATTERN = compile("^Verdammt\\.\\.\\. mein Kopf dröhnt so\\.\\.\\.$");
-    private static final Pattern MEDIC_REVIVE_PATTERN = compile("^Du wirst von (?:\\[PK])?(?<playerName>[a-zA-Z0-9_]+) wiederbelebt\\.$");
+    private static final Pattern MEDIC_REVIVE_PATTERN = compile("^Du wirst von (?:\\[UC])?(?<playerName>[a-zA-Z0-9_]+) wiederbelebt\\.$");
 
     @Override
     public boolean onMessageReceive(Text text, String message) {
