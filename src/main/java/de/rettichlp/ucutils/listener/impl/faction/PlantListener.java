@@ -6,7 +6,7 @@ import de.rettichlp.ucutils.listener.IBlockRightClickListener;
 import de.rettichlp.ucutils.listener.IEntityRenderListener;
 import de.rettichlp.ucutils.listener.IMessageReceiveListener;
 import de.rettichlp.ucutils.listener.IScreenOpenListener;
-import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderContext;
+import net.fabricmc.fabric.api.client.rendering.v1.world.WorldRenderContext;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.ingame.GenericContainerScreen;
@@ -40,6 +40,7 @@ import static java.util.Objects.nonNull;
 import static java.util.regex.Pattern.compile;
 import static net.minecraft.block.Blocks.FERN;
 import static net.minecraft.block.Blocks.PODZOL;
+import static net.minecraft.entity.EquipmentSlot.MAINHAND;
 import static net.minecraft.item.Items.BONE_MEAL;
 import static net.minecraft.item.Items.PUMPKIN_SEEDS;
 import static net.minecraft.item.Items.WATER_BUCKET;
@@ -69,10 +70,10 @@ public class PlantListener implements IBlockRightClickListener, IEntityRenderLis
     public void onBlockRightClick(World world, Hand hand, BlockHitResult hitResult) {
         BlockPos blockPos = hitResult.getBlockPos();
 
-        boolean targetBlockIsPlant = player.getWorld().getBlockState(blockPos).getBlock().equals(FERN) && player.getWorld().getBlockState(blockPos.down()).getBlock().equals(PODZOL);
+        boolean targetBlockIsPlant = world.getBlockState(blockPos).getBlock().equals(FERN) && world.getBlockState(blockPos.down()).getBlock().equals(PODZOL);
         if (!targetBlockIsPlant) {
             // check for plant placing
-            ItemStack mainHandStack = player.getInventory().getMainHandStack();
+            ItemStack mainHandStack = player.getEquippedStack(MAINHAND);
 
             if (player.isSneaking() && (mainHandStack.isOf(PUMPKIN_SEEDS) || mainHandStack.isOf(WHEAT_SEEDS))) {
                 commandService.sendCommand("plant plant");
@@ -92,7 +93,7 @@ public class PlantListener implements IBlockRightClickListener, IEntityRenderLis
 
     @Override
     public void onEntityRender(WorldRenderContext context) {
-        MatrixStack matrices = context.matrixStack();
+        MatrixStack matrices = context.matrices();
         VertexConsumerProvider vertexConsumers = context.consumers();
         ClientWorld world = MinecraftClient.getInstance().world;
 
@@ -146,7 +147,7 @@ public class PlantListener implements IBlockRightClickListener, IEntityRenderLis
     @Override
     public boolean onMessageReceive(Text text, String message) {
         Matcher plantPlantMatcher = PLANT_PLANT_PATTERN.matcher(message);
-        if (plantPlantMatcher.find() && player.getGameProfile().getName().equals(plantPlantMatcher.group("playerName"))) {
+        if (plantPlantMatcher.find() && player.getGameProfile().name().equals(plantPlantMatcher.group("playerName"))) {
             BlockPos blockPos = player.getBlockPos();
 
             PlantEntry plantEntry = new PlantEntry(blockPos, now());
@@ -185,7 +186,7 @@ public class PlantListener implements IBlockRightClickListener, IEntityRenderLis
         ClientPlayerInteractionManager interactionManager = MinecraftClient.getInstance().interactionManager;
 
         if (nonNull(interactionManager) && screen instanceof GenericContainerScreen genericContainerScreen && PLANT_TEXT.equals(genericContainerScreen.getTitle().getString())) {
-            ItemStack mainHandStack = player.getInventory().getMainHandStack();
+            ItemStack mainHandStack = player.getEquippedStack(MAINHAND);
 
             int syncId = genericContainerScreen.getScreenHandler().syncId;
             if (mainHandStack.isOf(WATER_BUCKET)) {

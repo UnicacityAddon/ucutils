@@ -1,5 +1,6 @@
 package de.rettichlp.ucutils.common.gui.screens.components;
 
+import net.minecraft.client.gui.Click;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.narration.NarrationMessageBuilder;
 import net.minecraft.client.gui.widget.ButtonWidget;
@@ -47,12 +48,9 @@ public class WeekSelectionWidget extends ClickableWidget {
     }
 
     @Override
-    public boolean mouseClicked(double mouseX, double mouseY, int button) {
-        this.internalLayout.forEachChild(clickableWidget -> {
-            clickableWidget.mouseClicked(mouseX, mouseY, button);
-        });
-
-        return super.mouseClicked(mouseX, mouseY, button);
+    public boolean mouseClicked(Click click, boolean doubled) {
+        this.internalLayout.forEachChild(clickableWidget -> clickableWidget.mouseClicked(click, doubled));
+        return super.mouseClicked(click, doubled);
     }
 
     @Override

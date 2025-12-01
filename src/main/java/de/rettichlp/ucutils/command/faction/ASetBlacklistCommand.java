@@ -43,7 +43,7 @@ public class ASetBlacklistCommand extends CommandBase {
         return node
                 .then(argument("reason", string())
                         .suggests((context, builder) -> {
-                            Faction faction = storage.getFaction(player.getGameProfile().getName());
+                            Faction faction = storage.getFaction(player.getGameProfile().name());
                             List<String> blacklistReasonStrings = storage.getBlacklistReasons().getOrDefault(faction, new ArrayList<>()).stream()
                                     .map(BlacklistReason::getReason)
                                     .map(reasonString -> reasonString.replace(" ", "_"))
@@ -102,7 +102,7 @@ public class ASetBlacklistCommand extends CommandBase {
             return 1;
         }
 
-        Faction faction = storage.getFaction(player.getGameProfile().getName());
+        Faction faction = storage.getFaction(player.getGameProfile().name());
         Optional<BlacklistReason> optionalBlacklistReason = storage.getBlacklistReasons().getOrDefault(faction, new ArrayList<>()).stream()
                 .filter(blacklistReason -> blacklistReason.getReason().equalsIgnoreCase(reasonString))
                 .findFirst();
@@ -143,7 +143,7 @@ public class ASetBlacklistCommand extends CommandBase {
     private static CompletableFuture<Suggestions> suggestPlayerNames(SuggestionsBuilder builder) {
         List<String> list = networkHandler.getPlayerList().stream()
                 .map(PlayerListEntry::getProfile)
-                .map(GameProfile::getName)
+                .map(GameProfile::name)
                 .toList();
         return suggestMatching(list, builder);
     }

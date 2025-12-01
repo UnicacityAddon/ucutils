@@ -60,7 +60,7 @@ public class UCUtils implements ModInitializer {
             player = client.player;
             networkHandler = handler;
 
-            storage.setPunicaKitty(isPunicaKitty());
+            storage.setUnicaCity(isUnicaCity());
             client.execute(() -> {
                 this.registry.registerListeners();
                 renderService.initializeWidgets();
@@ -73,7 +73,7 @@ public class UCUtils implements ModInitializer {
         ClientLifecycleEvents.CLIENT_STOPPING.register(client -> configuration.saveToFile());
     }
 
-    private boolean isPunicaKitty() {
+    private boolean isUnicaCity() {
         if (getBoolean("fabric.development")) {
             return true;
         }
@@ -82,14 +82,14 @@ public class UCUtils implements ModInitializer {
 
         ClientPlayNetworkHandler networkHandler = client.getNetworkHandler();
         if (isNull(networkHandler)) {
-            LOGGER.warn("Not connected to PunicaKitty: Network handler is null");
+            LOGGER.warn("Not connected to UnicaCity: Network handler is null");
             return false;
         }
 
-        String addressString = networkHandler.getConnection().getAddress().toString(); // tcp.punicakitty.de./50.114.4.xxx:25565
+        String addressString = networkHandler.getConnection().getAddress().toString(); // tcp.unicacity.de./50.114.4.xxx:25565
         // for LabyMod players, there is no dot at the end of the domain
-        if (!addressString.matches("tcp\\.punicakitty\\.de\\.?/\\d+\\.\\d+\\.\\d+\\.\\d+:25565")) {
-            LOGGER.warn("Not connected to PunicaKitty: {}", addressString);
+        if (!addressString.matches("mc-9401\\.unicacity\\.eu\\.?/\\d+\\.\\d+\\.\\d+\\.\\d+:25565")) {
+            LOGGER.warn("Not connected to UnicaCity: {}", addressString);
             return false;
         }
 

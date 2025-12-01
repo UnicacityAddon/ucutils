@@ -28,7 +28,7 @@ public class ADropMoneyCommand extends CommandBase {
     public LiteralArgumentBuilder<FabricClientCommandSource> execute(@NotNull LiteralArgumentBuilder<FabricClientCommandSource> node) {
         return node
                 .executes(context -> {
-                    Scoreboard scoreboard = player.getScoreboard();
+                    Scoreboard scoreboard = player.getEntityWorld().getScoreboard();
 
                     Optional<ReadableScoreboardScore> optionalReadableScoreboardScore = ofNullable(scoreboard.getObjectiveForSlot(SIDEBAR))
                             .map(scoreboardObjective -> scoreboard.getScore(fromName("§9Geld§8:"), scoreboardObjective));

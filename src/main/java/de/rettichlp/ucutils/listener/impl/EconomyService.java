@@ -119,7 +119,7 @@ public class EconomyService implements IMessageReceiveListener {
         if (cashToFbankMatcher.find()) {
             String playerName = cashToFbankMatcher.group("playerName");
 
-            if (playerName.equals(player.getGameProfile().getName())) {
+            if (playerName.equals(player.getGameProfile().name())) {
                 int amount = parseInt(cashToFbankMatcher.group("amount"));
                 configuration.setMoneyCashAmount(configuration.getMoneyCashAmount() - amount);
             }
@@ -131,7 +131,7 @@ public class EconomyService implements IMessageReceiveListener {
         if (cashFromFbankMatcher.find()) {
             String playerName = cashFromFbankMatcher.group("playerName");
 
-            if (playerName.equals(player.getGameProfile().getName())) {
+            if (playerName.equals(player.getGameProfile().name())) {
                 int amount = parseInt(cashFromFbankMatcher.group("amount"));
                 configuration.setMoneyCashAmount(configuration.getMoneyCashAmount() + amount);
             }
@@ -205,8 +205,8 @@ public class EconomyService implements IMessageReceiveListener {
             MutableText appendedText = text.copy().append(" ")
                     .append(of("Geld entnehmen").copy().formatted(GRAY, UNDERLINE))
                     .styled(style -> style
-                            .withClickEvent(new ClickEvent(RUN_COMMAND, "/biz kasse get " + amountString))
-                            .withHoverEvent(new HoverEvent(SHOW_TEXT, of("Klicke, um " + amountString + "$ aus der Kasse zu nehmen.")))
+                            .withClickEvent(new ClickEvent.RunCommand("/biz kasse get " + amountString))
+                            .withHoverEvent(new HoverEvent.ShowText(of("Klicke, um " + amountString + "$ aus der Kasse zu nehmen.")))
                     );
 
             player.sendMessage(appendedText, false);

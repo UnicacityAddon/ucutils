@@ -92,7 +92,7 @@ public class FactionListener implements IKeyPressListener, IMessageReceiveListen
         if (player.isSneaking() && isCooldownOver) {
             this.lastFactionScreenExecution = currentTimeMillis();
 
-            Faction faction = storage.getFaction(player.getGameProfile().getName());
+            Faction faction = storage.getFaction(player.getGameProfile().name());
             api.getFactionResetTime(faction, weeklyTime -> {
                 MinecraftClient client = MinecraftClient.getInstance();
 
@@ -146,35 +146,35 @@ public class FactionListener implements IKeyPressListener, IMessageReceiveListen
                     .toList();
 
             // origin reinforcement sender retrieving
-            String senderName = clickEvents.stream()
-                    .map(ClickEvent::getValue)
-                    .filter(commandString -> commandString.startsWith("/reinf onway "))
-                    .map(commandString -> commandString.replace("/reinf onway ", ""))
-                    .toList().getFirst();
+//            String senderName = clickEvents.stream()
+//                    .map(ClickEvent::getValue)
+//                    .filter(commandString -> commandString.startsWith("/reinf onway "))
+//                    .map(commandString -> commandString.replace("/reinf onway ", ""))
+//                    .toList().getFirst();
 
             // block position retrieving
-            BlockPos blockPos = clickEvents.stream()
-                    .map(ClickEvent::getValue)
-                    .filter(commandString -> commandString.startsWith("/navi "))
-                    .map(commandString -> commandString.replace("/navi ", ""))
-                    .map(naviArguments -> {
-                        String[] split = naviArguments.split(" ");
-                        int x = parseInt(split[0]);
-                        int y = parseInt(split[1]);
-                        int z = parseInt(split[2]);
-                        return new BlockPos(x, y, z);
-                    })
-                    .toList().getFirst();
+//            BlockPos blockPos = clickEvents.stream()
+//                    .map(ClickEvent::getValue)
+//                    .filter(commandString -> commandString.startsWith("/navi "))
+//                    .map(commandString -> commandString.replace("/navi ", ""))
+//                    .map(naviArguments -> {
+//                        String[] split = naviArguments.split(" ");
+//                        int x = parseInt(split[0]);
+//                        int y = parseInt(split[1]);
+//                        int z = parseInt(split[2]);
+//                        return new BlockPos(x, y, z);
+//                    })
+//                    .toList().getFirst();
 
-            LOGGER.info("Found reinforcement buttons: {} | {}", senderName, blockPos.toShortString());
+//            LOGGER.info("Found reinforcement buttons: {} | {}", senderName, blockPos.toShortString());
 
-            storage.getReinforcements().stream()
-                    .filter(reinforcement -> reinforcement.getSenderPlayerName().equals(senderName))
-                    .max(comparing(Reinforcement::getCreatedAt))
-                    .ifPresent(reinforcement -> {
-                        reinforcement.setBlockPos(blockPos);
-                        LOGGER.info("Updated reinforcement: {}", reinforcement);
-                    });
+//            storage.getReinforcements().stream()
+//                    .filter(reinforcement -> reinforcement.getSenderPlayerName().equals(senderName))
+//                    .max(comparing(Reinforcement::getCreatedAt))
+//                    .ifPresent(reinforcement -> {
+//                        reinforcement.setBlockPos(blockPos);
+//                        LOGGER.info("Updated reinforcement: {}", reinforcement);
+//                    });
 
             return true;
         }
@@ -187,7 +187,7 @@ public class FactionListener implements IKeyPressListener, IMessageReceiveListen
             String distance = reinforcementOnTheWayMatcher.group("distance");
 
             // mark all reinforcements of the sender (and not self) within the last 30 seconds as on-the-way
-            String playerName = player.getGameProfile().getName();
+            String playerName = player.getGameProfile().name();
             storage.getReinforcements().stream()
                     .filter(reinforcement -> {
                         boolean equals = playerName.equals(senderPlayerName);
@@ -261,7 +261,7 @@ public class FactionListener implements IKeyPressListener, IMessageReceiveListen
 
     @Override
     public void onMove(BlockPos blockPos) {
-        String playerName = player.getGameProfile().getName();
+        String playerName = player.getGameProfile().name();
 
         // for all reinforcements within 60 blocks that were not from yourself and were accepted
         storage.getReinforcements().stream()

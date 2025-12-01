@@ -17,8 +17,8 @@ import static de.rettichlp.ucutils.UCUtils.storage;
 @Mixin(Entity.class)
 public abstract class EntityMixin {
 
-    @Inject(method = "startRiding(Lnet/minecraft/entity/Entity;Z)Z", at = @At("RETURN"))
-    private void onStartRiding(Entity vehicle, boolean force, CallbackInfoReturnable<Boolean> cir) {
+    @Inject(method = "startRiding(Lnet/minecraft/entity/Entity;ZZ)Z", at = @At("RETURN"))
+    private void onStartRiding(Entity vehicle, boolean force, boolean emitEvent, CallbackInfoReturnable<Boolean> cir) {
         // only for successful start riding
         if (!cir.getReturnValue()) {
             return;
@@ -33,7 +33,7 @@ public abstract class EntityMixin {
     @Inject(method = "stopRiding", at = @At("HEAD"))
     private void onStopRiding(CallbackInfo ci) {
         Entity self = (Entity) (Object) this;
-        if (self instanceof ClientPlayerEntity && self.hasVehicle() && self.getVehicle() instanceof MinecartEntity minecartEntity && storage.isPunicaKitty()) {
+        if (self instanceof ClientPlayerEntity && self.hasVehicle() && self.getVehicle() instanceof MinecartEntity minecartEntity && storage.isUnicaCity()) {
             storage.setMinecartEntityToHighlight(minecartEntity);
         }
     }

@@ -117,7 +117,7 @@ public class Storage {
 
     @Getter
     @Setter
-    private boolean punicaKitty = false;
+    private boolean unicaCity = false;
 
     @Getter
     @Setter
@@ -172,8 +172,8 @@ public class Storage {
         LOGGER.info("minecartEntityToHighlight: {}", this.minecartEntityToHighlight);
         // moneyAtmAmount
         LOGGER.info("moneyAtmAmount: {}", this.moneyAtmAmount);
-        // punicaKitty
-        LOGGER.info("punicaKitty: {}", this.punicaKitty);
+        // unicaCity
+        LOGGER.info("unicaCity: {}", this.unicaCity);
         // toggledChat
         LOGGER.info("toggledChat: {}", this.toggledChat);
     }

@@ -3,6 +3,7 @@ package de.rettichlp.ucutils.listener.impl.faction;
 import de.rettichlp.ucutils.common.models.WantedEntry;
 import de.rettichlp.ucutils.common.registry.UCUtilsListener;
 import de.rettichlp.ucutils.listener.IMessageReceiveListener;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
@@ -63,7 +64,7 @@ public class WantedListener implements IMessageReceiveListener {
 
     @Override
     public boolean onMessageReceive(Text text, String message) {
-        String clientPlayerName = player.getGameProfile().getName();
+        String clientPlayerName = player.getGameProfile().name();
 
         Matcher wantedGivenPointsMatcher = WANTED_GIVEN_POINTS_PATTERN.matcher(message);
         if (wantedGivenPointsMatcher.find()) {
@@ -167,7 +168,7 @@ public class WantedListener implements IMessageReceiveListener {
             player.sendMessage(modifiedMessage, false);
 
             // track activity if the killer player is within 60 blocks
-            boolean killerIsWithin60Blocks = !player.getWorld().getEntitiesByType(instanceOf(PlayerEntity.class), player.getBoundingBox().expand(50), playerEntity -> playerEntity.getGameProfile().getName().equals(playerName)).isEmpty();
+            boolean killerIsWithin60Blocks = !MinecraftClient.getInstance().world.getEntitiesByType(instanceOf(PlayerEntity.class), player.getBoundingBox().expand(50), playerEntity -> playerEntity.getGameProfile().name().equals(playerName)).isEmpty();
             if (killerIsWithin60Blocks) {
                 api.putFactionActivityAdd(ARREST_KILL);
             }

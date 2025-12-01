@@ -3,6 +3,7 @@ package de.rettichlp.ucutils.common.gui.screens.options;
 import de.rettichlp.ucutils.common.gui.screens.UCUtilsScreen;
 import de.rettichlp.ucutils.common.gui.widgets.base.AbstractUCUtilsWidget;
 import de.rettichlp.ucutils.common.gui.widgets.base.UCUtilsWidgetConfiguration;
+import net.minecraft.client.gui.Click;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.DirectionalLayoutWidget;
@@ -93,7 +94,7 @@ public class WidgetOptionsPositionScreen extends UCUtilsScreen {
         // draw border around the selected widget
         double x = widgetConfiguration.getX();
         double y = widgetConfiguration.getY();
-        context.drawBorder((int) x, (int) y, this.selectedWidget.getWidth(), this.selectedWidget.getHeight(), GREEN.getRGB());
+        // FIXME context.drawBorder((int) x, (int) y, this.selectedWidget.getWidth(), this.selectedWidget.getHeight(), GREEN.getRGB());
 
         // draw widget location text box
         Text widgetLocationText = of("X: " + x + " Y: " + y + " (W: " + this.selectedWidget.getWidth() + " H: " + this.selectedWidget.getHeight() + ")");
@@ -129,11 +130,11 @@ public class WidgetOptionsPositionScreen extends UCUtilsScreen {
     }
 
     @Override
-    public boolean mouseClicked(double mouseX, double mouseY, int button) {
-        boolean mouseClicked = super.mouseClicked(mouseX, mouseY, button);
+    public boolean mouseClicked(Click click, boolean doubled) {
+        boolean mouseClicked = super.mouseClicked(click, doubled);
 
         renderService.getWidgets().stream()
-                .filter(abstractUCUtilsWidget -> abstractUCUtilsWidget.isMouseOver(mouseX, mouseY))
+                .filter(abstractUCUtilsWidget -> abstractUCUtilsWidget.isMouseOver(click.x(), click.y()))
                 .findFirst()
                 .ifPresent(abstractUCUtilsWidget -> this.selectedWidget = abstractUCUtilsWidget);
 
@@ -141,8 +142,8 @@ public class WidgetOptionsPositionScreen extends UCUtilsScreen {
     }
 
     @Override
-    public boolean mouseReleased(double mouseX, double mouseY, int button) {
-        boolean mouseReleased = super.mouseReleased(mouseX, mouseY, button);
+    public boolean mouseReleased(Click click) {
+        boolean mouseReleased = super.mouseReleased(click);
         this.selectedWidget = null;
         return mouseReleased;
     }

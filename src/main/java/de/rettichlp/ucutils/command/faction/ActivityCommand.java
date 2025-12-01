@@ -24,7 +24,7 @@ public class ActivityCommand extends CommandBase {
     @Override
     public LiteralArgumentBuilder<FabricClientCommandSource> execute(@NotNull LiteralArgumentBuilder<FabricClientCommandSource> node) {
         return node.executes(context -> {
-            Faction faction = storage.getFaction(player.getGameProfile().getName());
+            Faction faction = storage.getFaction(player.getGameProfile().name());
             api.getFactionResetTime(faction, weeklyTime -> {
                 MinecraftClient client = MinecraftClient.getInstance();
 

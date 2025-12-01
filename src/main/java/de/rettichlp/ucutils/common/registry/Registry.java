@@ -15,16 +15,16 @@ import de.rettichlp.ucutils.listener.IMessageReceiveListener;
 import de.rettichlp.ucutils.listener.IMessageSendListener;
 import de.rettichlp.ucutils.listener.IMoveListener;
 import de.rettichlp.ucutils.listener.INaviSpotReachedListener;
-import de.rettichlp.ucutils.listener.IUCUtilsListener;
 import de.rettichlp.ucutils.listener.IScreenOpenListener;
 import de.rettichlp.ucutils.listener.ITickListener;
+import de.rettichlp.ucutils.listener.IUCUtilsListener;
 import de.rettichlp.ucutils.listener.callback.PlayerEnterVehicleCallback;
 import net.fabricmc.fabric.api.client.command.v2.FabricClientCommandSource;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.message.v1.ClientReceiveMessageEvents;
 import net.fabricmc.fabric.api.client.message.v1.ClientSendMessageEvents;
 import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
-import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderEvents;
+import net.fabricmc.fabric.api.client.rendering.v1.world.WorldRenderEvents;
 import net.fabricmc.fabric.api.client.screen.v1.ScreenEvents;
 import net.fabricmc.fabric.api.event.player.UseBlockCallback;
 import net.fabricmc.fabric.api.event.player.UseEntityCallback;
@@ -180,7 +180,7 @@ public class Registry {
         });
 
         UseBlockCallback.EVENT.register((player, world, hand, hitResult) -> {
-            if (hand != OFF_HAND && player.getWorld().isClient()) {
+            if (hand != OFF_HAND && world.isClient()) {
                 getListenersImplementing(IBlockRightClickListener.class).forEach(iBlockRightClickListener -> iBlockRightClickListener.onBlockRightClick(world, hand, hitResult));
             }
 
@@ -188,7 +188,7 @@ public class Registry {
         });
 
         UseEntityCallback.EVENT.register((player, world, hand, entity, hitResult) -> {
-            if (hand != OFF_HAND && player.getWorld().isClient()) {
+            if (hand != OFF_HAND && world.isClient()) {
                 getListenersImplementing(IEntityRightClickListener.class).forEach(iEntityRightClickListener -> iEntityRightClickListener.onEntityRightClick(world, hand, entity, hitResult));
             }
 
@@ -218,7 +218,7 @@ public class Registry {
     }
 
     private <T> Set<T> getListenersImplementing(Class<T> listenerInterface) {
-        return !storage.isPunicaKitty() ? emptySet() : this.listenerInstances.stream()
+        return !storage.isUnicaCity() ? emptySet() : this.listenerInstances.stream()
                 .filter(listenerInterface::isInstance)
                 .map(listenerInterface::cast)
                 .collect(toSet());

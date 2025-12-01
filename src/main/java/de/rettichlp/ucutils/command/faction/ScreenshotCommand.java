@@ -64,8 +64,8 @@ public class ScreenshotCommand extends CommandBase {
                                 .append(of(" ↗").copy().styled(style -> style
                                         .withColor(AQUA)
                                         .withBold(true)
-                                        .withHoverEvent(new HoverEvent(SHOW_TEXT, of("Ordner öffnen").copy().formatted(DARK_AQUA)))
-                                        .withClickEvent(new ClickEvent(OPEN_FILE, screenshotDirectory.getAbsolutePath())))), false);
+                                        .withHoverEvent(new HoverEvent.ShowText(of("Ordner öffnen").copy().formatted(DARK_AQUA)))
+                                        .withClickEvent(new ClickEvent.OpenFile(screenshotDirectory.getAbsolutePath())))), false);
                     }
 
                     player.sendMessage(empty(), false);

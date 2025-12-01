@@ -3,14 +3,13 @@ package de.rettichlp.ucutils.common.models;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.texture.NativeImage;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.Optional;
 import java.util.function.Consumer;
 
-import static de.rettichlp.ucutils.UCUtils.LOGGER;
 import static java.util.Arrays.stream;
 import static net.minecraft.client.util.ScreenshotRecorder.takeScreenshot;
 import static net.minecraft.util.Util.getFormattedCurrentTime;
@@ -37,15 +36,15 @@ public enum ScreenshotType {
     private final String displayName;
 
     public void take(Consumer<File> onSuccess) {
-        MinecraftClient.getInstance().execute(() -> {
-            try (NativeImage nativeImage = takeScreenshot(MinecraftClient.getInstance().getFramebuffer())) {
+        MinecraftClient.getInstance().execute(() -> takeScreenshot(MinecraftClient.getInstance().getFramebuffer(), nativeImage -> {
+            try {
                 File screenshotFile = getScreenshotFile();
                 nativeImage.writeTo(screenshotFile);
                 onSuccess.accept(screenshotFile);
-            } catch (Exception e) {
-                LOGGER.warn("Could not save screenshot", e);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
             }
-        });
+        }));
     }
 
     public @NotNull File getScreenshotDirectory() {

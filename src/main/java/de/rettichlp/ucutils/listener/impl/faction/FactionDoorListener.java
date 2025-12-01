@@ -35,7 +35,7 @@ public class FactionDoorListener implements IBlockRightClickListener {
             return;
         }
 
-        Faction faction = storage.getFaction(player.getGameProfile().getName());
+        Faction faction = storage.getFaction(player.getGameProfile().name());
         Set<BlockPos> factionDoorPositions = FACTION_DOOR_POSITIONS.getOrDefault(faction, emptySet());
 
         factionDoorPositions.stream()

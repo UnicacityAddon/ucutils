@@ -72,7 +72,7 @@ public class PersonalUseOptionsScreen extends OptionsScreen {
         // text
         TextWidget widget = new TextWidget(translatable("ucutils.inventory." + inventoryItem.name().toLowerCase()), this.textRenderer);
         widget.setWidth(100);
-        widget.alignLeft();
+        // FIXME widget.alignLeft();
         directionalLayoutWidget.add(widget, Positioner::alignVerticalCenter);
 
         // purity input
@@ -96,7 +96,7 @@ public class PersonalUseOptionsScreen extends OptionsScreen {
 
         TextWidget widget1 = new TextWidget(of(" g"), this.textRenderer);
         widget1.setWidth(16);
-        widget1.alignLeft();
+        // FIXME widget1.alignLeft();
 
         directionalLayoutWidget.add(widget);
         directionalLayoutWidget.add(widget1, Positioner::alignVerticalCenter);

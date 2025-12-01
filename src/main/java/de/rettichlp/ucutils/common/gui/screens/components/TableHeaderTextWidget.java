@@ -2,6 +2,7 @@ package de.rettichlp.ucutils.common.gui.screens.components;
 
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
+import net.minecraft.client.gui.Click;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.narration.NarrationMessageBuilder;
 import net.minecraft.client.gui.widget.ClickableWidget;
@@ -41,10 +42,10 @@ public class TableHeaderTextWidget extends ClickableWidget {
     }
 
     @Override
-    public boolean mouseClicked(double mouseX, double mouseY, int button) {
-        boolean mouseClicked = super.mouseClicked(mouseX, mouseY, button);
+    public boolean mouseClicked(Click click, boolean doubled) {
+        boolean mouseClicked = super.mouseClicked(click, doubled);
 
-        if (button != 0 || !isMouseOver(mouseX, mouseY)) {
+        if (click.button() != 0 || !isMouseOver(click.x(), click.y())) {
             return mouseClicked;
         }
 

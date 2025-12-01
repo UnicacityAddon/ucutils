@@ -33,7 +33,7 @@ public abstract class PlayerListHudMixin {
 
     @Unique
     private static final Comparator<PlayerListEntry> UCUTILS_ENTRY_ORDERING = comparing((PlayerListEntry playerListEntry) -> {
-        String playerName = playerListEntry.getProfile().getName();
+        String playerName = playerListEntry.getProfile().name();
         Text displayName = playerListEntry.getDisplayName();
 
         if (displayName == null) {
@@ -80,15 +80,15 @@ public abstract class PlayerListHudMixin {
         } else {
             return 9; // OTHER
         }
-    }).thenComparing(playerListEntry -> playerListEntry.getProfile().getName());
+    }).thenComparing(playerListEntry -> playerListEntry.getProfile().name());
 
     @Inject(method = "getPlayerName", at = @At("RETURN"), cancellable = true)
     private void onGetPlayerName(PlayerListEntry playerListEntry, @NotNull CallbackInfoReturnable<Text> cir) {
-        if (!storage.isPunicaKitty()) {
+        if (!storage.isUnicaCity()) {
             return;
         }
 
-        String playerName = playerListEntry.getProfile().getName();
+        String playerName = playerListEntry.getProfile().name();
         Text originText = cir.getReturnValue();
 
         String icon = "";
@@ -109,7 +109,7 @@ public abstract class PlayerListHudMixin {
 
     @Inject(method = "collectPlayerEntries", at = @At("RETURN"), cancellable = true)
     private void onCollectPlayerEntries(@NotNull CallbackInfoReturnable<List<PlayerListEntry>> cir) {
-        if (!storage.isPunicaKitty()) {
+        if (!storage.isUnicaCity()) {
             return;
         }
 

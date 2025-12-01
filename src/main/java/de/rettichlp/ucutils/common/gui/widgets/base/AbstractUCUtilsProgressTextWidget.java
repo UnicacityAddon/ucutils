@@ -21,7 +21,7 @@ public abstract class AbstractUCUtilsProgressTextWidget<C extends UCUtilsWidgetC
     @Override
     public void draw(@NotNull DrawContext drawContext, int x, int y, Alignment alignment) {
         drawContext.fill(x, y, x + getWidth(), y + getHeight(), getBackgroundColor().getRGB());
-        drawContext.drawBorder(x, y, getWidth(), getHeight(), getBorderColor().getRGB());
+        // FIXME drawContext.drawBorder(x, y, getWidth(), getHeight(), getBorderColor().getRGB());
         drawContext.drawText(getTextRenderer(), text(), x + TEXT_BOX_PADDING, y + TEXT_BOX_PADDING, 0xFFFFFF, false);
 
         int maxProgressWidth = getWidth() - TEXT_BOX_PADDING * 2;
@@ -32,7 +32,7 @@ public abstract class AbstractUCUtilsProgressTextWidget<C extends UCUtilsWidgetC
 
         // debug: draw outline
         if (renderService.isDebugEnabled()) {
-            drawContext.drawBorder(x, y, getWidth(), getHeight(), new Color(0, 0, 255).getRGB());
+            // FIXME drawContext.drawBorder(x, y, getWidth(), getHeight(), new Color(0, 0, 255).getRGB());
         }
     }
 

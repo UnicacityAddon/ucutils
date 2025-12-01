@@ -48,7 +48,7 @@ public class AlignHorizontalWidget extends AlignWidget<AbstractUCUtilsWidget> {
 
         // debug: draw outline
         if (renderService.isDebugEnabled()) {
-            drawContext.drawBorder(x, y, getWidth(), getHeight(), new Color(255, 0, 0).getRGB());
+            // FIXME drawContext.drawBorder(x, y, getWidth(), getHeight(), new Color(255, 0, 0).getRGB());
         }
     }
 }

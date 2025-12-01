@@ -15,8 +15,6 @@ import java.time.LocalDateTime;
 
 import static java.time.LocalDateTime.now;
 import static java.util.Objects.isNull;
-import static net.minecraft.text.ClickEvent.Action.RUN_COMMAND;
-import static net.minecraft.text.HoverEvent.Action.SHOW_TEXT;
 import static net.minecraft.text.Text.empty;
 import static net.minecraft.text.Text.of;
 import static net.minecraft.util.Formatting.DARK_GRAY;
@@ -39,8 +37,8 @@ public class BlackMarket {
     public Text getText() {
         return empty()
                 .styled(style -> style
-                        .withHoverEvent(new HoverEvent(SHOW_TEXT, of("Klicke, um die Navigation zu starten").copy().formatted(GOLD)))
-                        .withClickEvent(new ClickEvent(RUN_COMMAND, this.type.getNavigationCommand())))
+                        .withHoverEvent(new HoverEvent.ShowText(of("Klicke, um die Navigation zu starten").copy().formatted(GOLD)))
+                        .withClickEvent(new ClickEvent.RunCommand(this.type.getNavigationCommand())))
                 .append(of(this.type.getDisplayName())).append(" ")
                 .append(of("(").copy().formatted(DARK_GRAY))
                 .append(of("Besucht:").copy().formatted(GRAY)).append(" ")

@@ -1,6 +1,8 @@
 package de.rettichlp.ucutils.common.gui.screens;
 
+import com.mojang.blaze3d.pipeline.RenderPipeline;
 import net.fabricmc.loader.api.FabricLoader;
+import net.minecraft.client.gl.RenderPipelines;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.DirectionalLayoutWidget;
@@ -8,12 +10,14 @@ import net.minecraft.client.gui.widget.EntryListWidget;
 import net.minecraft.client.gui.widget.TextWidget;
 import net.minecraft.client.gui.widget.ThreePartsLayoutWidget;
 import net.minecraft.client.render.RenderLayer;
+import net.minecraft.client.render.RenderLayers;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import org.jetbrains.annotations.NotNull;
 
 import static de.rettichlp.ucutils.UCUtils.MOD_ID;
 import static java.util.Objects.nonNull;
+import static net.minecraft.client.gl.RenderPipelines.GUI_TEXTURED;
 import static net.minecraft.client.gui.widget.DirectionalLayoutWidget.vertical;
 import static net.minecraft.text.Text.of;
 
@@ -109,8 +113,8 @@ public abstract class UCUtilsScreen extends Screen {
      * @see EntryListWidget#drawHeaderAndFooterSeparators(DrawContext)
      */
     private void drawHeaderAndFooterSeparators(@NotNull DrawContext context) {
-        context.drawTexture(RenderLayer::getGuiTextured, INWORLD_HEADER_SEPARATOR_TEXTURE, this.layout.getX(), this.layout.getHeaderHeight(), 0.0F, 0.0F, this.layout.getWidth(), 2, 32, 2);
-        context.drawTexture(RenderLayer::getGuiTextured, INWORLD_FOOTER_SEPARATOR_TEXTURE, this.layout.getX(), this.layout.getHeight() - this.layout.getFooterHeight(), 0.0F, 0.0F, this.layout.getWidth(), 2, 32, 2);
+        context.drawTexture(GUI_TEXTURED, INWORLD_HEADER_SEPARATOR_TEXTURE, this.layout.getX(), this.layout.getHeaderHeight(), 0.0F, 0.0F, this.layout.getWidth(), 2, 32, 2);
+        context.drawTexture(GUI_TEXTURED, INWORLD_FOOTER_SEPARATOR_TEXTURE, this.layout.getX(), this.layout.getHeight() - this.layout.getFooterHeight(), 0.0F, 0.0F, this.layout.getWidth(), 2, 32, 2);
     }
 
     /**
@@ -118,7 +122,7 @@ public abstract class UCUtilsScreen extends Screen {
      */
     private void drawMenuListBackground(@NotNull DrawContext context) {
         Identifier identifier = Identifier.ofVanilla("textures/gui/inworld_menu_list_background.png");
-        context.drawTexture(RenderLayer::getGuiTextured, identifier, this.layout.getX(), this.layout.getHeaderHeight(), 0.0F, 0.0F, this.layout.getWidth(), this.layout.getContentHeight(), 32, 32);
+        context.drawTexture(GUI_TEXTURED, identifier, this.layout.getX(), this.layout.getHeaderHeight(), 0.0F, 0.0F, this.layout.getWidth(), this.layout.getContentHeight(), 32, 32);
     }
 
     private String getVersion() {

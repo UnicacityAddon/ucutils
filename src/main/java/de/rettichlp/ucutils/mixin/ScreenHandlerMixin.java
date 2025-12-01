@@ -6,9 +6,6 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.network.listener.ServerPlayPacketListener;
-import net.minecraft.network.packet.Packet;
-import net.minecraft.network.packet.c2s.play.ClickSlotC2SPacket;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.slot.Slot;
 import net.minecraft.screen.slot.SlotActionType;
@@ -19,7 +16,6 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import static de.rettichlp.ucutils.UCUtils.networkHandler;
 import static de.rettichlp.ucutils.UCUtils.storage;
 import static de.rettichlp.ucutils.UCUtils.utilService;
 import static java.util.Objects.isNull;
@@ -39,7 +35,7 @@ public class ScreenHandlerMixin {
             at = @At("HEAD")
     )
     private void onSlotClickMixin(int slotIndex, int button, SlotActionType actionType, PlayerEntity player, CallbackInfo ci) {
-        if (!player.getWorld().isClient()) {
+        if (!MinecraftClient.getInstance().world.isClient()) {
             return;
         }
 
@@ -63,15 +59,6 @@ public class ScreenHandlerMixin {
             stackMap.put(i, handler.getSlot(i).getStack().copy());
         }
 
-        Packet<ServerPlayPacketListener> packet = new ClickSlotC2SPacket(
-                handler.syncId,
-                handler.getRevision(),
-                clickedSlot.id,
-                0,
-                PICKUP,
-                itemStack,
-                stackMap);
-
         this.isABuyProcessing = true;
 
         for (int i = 1; i < aBuyAmount; i++) {
@@ -82,7 +69,13 @@ public class ScreenHandlerMixin {
                     return;
                 }
 
-                networkHandler.sendPacket(packet);
+                assert MinecraftClient.getInstance().interactionManager != null;
+                MinecraftClient.getInstance().interactionManager.clickSlot(
+                        handler.syncId,
+                        clickedSlot.id,
+                        0,
+                        PICKUP,
+                        player);
             }, A_BUY_DELAY * i);
         }
 

@@ -1,6 +1,7 @@
 package de.rettichlp.ucutils.common.gui.screens.components;
 
 import net.minecraft.client.gui.widget.ButtonWidget;
+import net.minecraft.client.input.AbstractInput;
 import net.minecraft.text.Text;
 
 import java.util.function.Consumer;
@@ -28,8 +29,8 @@ public class ToggleButtonWidget extends ButtonWidget {
     }
 
     @Override
-    public void onPress() {
-        super.onPress();
+    public void onPress(AbstractInput input) {
+        super.onPress(input);
         this.state = !this.state;
         this.changeListener.accept(this.state);
         setMessage(getText());

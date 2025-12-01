@@ -52,13 +52,13 @@ public class Api {
 
     private static final String MINECRAFT_UUID_STRING = ofNullable(MinecraftClient.getInstance())
             .map(MinecraftClient::getGameProfile)
-            .map(GameProfile::getId)
+            .map(GameProfile::id)
             .map(UUID::toString)
             .orElse("");
 
     private static final String MINECRAFT_NAME = ofNullable(MinecraftClient.getInstance())
             .map(MinecraftClient::getGameProfile)
-            .map(GameProfile::getName)
+            .map(GameProfile::name)
             .orElse("");
 
     private final HttpClient httpClient = HttpClient.newBuilder().build();
@@ -128,7 +128,7 @@ public class Api {
     }
 
     public void putFactionActivityAdd(ActivityEntry.Type type) {
-        if (!storage.isPunicaKitty()) {
+        if (!storage.isUnicaCity()) {
             return;
         }
 
@@ -136,7 +136,7 @@ public class Api {
     }
 
     public void putFactionEquipAdd(EquipEntry.Type type) {
-        if (!storage.isPunicaKitty()) {
+        if (!storage.isUnicaCity()) {
             return;
         }
 

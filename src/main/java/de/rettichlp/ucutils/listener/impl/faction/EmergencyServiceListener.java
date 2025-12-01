@@ -46,7 +46,7 @@ public class EmergencyServiceListener implements IMessageReceiveListener, INaviS
             storage.setActiveServices(max(0, storage.getActiveServices() - 1));
 
             String playerName = serviceAcceptedMatcher.group("playerName");
-            if (playerName.equals(player.getGameProfile().getName())) {
+            if (playerName.equals(player.getGameProfile().name())) {
                 this.activeService = true;
             }
 
@@ -58,7 +58,7 @@ public class EmergencyServiceListener implements IMessageReceiveListener, INaviS
             storage.setActiveServices(storage.getActiveServices() + 1);
 
             String playerName = serviceRequeuedMatcher.group("playerName");
-            if (playerName.equals(player.getGameProfile().getName())) {
+            if (playerName.equals(player.getGameProfile().name())) {
                 this.activeService = false;
             }
 

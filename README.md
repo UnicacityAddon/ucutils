@@ -1,6 +1,6 @@
 # ucutils
 
-UCUtils is a utility mod for the PunicaKitty roleplay server, inspired by the former UnicacityAddon. It provides useful commands, QoL features, and custom tools tailored for PunicaKitty, enhancing gameplay and making everyday interactions smoother and more enjoyable.
+UCUtils is a utility mod for the UnicaCity roleplay server, inspired by the former UnicacityAddon. It provides useful commands, QoL features, and custom tools tailored for UnicaCity, enhancing gameplay and making everyday interactions smoother and more enjoyable.
 
 ## Features & Funktionen
 

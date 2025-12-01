@@ -36,7 +36,7 @@ public class MiCommand extends CommandBase {
                         })
                 )
                 .executes(context -> {
-                    String playerName = player.getGameProfile().getName();
+                    String playerName = player.getGameProfile().name();
                     Faction faction = storage.getFaction(playerName);
                     commandService.sendCommand("memberinfo " + faction.getMemberInfoCommandName());
                     return 1;

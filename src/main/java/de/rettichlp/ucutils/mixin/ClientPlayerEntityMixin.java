@@ -40,7 +40,7 @@ public abstract class ClientPlayerEntityMixin {
     @Unique
     private boolean isNearShop() {
         BlockPos playerPos = player.getBlockPos();
-        return storage.isPunicaKitty() && SHOP_LOCATIONS.stream()
+        return storage.isUnicaCity() && SHOP_LOCATIONS.stream()
                 .anyMatch(blockPos -> playerPos.isWithinDistance(blockPos, 10));
     }
 }

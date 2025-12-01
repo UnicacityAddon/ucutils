@@ -12,6 +12,7 @@ import net.minecraft.client.network.PlayerListEntry;
 import net.minecraft.text.ClickEvent;
 import org.jetbrains.annotations.NotNull;
 
+import java.net.URI;
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
@@ -27,6 +28,7 @@ import static de.rettichlp.ucutils.UCUtils.player;
 import static de.rettichlp.ucutils.UCUtils.storage;
 import static de.rettichlp.ucutils.UCUtils.syncService;
 import static de.rettichlp.ucutils.UCUtils.utilService;
+import static java.net.URI.create;
 import static java.time.LocalDateTime.MIN;
 import static java.util.Arrays.stream;
 import static net.fabricmc.fabric.api.client.command.v2.ClientCommandManager.argument;
@@ -68,7 +70,7 @@ public class ModCommand extends CommandBase {
                                 .suggests((context, builder) -> {
                                     List<String> list = networkHandler.getPlayerList().stream()
                                             .map(PlayerListEntry::getProfile)
-                                            .map(GameProfile::getName)
+                                            .map(GameProfile::name)
                                             .toList();
                                     return suggestMatching(list, builder);
                                 })
@@ -90,7 +92,7 @@ public class ModCommand extends CommandBase {
                                                 .append(of(":").copy().formatted(DARK_GRAY)).append(" ")
                                                 .append(of("Klick ↗").copy().styled(style -> style
                                                         .withColor(WHITE)
-                                                        .withClickEvent(new ClickEvent(SUGGEST_COMMAND, "/activity player " + playerName)))), false);
+                                                        .withClickEvent(new ClickEvent.SuggestCommand("/activity player " + playerName)))), false);
 
                                         player.sendMessage(empty(), false);
                                     });
@@ -127,14 +129,14 @@ public class ModCommand extends CommandBase {
                             .append(of(":").copy().formatted(DARK_GRAY)).append(" ")
                             .append(of("https://discord.gg/mZGAAwhPHu").copy().styled(style -> style
                                     .withColor(WHITE)
-                                    .withClickEvent(new ClickEvent(OPEN_URL, "https://discord.gg/mZGAAwhPHu")))), false);
+                                    .withClickEvent(new ClickEvent.OpenUrl(create("https://discord.gg/mZGAAwhPHu"))))), false);
 
                     messageService.sendModMessage(empty()
                             .append(of("GitHub").copy().formatted(GRAY))
                             .append(of(":").copy().formatted(DARK_GRAY)).append(" ")
                             .append(of("https://github.com/UnicacityAddon/ucutils").copy().styled(style -> style
                                     .withColor(WHITE)
-                                    .withClickEvent(new ClickEvent(OPEN_URL, "https://github.com/UnicacityAddon/ucutils")))), false);
+                                    .withClickEvent(new ClickEvent.OpenUrl(create("https://github.com/UnicacityAddon/ucutils"))))), false);
 
                     messageService.sendModMessage(empty()
                             .append(of("Letzte Synchronisierung").copy().formatted(GRAY))

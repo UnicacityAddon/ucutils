@@ -173,7 +173,7 @@ public class FactionActivityScreen extends FactionScreen {
 
         getSortedFactionMembers().stream().skip(this.offset).limit(pageLimit()).forEach(factionMember -> {
             String factionMemberMinecraftName = factionMember.playerName();
-            Formatting color = player.getGameProfile().getName().equals(factionMemberMinecraftName) ? GREEN : WHITE;
+            Formatting color = player.getGameProfile().name().equals(factionMemberMinecraftName) ? GREEN : WHITE;
 
             Map<String, Long> playerActivities = this.factionPlayerDataResponses.stream()
                     .filter(factionPlayerDataResponse -> factionPlayerDataResponse.getMinecraftName().equals(factionMemberMinecraftName))

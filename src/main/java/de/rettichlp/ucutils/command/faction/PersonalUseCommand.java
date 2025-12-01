@@ -42,7 +42,7 @@ public class PersonalUseCommand extends CommandBase implements IMessageReceiveLi
                                 .suggests((context, builder) -> {
                                     List<String> list = networkHandler.getPlayerList().stream()
                                             .map(PlayerListEntry::getProfile)
-                                            .map(GameProfile::getName)
+                                            .map(GameProfile::name)
                                             .toList();
                                     return suggestMatching(list, builder);
                                 })

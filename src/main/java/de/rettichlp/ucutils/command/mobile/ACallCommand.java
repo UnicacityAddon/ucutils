@@ -28,7 +28,7 @@ public class ACallCommand extends CommandBase {
                         .suggests((context, builder) -> {
                             List<String> list = networkHandler.getPlayerList().stream()
                                     .map(PlayerListEntry::getProfile)
-                                    .map(GameProfile::getName)
+                                    .map(GameProfile::name)
                                     .toList();
                             return suggestMatching(list, builder);
                         })

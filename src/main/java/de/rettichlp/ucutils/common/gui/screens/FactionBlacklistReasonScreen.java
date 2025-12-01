@@ -122,7 +122,7 @@ public class FactionBlacklistReasonScreen extends FactionScreen {
         DirectionalLayoutWidget directionalLayoutWidget = horizontal().spacing(8);
 
         TextWidget reasonTextWidget = directionalLayoutWidget.add(new TextWidget(of(blacklistReason.getReason()), TEXT_RENDERER), Positioner::alignVerticalCenter);
-        reasonTextWidget.alignLeft();
+        // FIXME reasonTextWidget.alignLeft();
         reasonTextWidget.setWidth(200);
 
         TextFieldWidget priceTextFieldWidget = directionalLayoutWidget.add(new TextFieldWidget(TEXT_RENDERER, 0, 0, 50, 20, empty()));

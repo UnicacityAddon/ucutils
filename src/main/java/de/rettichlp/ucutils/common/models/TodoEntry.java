@@ -9,8 +9,6 @@ import net.minecraft.text.MutableText;
 import java.time.Instant;
 
 import static java.time.Instant.now;
-import static net.minecraft.text.ClickEvent.Action.RUN_COMMAND;
-import static net.minecraft.text.HoverEvent.Action.SHOW_TEXT;
 import static net.minecraft.text.Text.of;
 import static net.minecraft.util.Formatting.GREEN;
 import static net.minecraft.util.Formatting.RED;
@@ -26,14 +24,14 @@ public class TodoEntry {
     public MutableText getDoneButton() {
         return of("✔").copy().styled(style -> style
                 .withColor(GREEN)
-                .withClickEvent(new ClickEvent(RUN_COMMAND, "/todo done " + this.createdAt))
-                .withHoverEvent(new HoverEvent(SHOW_TEXT, of("Als erledigt markieren"))));
+                .withClickEvent(new ClickEvent.RunCommand("/todo done " + this.createdAt))
+                .withHoverEvent(new HoverEvent.ShowText(of("Als erledigt markieren"))));
     }
 
     public MutableText getDeleteButton() {
         return of("✖").copy().styled(style -> style
                 .withColor(RED)
-                .withClickEvent(new ClickEvent(RUN_COMMAND, "/todo delete " + this.createdAt))
-                .withHoverEvent(new HoverEvent(SHOW_TEXT, of("Löschen"))));
+                .withClickEvent(new ClickEvent.RunCommand("/todo delete " + this.createdAt))
+                .withHoverEvent(new HoverEvent.ShowText(of("Löschen"))));
     }
 }

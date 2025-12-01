@@ -44,7 +44,7 @@ public class BombListener implements IMessageReceiveListener, IHudRenderListener
 
     @Override
     public boolean onMessageReceive(Text text, String message) {
-        Faction playerFaction = storage.getFaction(player.getGameProfile().getName());
+        Faction playerFaction = storage.getFaction(player.getGameProfile().name());
         if (playerFaction != POLIZEI && playerFaction != FBI && playerFaction != RETTUNGSDIENST) {
             return true;
         }
