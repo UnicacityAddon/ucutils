@@ -54,7 +54,7 @@ import static org.atteo.classindex.ClassIndex.getAnnotated;
 
 public class Registry {
 
-    private static final String NAVI_TARGET_REACHED_MESSAGE = "Du hast dein Ziel erreicht!";
+    private static final String NAVI_TARGET_REACHED_MESSAGE = "Du hast dein Ziel erreicht.";
 
     private final Set<IUCUtilsListener> listenerInstances = getListenerInstances();
 
