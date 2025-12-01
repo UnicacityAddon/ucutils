@@ -10,7 +10,7 @@ import java.io.File;
 import java.util.Optional;
 import java.util.function.Consumer;
 
-import static de.rettichlp.ucutils.PKUtils.LOGGER;
+import static de.rettichlp.ucutils.UCUtils.LOGGER;
 import static java.util.Arrays.stream;
 import static net.minecraft.client.util.ScreenshotRecorder.takeScreenshot;
 import static net.minecraft.util.Util.getFormattedCurrentTime;
@@ -49,7 +49,7 @@ public enum ScreenshotType {
     }
 
     public @NotNull File getScreenshotDirectory() {
-        File file = new File(RUN_DIRECTORY, "pkutils/screenshots/" + this.displayName.toLowerCase());
+        File file = new File(RUN_DIRECTORY, "ucutils/screenshots/" + this.displayName.toLowerCase());
         file.mkdirs();
         return file;
     }

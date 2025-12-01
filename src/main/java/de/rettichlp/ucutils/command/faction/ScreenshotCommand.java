@@ -3,7 +3,7 @@ package de.rettichlp.ucutils.command.faction;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import de.rettichlp.ucutils.common.models.ScreenshotType;
 import de.rettichlp.ucutils.common.registry.CommandBase;
-import de.rettichlp.ucutils.common.registry.PKUtilsCommand;
+import de.rettichlp.ucutils.common.registry.UCUtilsCommand;
 import net.fabricmc.fabric.api.client.command.v2.FabricClientCommandSource;
 import net.minecraft.text.ClickEvent;
 import net.minecraft.text.HoverEvent;
@@ -15,8 +15,8 @@ import java.nio.file.Path;
 import java.util.stream.Stream;
 
 import static com.mojang.brigadier.arguments.StringArgumentType.greedyString;
-import static de.rettichlp.ucutils.PKUtils.messageService;
-import static de.rettichlp.ucutils.PKUtils.player;
+import static de.rettichlp.ucutils.UCUtils.messageService;
+import static de.rettichlp.ucutils.UCUtils.player;
 import static java.lang.String.valueOf;
 import static java.nio.file.Files.list;
 import static java.util.Arrays.stream;
@@ -31,7 +31,7 @@ import static net.minecraft.util.Formatting.DARK_AQUA;
 import static net.minecraft.util.Formatting.DARK_GRAY;
 import static net.minecraft.util.Formatting.GRAY;
 
-@PKUtilsCommand(label = "screenshot")
+@UCUtilsCommand(label = "screenshot")
 public class ScreenshotCommand extends CommandBase {
 
     @Override

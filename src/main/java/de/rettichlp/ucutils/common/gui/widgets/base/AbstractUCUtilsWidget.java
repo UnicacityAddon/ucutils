@@ -12,18 +12,18 @@ import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.Map;
 
-import static de.rettichlp.ucutils.PKUtils.LOGGER;
-import static de.rettichlp.ucutils.PKUtils.api;
-import static de.rettichlp.ucutils.PKUtils.configuration;
-import static de.rettichlp.ucutils.PKUtils.notificationService;
-import static de.rettichlp.ucutils.common.gui.widgets.base.AbstractPKUtilsWidget.Alignment.CENTER;
-import static de.rettichlp.ucutils.common.gui.widgets.base.AbstractPKUtilsWidget.Alignment.LEFT;
-import static de.rettichlp.ucutils.common.gui.widgets.base.AbstractPKUtilsWidget.Alignment.RIGHT;
+import static de.rettichlp.ucutils.UCUtils.LOGGER;
+import static de.rettichlp.ucutils.UCUtils.api;
+import static de.rettichlp.ucutils.UCUtils.configuration;
+import static de.rettichlp.ucutils.UCUtils.notificationService;
+import static de.rettichlp.ucutils.common.gui.widgets.base.AbstractUCUtilsWidget.Alignment.CENTER;
+import static de.rettichlp.ucutils.common.gui.widgets.base.AbstractUCUtilsWidget.Alignment.LEFT;
+import static de.rettichlp.ucutils.common.gui.widgets.base.AbstractUCUtilsWidget.Alignment.RIGHT;
 import static java.util.Objects.isNull;
 import static java.util.Optional.ofNullable;
 
 @Getter
-public abstract class AbstractPKUtilsWidget<C extends PKUtilsWidgetConfiguration> {
+public abstract class AbstractUCUtilsWidget<C extends UCUtilsWidgetConfiguration> {
 
     private static final Type MAP_TYPE = new TypeToken<Map<String, Object>>() {}.getType();
 
@@ -68,8 +68,8 @@ public abstract class AbstractPKUtilsWidget<C extends PKUtilsWidgetConfiguration
     }
 
     public String getRegistryName() {
-        return ofNullable(this.getClass().getAnnotation(PKUtilsWidget.class))
-                .map(PKUtilsWidget::registryName)
+        return ofNullable(this.getClass().getAnnotation(UCUtilsWidget.class))
+                .map(UCUtilsWidget::registryName)
                 .orElseThrow(() -> new IllegalStateException("Widget class " + this.getClass().getName() + " has no registry name"));
     }
 
@@ -142,20 +142,20 @@ public abstract class AbstractPKUtilsWidget<C extends PKUtilsWidgetConfiguration
     }
 
     private boolean getDefaultEnabled() {
-        return ofNullable(this.getClass().getAnnotation(PKUtilsWidget.class))
-                .map(PKUtilsWidget::defaultEnabled)
+        return ofNullable(this.getClass().getAnnotation(UCUtilsWidget.class))
+                .map(UCUtilsWidget::defaultEnabled)
                 .orElse(false);
     }
 
     private double getDefaultX() {
-        return ofNullable(this.getClass().getAnnotation(PKUtilsWidget.class))
-                .map(PKUtilsWidget::defaultX)
+        return ofNullable(this.getClass().getAnnotation(UCUtilsWidget.class))
+                .map(UCUtilsWidget::defaultX)
                 .orElse(0.0);
     }
 
     private double getDefaultY() {
-        return ofNullable(this.getClass().getAnnotation(PKUtilsWidget.class))
-                .map(PKUtilsWidget::defaultY)
+        return ofNullable(this.getClass().getAnnotation(UCUtilsWidget.class))
+                .map(UCUtilsWidget::defaultY)
                 .orElse(0.0);
     }
 
@@ -170,7 +170,7 @@ public abstract class AbstractPKUtilsWidget<C extends PKUtilsWidgetConfiguration
             }
         }
 
-        throw new IllegalStateException("Widget class must be generic: AbstractPKUtilsWidget<C>");
+        throw new IllegalStateException("Widget class must be generic: AbstractUCUtilsWidget<C>");
     }
 
     private double roundToNearestHalf(double value) {

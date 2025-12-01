@@ -10,8 +10,8 @@ import org.jetbrains.annotations.NotNull;
 import java.time.LocalDate;
 import java.time.chrono.ChronoLocalDateTime;
 
-import static de.rettichlp.ucutils.PKUtils.messageService;
-import static de.rettichlp.ucutils.PKUtils.renderService;
+import static de.rettichlp.ucutils.UCUtils.messageService;
+import static de.rettichlp.ucutils.UCUtils.renderService;
 import static net.minecraft.client.gui.widget.DirectionalLayoutWidget.horizontal;
 import static net.minecraft.text.Text.empty;
 import static net.minecraft.text.Text.of;

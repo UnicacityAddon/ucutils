@@ -1,7 +1,7 @@
 package de.rettichlp.ucutils.listener.impl;
 
 import de.rettichlp.ucutils.common.models.CommandResponseRetriever;
-import de.rettichlp.ucutils.common.registry.PKUtilsListener;
+import de.rettichlp.ucutils.common.registry.UCUtilsListener;
 import de.rettichlp.ucutils.listener.ICommandSendListener;
 import de.rettichlp.ucutils.listener.IMessageReceiveListener;
 import net.minecraft.text.Text;
@@ -11,12 +11,12 @@ import java.util.StringJoiner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static de.rettichlp.ucutils.PKUtils.commandService;
-import static de.rettichlp.ucutils.PKUtils.storage;
+import static de.rettichlp.ucutils.UCUtils.commandService;
+import static de.rettichlp.ucutils.UCUtils.storage;
 import static java.lang.Character.isUpperCase;
 import static java.util.regex.Pattern.compile;
 
-@PKUtilsListener
+@UCUtilsListener
 public class CommandListener implements ICommandSendListener, IMessageReceiveListener {
 
     private static final Pattern COMMAND_NAVI_HOUSE_NUMBER_PATTERN = compile("^navi (?<number>\\d+)$");

@@ -3,7 +3,7 @@ package de.rettichlp.ucutils.command.faction;
 import com.mojang.authlib.GameProfile;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import de.rettichlp.ucutils.common.registry.CommandBase;
-import de.rettichlp.ucutils.common.registry.PKUtilsCommand;
+import de.rettichlp.ucutils.common.registry.UCUtilsCommand;
 import de.rettichlp.ucutils.listener.IMessageReceiveListener;
 import net.fabricmc.fabric.api.client.command.v2.FabricClientCommandSource;
 import net.minecraft.client.network.PlayerListEntry;
@@ -16,17 +16,17 @@ import java.util.regex.Pattern;
 
 import static com.mojang.brigadier.arguments.StringArgumentType.getString;
 import static com.mojang.brigadier.arguments.StringArgumentType.word;
-import static de.rettichlp.ucutils.PKUtils.commandService;
-import static de.rettichlp.ucutils.PKUtils.configuration;
-import static de.rettichlp.ucutils.PKUtils.messageService;
-import static de.rettichlp.ucutils.PKUtils.networkHandler;
+import static de.rettichlp.ucutils.UCUtils.commandService;
+import static de.rettichlp.ucutils.UCUtils.configuration;
+import static de.rettichlp.ucutils.UCUtils.messageService;
+import static de.rettichlp.ucutils.UCUtils.networkHandler;
 import static java.lang.String.valueOf;
 import static java.util.regex.Pattern.compile;
 import static net.fabricmc.fabric.api.client.command.v2.ClientCommandManager.argument;
 import static net.fabricmc.fabric.api.client.command.v2.ClientCommandManager.literal;
 import static net.minecraft.command.CommandSource.suggestMatching;
 
-@PKUtilsCommand(label = "eigenbedarf")
+@UCUtilsCommand(label = "eigenbedarf")
 public class PersonalUseCommand extends CommandBase implements IMessageReceiveListener {
 
     private static final Pattern DEAL_ACCEPTED = compile("^\\[Deal] (?:\\[PK])?(?<playerName>[a-zA-Z0-9_]+) hat den Deal angenommen\\.$");

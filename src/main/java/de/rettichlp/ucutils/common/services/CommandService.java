@@ -6,12 +6,12 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.function.Consumer;
 
-import static de.rettichlp.ucutils.PKUtils.LOGGER;
-import static de.rettichlp.ucutils.PKUtils.messageService;
-import static de.rettichlp.ucutils.PKUtils.networkHandler;
-import static de.rettichlp.ucutils.PKUtils.player;
-import static de.rettichlp.ucutils.PKUtils.storage;
-import static de.rettichlp.ucutils.PKUtils.utilService;
+import static de.rettichlp.ucutils.UCUtils.LOGGER;
+import static de.rettichlp.ucutils.UCUtils.messageService;
+import static de.rettichlp.ucutils.UCUtils.networkHandler;
+import static de.rettichlp.ucutils.UCUtils.player;
+import static de.rettichlp.ucutils.UCUtils.storage;
+import static de.rettichlp.ucutils.UCUtils.utilService;
 import static java.lang.Boolean.getBoolean;
 import static java.util.Objects.nonNull;
 import static java.util.Optional.ofNullable;
@@ -21,13 +21,13 @@ public class CommandService {
     private static final String UUID_RETTICHLP = "25855f4d-3874-4a7f-a6ad-e9e4f3042e19";
 
     public void sendCommand(String command) {
-        LOGGER.info("PKUtils executing command: {}", command);
+        LOGGER.info("UCUtils executing command: {}", command);
         networkHandler.sendChatCommand(command);
     }
 
     public boolean sendCommandWithAfkCheck(String command) {
         boolean isAfk = storage.isAfk();
-        LOGGER.info("PKUtils executing command with AFK check (is AFK: {}): {}", isAfk, command);
+        LOGGER.info("UCUtils executing command with AFK check (is AFK: {}): {}", isAfk, command);
 
         if (!isAfk) {
             networkHandler.sendChatCommand(command);

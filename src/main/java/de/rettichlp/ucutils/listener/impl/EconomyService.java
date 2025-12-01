@@ -1,6 +1,6 @@
 package de.rettichlp.ucutils.listener.impl;
 
-import de.rettichlp.ucutils.common.registry.PKUtilsListener;
+import de.rettichlp.ucutils.common.registry.UCUtilsListener;
 import de.rettichlp.ucutils.listener.IMessageReceiveListener;
 import net.minecraft.text.ClickEvent;
 import net.minecraft.text.HoverEvent;
@@ -11,10 +11,10 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static de.rettichlp.ucutils.PKUtils.commandService;
-import static de.rettichlp.ucutils.PKUtils.configuration;
-import static de.rettichlp.ucutils.PKUtils.player;
-import static de.rettichlp.ucutils.PKUtils.storage;
+import static de.rettichlp.ucutils.UCUtils.commandService;
+import static de.rettichlp.ucutils.UCUtils.configuration;
+import static de.rettichlp.ucutils.UCUtils.player;
+import static de.rettichlp.ucutils.UCUtils.storage;
 import static java.lang.Integer.parseInt;
 import static java.lang.Math.max;
 import static java.util.Collections.emptyList;
@@ -26,7 +26,7 @@ import static net.minecraft.text.Text.of;
 import static net.minecraft.util.Formatting.GRAY;
 import static net.minecraft.util.Formatting.UNDERLINE;
 
-@PKUtilsListener
+@UCUtilsListener
 public class EconomyService implements IMessageReceiveListener {
 
     // bank

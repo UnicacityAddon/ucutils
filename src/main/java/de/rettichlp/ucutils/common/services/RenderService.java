@@ -4,8 +4,8 @@ import de.rettichlp.ucutils.common.configuration.options.Options;
 import de.rettichlp.ucutils.common.gui.screens.components.CyclingButtonEntry;
 import de.rettichlp.ucutils.common.gui.screens.components.ItemButtonWidget;
 import de.rettichlp.ucutils.common.gui.screens.components.ToggleButtonWidget;
-import de.rettichlp.ucutils.common.gui.widgets.base.AbstractPKUtilsWidget;
-import de.rettichlp.ucutils.common.gui.widgets.base.PKUtilsWidget;
+import de.rettichlp.ucutils.common.gui.widgets.base.AbstractUCUtilsWidget;
+import de.rettichlp.ucutils.common.gui.widgets.base.UCUtilsWidget;
 import lombok.Getter;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
@@ -31,7 +31,7 @@ import java.util.Objects;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
 
-import static de.rettichlp.ucutils.PKUtils.configuration;
+import static de.rettichlp.ucutils.UCUtils.configuration;
 import static java.util.Comparator.comparing;
 import static java.util.stream.Collectors.toCollection;
 import static java.util.stream.StreamSupport.stream;
@@ -47,7 +47,7 @@ public class RenderService {
     public static final int TEXT_BOX_PADDING = 3;
 
     @Getter
-    private LinkedHashSet<AbstractPKUtilsWidget<?>> widgets = new LinkedHashSet<>();
+    private LinkedHashSet<AbstractUCUtilsWidget<?>> widgets = new LinkedHashSet<>();
 
     public boolean isDebugEnabled() {
         return false;
@@ -158,17 +158,17 @@ public class RenderService {
     }
 
     public void initializeWidgets() {
-        this.widgets = stream(getAnnotated(PKUtilsWidget.class).spliterator(), false)
-                .map(pkUtilsWidgetClass -> {
+        this.widgets = stream(getAnnotated(UCUtilsWidget.class).spliterator(), false)
+                .map(ucUtilsWidgetClass -> {
                     try {
-                        return (AbstractPKUtilsWidget<?>) pkUtilsWidgetClass.getConstructor().newInstance();
+                        return (AbstractUCUtilsWidget<?>) ucUtilsWidgetClass.getConstructor().newInstance();
                     } catch (Exception e) {
                         return null;
                     }
                 })
                 .filter(Objects::nonNull)
-                .peek(AbstractPKUtilsWidget::init)
-                .sorted(comparing(AbstractPKUtilsWidget::getRegistryName))
+                .peek(AbstractUCUtilsWidget::init)
+                .sorted(comparing(AbstractUCUtilsWidget::getRegistryName))
                 .collect(toCollection(LinkedHashSet::new));
     }
 
@@ -225,7 +225,7 @@ public class RenderService {
                                             int width) {
         DirectionalLayoutWidget directionalLayoutWidget = widget.add(horizontal());
         addToggleButton(directionalLayoutWidget, name, tooltip, onPress, currentValue, width - 20);
-        addItemButton(directionalLayoutWidget, "pkutils.options.text.options", COMPARATOR, onPressSettings);
+        addItemButton(directionalLayoutWidget, "ucutils.options.text.options", COMPARATOR, onPressSettings);
     }
 
     public void addItemButton(@NotNull DirectionalLayoutWidget widget, String key, Item item, ButtonWidget.PressAction onPress) {

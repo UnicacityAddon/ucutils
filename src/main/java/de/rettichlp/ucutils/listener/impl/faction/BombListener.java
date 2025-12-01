@@ -1,7 +1,7 @@
 package de.rettichlp.ucutils.listener.impl.faction;
 
 import de.rettichlp.ucutils.common.models.Faction;
-import de.rettichlp.ucutils.common.registry.PKUtilsListener;
+import de.rettichlp.ucutils.common.registry.UCUtilsListener;
 import de.rettichlp.ucutils.listener.IHudRenderListener;
 import de.rettichlp.ucutils.listener.IMessageReceiveListener;
 import net.minecraft.client.MinecraftClient;
@@ -14,8 +14,8 @@ import java.time.LocalDateTime;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static de.rettichlp.ucutils.PKUtils.player;
-import static de.rettichlp.ucutils.PKUtils.storage;
+import static de.rettichlp.ucutils.UCUtils.player;
+import static de.rettichlp.ucutils.UCUtils.storage;
 import static de.rettichlp.ucutils.common.models.Faction.FBI;
 import static de.rettichlp.ucutils.common.models.Faction.POLIZEI;
 import static de.rettichlp.ucutils.common.models.Faction.RETTUNGSDIENST;
@@ -33,7 +33,7 @@ import static net.minecraft.util.Formatting.GOLD;
 import static net.minecraft.util.Formatting.GRAY;
 import static net.minecraft.util.Formatting.RED;
 
-@PKUtilsListener
+@UCUtilsListener
 public class BombListener implements IMessageReceiveListener, IHudRenderListener {
 
     private static final Pattern BOMB_FOUND_PATTERN = compile("^News: ACHTUNG! Es wurde eine Bombe in der Nähe von (?<location>.+) gefunden!$");

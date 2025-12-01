@@ -15,7 +15,7 @@ import de.rettichlp.ucutils.listener.IMessageReceiveListener;
 import de.rettichlp.ucutils.listener.IMessageSendListener;
 import de.rettichlp.ucutils.listener.IMoveListener;
 import de.rettichlp.ucutils.listener.INaviSpotReachedListener;
-import de.rettichlp.ucutils.listener.IPKUtilsListener;
+import de.rettichlp.ucutils.listener.IUCUtilsListener;
 import de.rettichlp.ucutils.listener.IScreenOpenListener;
 import de.rettichlp.ucutils.listener.ITickListener;
 import de.rettichlp.ucutils.listener.callback.PlayerEnterVehicleCallback;
@@ -36,9 +36,9 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Objects;
 import java.util.Set;
 
-import static de.rettichlp.ucutils.PKUtils.LOGGER;
-import static de.rettichlp.ucutils.PKUtils.player;
-import static de.rettichlp.ucutils.PKUtils.storage;
+import static de.rettichlp.ucutils.UCUtils.LOGGER;
+import static de.rettichlp.ucutils.UCUtils.player;
+import static de.rettichlp.ucutils.UCUtils.storage;
 import static java.util.Collections.emptySet;
 import static java.util.Objects.isNull;
 import static java.util.Optional.ofNullable;
@@ -56,7 +56,7 @@ public class Registry {
 
     private static final String NAVI_TARGET_REACHED_MESSAGE = "Du hast dein Ziel erreicht!";
 
-    private final Set<IPKUtilsListener> listenerInstances = getListenerInstances();
+    private final Set<IUCUtilsListener> listenerInstances = getListenerInstances();
 
     private boolean initialized = false;
     private BlockPos lastPlayerPos = null;
@@ -69,9 +69,9 @@ public class Registry {
     }
 
     public void registerCommands(@NotNull CommandDispatcher<FabricClientCommandSource> dispatcher) {
-        for (Class<?> commandClass : getAnnotated(PKUtilsCommand.class)) {
+        for (Class<?> commandClass : getAnnotated(UCUtilsCommand.class)) {
             try {
-                PKUtilsCommand annotation = commandClass.getAnnotation(PKUtilsCommand.class);
+                UCUtilsCommand annotation = commandClass.getAnnotation(UCUtilsCommand.class);
                 String label = annotation.label();
                 CommandBase commandInstance = (CommandBase) commandClass.getConstructor().newInstance();
 
@@ -110,7 +110,7 @@ public class Registry {
                     .allMatch(iMessageReceiveListener -> iMessageReceiveListener.onMessageReceive(message, rawMessage));
 
             if (!showMessage) {
-                LOGGER.info("PKUtils hidden message: {}", message.getString());
+                LOGGER.info("UCUtils hidden message: {}", message.getString());
             }
 
             return showMessage;
@@ -121,7 +121,7 @@ public class Registry {
                     .allMatch(iMessageSendListener -> iMessageSendListener.onMessageSend(s));
 
             if (!sendMessage) {
-                LOGGER.info("PKUtils blocked message sending: {}", s);
+                LOGGER.info("UCUtils blocked message sending: {}", s);
             }
 
             return sendMessage;
@@ -132,7 +132,7 @@ public class Registry {
                     .allMatch(iCommandSendListener -> iCommandSendListener.onCommandSend(commandWithoutPrefix));
 
             if (!executeCommand) {
-                LOGGER.info("PKUtils blocked command execution: /{}", commandWithoutPrefix);
+                LOGGER.info("UCUtils blocked command execution: /{}", commandWithoutPrefix);
             }
 
             return executeCommand;
@@ -203,11 +203,11 @@ public class Registry {
         this.initialized = true;
     }
 
-    private @NotNull Set<IPKUtilsListener> getListenerInstances() {
-        return stream(getAnnotated(PKUtilsListener.class).spliterator(), false)
+    private @NotNull Set<IUCUtilsListener> getListenerInstances() {
+        return stream(getAnnotated(UCUtilsListener.class).spliterator(), false)
                 .map(listenerClass -> {
                     try {
-                        return (IPKUtilsListener) listenerClass.getConstructor().newInstance();
+                        return (IUCUtilsListener) listenerClass.getConstructor().newInstance();
                     } catch (Exception e) {
                         LOGGER.error("Error while registering listener: {}", listenerClass.getName(), e.getCause());
                         return null;

@@ -31,7 +31,7 @@ public abstract class GameMenuScreenMixin extends Screen {
             )
     )
     private void addCustomButton(CallbackInfo ci, @Local @NotNull GridWidget gridWidget, @Local GridWidget.@NotNull Adder adder) {
-        ButtonWidget buttonWidget = ButtonWidget.builder(of("PKUtils Settings"), button -> this.client.setScreen(new MainOptionsScreen()))
+        ButtonWidget buttonWidget = ButtonWidget.builder(of("UCUtils Settings"), button -> this.client.setScreen(new MainOptionsScreen()))
                 .width(204)
                 .build();
 

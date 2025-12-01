@@ -8,7 +8,7 @@ import net.minecraft.client.MinecraftClient;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import static de.rettichlp.ucutils.PKUtils.storage;
+import static de.rettichlp.ucutils.UCUtils.storage;
 
 @Getter
 @AllArgsConstructor

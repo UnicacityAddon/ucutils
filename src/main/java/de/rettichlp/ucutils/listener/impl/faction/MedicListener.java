@@ -2,7 +2,7 @@ package de.rettichlp.ucutils.listener.impl.faction;
 
 import de.rettichlp.ucutils.common.models.Countdown;
 import de.rettichlp.ucutils.common.models.HousebanEntry;
-import de.rettichlp.ucutils.common.registry.PKUtilsListener;
+import de.rettichlp.ucutils.common.registry.UCUtilsListener;
 import de.rettichlp.ucutils.listener.IMessageReceiveListener;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
@@ -12,14 +12,14 @@ import java.time.LocalDateTime;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static de.rettichlp.ucutils.PKUtils.api;
-import static de.rettichlp.ucutils.PKUtils.commandService;
-import static de.rettichlp.ucutils.PKUtils.configuration;
-import static de.rettichlp.ucutils.PKUtils.messageService;
-import static de.rettichlp.ucutils.PKUtils.player;
-import static de.rettichlp.ucutils.PKUtils.storage;
-import static de.rettichlp.ucutils.PKUtils.syncService;
-import static de.rettichlp.ucutils.PKUtils.utilService;
+import static de.rettichlp.ucutils.UCUtils.api;
+import static de.rettichlp.ucutils.UCUtils.commandService;
+import static de.rettichlp.ucutils.UCUtils.configuration;
+import static de.rettichlp.ucutils.UCUtils.messageService;
+import static de.rettichlp.ucutils.UCUtils.player;
+import static de.rettichlp.ucutils.UCUtils.storage;
+import static de.rettichlp.ucutils.UCUtils.syncService;
+import static de.rettichlp.ucutils.UCUtils.utilService;
 import static de.rettichlp.ucutils.common.models.ActivityEntry.Type.REVIVE;
 import static java.lang.Integer.parseInt;
 import static java.lang.System.currentTimeMillis;
@@ -34,7 +34,7 @@ import static java.util.regex.Pattern.compile;
 import static net.minecraft.text.Text.of;
 import static net.minecraft.util.Formatting.AQUA;
 
-@PKUtilsListener
+@UCUtilsListener
 public class MedicListener implements IMessageReceiveListener {
 
     private static final Pattern MEDIC_BANDAGE_PATTERN = compile("^(?:\\[PK])?(?<playerName>[a-zA-Z0-9_]+) hat dich bandagiert\\.$");

@@ -1,9 +1,9 @@
 package de.rettichlp.ucutils.common.gui.widgets;
 
-import de.rettichlp.ucutils.common.gui.widgets.base.AbstractPKUtilsTextWidget;
+import de.rettichlp.ucutils.common.gui.widgets.base.AbstractUCUtilsTextWidget;
 import de.rettichlp.ucutils.common.gui.widgets.base.IOptionWidget;
-import de.rettichlp.ucutils.common.gui.widgets.base.PKUtilsWidget;
-import de.rettichlp.ucutils.common.gui.widgets.base.PKUtilsWidgetConfiguration;
+import de.rettichlp.ucutils.common.gui.widgets.base.UCUtilsWidget;
+import de.rettichlp.ucutils.common.gui.widgets.base.UCUtilsWidgetConfiguration;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import net.minecraft.client.gui.widget.DirectionalLayoutWidget;
@@ -11,8 +11,8 @@ import net.minecraft.client.gui.widget.Widget;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 
-import static de.rettichlp.ucutils.PKUtils.configuration;
-import static de.rettichlp.ucutils.PKUtils.renderService;
+import static de.rettichlp.ucutils.UCUtils.configuration;
+import static de.rettichlp.ucutils.UCUtils.renderService;
 import static java.lang.String.valueOf;
 import static net.minecraft.client.gui.widget.DirectionalLayoutWidget.horizontal;
 import static net.minecraft.text.Text.empty;
@@ -20,15 +20,15 @@ import static net.minecraft.text.Text.of;
 import static net.minecraft.text.Text.translatable;
 import static net.minecraft.util.Formatting.DARK_GRAY;
 
-@PKUtilsWidget(registryName = "payday", defaultX = 126.0, defaultY = 4.0)
-public class PayDayWidget extends AbstractPKUtilsTextWidget<PayDayWidget.Configuration> {
+@UCUtilsWidget(registryName = "payday", defaultX = 126.0, defaultY = 4.0)
+public class PayDayWidget extends AbstractUCUtilsTextWidget<PayDayWidget.Configuration> {
 
-    private static final Text WIDGETS_PAYDAY_OPTIONS_NAME = translatable("pkutils.options.widgets.payday.options.name");
-    private static final Text WIDGETS_PAYDAY_OPTIONS_TOOLTIP = translatable("pkutils.options.widgets.payday.options.tooltip");
-    private static final Text WIDGETS_PAYDAY_OPTIONS_SALARY_NAME = translatable("pkutils.options.widgets.payday.options.salary.name");
-    private static final Text WIDGETS_PAYDAY_OPTIONS_SALARY_TOOLTIP = translatable("pkutils.options.widgets.payday.options.salary.tooltip");
-    private static final Text WIDGETS_PAYDAY_OPTIONS_EXPERIENCE_NAME = translatable("pkutils.options.widgets.payday.options.experience.name");
-    private static final Text WIDGETS_PAYDAY_OPTIONS_EXPERIENCE_TOOLTIP = translatable("pkutils.options.widgets.payday.options.experience.tooltip");
+    private static final Text WIDGETS_PAYDAY_OPTIONS_NAME = translatable("ucutils.options.widgets.payday.options.name");
+    private static final Text WIDGETS_PAYDAY_OPTIONS_TOOLTIP = translatable("ucutils.options.widgets.payday.options.tooltip");
+    private static final Text WIDGETS_PAYDAY_OPTIONS_SALARY_NAME = translatable("ucutils.options.widgets.payday.options.salary.name");
+    private static final Text WIDGETS_PAYDAY_OPTIONS_SALARY_TOOLTIP = translatable("ucutils.options.widgets.payday.options.salary.tooltip");
+    private static final Text WIDGETS_PAYDAY_OPTIONS_EXPERIENCE_NAME = translatable("ucutils.options.widgets.payday.options.experience.name");
+    private static final Text WIDGETS_PAYDAY_OPTIONS_EXPERIENCE_TOOLTIP = translatable("ucutils.options.widgets.payday.options.experience.tooltip");
 
     @Override
     public Text text() {
@@ -60,7 +60,7 @@ public class PayDayWidget extends AbstractPKUtilsTextWidget<PayDayWidget.Configu
 
     @Data
     @EqualsAndHashCode(callSuper = false)
-    public static class Configuration extends PKUtilsWidgetConfiguration implements IOptionWidget {
+    public static class Configuration extends UCUtilsWidgetConfiguration implements IOptionWidget {
 
         private boolean showSalary = true;
         private boolean showExperience = true;

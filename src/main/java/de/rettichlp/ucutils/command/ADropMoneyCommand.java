@@ -2,7 +2,7 @@ package de.rettichlp.ucutils.command;
 
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import de.rettichlp.ucutils.common.registry.CommandBase;
-import de.rettichlp.ucutils.common.registry.PKUtilsCommand;
+import de.rettichlp.ucutils.common.registry.UCUtilsCommand;
 import net.fabricmc.fabric.api.client.command.v2.FabricClientCommandSource;
 import net.minecraft.scoreboard.ReadableScoreboardScore;
 import net.minecraft.scoreboard.Scoreboard;
@@ -12,16 +12,16 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import static de.rettichlp.ucutils.PKUtils.commandService;
-import static de.rettichlp.ucutils.PKUtils.configuration;
-import static de.rettichlp.ucutils.PKUtils.messageService;
-import static de.rettichlp.ucutils.PKUtils.player;
+import static de.rettichlp.ucutils.UCUtils.commandService;
+import static de.rettichlp.ucutils.UCUtils.configuration;
+import static de.rettichlp.ucutils.UCUtils.messageService;
+import static de.rettichlp.ucutils.UCUtils.player;
 import static java.lang.Math.min;
 import static java.util.Optional.ofNullable;
 import static net.minecraft.scoreboard.ScoreHolder.fromName;
 import static net.minecraft.scoreboard.ScoreboardDisplaySlot.SIDEBAR;
 
-@PKUtilsCommand(label = "adropmoney")
+@UCUtilsCommand(label = "adropmoney")
 public class ADropMoneyCommand extends CommandBase {
 
     @Override

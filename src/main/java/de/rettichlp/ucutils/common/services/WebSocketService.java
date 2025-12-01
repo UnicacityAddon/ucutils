@@ -7,8 +7,8 @@ import org.jetbrains.annotations.NotNull;
 import java.net.http.WebSocket;
 import java.util.concurrent.CompletionStage;
 
-import static de.rettichlp.ucutils.PKUtils.LOGGER;
-import static de.rettichlp.ucutils.PKUtils.syncService;
+import static de.rettichlp.ucutils.UCUtils.LOGGER;
+import static de.rettichlp.ucutils.UCUtils.syncService;
 import static de.rettichlp.ucutils.common.services.WebSocketService.WebSocketMessageType.fromValue;
 import static java.util.Arrays.stream;
 

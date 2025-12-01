@@ -1,6 +1,6 @@
 package de.rettichlp.ucutils.listener.impl.faction;
 
-import de.rettichlp.ucutils.common.registry.PKUtilsListener;
+import de.rettichlp.ucutils.common.registry.UCUtilsListener;
 import de.rettichlp.ucutils.listener.IMessageReceiveListener;
 import de.rettichlp.ucutils.listener.INaviSpotReachedListener;
 import net.minecraft.text.Text;
@@ -8,17 +8,17 @@ import net.minecraft.text.Text;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static de.rettichlp.ucutils.PKUtils.api;
-import static de.rettichlp.ucutils.PKUtils.commandService;
-import static de.rettichlp.ucutils.PKUtils.player;
-import static de.rettichlp.ucutils.PKUtils.storage;
+import static de.rettichlp.ucutils.UCUtils.api;
+import static de.rettichlp.ucutils.UCUtils.commandService;
+import static de.rettichlp.ucutils.UCUtils.player;
+import static de.rettichlp.ucutils.UCUtils.storage;
 import static de.rettichlp.ucutils.common.models.ActivityEntry.Type.EMERGENCY_SERVICE;
 import static de.rettichlp.ucutils.common.models.Sound.SERVICE;
 import static java.lang.Integer.parseInt;
 import static java.lang.Math.max;
 import static java.util.regex.Pattern.compile;
 
-@PKUtilsListener
+@UCUtilsListener
 public class EmergencyServiceListener implements IMessageReceiveListener, INaviSpotReachedListener {
 
     private static final Pattern SERVICE_PATTERN = compile("Ein Notruf von (?:\\[PK])?(?<playerName>[a-zA-Z0-9_]+) \\((?<message>.+)\\)\\.");

@@ -12,8 +12,8 @@ import net.minecraft.client.gui.widget.TextWidget;
 import net.minecraft.text.Text;
 import org.jetbrains.annotations.NotNull;
 
-import static de.rettichlp.ucutils.PKUtils.configuration;
-import static de.rettichlp.ucutils.PKUtils.renderService;
+import static de.rettichlp.ucutils.UCUtils.configuration;
+import static de.rettichlp.ucutils.UCUtils.renderService;
 import static de.rettichlp.ucutils.common.models.Color.WHITE;
 import static de.rettichlp.ucutils.common.models.Faction.NULL;
 import static java.util.Arrays.stream;
@@ -24,22 +24,22 @@ import static net.minecraft.text.Text.translatable;
 
 public class NameTagOptionsScreen extends OptionsScreen {
 
-    private static final Text TEXT_NAMETAG = translatable("pkutils.options.text.nametag");
-    private static final Text TEXT_FACTION = translatable("pkutils.options.text.faction");
-    private static final Text TEXT_COLOR = translatable("pkutils.options.text.color");
-    private static final Text TEXT_ADDITIONAL = translatable("pkutils.options.text.additional");
-    private static final Text NAMETAG_FACTION_INFORMATION_NAME = translatable("pkutils.options.nametag.faction.information.name");
-    private static final Text NAMETAG_FACTION_INFORMATION_TOOLTIP = translatable("pkutils.options.nametag.faction.information.tooltip");
-    private static final Text NAMETAG_ADDITIONAL_BLACKLIST_NAME = translatable("pkutils.options.nametag.additional.blacklist.name");
-    private static final Text NAMETAG_ADDITIONAL_BLACKLIST_TOOLTIP = translatable("pkutils.options.nametag.additional.blacklist.tooltip");
-    private static final Text NAMETAG_ADDITIONAL_CONTRACT_NAME = translatable("pkutils.options.nametag.additional.contract.name");
-    private static final Text NAMETAG_ADDITIONAL_CONTRACT_TOOLTIP = translatable("pkutils.options.nametag.additional.contract.tooltip");
-    private static final Text NAMETAG_ADDITIONAL_HOUSEBAN_NAME = translatable("pkutils.options.nametag.additional.houseban.name");
-    private static final Text NAMETAG_ADDITIONAL_HOUSEBAN_TOOLTIP = translatable("pkutils.options.nametag.additional.houseban.tooltip");
-    private static final Text NAMETAG_ADDITIONAL_WANTED_NAME = translatable("pkutils.options.nametag.additional.wanted.name");
-    private static final Text NAMETAG_ADDITIONAL_WANTED_TOOLTIP = translatable("pkutils.options.nametag.additional.wanted.tooltip");
-    private static final Text NAMETAG_ADDITIONAL_AFK_NAME = translatable("pkutils.options.nametag.additional.afk.name");
-    private static final Text NAMETAG_ADDITIONAL_AFK_TOOLTIP = translatable("pkutils.options.nametag.additional.afk.tooltip");
+    private static final Text TEXT_NAMETAG = translatable("ucutils.options.text.nametag");
+    private static final Text TEXT_FACTION = translatable("ucutils.options.text.faction");
+    private static final Text TEXT_COLOR = translatable("ucutils.options.text.color");
+    private static final Text TEXT_ADDITIONAL = translatable("ucutils.options.text.additional");
+    private static final Text NAMETAG_FACTION_INFORMATION_NAME = translatable("ucutils.options.nametag.faction.information.name");
+    private static final Text NAMETAG_FACTION_INFORMATION_TOOLTIP = translatable("ucutils.options.nametag.faction.information.tooltip");
+    private static final Text NAMETAG_ADDITIONAL_BLACKLIST_NAME = translatable("ucutils.options.nametag.additional.blacklist.name");
+    private static final Text NAMETAG_ADDITIONAL_BLACKLIST_TOOLTIP = translatable("ucutils.options.nametag.additional.blacklist.tooltip");
+    private static final Text NAMETAG_ADDITIONAL_CONTRACT_NAME = translatable("ucutils.options.nametag.additional.contract.name");
+    private static final Text NAMETAG_ADDITIONAL_CONTRACT_TOOLTIP = translatable("ucutils.options.nametag.additional.contract.tooltip");
+    private static final Text NAMETAG_ADDITIONAL_HOUSEBAN_NAME = translatable("ucutils.options.nametag.additional.houseban.name");
+    private static final Text NAMETAG_ADDITIONAL_HOUSEBAN_TOOLTIP = translatable("ucutils.options.nametag.additional.houseban.tooltip");
+    private static final Text NAMETAG_ADDITIONAL_WANTED_NAME = translatable("ucutils.options.nametag.additional.wanted.name");
+    private static final Text NAMETAG_ADDITIONAL_WANTED_TOOLTIP = translatable("ucutils.options.nametag.additional.wanted.tooltip");
+    private static final Text NAMETAG_ADDITIONAL_AFK_NAME = translatable("ucutils.options.nametag.additional.afk.name");
+    private static final Text NAMETAG_ADDITIONAL_AFK_TOOLTIP = translatable("ucutils.options.nametag.additional.afk.tooltip");
 
     public NameTagOptionsScreen(Screen parent) {
         super(parent, TEXT_NAMETAG);

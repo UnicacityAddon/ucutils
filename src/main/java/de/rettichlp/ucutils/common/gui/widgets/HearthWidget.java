@@ -1,8 +1,8 @@
 package de.rettichlp.ucutils.common.gui.widgets;
 
-import de.rettichlp.ucutils.common.gui.widgets.base.AbstractPKUtilsTextWidget;
-import de.rettichlp.ucutils.common.gui.widgets.base.PKUtilsWidget;
-import de.rettichlp.ucutils.common.gui.widgets.base.PKUtilsWidgetConfiguration;
+import de.rettichlp.ucutils.common.gui.widgets.base.AbstractUCUtilsTextWidget;
+import de.rettichlp.ucutils.common.gui.widgets.base.UCUtilsWidget;
+import de.rettichlp.ucutils.common.gui.widgets.base.UCUtilsWidgetConfiguration;
 import lombok.AllArgsConstructor;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;
@@ -18,8 +18,8 @@ import static net.minecraft.util.Formatting.GRAY;
 import static net.minecraft.util.Formatting.RED;
 import static net.minecraft.util.Formatting.YELLOW;
 
-@PKUtilsWidget(registryName = "hearth", defaultX = 4.0, defaultY = 4.0, defaultEnabled = false)
-public class HearthWidget extends AbstractPKUtilsTextWidget<HearthWidget.Configuration> {
+@UCUtilsWidget(registryName = "hearth", defaultX = 4.0, defaultY = 4.0, defaultEnabled = false)
+public class HearthWidget extends AbstractUCUtilsTextWidget<HearthWidget.Configuration> {
 
     @Override
     public Text text() {
@@ -46,14 +46,14 @@ public class HearthWidget extends AbstractPKUtilsTextWidget<HearthWidget.Configu
 
     @Override
     public Text getDisplayName() {
-        return translatable("pkutils.options.widgets.hearth.options.name");
+        return translatable("ucutils.options.widgets.hearth.options.name");
     }
 
     @Override
     public Text getTooltip() {
-        return translatable("pkutils.options.widgets.hearth.options.tooltip");
+        return translatable("ucutils.options.widgets.hearth.options.tooltip");
     }
 
     @AllArgsConstructor
-    public static class Configuration extends PKUtilsWidgetConfiguration {}
+    public static class Configuration extends UCUtilsWidgetConfiguration {}
 }

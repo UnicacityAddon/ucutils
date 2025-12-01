@@ -1,8 +1,8 @@
 package de.rettichlp.ucutils.common.gui.widgets;
 
-import de.rettichlp.ucutils.common.gui.widgets.base.AbstractPKUtilsProgressTextWidget;
-import de.rettichlp.ucutils.common.gui.widgets.base.PKUtilsWidget;
-import de.rettichlp.ucutils.common.gui.widgets.base.PKUtilsWidgetConfiguration;
+import de.rettichlp.ucutils.common.gui.widgets.base.AbstractUCUtilsProgressTextWidget;
+import de.rettichlp.ucutils.common.gui.widgets.base.UCUtilsWidget;
+import de.rettichlp.ucutils.common.gui.widgets.base.UCUtilsWidgetConfiguration;
 import lombok.RequiredArgsConstructor;
 import net.minecraft.text.Text;
 
@@ -14,8 +14,8 @@ import static java.time.temporal.ChronoUnit.MILLIS;
 import static net.minecraft.text.Text.empty;
 
 @RequiredArgsConstructor
-@PKUtilsWidget(registryName = "notification")
-public class NotificationWidget extends AbstractPKUtilsProgressTextWidget<NotificationWidget.Configuration> {
+@UCUtilsWidget(registryName = "notification")
+public class NotificationWidget extends AbstractUCUtilsProgressTextWidget<NotificationWidget.Configuration> {
 
     private final Text text;
     private final Color borderColor;
@@ -52,5 +52,5 @@ public class NotificationWidget extends AbstractPKUtilsProgressTextWidget<Notifi
         return this.creationTime.plus(this.durationInMillis, MILLIS).isAfter(now());
     }
 
-    public static class Configuration extends PKUtilsWidgetConfiguration {}
+    public static class Configuration extends UCUtilsWidgetConfiguration {}
 }

@@ -2,18 +2,18 @@ package de.rettichlp.ucutils.command.mobile;
 
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import de.rettichlp.ucutils.common.registry.CommandBase;
-import de.rettichlp.ucutils.common.registry.PKUtilsCommand;
+import de.rettichlp.ucutils.common.registry.UCUtilsCommand;
 import net.fabricmc.fabric.api.client.command.v2.FabricClientCommandSource;
 import org.jetbrains.annotations.NotNull;
 
 import static com.mojang.brigadier.arguments.StringArgumentType.getString;
 import static com.mojang.brigadier.arguments.StringArgumentType.greedyString;
-import static de.rettichlp.ucutils.PKUtils.commandService;
-import static de.rettichlp.ucutils.PKUtils.messageService;
-import static de.rettichlp.ucutils.PKUtils.storage;
+import static de.rettichlp.ucutils.UCUtils.commandService;
+import static de.rettichlp.ucutils.UCUtils.messageService;
+import static de.rettichlp.ucutils.UCUtils.storage;
 import static net.fabricmc.fabric.api.client.command.v2.ClientCommandManager.argument;
 
-@PKUtilsCommand(label = "reply", aliases = "r")
+@UCUtilsCommand(label = "reply", aliases = "r")
 public class ReplyCommand extends CommandBase {
 
     @Override

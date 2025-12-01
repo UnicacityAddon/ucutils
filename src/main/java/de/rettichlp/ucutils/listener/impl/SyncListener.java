@@ -1,6 +1,6 @@
 package de.rettichlp.ucutils.listener.impl;
 
-import de.rettichlp.ucutils.common.registry.PKUtilsListener;
+import de.rettichlp.ucutils.common.registry.UCUtilsListener;
 import de.rettichlp.ucutils.listener.ICommandSendListener;
 import de.rettichlp.ucutils.listener.IMessageReceiveListener;
 import net.minecraft.text.Text;
@@ -9,11 +9,11 @@ import org.jetbrains.annotations.NotNull;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static de.rettichlp.ucutils.PKUtils.notificationService;
-import static de.rettichlp.ucutils.PKUtils.syncService;
+import static de.rettichlp.ucutils.UCUtils.notificationService;
+import static de.rettichlp.ucutils.UCUtils.syncService;
 import static java.util.regex.Pattern.compile;
 
-@PKUtilsListener
+@UCUtilsListener
 public class SyncListener implements ICommandSendListener, IMessageReceiveListener {
 
     private static final Pattern SERVER_PASSWORD_MISSING_PATTERN = compile("^» Schütze deinen Account mit /passwort new \\[Passwort]$");

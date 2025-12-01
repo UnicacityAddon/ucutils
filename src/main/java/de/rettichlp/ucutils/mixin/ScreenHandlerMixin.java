@@ -19,9 +19,9 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import static de.rettichlp.ucutils.PKUtils.networkHandler;
-import static de.rettichlp.ucutils.PKUtils.storage;
-import static de.rettichlp.ucutils.PKUtils.utilService;
+import static de.rettichlp.ucutils.UCUtils.networkHandler;
+import static de.rettichlp.ucutils.UCUtils.storage;
+import static de.rettichlp.ucutils.UCUtils.utilService;
 import static java.util.Objects.isNull;
 import static net.minecraft.screen.slot.SlotActionType.PICKUP;
 

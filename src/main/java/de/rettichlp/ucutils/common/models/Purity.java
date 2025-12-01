@@ -16,10 +16,10 @@ import static net.minecraft.util.Formatting.YELLOW;
 @AllArgsConstructor
 public enum Purity implements CyclingButtonEntry {
 
-    BEST(translatable("pkutils.purity.best").formatted(DARK_GREEN)),
-    GOOD(translatable("pkutils.purity.good").formatted(GREEN)),
-    MEDIUM(translatable("pkutils.purity.medium").formatted(YELLOW)),
-    BAD(translatable("pkutils.purity.bad").formatted(RED));
+    BEST(translatable("ucutils.purity.best").formatted(DARK_GREEN)),
+    GOOD(translatable("ucutils.purity.good").formatted(GREEN)),
+    MEDIUM(translatable("ucutils.purity.medium").formatted(YELLOW)),
+    BAD(translatable("ucutils.purity.bad").formatted(RED));
 
     private final Text displayName;
 

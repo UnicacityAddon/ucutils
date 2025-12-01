@@ -1,17 +1,17 @@
 package de.rettichlp.ucutils.listener.impl;
 
-import de.rettichlp.ucutils.common.registry.PKUtilsListener;
+import de.rettichlp.ucutils.common.registry.UCUtilsListener;
 import de.rettichlp.ucutils.listener.IMessageReceiveListener;
 import net.minecraft.text.Text;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static de.rettichlp.ucutils.PKUtils.storage;
+import static de.rettichlp.ucutils.UCUtils.storage;
 import static java.lang.Integer.parseInt;
 import static java.util.regex.Pattern.compile;
 
-@PKUtilsListener
+@UCUtilsListener
 public class MobileListener implements IMessageReceiveListener {
 
     private static final Pattern MOBILE_NUMBER_PATTERN = compile("^(?:\\[PK])?(?<playerName>[a-zA-Z0-9_]+) gehört die Nummer (?<number>\\d+)\\.$");

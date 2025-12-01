@@ -12,12 +12,12 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import org.jetbrains.annotations.NotNull;
 
-import static de.rettichlp.ucutils.PKUtils.MOD_ID;
+import static de.rettichlp.ucutils.UCUtils.MOD_ID;
 import static java.util.Objects.nonNull;
 import static net.minecraft.client.gui.widget.DirectionalLayoutWidget.vertical;
 import static net.minecraft.text.Text.of;
 
-public abstract class PKUtilsScreen extends Screen {
+public abstract class UCUtilsScreen extends Screen {
 
     public final ThreePartsLayoutWidget layout = new ThreePartsLayoutWidget(this);
 
@@ -26,24 +26,24 @@ public abstract class PKUtilsScreen extends Screen {
     private Text subTitle = of("v" + getVersion());
     private boolean renderBackground = true;
 
-    public PKUtilsScreen(Text title, Screen parent) {
+    public UCUtilsScreen(Text title, Screen parent) {
         super(title);
         this.parent = parent;
     }
 
-    public PKUtilsScreen(Text title, Text subTitle) {
+    public UCUtilsScreen(Text title, Text subTitle) {
         super(title);
         this.parent = null;
         this.subTitle = subTitle;
     }
 
-    public PKUtilsScreen(Text title, Text subTitle, Screen parent) {
+    public UCUtilsScreen(Text title, Text subTitle, Screen parent) {
         super(title);
         this.parent = parent;
         this.subTitle = subTitle;
     }
 
-    public PKUtilsScreen(Text title, Text subTitle, Screen parent, boolean renderBackground) {
+    public UCUtilsScreen(Text title, Text subTitle, Screen parent, boolean renderBackground) {
         super(title);
         this.parent = parent;
         this.subTitle = subTitle;

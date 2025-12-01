@@ -67,10 +67,10 @@ public class Options {
     @Accessors(fluent = false)
     public enum AtmInformationType implements CyclingButtonEntry {
 
-        NONE(translatable("pkutils.options.atm_information.value.none.name"), translatable("pkutils.options.atm_information.value.none.tooltip")),
-        F_BANK(translatable("pkutils.options.atm_information.value.f_bank.name"), translatable("pkutils.options.atm_information.value.f_bank.tooltip")),
-        G_BANK(translatable("pkutils.options.atm_information.value.g_bank.name"), translatable("pkutils.options.atm_information.value.g_bank.tooltip")),
-        BOTH(translatable("pkutils.options.atm_information.value.both.name"), translatable("pkutils.options.atm_information.value.both.tooltip"));
+        NONE(translatable("ucutils.options.atm_information.value.none.name"), translatable("ucutils.options.atm_information.value.none.tooltip")),
+        F_BANK(translatable("ucutils.options.atm_information.value.f_bank.name"), translatable("ucutils.options.atm_information.value.f_bank.tooltip")),
+        G_BANK(translatable("ucutils.options.atm_information.value.g_bank.name"), translatable("ucutils.options.atm_information.value.g_bank.tooltip")),
+        BOTH(translatable("ucutils.options.atm_information.value.both.name"), translatable("ucutils.options.atm_information.value.both.tooltip"));
 
         private final Text displayName;
         private final Text tooltip;

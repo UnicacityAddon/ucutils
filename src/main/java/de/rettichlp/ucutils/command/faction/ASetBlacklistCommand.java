@@ -11,7 +11,7 @@ import de.rettichlp.ucutils.common.models.BlacklistEntry;
 import de.rettichlp.ucutils.common.models.BlacklistReason;
 import de.rettichlp.ucutils.common.models.Faction;
 import de.rettichlp.ucutils.common.registry.CommandBase;
-import de.rettichlp.ucutils.common.registry.PKUtilsCommand;
+import de.rettichlp.ucutils.common.registry.UCUtilsCommand;
 import net.fabricmc.fabric.api.client.command.v2.FabricClientCommandSource;
 import net.minecraft.client.network.PlayerListEntry;
 import org.jetbrains.annotations.NotNull;
@@ -25,17 +25,17 @@ import java.util.concurrent.CompletableFuture;
 import static com.mojang.brigadier.arguments.StringArgumentType.getString;
 import static com.mojang.brigadier.arguments.StringArgumentType.string;
 import static com.mojang.brigadier.arguments.StringArgumentType.word;
-import static de.rettichlp.ucutils.PKUtils.commandService;
-import static de.rettichlp.ucutils.PKUtils.messageService;
-import static de.rettichlp.ucutils.PKUtils.networkHandler;
-import static de.rettichlp.ucutils.PKUtils.player;
-import static de.rettichlp.ucutils.PKUtils.storage;
+import static de.rettichlp.ucutils.UCUtils.commandService;
+import static de.rettichlp.ucutils.UCUtils.messageService;
+import static de.rettichlp.ucutils.UCUtils.networkHandler;
+import static de.rettichlp.ucutils.UCUtils.player;
+import static de.rettichlp.ucutils.UCUtils.storage;
 import static java.util.stream.Collectors.toSet;
 import static java.util.stream.IntStream.range;
 import static net.fabricmc.fabric.api.client.command.v2.ClientCommandManager.argument;
 import static net.minecraft.command.CommandSource.suggestMatching;
 
-@PKUtilsCommand(label = "asetbl")
+@UCUtilsCommand(label = "asetbl")
 public class ASetBlacklistCommand extends CommandBase {
 
     @Override
@@ -108,7 +108,7 @@ public class ASetBlacklistCommand extends CommandBase {
                 .findFirst();
 
         if (optionalBlacklistReason.isEmpty()) {
-            messageService.sendModMessage("Der Grund \"" + reasonString + "\" ist PKUtils unbekannt.", false);
+            messageService.sendModMessage("Der Grund \"" + reasonString + "\" ist UCUtils unbekannt.", false);
             return 1;
         }
 

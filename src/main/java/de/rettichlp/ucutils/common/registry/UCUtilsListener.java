@@ -7,9 +7,6 @@ import java.lang.annotation.RetentionPolicy;
 
 @IndexAnnotated
 @Retention(RetentionPolicy.RUNTIME)
-public @interface PKUtilsCommand {
+public @interface UCUtilsListener {
 
-    String label();
-
-    String[] aliases() default {};
 }

@@ -7,8 +7,8 @@ import java.time.LocalDate;
 import java.time.chrono.ChronoLocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-import static de.rettichlp.ucutils.PKUtils.messageService;
-import static de.rettichlp.ucutils.PKUtils.player;
+import static de.rettichlp.ucutils.UCUtils.messageService;
+import static de.rettichlp.ucutils.UCUtils.player;
 import static java.lang.Math.abs;
 import static java.lang.String.format;
 import static java.time.format.DateTimeFormatter.ofPattern;

@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import static de.rettichlp.ucutils.PKUtils.MOD_ID;
+import static de.rettichlp.ucutils.UCUtils.MOD_ID;
 
 public class UtilService {
 

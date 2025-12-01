@@ -5,8 +5,8 @@ import net.minecraft.client.gui.widget.DirectionalLayoutWidget;
 import net.minecraft.client.gui.widget.TextWidget;
 import net.minecraft.text.Text;
 
-import static de.rettichlp.ucutils.PKUtils.renderService;
-import static de.rettichlp.ucutils.PKUtils.storage;
+import static de.rettichlp.ucutils.UCUtils.renderService;
+import static de.rettichlp.ucutils.UCUtils.storage;
 import static net.minecraft.client.gui.widget.DirectionalLayoutWidget.vertical;
 import static net.minecraft.text.Text.empty;
 import static net.minecraft.text.Text.of;
@@ -14,9 +14,9 @@ import static net.minecraft.text.Text.translatable;
 import static net.minecraft.util.Formatting.GOLD;
 import static net.minecraft.util.Formatting.GRAY;
 
-public class ShutdownScreen extends PKUtilsScreen {
+public class ShutdownScreen extends UCUtilsScreen {
 
-    private static final Text BUTTON_SHUTDOWN_ABORT_NAME = translatable("pkutils.screen.shutdown_abort.button.name");
+    private static final Text BUTTON_SHUTDOWN_ABORT_NAME = translatable("ucutils.screen.shutdown_abort.button.name");
 
     private final ShutdownReason shutdownReason;
 

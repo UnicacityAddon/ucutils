@@ -20,15 +20,15 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import static de.rettichlp.ucutils.PKUtils.LOGGER;
-import static de.rettichlp.ucutils.PKUtils.api;
+import static de.rettichlp.ucutils.UCUtils.LOGGER;
+import static de.rettichlp.ucutils.UCUtils.api;
 import static java.nio.file.Files.newBufferedReader;
 import static java.nio.file.Files.newBufferedWriter;
 
 @Data
 public class Configuration {
 
-    private static final Path CONFIG_PATH = FabricLoader.getInstance().getConfigDir().resolve("pkutils.json");
+    private static final Path CONFIG_PATH = FabricLoader.getInstance().getConfigDir().resolve("ucutils.json");
 
     private Map<String, Object> widgets = new HashMap<>();
     private List<TodoEntry> todos = new ArrayList<>();

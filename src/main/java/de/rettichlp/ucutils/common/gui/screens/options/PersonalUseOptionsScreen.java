@@ -15,9 +15,9 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
-import static de.rettichlp.ucutils.PKUtils.LOGGER;
-import static de.rettichlp.ucutils.PKUtils.configuration;
-import static de.rettichlp.ucutils.PKUtils.renderService;
+import static de.rettichlp.ucutils.UCUtils.LOGGER;
+import static de.rettichlp.ucutils.UCUtils.configuration;
+import static de.rettichlp.ucutils.UCUtils.renderService;
 import static java.lang.Integer.parseInt;
 import static java.lang.String.valueOf;
 import static java.util.Arrays.stream;
@@ -29,9 +29,9 @@ import static net.minecraft.text.Text.translatable;
 
 public class PersonalUseOptionsScreen extends OptionsScreen {
 
-    private static final Text TEXT_PERSONAL_USE = translatable("pkutils.options.text.personal_use");
-    private static final Text TEXT_PURITY = translatable("pkutils.options.text.purity");
-    private static final Text TEXT_AMOUNT = translatable("pkutils.options.text.amount");
+    private static final Text TEXT_PERSONAL_USE = translatable("ucutils.options.text.personal_use");
+    private static final Text TEXT_PURITY = translatable("ucutils.options.text.purity");
+    private static final Text TEXT_AMOUNT = translatable("ucutils.options.text.amount");
 
     public PersonalUseOptionsScreen(Screen parent) {
         super(parent, TEXT_PERSONAL_USE);
@@ -70,7 +70,7 @@ public class PersonalUseOptionsScreen extends OptionsScreen {
         DirectionalLayoutWidget directionalLayoutWidget = horizontal().spacing(8);
 
         // text
-        TextWidget widget = new TextWidget(translatable("pkutils.inventory." + inventoryItem.name().toLowerCase()), this.textRenderer);
+        TextWidget widget = new TextWidget(translatable("ucutils.inventory." + inventoryItem.name().toLowerCase()), this.textRenderer);
         widget.setWidth(100);
         widget.alignLeft();
         directionalLayoutWidget.add(widget, Positioner::alignVerticalCenter);

@@ -1,7 +1,7 @@
 package de.rettichlp.ucutils.listener.impl.faction;
 
 import de.rettichlp.ucutils.common.models.PlantEntry;
-import de.rettichlp.ucutils.common.registry.PKUtilsListener;
+import de.rettichlp.ucutils.common.registry.UCUtilsListener;
 import de.rettichlp.ucutils.listener.IBlockRightClickListener;
 import de.rettichlp.ucutils.listener.IEntityRenderListener;
 import de.rettichlp.ucutils.listener.IMessageReceiveListener;
@@ -29,11 +29,11 @@ import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static de.rettichlp.ucutils.PKUtils.commandService;
-import static de.rettichlp.ucutils.PKUtils.messageService;
-import static de.rettichlp.ucutils.PKUtils.player;
-import static de.rettichlp.ucutils.PKUtils.renderService;
-import static de.rettichlp.ucutils.PKUtils.storage;
+import static de.rettichlp.ucutils.UCUtils.commandService;
+import static de.rettichlp.ucutils.UCUtils.messageService;
+import static de.rettichlp.ucutils.UCUtils.player;
+import static de.rettichlp.ucutils.UCUtils.renderService;
+import static de.rettichlp.ucutils.UCUtils.storage;
 import static java.time.Duration.between;
 import static java.time.LocalDateTime.now;
 import static java.util.Objects.nonNull;
@@ -54,7 +54,7 @@ import static net.minecraft.util.Formatting.GRAY;
 import static net.minecraft.util.Formatting.GREEN;
 import static net.minecraft.util.Formatting.RED;
 
-@PKUtilsListener
+@UCUtilsListener
 public class PlantListener implements IBlockRightClickListener, IEntityRenderListener, IMessageReceiveListener, IScreenOpenListener {
 
     private static final String PLANT_TEXT = "Plantage";
@@ -83,7 +83,7 @@ public class PlantListener implements IBlockRightClickListener, IEntityRenderLis
 
         boolean isStandingOnPlant = player.getBlockPos().equals(blockPos);
         if (!isStandingOnPlant) {
-            messageService.sendModMessage("Du musst auf der Plantage stehen, um sie via PKUtils zu verwalten.", false);
+            messageService.sendModMessage("Du musst auf der Plantage stehen, um sie via UCUtils zu verwalten.", false);
             return;
         }
 

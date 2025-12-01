@@ -2,7 +2,7 @@
     "bomb": {
         "sounds": [
             {
-                "name": "pkutils:bomb_sound",
+                "name": "ucutils:bomb_sound",
                 "stream": true
             }
         ]
@@ -10,7 +10,7 @@
     "contract.fulfilled": {
         "sounds": [
             {
-                "name": "pkutils:contract_fulfilled_sound",
+                "name": "ucutils:contract_fulfilled_sound",
                 "stream": true
             }
         ]
@@ -18,7 +18,7 @@
     "contract.set": {
         "sounds": [
             {
-                "name": "pkutils:contract_set_sound",
+                "name": "ucutils:contract_set_sound",
                 "stream": true
             }
         ]
@@ -26,7 +26,7 @@
     "report": {
         "sounds": [
             {
-                "name": "pkutils:report_sound",
+                "name": "ucutils:report_sound",
                 "stream": true
             }
         ]
@@ -34,7 +34,7 @@
     "service": {
         "sounds": [
             {
-                "name": "pkutils:service_sound",
+                "name": "ucutils:service_sound",
                 "stream": true
             }
         ]

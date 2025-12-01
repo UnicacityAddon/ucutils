@@ -1,6 +1,6 @@
 package de.rettichlp.ucutils.listener.impl.job;
 
-import de.rettichlp.ucutils.common.registry.PKUtilsListener;
+import de.rettichlp.ucutils.common.registry.UCUtilsListener;
 import de.rettichlp.ucutils.listener.IMessageReceiveListener;
 import de.rettichlp.ucutils.listener.ITickListener;
 import lombok.AllArgsConstructor;
@@ -17,10 +17,10 @@ import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static de.rettichlp.ucutils.PKUtils.commandService;
-import static de.rettichlp.ucutils.PKUtils.messageService;
-import static de.rettichlp.ucutils.PKUtils.player;
-import static de.rettichlp.ucutils.PKUtils.utilService;
+import static de.rettichlp.ucutils.UCUtils.commandService;
+import static de.rettichlp.ucutils.UCUtils.messageService;
+import static de.rettichlp.ucutils.UCUtils.player;
+import static de.rettichlp.ucutils.UCUtils.utilService;
 import static java.lang.Double.compare;
 import static java.lang.System.currentTimeMillis;
 import static java.util.Arrays.stream;
@@ -30,7 +30,7 @@ import static java.util.Optional.empty;
 import static java.util.regex.Pattern.compile;
 import static net.minecraft.scoreboard.ScoreboardDisplaySlot.SIDEBAR;
 
-@PKUtilsListener
+@UCUtilsListener
 public class GarbageManListener implements IMessageReceiveListener, ITickListener {
 
     private static final String GARBAGE_MAN_TEXT = "müllmann";

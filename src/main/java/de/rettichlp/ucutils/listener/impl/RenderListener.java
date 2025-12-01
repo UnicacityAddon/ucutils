@@ -2,9 +2,9 @@ package de.rettichlp.ucutils.listener.impl;
 
 import de.rettichlp.ucutils.common.gui.widgets.CountdownWidget;
 import de.rettichlp.ucutils.common.gui.widgets.NotificationWidget;
-import de.rettichlp.ucutils.common.gui.widgets.base.AbstractPKUtilsProgressTextWidget;
+import de.rettichlp.ucutils.common.gui.widgets.base.AbstractUCUtilsProgressTextWidget;
 import de.rettichlp.ucutils.common.models.Countdown;
-import de.rettichlp.ucutils.common.registry.PKUtilsListener;
+import de.rettichlp.ucutils.common.registry.UCUtilsListener;
 import de.rettichlp.ucutils.common.services.NotificationService;
 import de.rettichlp.ucutils.listener.IHudRenderListener;
 import net.minecraft.client.MinecraftClient;
@@ -16,12 +16,12 @@ import org.jetbrains.annotations.Unmodifiable;
 import java.util.ArrayList;
 import java.util.List;
 
-import static de.rettichlp.ucutils.PKUtils.notificationService;
-import static de.rettichlp.ucutils.PKUtils.renderService;
-import static de.rettichlp.ucutils.PKUtils.storage;
-import static de.rettichlp.ucutils.common.gui.widgets.base.AbstractPKUtilsWidget.Alignment.RIGHT;
+import static de.rettichlp.ucutils.UCUtils.notificationService;
+import static de.rettichlp.ucutils.UCUtils.renderService;
+import static de.rettichlp.ucutils.UCUtils.storage;
+import static de.rettichlp.ucutils.common.gui.widgets.base.AbstractUCUtilsWidget.Alignment.RIGHT;
 
-@PKUtilsListener
+@UCUtilsListener
 public class RenderListener implements IHudRenderListener {
 
     @Override
@@ -31,15 +31,15 @@ public class RenderListener implements IHudRenderListener {
     }
 
     private void renderNotifications(DrawContext drawContext) {
-        ArrayList<AbstractPKUtilsProgressTextWidget<?>> widgets = new ArrayList<>();
+        ArrayList<AbstractUCUtilsProgressTextWidget<?>> widgets = new ArrayList<>();
         widgets.addAll(getCountdownWidgets());
         widgets.addAll(getNotificationWidgets());
 
         for (int i = 0; i < widgets.size(); i++) {
-            AbstractPKUtilsProgressTextWidget<?> abstractPKUtilsProgressTextWidget = widgets.get(i);
-            int x = MinecraftClient.getInstance().getWindow().getScaledWidth() - abstractPKUtilsProgressTextWidget.getWidth() - 4;
+            AbstractUCUtilsProgressTextWidget<?> abstractUCUtilsProgressTextWidget = widgets.get(i);
+            int x = MinecraftClient.getInstance().getWindow().getScaledWidth() - abstractUCUtilsProgressTextWidget.getWidth() - 4;
             int y = 19 * i + 4;
-            abstractPKUtilsProgressTextWidget.draw(drawContext, x, y, RIGHT);
+            abstractUCUtilsProgressTextWidget.draw(drawContext, x, y, RIGHT);
         }
     }
 
@@ -57,6 +57,6 @@ public class RenderListener implements IHudRenderListener {
     }
 
     private void renderWidgets(DrawContext drawContext) {
-        renderService.getWidgets().forEach(pkUtilsWidgetInstance -> pkUtilsWidgetInstance.draw(drawContext));
+        renderService.getWidgets().forEach(ucUtilsWidgetInstance -> ucUtilsWidgetInstance.draw(drawContext));
     }
 }

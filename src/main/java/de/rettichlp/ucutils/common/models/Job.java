@@ -5,8 +5,8 @@ import lombok.Getter;
 import java.time.Duration;
 import java.util.regex.Pattern;
 
-import static de.rettichlp.ucutils.PKUtils.notificationService;
-import static de.rettichlp.ucutils.PKUtils.storage;
+import static de.rettichlp.ucutils.UCUtils.notificationService;
+import static de.rettichlp.ucutils.UCUtils.storage;
 import static java.time.Duration.ofMinutes;
 import static java.util.regex.Pattern.compile;
 

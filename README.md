@@ -1,6 +1,6 @@
-# pkutils
+# ucutils
 
-PKUtils is a utility mod for the PunicaKitty roleplay server, inspired by the former UnicacityAddon. It provides useful commands, QoL features, and custom tools tailored for PunicaKitty, enhancing gameplay and making everyday interactions smoother and more enjoyable.
+UCUtils is a utility mod for the PunicaKitty roleplay server, inspired by the former UnicacityAddon. It provides useful commands, QoL features, and custom tools tailored for PunicaKitty, enhancing gameplay and making everyday interactions smoother and more enjoyable.
 
 ## Features & Funktionen
 
@@ -48,7 +48,7 @@ PKUtils is a utility mod for the PunicaKitty roleplay server, inspired by the fo
 
 | Befehl                           | Beschreibung                                                                           |
 |----------------------------------|----------------------------------------------------------------------------------------|
-| `/pkutils`                       | Zeigt nützliche Status-Informationen über das Projekt an                               |
+| `/ucutils`                       | Zeigt nützliche Status-Informationen über das Projekt an                               |
 | `/sync`                          | Startet die Synchronisierung um Daten wie Fraktionsmitglieder mit der Mod abzugleichen |
 | `/todo`                          | Zeigt eine Todoliste an (`/todo add <Aufgabe>`)                                        |
 | `/mi`                            | Alias für `/memberinfo`                                                                |

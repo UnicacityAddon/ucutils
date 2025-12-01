@@ -9,9 +9,9 @@ import net.minecraft.client.gui.widget.EmptyWidget;
 
 import java.time.LocalDateTime;
 
-import static de.rettichlp.ucutils.PKUtils.api;
-import static de.rettichlp.ucutils.PKUtils.commandService;
-import static de.rettichlp.ucutils.PKUtils.renderService;
+import static de.rettichlp.ucutils.UCUtils.api;
+import static de.rettichlp.ucutils.UCUtils.commandService;
+import static de.rettichlp.ucutils.UCUtils.renderService;
 import static de.rettichlp.ucutils.common.gui.screens.FactionActivityScreen.SortingType.RANK;
 import static de.rettichlp.ucutils.common.gui.screens.components.TableHeaderTextWidget.SortingDirection.DESCENDING;
 import static java.lang.Math.max;
@@ -61,7 +61,7 @@ public abstract class FactionScreen extends OptionsScreen {
     public DirectionalLayoutWidget getMenuDirectionalLayoutWidget() {
         DirectionalLayoutWidget directionalLayoutWidget = horizontal().spacing(8);
 
-        renderService.addButton(directionalLayoutWidget, translatable("pkutils.screen.faction.button.activity.name"), button -> {
+        renderService.addButton(directionalLayoutWidget, translatable("ucutils.screen.faction.button.activity.name"), button -> {
             close();
             api.getFactionPlayerData(this.from, this.to, this.faction.getMembers().stream().map(FactionMember::playerName).toList(), factionPlayerDataResponse -> this.client.execute(() -> {
                 FactionActivityScreen factionActivityScreen = new FactionActivityScreen(this.faction, this.from, this.to, factionPlayerDataResponse, RANK, DESCENDING);
@@ -71,7 +71,7 @@ public abstract class FactionScreen extends OptionsScreen {
 
         directionalLayoutWidget.add(new EmptyWidget(132, 0));
 
-        ButtonWidget buttonWidget = directionalLayoutWidget.add(new ButtonWidget.Builder(translatable("pkutils.screen.faction.button.blacklist.name"), button -> {
+        ButtonWidget buttonWidget = directionalLayoutWidget.add(new ButtonWidget.Builder(translatable("ucutils.screen.faction.button.blacklist.name"), button -> {
             close();
             api.getBlacklistReasons(this.faction, blacklistReasons -> this.client.execute(() -> {
                 FactionBlacklistReasonScreen factionScreen = new FactionBlacklistReasonScreen(this.faction, this.from, this.to, blacklistReasons);

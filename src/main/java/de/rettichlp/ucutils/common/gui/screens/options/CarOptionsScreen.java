@@ -7,26 +7,26 @@ import net.minecraft.client.gui.widget.Positioner;
 import net.minecraft.client.gui.widget.TextWidget;
 import net.minecraft.text.Text;
 
-import static de.rettichlp.ucutils.PKUtils.renderService;
+import static de.rettichlp.ucutils.UCUtils.renderService;
 import static net.minecraft.client.gui.widget.DirectionalLayoutWidget.horizontal;
 import static net.minecraft.client.gui.widget.DirectionalLayoutWidget.vertical;
 import static net.minecraft.text.Text.translatable;
 
 public class CarOptionsScreen extends OptionsScreen {
 
-    private static final Text TEXT_CAR = translatable("pkutils.options.text.car");
-    private static final Text TEXT_GENERAL = translatable("pkutils.options.text.general");
-    private static final Text TEXT_AUTOMATION = translatable("pkutils.options.text.automation");
-    private static final Text CAR_GENERAL_FAST_FIND_NAME = translatable("pkutils.options.car.general.fast_find.name");
-    private static final Text CAR_GENERAL_FAST_FIND_TOOLTIP = translatable("pkutils.options.car.general.fast_find.tooltip");
-    private static final Text CAR_GENERAL_FAST_LOCK_NAME = translatable("pkutils.options.car.general.fast_lock.name");
-    private static final Text CAR_GENERAL_FAST_LOCK_TOOLTIP = translatable("pkutils.options.car.general.fast_lock.tooltip");
-    private static final Text CAR_GENERAL_HIGHLIGHT_NAME = translatable("pkutils.options.car.general.highlight.name");
-    private static final Text CAR_GENERAL_HIGHLIGHT_TOOLTIP = translatable("pkutils.options.car.general.highlight.tooltip");
-    private static final Text CAR_AUTOMATION_LOCK_NAME = translatable("pkutils.options.car.automation.lock.name");
-    private static final Text CAR_AUTOMATION_LOCK_TOOLTIP = translatable("pkutils.options.car.automation.lock.tooltip");
-    private static final Text CAR_AUTOMATION_START_NAME = translatable("pkutils.options.car.automation.start.name");
-    private static final Text CAR_AUTOMATION_START_TOOLTIP = translatable("pkutils.options.car.automation.start.tooltip");
+    private static final Text TEXT_CAR = translatable("ucutils.options.text.car");
+    private static final Text TEXT_GENERAL = translatable("ucutils.options.text.general");
+    private static final Text TEXT_AUTOMATION = translatable("ucutils.options.text.automation");
+    private static final Text CAR_GENERAL_FAST_FIND_NAME = translatable("ucutils.options.car.general.fast_find.name");
+    private static final Text CAR_GENERAL_FAST_FIND_TOOLTIP = translatable("ucutils.options.car.general.fast_find.tooltip");
+    private static final Text CAR_GENERAL_FAST_LOCK_NAME = translatable("ucutils.options.car.general.fast_lock.name");
+    private static final Text CAR_GENERAL_FAST_LOCK_TOOLTIP = translatable("ucutils.options.car.general.fast_lock.tooltip");
+    private static final Text CAR_GENERAL_HIGHLIGHT_NAME = translatable("ucutils.options.car.general.highlight.name");
+    private static final Text CAR_GENERAL_HIGHLIGHT_TOOLTIP = translatable("ucutils.options.car.general.highlight.tooltip");
+    private static final Text CAR_AUTOMATION_LOCK_NAME = translatable("ucutils.options.car.automation.lock.name");
+    private static final Text CAR_AUTOMATION_LOCK_TOOLTIP = translatable("ucutils.options.car.automation.lock.tooltip");
+    private static final Text CAR_AUTOMATION_START_NAME = translatable("ucutils.options.car.automation.start.name");
+    private static final Text CAR_AUTOMATION_START_TOOLTIP = translatable("ucutils.options.car.automation.start.tooltip");
 
     public CarOptionsScreen(Screen parent) {
         super(parent, TEXT_CAR);

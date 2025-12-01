@@ -2,7 +2,7 @@ package de.rettichlp.ucutils.command;
 
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import de.rettichlp.ucutils.common.registry.CommandBase;
-import de.rettichlp.ucutils.common.registry.PKUtilsCommand;
+import de.rettichlp.ucutils.common.registry.UCUtilsCommand;
 import de.rettichlp.ucutils.listener.impl.EventListener;
 import net.fabricmc.fabric.api.client.command.v2.FabricClientCommandSource;
 import org.jetbrains.annotations.NotNull;
@@ -11,13 +11,13 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import static de.rettichlp.ucutils.PKUtils.configuration;
-import static de.rettichlp.ucutils.PKUtils.messageService;
-import static de.rettichlp.ucutils.PKUtils.player;
+import static de.rettichlp.ucutils.UCUtils.configuration;
+import static de.rettichlp.ucutils.UCUtils.messageService;
+import static de.rettichlp.ucutils.UCUtils.player;
 import static net.minecraft.text.Text.empty;
 import static net.minecraft.text.Text.of;
 
-@PKUtilsCommand(label = "notvisitedhouses")
+@UCUtilsCommand(label = "notvisitedhouses")
 public class NotVisitedHousesCommand extends CommandBase {
 
     @Override

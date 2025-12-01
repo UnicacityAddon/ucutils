@@ -1,7 +1,7 @@
 package de.rettichlp.ucutils.listener.impl.faction;
 
 import de.rettichlp.ucutils.common.models.Faction;
-import de.rettichlp.ucutils.common.registry.PKUtilsListener;
+import de.rettichlp.ucutils.common.registry.UCUtilsListener;
 import de.rettichlp.ucutils.listener.IBlockRightClickListener;
 import net.minecraft.util.Hand;
 import net.minecraft.util.hit.BlockHitResult;
@@ -11,16 +11,16 @@ import net.minecraft.world.World;
 import java.util.Map;
 import java.util.Set;
 
-import static de.rettichlp.ucutils.PKUtils.commandService;
-import static de.rettichlp.ucutils.PKUtils.player;
-import static de.rettichlp.ucutils.PKUtils.storage;
+import static de.rettichlp.ucutils.UCUtils.commandService;
+import static de.rettichlp.ucutils.UCUtils.player;
+import static de.rettichlp.ucutils.UCUtils.storage;
 import static de.rettichlp.ucutils.common.models.Faction.FBI;
 import static de.rettichlp.ucutils.common.models.Faction.KERZAKOV;
 import static de.rettichlp.ucutils.common.models.Faction.WESTSIDEBALLAS;
 import static java.util.Collections.emptySet;
 import static net.minecraft.util.Hand.MAIN_HAND;
 
-@PKUtilsListener
+@UCUtilsListener
 public class FactionDoorListener implements IBlockRightClickListener {
 
     private static final Map<Faction, Set<BlockPos>> FACTION_DOOR_POSITIONS = Map.of(

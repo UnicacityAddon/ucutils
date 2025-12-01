@@ -5,20 +5,20 @@ import de.rettichlp.ucutils.common.gui.screens.FactionActivityScreen;
 import de.rettichlp.ucutils.common.models.Faction;
 import de.rettichlp.ucutils.common.models.FactionMember;
 import de.rettichlp.ucutils.common.registry.CommandBase;
-import de.rettichlp.ucutils.common.registry.PKUtilsCommand;
+import de.rettichlp.ucutils.common.registry.UCUtilsCommand;
 import net.fabricmc.fabric.api.client.command.v2.FabricClientCommandSource;
 import net.minecraft.client.MinecraftClient;
 import org.jetbrains.annotations.NotNull;
 
 import java.time.LocalDateTime;
 
-import static de.rettichlp.ucutils.PKUtils.api;
-import static de.rettichlp.ucutils.PKUtils.player;
-import static de.rettichlp.ucutils.PKUtils.storage;
+import static de.rettichlp.ucutils.UCUtils.api;
+import static de.rettichlp.ucutils.UCUtils.player;
+import static de.rettichlp.ucutils.UCUtils.storage;
 import static de.rettichlp.ucutils.common.gui.screens.FactionActivityScreen.SortingType.RANK;
 import static de.rettichlp.ucutils.common.gui.screens.components.TableHeaderTextWidget.SortingDirection.DESCENDING;
 
-@PKUtilsCommand(label = "activity")
+@UCUtilsCommand(label = "activity")
 public class ActivityCommand extends CommandBase {
 
     @Override

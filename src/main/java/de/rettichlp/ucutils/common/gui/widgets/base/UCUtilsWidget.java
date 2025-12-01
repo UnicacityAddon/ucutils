@@ -7,7 +7,7 @@ import java.lang.annotation.RetentionPolicy;
 
 @Retention(RetentionPolicy.RUNTIME)
 @IndexAnnotated
-public @interface PKUtilsWidget {
+public @interface UCUtilsWidget {
 
     String registryName();
 

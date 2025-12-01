@@ -1,6 +1,6 @@
 package de.rettichlp.ucutils.listener.impl;
 
-import de.rettichlp.ucutils.common.registry.PKUtilsListener;
+import de.rettichlp.ucutils.common.registry.UCUtilsListener;
 import de.rettichlp.ucutils.listener.IMessageReceiveListener;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -12,12 +12,12 @@ import java.util.function.Predicate;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static de.rettichlp.ucutils.PKUtils.configuration;
+import static de.rettichlp.ucutils.UCUtils.configuration;
 import static java.lang.Integer.parseInt;
 import static java.time.LocalDateTime.now;
 import static java.util.regex.Pattern.compile;
 
-@PKUtilsListener
+@UCUtilsListener
 public class EventListener implements IMessageReceiveListener {
 
     private static final Pattern HALLOWEEN_DOOR_VISITED_PATTERN = compile("^\\[Halloween] Du hast bei Haus (?<number>\\d+) geklingelt\\.$");

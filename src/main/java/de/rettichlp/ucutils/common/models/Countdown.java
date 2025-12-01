@@ -7,8 +7,8 @@ import net.minecraft.text.Text;
 import java.time.Duration;
 import java.time.LocalDateTime;
 
-import static de.rettichlp.ucutils.PKUtils.messageService;
-import static de.rettichlp.ucutils.PKUtils.utilService;
+import static de.rettichlp.ucutils.UCUtils.messageService;
+import static de.rettichlp.ucutils.UCUtils.utilService;
 import static java.time.Duration.between;
 import static java.time.LocalDateTime.now;
 import static net.minecraft.text.Text.empty;

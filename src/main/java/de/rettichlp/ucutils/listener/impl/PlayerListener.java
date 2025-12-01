@@ -1,7 +1,7 @@
 package de.rettichlp.ucutils.listener.impl;
 
 import de.rettichlp.ucutils.common.models.Countdown;
-import de.rettichlp.ucutils.common.registry.PKUtilsListener;
+import de.rettichlp.ucutils.common.registry.UCUtilsListener;
 import de.rettichlp.ucutils.listener.IAbsorptionGetListener;
 import de.rettichlp.ucutils.listener.IMessageReceiveListener;
 import de.rettichlp.ucutils.listener.ITickListener;
@@ -12,12 +12,12 @@ import java.io.IOException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static de.rettichlp.ucutils.PKUtils.LOGGER;
-import static de.rettichlp.ucutils.PKUtils.commandService;
-import static de.rettichlp.ucutils.PKUtils.configuration;
-import static de.rettichlp.ucutils.PKUtils.player;
-import static de.rettichlp.ucutils.PKUtils.storage;
-import static de.rettichlp.ucutils.PKUtils.utilService;
+import static de.rettichlp.ucutils.UCUtils.LOGGER;
+import static de.rettichlp.ucutils.UCUtils.commandService;
+import static de.rettichlp.ucutils.UCUtils.configuration;
+import static de.rettichlp.ucutils.UCUtils.player;
+import static de.rettichlp.ucutils.UCUtils.storage;
+import static de.rettichlp.ucutils.UCUtils.utilService;
 import static de.rettichlp.ucutils.common.models.ShutdownReason.CEMETERY;
 import static de.rettichlp.ucutils.common.models.ShutdownReason.JAIL;
 import static java.lang.Integer.parseInt;
@@ -31,7 +31,7 @@ import static net.minecraft.text.Text.of;
 import static net.minecraft.util.Formatting.GRAY;
 import static net.minecraft.util.Formatting.RED;
 
-@PKUtilsListener
+@UCUtilsListener
 public class PlayerListener implements IAbsorptionGetListener, IMessageReceiveListener, ITickListener {
 
     private static final String SHUTDOWN_TIMEOUT = "5";
@@ -145,7 +145,7 @@ public class PlayerListener implements IAbsorptionGetListener, IMessageReceiveLi
             connection.disconnect(empty()
                     .append(of("Der PC wird in").copy().formatted(GRAY)).append(" ")
                     .append(of(SHUTDOWN_TIMEOUT + " Sekunden").copy().formatted(RED)).append(" ")
-                    .append(of("durch PKUtils heruntergefahren...").copy().formatted(GRAY)));
+                    .append(of("durch UCUtils heruntergefahren...").copy().formatted(GRAY)));
         }
 
         if (command.length == 0) {

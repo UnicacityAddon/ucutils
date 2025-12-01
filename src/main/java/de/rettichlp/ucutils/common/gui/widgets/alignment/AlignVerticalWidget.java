@@ -1,20 +1,20 @@
 package de.rettichlp.ucutils.common.gui.widgets.alignment;
 
-import de.rettichlp.ucutils.common.gui.widgets.base.AbstractPKUtilsWidget;
+import de.rettichlp.ucutils.common.gui.widgets.base.AbstractUCUtilsWidget;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.text.Text;
 import org.jetbrains.annotations.NotNull;
 
 import java.awt.Color;
 
-import static de.rettichlp.ucutils.PKUtils.renderService;
+import static de.rettichlp.ucutils.UCUtils.renderService;
 import static net.minecraft.text.Text.empty;
 
-public class AlignVerticalWidget extends AlignWidget<AbstractPKUtilsWidget> {
+public class AlignVerticalWidget extends AlignWidget<AbstractUCUtilsWidget> {
 
     @Override
-    public void add(AbstractPKUtilsWidget entry) {
-        this.pkUtilsWidgets.add(entry);
+    public void add(AbstractUCUtilsWidget entry) {
+        this.ucUtilsWidgets.add(entry);
     }
 
     @Override
@@ -29,28 +29,28 @@ public class AlignVerticalWidget extends AlignWidget<AbstractPKUtilsWidget> {
 
     @Override
     public int getWidth() {
-        return this.pkUtilsWidgets.stream().map(AbstractPKUtilsWidget::getWidth).max(Integer::compareTo).orElse(0);
+        return this.ucUtilsWidgets.stream().map(AbstractUCUtilsWidget::getWidth).max(Integer::compareTo).orElse(0);
     }
 
     @Override
     public int getHeight() {
-        return this.pkUtilsWidgets.stream().map(AbstractPKUtilsWidget::getHeight).reduce(0, Integer::sum);
+        return this.ucUtilsWidgets.stream().map(AbstractUCUtilsWidget::getHeight).reduce(0, Integer::sum);
     }
 
     @Override
-    public void draw(@NotNull DrawContext drawContext, int x, int y, AbstractPKUtilsWidget.Alignment alignment) {
+    public void draw(@NotNull DrawContext drawContext, int x, int y, AbstractUCUtilsWidget.Alignment alignment) {
         int yOffset = y;
 
-        for (AbstractPKUtilsWidget pkUtilsWidget : this.pkUtilsWidgets) {
+        for (AbstractUCUtilsWidget ucUtilsWidget : this.ucUtilsWidgets) {
             // apply alignment
             int alignmentXModifier = switch (alignment) {
                 case LEFT -> 0;
-                case CENTER -> (getWidth() - pkUtilsWidget.getWidth()) / 2;
-                case RIGHT -> getWidth() - pkUtilsWidget.getWidth();
+                case CENTER -> (getWidth() - ucUtilsWidget.getWidth()) / 2;
+                case RIGHT -> getWidth() - ucUtilsWidget.getWidth();
             };
 
-            pkUtilsWidget.draw(drawContext, x + alignmentXModifier, yOffset, alignment);
-            yOffset += pkUtilsWidget.getHeight();
+            ucUtilsWidget.draw(drawContext, x + alignmentXModifier, yOffset, alignment);
+            yOffset += ucUtilsWidget.getHeight();
         }
 
         // debug: draw outline

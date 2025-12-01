@@ -1,5 +1,5 @@
 package de.rettichlp.ucutils.listener;
 
-public interface IPKUtilsListener {
+public interface IUCUtilsListener {
 
 }

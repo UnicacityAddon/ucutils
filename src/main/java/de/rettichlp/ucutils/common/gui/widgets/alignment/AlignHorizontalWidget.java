@@ -1,20 +1,20 @@
 package de.rettichlp.ucutils.common.gui.widgets.alignment;
 
-import de.rettichlp.ucutils.common.gui.widgets.base.AbstractPKUtilsWidget;
+import de.rettichlp.ucutils.common.gui.widgets.base.AbstractUCUtilsWidget;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.text.Text;
 import org.jetbrains.annotations.NotNull;
 
 import java.awt.Color;
 
-import static de.rettichlp.ucutils.PKUtils.renderService;
+import static de.rettichlp.ucutils.UCUtils.renderService;
 import static net.minecraft.text.Text.empty;
 
-public class AlignHorizontalWidget extends AlignWidget<AbstractPKUtilsWidget> {
+public class AlignHorizontalWidget extends AlignWidget<AbstractUCUtilsWidget> {
 
     @Override
-    public void add(AbstractPKUtilsWidget entry) {
-        this.pkUtilsWidgets.add(entry);
+    public void add(AbstractUCUtilsWidget entry) {
+        this.ucUtilsWidgets.add(entry);
     }
 
     @Override
@@ -29,21 +29,21 @@ public class AlignHorizontalWidget extends AlignWidget<AbstractPKUtilsWidget> {
 
     @Override
     public int getWidth() {
-        return this.pkUtilsWidgets.stream().map(AbstractPKUtilsWidget::getWidth).reduce(0, Integer::sum);
+        return this.ucUtilsWidgets.stream().map(AbstractUCUtilsWidget::getWidth).reduce(0, Integer::sum);
     }
 
     @Override
     public int getHeight() {
-        return this.pkUtilsWidgets.stream().map(AbstractPKUtilsWidget::getHeight).max(Integer::compareTo).orElse(0);
+        return this.ucUtilsWidgets.stream().map(AbstractUCUtilsWidget::getHeight).max(Integer::compareTo).orElse(0);
     }
 
     @Override
-    public void draw(@NotNull DrawContext drawContext, int x, int y, AbstractPKUtilsWidget.Alignment alignment) {
+    public void draw(@NotNull DrawContext drawContext, int x, int y, AbstractUCUtilsWidget.Alignment alignment) {
         int xOffset = x;
 
-        for (AbstractPKUtilsWidget pkUtilsWidget : this.pkUtilsWidgets) {
-            pkUtilsWidget.draw(drawContext, xOffset, y, alignment);
-            xOffset += pkUtilsWidget.getWidth();
+        for (AbstractUCUtilsWidget ucUtilsWidget : this.ucUtilsWidgets) {
+            ucUtilsWidget.draw(drawContext, xOffset, y, alignment);
+            xOffset += ucUtilsWidget.getWidth();
         }
 
         // debug: draw outline

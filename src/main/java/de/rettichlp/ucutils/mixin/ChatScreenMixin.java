@@ -7,8 +7,8 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import static de.rettichlp.ucutils.PKUtils.LOGGER;
-import static de.rettichlp.ucutils.PKUtils.notificationService;
+import static de.rettichlp.ucutils.UCUtils.LOGGER;
+import static de.rettichlp.ucutils.UCUtils.notificationService;
 import static de.rettichlp.ucutils.common.models.ScreenshotType.OTHER;
 import static de.rettichlp.ucutils.common.models.ScreenshotType.fromDisplayName;
 import static java.lang.Thread.sleep;

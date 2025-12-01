@@ -9,7 +9,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Optional;
 import java.util.Set;
 
-import static de.rettichlp.ucutils.PKUtils.storage;
+import static de.rettichlp.ucutils.UCUtils.storage;
 import static java.util.Arrays.stream;
 import static java.util.Collections.emptySet;
 import static net.minecraft.text.Text.empty;

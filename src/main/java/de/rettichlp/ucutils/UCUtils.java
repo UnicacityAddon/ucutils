@@ -24,9 +24,9 @@ import org.slf4j.LoggerFactory;
 import static java.lang.Boolean.getBoolean;
 import static java.util.Objects.isNull;
 
-public class PKUtils implements ModInitializer {
+public class UCUtils implements ModInitializer {
 
-    public static final String MOD_ID = "pkutils";
+    public static final String MOD_ID = "ucutils";
 
     // This logger is used to write text to the console and the log file.
     // It is considered best practice to use your mod id as the logger's name.

@@ -18,14 +18,14 @@ import java.util.Map;
 import java.util.Set;
 import java.util.regex.Pattern;
 
-import static de.rettichlp.ucutils.PKUtils.LOGGER;
-import static de.rettichlp.ucutils.PKUtils.api;
-import static de.rettichlp.ucutils.PKUtils.commandService;
-import static de.rettichlp.ucutils.PKUtils.configuration;
-import static de.rettichlp.ucutils.PKUtils.notificationService;
-import static de.rettichlp.ucutils.PKUtils.player;
-import static de.rettichlp.ucutils.PKUtils.storage;
-import static de.rettichlp.ucutils.PKUtils.utilService;
+import static de.rettichlp.ucutils.UCUtils.LOGGER;
+import static de.rettichlp.ucutils.UCUtils.api;
+import static de.rettichlp.ucutils.UCUtils.commandService;
+import static de.rettichlp.ucutils.UCUtils.configuration;
+import static de.rettichlp.ucutils.UCUtils.notificationService;
+import static de.rettichlp.ucutils.UCUtils.player;
+import static de.rettichlp.ucutils.UCUtils.storage;
+import static de.rettichlp.ucutils.UCUtils.utilService;
 import static de.rettichlp.ucutils.common.models.Faction.NULL;
 import static java.awt.Color.MAGENTA;
 import static java.lang.Integer.parseInt;
@@ -76,7 +76,7 @@ public class SyncService {
             // check for updates
             checkForUpdates();
 
-            // login to PKUtils API
+            // login to UCUtils API
             api.postUserRegister();
         } else if (showPopupIfNotGiven) {
             LOGGER.info("Data usage not yet confirmed, showing confirmation popup");
@@ -154,7 +154,7 @@ public class SyncService {
             String currentVersion = utilService.getVersion();
             if (nonNull(latestVersion) && !currentVersion.equals(latestVersion)) {
                 notificationService.sendNotification(() -> empty()
-                        .append(of("Neue PKUtils Version verfügbar").copy().formatted(GRAY))
+                        .append(of("Neue UCUtils Version verfügbar").copy().formatted(GRAY))
                         .append(of(":").copy().formatted(DARK_GRAY)).append(" ")
                         .append(of(currentVersion).copy().formatted(RED)).append(" ")
                         .append(of("→").copy().formatted(GRAY)).append(" ")
@@ -166,8 +166,8 @@ public class SyncService {
     private void showDataUsageConfirmationPopup() {
         MinecraftClient client = MinecraftClient.getInstance();
 
-        PopupScreen dataUsageConfirmationScreen = new PopupScreen.Builder(client.currentScreen, empty().append(of("PKUtils")).append(" ").append(translatable("mco.terms.sentence.2")))
-                .message(translatable("pkutils.screen.data_usage_confirmation.message"))
+        PopupScreen dataUsageConfirmationScreen = new PopupScreen.Builder(client.currentScreen, empty().append(of("UCUtils")).append(" ").append(translatable("mco.terms.sentence.2")))
+                .message(translatable("ucutils.screen.data_usage_confirmation.message"))
                 .button(translatable("mco.terms.buttons.agree"), popupScreen -> {
                     updateDataUsageConfirmedUID();
                     sync(false);

@@ -1,7 +1,7 @@
 package de.rettichlp.ucutils.listener.impl.faction;
 
 import de.rettichlp.ucutils.common.models.WantedEntry;
-import de.rettichlp.ucutils.common.registry.PKUtilsListener;
+import de.rettichlp.ucutils.common.registry.UCUtilsListener;
 import de.rettichlp.ucutils.listener.IMessageReceiveListener;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.text.Text;
@@ -11,13 +11,13 @@ import java.util.function.Predicate;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static de.rettichlp.ucutils.PKUtils.api;
-import static de.rettichlp.ucutils.PKUtils.commandService;
-import static de.rettichlp.ucutils.PKUtils.factionService;
-import static de.rettichlp.ucutils.PKUtils.player;
-import static de.rettichlp.ucutils.PKUtils.storage;
-import static de.rettichlp.ucutils.PKUtils.syncService;
-import static de.rettichlp.ucutils.PKUtils.utilService;
+import static de.rettichlp.ucutils.UCUtils.api;
+import static de.rettichlp.ucutils.UCUtils.commandService;
+import static de.rettichlp.ucutils.UCUtils.factionService;
+import static de.rettichlp.ucutils.UCUtils.player;
+import static de.rettichlp.ucutils.UCUtils.storage;
+import static de.rettichlp.ucutils.UCUtils.syncService;
+import static de.rettichlp.ucutils.UCUtils.utilService;
 import static de.rettichlp.ucutils.common.models.ActivityEntry.Type.ARREST;
 import static de.rettichlp.ucutils.common.models.ActivityEntry.Type.ARREST_KILL;
 import static de.rettichlp.ucutils.common.models.ActivityEntry.Type.PARK_TICKET;
@@ -35,7 +35,7 @@ import static net.minecraft.util.Formatting.GRAY;
 import static net.minecraft.util.Formatting.RED;
 import static net.minecraft.util.TypeFilter.instanceOf;
 
-@PKUtilsListener
+@UCUtilsListener
 public class WantedListener implements IMessageReceiveListener {
 
     private static final Pattern WANTED_GIVEN_POINTS_PATTERN = compile("^HQ: (?:\\[PK])?([a-zA-Z0-9_]+)'s momentanes WantedLevel: (\\d+)$");

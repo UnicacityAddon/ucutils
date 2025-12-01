@@ -15,8 +15,8 @@ import java.util.Collection;
 import java.util.Comparator;
 import java.util.List;
 
-import static de.rettichlp.ucutils.PKUtils.networkHandler;
-import static de.rettichlp.ucutils.PKUtils.storage;
+import static de.rettichlp.ucutils.UCUtils.networkHandler;
+import static de.rettichlp.ucutils.UCUtils.storage;
 import static java.util.Comparator.comparing;
 import static net.minecraft.text.Text.of;
 import static net.minecraft.text.TextColor.fromFormatting;
@@ -32,7 +32,7 @@ import static net.minecraft.util.Formatting.RED;
 public abstract class PlayerListHudMixin {
 
     @Unique
-    private static final Comparator<PlayerListEntry> PKUTILS_ENTRY_ORDERING = comparing((PlayerListEntry playerListEntry) -> {
+    private static final Comparator<PlayerListEntry> UCUTILS_ENTRY_ORDERING = comparing((PlayerListEntry playerListEntry) -> {
         String playerName = playerListEntry.getProfile().getName();
         Text displayName = playerListEntry.getDisplayName();
 
@@ -119,7 +119,7 @@ public abstract class PlayerListHudMixin {
         // order player list entries
         List<PlayerListEntry> orderedPlayerListEntries = playerListEntries
                 .stream()
-                .sorted(PKUTILS_ENTRY_ORDERING)
+                .sorted(UCUTILS_ENTRY_ORDERING)
                 .limit(80L)
                 .toList();
 

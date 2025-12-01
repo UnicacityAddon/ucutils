@@ -1,8 +1,8 @@
 package de.rettichlp.ucutils.common.gui.widgets;
 
-import de.rettichlp.ucutils.common.gui.widgets.base.AbstractPKUtilsProgressTextWidget;
-import de.rettichlp.ucutils.common.gui.widgets.base.PKUtilsWidget;
-import de.rettichlp.ucutils.common.gui.widgets.base.PKUtilsWidgetConfiguration;
+import de.rettichlp.ucutils.common.gui.widgets.base.AbstractUCUtilsProgressTextWidget;
+import de.rettichlp.ucutils.common.gui.widgets.base.UCUtilsWidget;
+import de.rettichlp.ucutils.common.gui.widgets.base.UCUtilsWidgetConfiguration;
 import lombok.RequiredArgsConstructor;
 import net.minecraft.text.Text;
 
@@ -13,8 +13,8 @@ import static java.time.temporal.ChronoUnit.MILLIS;
 import static net.minecraft.text.Text.empty;
 
 @RequiredArgsConstructor
-@PKUtilsWidget(registryName = "countdown")
-public class CountdownWidget extends AbstractPKUtilsProgressTextWidget<CountdownWidget.Configuration> {
+@UCUtilsWidget(registryName = "countdown")
+public class CountdownWidget extends AbstractUCUtilsProgressTextWidget<CountdownWidget.Configuration> {
 
     private final Text text;
     private final LocalDateTime creationTime;
@@ -45,5 +45,5 @@ public class CountdownWidget extends AbstractPKUtilsProgressTextWidget<Countdown
         return this.creationTime.plus(this.durationInMillis, MILLIS).isAfter(now());
     }
 
-    public static class Configuration extends PKUtilsWidgetConfiguration {}
+    public static class Configuration extends UCUtilsWidgetConfiguration {}
 }

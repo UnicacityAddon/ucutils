@@ -1,8 +1,8 @@
 {
     "schemaVersion": 1,
-    "id": "pkutils",
+    "id": "ucutils",
     "version": "${version}",
-    "name": "PKUtils",
+    "name": "UCUtils",
     "description": "Essential utilities and QoL tools for the PunicaKitty roleplay server.",
     "authors": [
         "RettichLP",
@@ -10,18 +10,18 @@
     ],
     "contact": {
         "homepage": "https://rettichlp.de/",
-        "sources": "https://github.com/UnicacityAddon/pkutils"
+        "sources": "https://github.com/UnicacityAddon/ucutils"
     },
     "license": "Apache-2.0",
     "icon": "assets/ucutils/icon.png",
     "environment": "*",
     "entrypoints": {
         "main": [
-            "de.rettichlp.ucutils.PKUtils"
+          "de.rettichlp.ucutils.UCUtils"
         ]
     },
     "mixins": [
-        "pkutils.mixins.json"
+        "ucutils.mixins.json"
     ],
     "depends": {
         "fabricloader": ">=0.17.0",

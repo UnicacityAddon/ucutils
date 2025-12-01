@@ -1,23 +1,23 @@
 package de.rettichlp.ucutils.common.gui.widgets;
 
 import de.rettichlp.ucutils.common.gui.screens.options.WidgetOptionsPositionScreen;
-import de.rettichlp.ucutils.common.gui.widgets.base.AbstractPKUtilsTextWidget;
-import de.rettichlp.ucutils.common.gui.widgets.base.PKUtilsWidget;
-import de.rettichlp.ucutils.common.gui.widgets.base.PKUtilsWidgetConfiguration;
+import de.rettichlp.ucutils.common.gui.widgets.base.AbstractUCUtilsTextWidget;
+import de.rettichlp.ucutils.common.gui.widgets.base.UCUtilsWidget;
+import de.rettichlp.ucutils.common.gui.widgets.base.UCUtilsWidgetConfiguration;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.text.Text;
 
 import java.awt.Color;
 
-import static de.rettichlp.ucutils.PKUtils.storage;
+import static de.rettichlp.ucutils.UCUtils.storage;
 import static java.awt.Color.RED;
 import static java.lang.String.valueOf;
 
-@PKUtilsWidget(registryName = "service_count", defaultX = 4.0, defaultY = 42.0)
-public class ServiceCountWidget extends AbstractPKUtilsTextWidget<ServiceCountWidget.Configuration> {
+@UCUtilsWidget(registryName = "service_count", defaultX = 4.0, defaultY = 42.0)
+public class ServiceCountWidget extends AbstractUCUtilsTextWidget<ServiceCountWidget.Configuration> {
 
-    private static final Text WIDGETS_SERVICE_COUNT_OPTIONS_NAME = Text.translatable("pkutils.options.widgets.service_count.options.name");
-    private static final Text WIDGETS_SERVICE_COUNT_OPTIONS_TOOLTIP = Text.translatable("pkutils.options.widgets.service_count.options.tooltip");
+    private static final Text WIDGETS_SERVICE_COUNT_OPTIONS_NAME = Text.translatable("ucutils.options.widgets.service_count.options.name");
+    private static final Text WIDGETS_SERVICE_COUNT_OPTIONS_TOOLTIP = Text.translatable("ucutils.options.widgets.service_count.options.tooltip");
 
     @Override
     public Text text() {
@@ -45,5 +45,5 @@ public class ServiceCountWidget extends AbstractPKUtilsTextWidget<ServiceCountWi
         return storage.getActiveServices() > 0 || MinecraftClient.getInstance().currentScreen instanceof WidgetOptionsPositionScreen;
     }
 
-    public static class Configuration extends PKUtilsWidgetConfiguration {}
+    public static class Configuration extends UCUtilsWidgetConfiguration {}
 }

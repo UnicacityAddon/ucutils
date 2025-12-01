@@ -1,7 +1,7 @@
 package de.rettichlp.ucutils.listener.impl.job;
 
 import de.rettichlp.ucutils.common.models.Job;
-import de.rettichlp.ucutils.common.registry.PKUtilsListener;
+import de.rettichlp.ucutils.common.registry.UCUtilsListener;
 import de.rettichlp.ucutils.listener.ICommandSendListener;
 import de.rettichlp.ucutils.listener.IMessageReceiveListener;
 import de.rettichlp.ucutils.listener.IMoveListener;
@@ -14,10 +14,10 @@ import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static de.rettichlp.ucutils.PKUtils.commandService;
-import static de.rettichlp.ucutils.PKUtils.player;
-import static de.rettichlp.ucutils.PKUtils.storage;
-import static de.rettichlp.ucutils.PKUtils.utilService;
+import static de.rettichlp.ucutils.UCUtils.commandService;
+import static de.rettichlp.ucutils.UCUtils.player;
+import static de.rettichlp.ucutils.UCUtils.storage;
+import static de.rettichlp.ucutils.UCUtils.utilService;
 import static de.rettichlp.ucutils.common.models.Job.LUMBERJACK;
 import static de.rettichlp.ucutils.common.models.Job.PIZZA_DELIVERY;
 import static de.rettichlp.ucutils.common.models.Job.TOBACCO_PLANTATION;
@@ -27,7 +27,7 @@ import static java.util.Objects.isNull;
 import static java.util.concurrent.TimeUnit.SECONDS;
 import static java.util.regex.Pattern.compile;
 
-@PKUtilsListener
+@UCUtilsListener
 public class JobListener
         implements ICommandSendListener, IMessageReceiveListener, IMoveListener, INaviSpotReachedListener {
 

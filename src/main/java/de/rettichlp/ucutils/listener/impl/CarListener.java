@@ -1,6 +1,6 @@
 package de.rettichlp.ucutils.listener.impl;
 
-import de.rettichlp.ucutils.common.registry.PKUtilsListener;
+import de.rettichlp.ucutils.common.registry.UCUtilsListener;
 import de.rettichlp.ucutils.listener.IEnterVehicleListener;
 import de.rettichlp.ucutils.listener.IEntityRenderListener;
 import de.rettichlp.ucutils.listener.IMessageReceiveListener;
@@ -22,12 +22,12 @@ import net.minecraft.text.Text;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static de.rettichlp.ucutils.PKUtils.commandService;
-import static de.rettichlp.ucutils.PKUtils.configuration;
-import static de.rettichlp.ucutils.PKUtils.player;
-import static de.rettichlp.ucutils.PKUtils.renderService;
-import static de.rettichlp.ucutils.PKUtils.storage;
-import static de.rettichlp.ucutils.PKUtils.utilService;
+import static de.rettichlp.ucutils.UCUtils.commandService;
+import static de.rettichlp.ucutils.UCUtils.configuration;
+import static de.rettichlp.ucutils.UCUtils.player;
+import static de.rettichlp.ucutils.UCUtils.renderService;
+import static de.rettichlp.ucutils.UCUtils.storage;
+import static de.rettichlp.ucutils.UCUtils.utilService;
 import static java.util.Objects.nonNull;
 import static java.util.Optional.ofNullable;
 import static java.util.regex.Pattern.compile;
@@ -35,7 +35,7 @@ import static net.minecraft.scoreboard.ScoreboardDisplaySlot.SIDEBAR;
 import static net.minecraft.screen.slot.SlotActionType.PICKUP;
 import static net.minecraft.util.Formatting.AQUA;
 
-@PKUtilsListener
+@UCUtilsListener
 public class CarListener
         implements IEnterVehicleListener, IEntityRenderListener, IMessageReceiveListener, IScreenOpenListener {
 

@@ -15,7 +15,7 @@ import java.util.Objects;
 import java.util.UUID;
 import java.util.function.Supplier;
 
-import static de.rettichlp.ucutils.PKUtils.renderService;
+import static de.rettichlp.ucutils.UCUtils.renderService;
 import static java.awt.Color.CYAN;
 import static java.awt.Color.GREEN;
 import static java.awt.Color.ORANGE;

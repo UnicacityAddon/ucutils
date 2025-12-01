@@ -2,17 +2,17 @@ package de.rettichlp.ucutils.command.faction;
 
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import de.rettichlp.ucutils.common.registry.CommandBase;
-import de.rettichlp.ucutils.common.registry.PKUtilsCommand;
+import de.rettichlp.ucutils.common.registry.UCUtilsCommand;
 import net.fabricmc.fabric.api.client.command.v2.FabricClientCommandSource;
 import org.jetbrains.annotations.NotNull;
 
-import static de.rettichlp.ucutils.PKUtils.messageService;
-import static de.rettichlp.ucutils.PKUtils.player;
-import static de.rettichlp.ucutils.PKUtils.storage;
+import static de.rettichlp.ucutils.UCUtils.messageService;
+import static de.rettichlp.ucutils.UCUtils.player;
+import static de.rettichlp.ucutils.UCUtils.storage;
 import static java.util.Comparator.comparingDouble;
 import static net.minecraft.text.Text.empty;
 
-@PKUtilsCommand(label = "blackmarket", aliases = "schwarzmarkt")
+@UCUtilsCommand(label = "blackmarket", aliases = "schwarzmarkt")
 public class BlackMarketCommand extends CommandBase {
 
     @Override

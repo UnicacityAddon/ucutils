@@ -7,7 +7,7 @@ import net.minecraft.text.Text;
 
 import java.net.URI;
 
-import static de.rettichlp.ucutils.PKUtils.configuration;
+import static de.rettichlp.ucutils.UCUtils.configuration;
 import static net.minecraft.client.gui.screen.ConfirmLinkScreen.opening;
 import static net.minecraft.client.gui.widget.DirectionalLayoutWidget.horizontal;
 import static net.minecraft.screen.ScreenTexts.BACK;
@@ -16,28 +16,28 @@ import static net.minecraft.text.Text.empty;
 import static net.minecraft.text.Text.of;
 import static net.minecraft.text.Text.translatable;
 
-public abstract class OptionsScreen extends PKUtilsScreen {
+public abstract class OptionsScreen extends UCUtilsScreen {
 
     private static final URI DISCORD_INVITE = URI.create("https://discord.gg/mZGAAwhPHu");
     private static final int DISCORD_COLOR = 0x5865F2;
-    private static final URI MODRINTH = URI.create("https://modrinth.com/mod/pkutils");
+    private static final URI MODRINTH = URI.create("https://modrinth.com/mod/ucutils");
     private static final int MODRINTH_COLOR = 0x1BD96B;
 
     public OptionsScreen(Screen parent) {
         super(empty()
-                .append("PKUtils").append(" ")
+                .append("UCUtils").append(" ")
                 .append(translatable("options.title")), parent);
     }
 
     public OptionsScreen(Screen parent, Text subTitle) {
         super(empty()
-                .append("PKUtils").append(" ")
+                .append("UCUtils").append(" ")
                 .append(translatable("options.title")), subTitle, parent);
     }
 
     public OptionsScreen(Screen parent, Text subTitel, boolean renderBackground) {
         super(empty()
-                .append("PKUtils").append(" ")
+                .append("UCUtils").append(" ")
                 .append(translatable("options.title")), subTitel, parent, renderBackground);
     }
 

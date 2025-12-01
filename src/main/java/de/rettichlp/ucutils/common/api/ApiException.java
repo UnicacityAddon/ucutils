@@ -5,8 +5,8 @@ import org.jetbrains.annotations.NotNull;
 
 import java.net.http.HttpResponse;
 
-import static de.rettichlp.ucutils.PKUtils.LOGGER;
-import static de.rettichlp.ucutils.PKUtils.notificationService;
+import static de.rettichlp.ucutils.UCUtils.LOGGER;
+import static de.rettichlp.ucutils.UCUtils.notificationService;
 
 @Getter
 public class ApiException extends RuntimeException {

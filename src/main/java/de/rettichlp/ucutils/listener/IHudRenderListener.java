@@ -3,7 +3,7 @@ package de.rettichlp.ucutils.listener;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.render.RenderTickCounter;
 
-public interface IHudRenderListener extends IPKUtilsListener {
+public interface IHudRenderListener extends IUCUtilsListener {
 
     void onHudRender(DrawContext drawContext, RenderTickCounter renderTickCounter);
 }

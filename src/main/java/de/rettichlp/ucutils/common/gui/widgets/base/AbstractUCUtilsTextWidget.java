@@ -7,7 +7,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.awt.Color;
 
-import static de.rettichlp.ucutils.PKUtils.renderService;
+import static de.rettichlp.ucutils.UCUtils.renderService;
 import static de.rettichlp.ucutils.common.services.RenderService.TEXT_BOX_PADDING;
 import static java.awt.Color.WHITE;
 import static net.minecraft.text.Text.empty;
@@ -15,7 +15,7 @@ import static net.minecraft.text.Text.of;
 import static net.minecraft.util.Formatting.DARK_GRAY;
 import static net.minecraft.util.Formatting.GRAY;
 
-public abstract class AbstractPKUtilsTextWidget<C extends PKUtilsWidgetConfiguration> extends AbstractPKUtilsWidget<C> {
+public abstract class AbstractUCUtilsTextWidget<C extends UCUtilsWidgetConfiguration> extends AbstractUCUtilsWidget<C> {
 
     public abstract Text text();
 

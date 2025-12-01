@@ -35,11 +35,11 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.function.Consumer;
 
-import static de.rettichlp.ucutils.PKUtils.LOGGER;
-import static de.rettichlp.ucutils.PKUtils.notificationService;
-import static de.rettichlp.ucutils.PKUtils.storage;
-import static de.rettichlp.ucutils.PKUtils.syncService;
-import static de.rettichlp.ucutils.PKUtils.utilService;
+import static de.rettichlp.ucutils.UCUtils.LOGGER;
+import static de.rettichlp.ucutils.UCUtils.notificationService;
+import static de.rettichlp.ucutils.UCUtils.storage;
+import static de.rettichlp.ucutils.UCUtils.syncService;
+import static de.rettichlp.ucutils.UCUtils.utilService;
 import static java.lang.String.join;
 import static java.lang.String.valueOf;
 import static java.net.URI.create;
@@ -62,7 +62,7 @@ public class Api {
             .orElse("");
 
     private final HttpClient httpClient = HttpClient.newBuilder().build();
-    private final String baseUrl = "https://pkutils.rettichlp.de"; //http://localhost:6010/pkutils
+    private final String baseUrl = "https://ucutils.rettichlp.de"; //http://localhost:6010/ucutils
     private final HttpRequest.Builder requestBuilder = HttpRequest.newBuilder()
             .header("Accept", "application/json")
             .header("Content-Type", "application/json")
@@ -90,7 +90,7 @@ public class Api {
         post("/v1/user/register", new Object(), () -> LOGGER.info("Successfully registered user"));
 
         // initialize websocket connection
-        String webSocketUrl = "ws://91.107.193.19:6010/pkutils/v1/ws";
+        String webSocketUrl = "ws://91.107.193.19:6010/ucutils/v1/ws";
         this.httpClient.newWebSocketBuilder().buildAsync(create(webSocketUrl), new WebSocketService()).exceptionally(throwable -> {
             LOGGER.error("Error while connecting to WebSocket", throwable);
             return null;
@@ -144,11 +144,11 @@ public class Api {
     }
 
     public void getBlacklistReasonData(Consumer<Map<Faction, List<BlacklistReason>>> callback) {
-        get("https://gist.githubusercontent.com/rettichlp/54e97f4dbb3988bf22554c01d62af666/raw/pkutils-blacklistreasons.json", new TypeToken<>() {}, callback);
+        get("https://gist.githubusercontent.com/rettichlp/54e97f4dbb3988bf22554c01d62af666/raw/ucutils-blacklistreasons.json", new TypeToken<>() {}, callback);
     }
 
     public void getModrinthVersions(Consumer<List<Map<String, Object>>> callback) {
-        get("https://api.modrinth.com/v2/project/pkutils/version", new TypeToken<>() {}, callback);
+        get("https://api.modrinth.com/v2/project/ucutils/version", new TypeToken<>() {}, callback);
     }
 
     private <T> void get(@NotNull String uri, TypeToken<T> typeToken, Consumer<T> callback) {
@@ -213,11 +213,11 @@ public class Api {
             return response;
         }
 
-        // try to map to PKUtils API error response
+        // try to map to UCUtils API error response
         ErrorResponse errorResponse = getGson().fromJson(response.body(), ErrorResponse.class);
 
         if (nonNull(errorResponse)) {
-            throw new PKUtilsApiException(response, errorResponse);
+            throw new UCUtilsApiException(response, errorResponse);
         }
 
         throw new ApiException(response);

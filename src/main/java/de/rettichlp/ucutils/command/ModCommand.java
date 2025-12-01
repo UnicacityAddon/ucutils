@@ -4,7 +4,7 @@ import com.mojang.authlib.GameProfile;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import de.rettichlp.ucutils.common.models.ActivityEntry;
 import de.rettichlp.ucutils.common.registry.CommandBase;
-import de.rettichlp.ucutils.common.registry.PKUtilsCommand;
+import de.rettichlp.ucutils.common.registry.UCUtilsCommand;
 import net.fabricmc.fabric.api.client.command.v2.FabricClientCommandSource;
 import net.fabricmc.loader.api.FabricLoader;
 import net.fabricmc.loader.api.metadata.Person;
@@ -18,15 +18,15 @@ import java.util.List;
 import java.util.StringJoiner;
 
 import static com.mojang.brigadier.arguments.StringArgumentType.word;
-import static de.rettichlp.ucutils.PKUtils.MOD_ID;
-import static de.rettichlp.ucutils.PKUtils.api;
-import static de.rettichlp.ucutils.PKUtils.commandService;
-import static de.rettichlp.ucutils.PKUtils.messageService;
-import static de.rettichlp.ucutils.PKUtils.networkHandler;
-import static de.rettichlp.ucutils.PKUtils.player;
-import static de.rettichlp.ucutils.PKUtils.storage;
-import static de.rettichlp.ucutils.PKUtils.syncService;
-import static de.rettichlp.ucutils.PKUtils.utilService;
+import static de.rettichlp.ucutils.UCUtils.MOD_ID;
+import static de.rettichlp.ucutils.UCUtils.api;
+import static de.rettichlp.ucutils.UCUtils.commandService;
+import static de.rettichlp.ucutils.UCUtils.messageService;
+import static de.rettichlp.ucutils.UCUtils.networkHandler;
+import static de.rettichlp.ucutils.UCUtils.player;
+import static de.rettichlp.ucutils.UCUtils.storage;
+import static de.rettichlp.ucutils.UCUtils.syncService;
+import static de.rettichlp.ucutils.UCUtils.utilService;
 import static java.time.LocalDateTime.MIN;
 import static java.util.Arrays.stream;
 import static net.fabricmc.fabric.api.client.command.v2.ClientCommandManager.argument;
@@ -40,7 +40,7 @@ import static net.minecraft.util.Formatting.DARK_GRAY;
 import static net.minecraft.util.Formatting.GRAY;
 import static net.minecraft.util.Formatting.WHITE;
 
-@PKUtilsCommand(label = "pkutils")
+@UCUtilsCommand(label = "ucutils")
 public class ModCommand extends CommandBase {
 
     @Override
@@ -78,7 +78,7 @@ public class ModCommand extends CommandBase {
 
                                         player.sendMessage(empty(), false);
 
-                                        messageService.sendModMessage("PKUtils User Information - " + playerName, false);
+                                        messageService.sendModMessage("UCUtils User Information - " + playerName, false);
 
                                         messageService.sendModMessage(empty()
                                                 .append(of("Version").copy().formatted(GRAY))
@@ -115,7 +115,7 @@ public class ModCommand extends CommandBase {
 
                     player.sendMessage(empty(), false);
 
-                    messageService.sendModMessage("PKUtils Version " + version, false);
+                    messageService.sendModMessage("UCUtils Version " + version, false);
 
                     messageService.sendModMessage(empty()
                             .append(of("Autoren").copy().formatted(GRAY))
@@ -132,9 +132,9 @@ public class ModCommand extends CommandBase {
                     messageService.sendModMessage(empty()
                             .append(of("GitHub").copy().formatted(GRAY))
                             .append(of(":").copy().formatted(DARK_GRAY)).append(" ")
-                            .append(of("https://github.com/UnicacityAddon/pkutils").copy().styled(style -> style
+                            .append(of("https://github.com/UnicacityAddon/ucutils").copy().styled(style -> style
                                     .withColor(WHITE)
-                                    .withClickEvent(new ClickEvent(OPEN_URL, "https://github.com/UnicacityAddon/pkutils")))), false);
+                                    .withClickEvent(new ClickEvent(OPEN_URL, "https://github.com/UnicacityAddon/ucutils")))), false);
 
                     messageService.sendModMessage(empty()
                             .append(of("Letzte Synchronisierung").copy().formatted(GRAY))

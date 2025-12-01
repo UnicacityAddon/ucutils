@@ -16,8 +16,8 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import static de.rettichlp.ucutils.PKUtils.api;
-import static de.rettichlp.ucutils.PKUtils.renderService;
+import static de.rettichlp.ucutils.UCUtils.api;
+import static de.rettichlp.ucutils.UCUtils.renderService;
 import static java.lang.Integer.parseInt;
 import static java.lang.String.valueOf;
 import static net.minecraft.client.gui.widget.DirectionalLayoutWidget.horizontal;
@@ -104,13 +104,13 @@ public class FactionBlacklistReasonScreen extends FactionScreen {
     private @NotNull Widget getTableHeaderDirectionalLayoutWidget() {
         DirectionalLayoutWidget directionalLayoutWidget = horizontal().spacing(8);
 
-        TextWidget reasonTextWidget = directionalLayoutWidget.add(new TextWidget(translatable("pkutils.screen.faction.blacklist.header.reason"), TEXT_RENDERER));
+        TextWidget reasonTextWidget = directionalLayoutWidget.add(new TextWidget(translatable("ucutils.screen.faction.blacklist.header.reason"), TEXT_RENDERER));
         reasonTextWidget.setWidth(200);
 
-        TextWidget priceTextWidget = directionalLayoutWidget.add(new TextWidget(translatable("pkutils.screen.faction.blacklist.header.price"), TEXT_RENDERER));
+        TextWidget priceTextWidget = directionalLayoutWidget.add(new TextWidget(translatable("ucutils.screen.faction.blacklist.header.price"), TEXT_RENDERER));
         priceTextWidget.setWidth(50);
 
-        TextWidget killsTextWidget = directionalLayoutWidget.add(new TextWidget(translatable("pkutils.screen.faction.blacklist.header.kills"), TEXT_RENDERER));
+        TextWidget killsTextWidget = directionalLayoutWidget.add(new TextWidget(translatable("ucutils.screen.faction.blacklist.header.kills"), TEXT_RENDERER));
         killsTextWidget.setWidth(50);
 
         directionalLayoutWidget.add(new EmptyWidget(20, 0));

@@ -1,10 +1,10 @@
 package de.rettichlp.ucutils.common.gui.widgets;
 
 import de.rettichlp.ucutils.common.gui.screens.components.CyclingButtonEntry;
-import de.rettichlp.ucutils.common.gui.widgets.base.AbstractPKUtilsTextWidget;
+import de.rettichlp.ucutils.common.gui.widgets.base.AbstractUCUtilsTextWidget;
 import de.rettichlp.ucutils.common.gui.widgets.base.IOptionWidget;
-import de.rettichlp.ucutils.common.gui.widgets.base.PKUtilsWidget;
-import de.rettichlp.ucutils.common.gui.widgets.base.PKUtilsWidgetConfiguration;
+import de.rettichlp.ucutils.common.gui.widgets.base.UCUtilsWidget;
+import de.rettichlp.ucutils.common.gui.widgets.base.UCUtilsWidgetConfiguration;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -15,7 +15,7 @@ import net.minecraft.client.gui.widget.Widget;
 import net.minecraft.text.Text;
 import org.jetbrains.annotations.NotNull;
 
-import static de.rettichlp.ucutils.PKUtils.storage;
+import static de.rettichlp.ucutils.UCUtils.storage;
 import static de.rettichlp.ucutils.common.gui.widgets.CarLockedWidget.Style.MINIMALISTIC;
 import static net.minecraft.text.Text.empty;
 import static net.minecraft.text.Text.of;
@@ -25,12 +25,12 @@ import static net.minecraft.util.Formatting.GOLD;
 import static net.minecraft.util.Formatting.GRAY;
 import static net.minecraft.util.Formatting.GREEN;
 
-@PKUtilsWidget(registryName = "car_locked", defaultX = 110.0, defaultY = 4.0)
-public class CarLockedWidget extends AbstractPKUtilsTextWidget<CarLockedWidget.Configuration> {
+@UCUtilsWidget(registryName = "car_locked", defaultX = 110.0, defaultY = 4.0)
+public class CarLockedWidget extends AbstractUCUtilsTextWidget<CarLockedWidget.Configuration> {
 
-    private static final Text WIDGETS_CAR_LOCKED_OPTIONS_NAME = translatable("pkutils.options.widgets.car_locked.options.name");
-    private static final Text WIDGETS_CAR_LOCKED_OPTIONS_TOOLTIP = translatable("pkutils.options.widgets.car_locked.options.tooltip");
-    private static final Text WIDGETS_CAR_LOCKED_OPTIONS_STYLE_NAME = translatable("pkutils.options.widgets.car_locked.options.style.name");
+    private static final Text WIDGETS_CAR_LOCKED_OPTIONS_NAME = translatable("ucutils.options.widgets.car_locked.options.name");
+    private static final Text WIDGETS_CAR_LOCKED_OPTIONS_TOOLTIP = translatable("ucutils.options.widgets.car_locked.options.tooltip");
+    private static final Text WIDGETS_CAR_LOCKED_OPTIONS_STYLE_NAME = translatable("ucutils.options.widgets.car_locked.options.style.name");
 
     @Override
     public Text text() {
@@ -56,8 +56,8 @@ public class CarLockedWidget extends AbstractPKUtilsTextWidget<CarLockedWidget.C
     @AllArgsConstructor
     public enum Style implements CyclingButtonEntry {
 
-        DEFAULT(translatable("pkutils.options.widgets.car_locked.options.style.value.default.name"), translatable("pkutils.options.widgets.car_locked.options.style.value.default.tooltip")),
-        MINIMALISTIC(translatable("pkutils.options.widgets.car_locked.options.style.value.minimalistic.name"), translatable("pkutils.options.widgets.car_locked.options.style.value.minimalistic.tooltip"));
+        DEFAULT(translatable("ucutils.options.widgets.car_locked.options.style.value.default.name"), translatable("ucutils.options.widgets.car_locked.options.style.value.default.tooltip")),
+        MINIMALISTIC(translatable("ucutils.options.widgets.car_locked.options.style.value.minimalistic.name"), translatable("ucutils.options.widgets.car_locked.options.style.value.minimalistic.tooltip"));
 
         private final Text name;
         private final Text tooltip;
@@ -75,7 +75,7 @@ public class CarLockedWidget extends AbstractPKUtilsTextWidget<CarLockedWidget.C
 
     @Data
     @EqualsAndHashCode(callSuper = false)
-    public static class Configuration extends PKUtilsWidgetConfiguration implements IOptionWidget {
+    public static class Configuration extends UCUtilsWidgetConfiguration implements IOptionWidget {
 
         private Style style = MINIMALISTIC;
 

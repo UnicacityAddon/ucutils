@@ -1,16 +1,16 @@
 package de.rettichlp.ucutils.common.gui.screens.options;
 
-import de.rettichlp.ucutils.common.gui.screens.PKUtilsScreen;
-import de.rettichlp.ucutils.common.gui.widgets.base.AbstractPKUtilsWidget;
-import de.rettichlp.ucutils.common.gui.widgets.base.PKUtilsWidgetConfiguration;
+import de.rettichlp.ucutils.common.gui.screens.UCUtilsScreen;
+import de.rettichlp.ucutils.common.gui.widgets.base.AbstractUCUtilsWidget;
+import de.rettichlp.ucutils.common.gui.widgets.base.UCUtilsWidgetConfiguration;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.DirectionalLayoutWidget;
 import net.minecraft.client.util.Window;
 import net.minecraft.text.Text;
 
-import static de.rettichlp.ucutils.PKUtils.configuration;
-import static de.rettichlp.ucutils.PKUtils.renderService;
+import static de.rettichlp.ucutils.UCUtils.configuration;
+import static de.rettichlp.ucutils.UCUtils.renderService;
 import static de.rettichlp.ucutils.common.services.RenderService.TEXT_BOX_PADDING;
 import static java.awt.Color.BLACK;
 import static java.awt.Color.BLUE;
@@ -24,9 +24,9 @@ import static net.minecraft.screen.ScreenTexts.DONE;
 import static net.minecraft.text.Text.empty;
 import static net.minecraft.text.Text.of;
 
-public class WidgetOptionsPositionScreen extends PKUtilsScreen {
+public class WidgetOptionsPositionScreen extends UCUtilsScreen {
 
-    private AbstractPKUtilsWidget<?> selectedWidget;
+    private AbstractUCUtilsWidget<?> selectedWidget;
     private double oldMouseX;
     private double oldMouseY;
 
@@ -39,13 +39,13 @@ public class WidgetOptionsPositionScreen extends PKUtilsScreen {
         DirectionalLayoutWidget directionalLayoutWidget = this.layout.addBody(horizontal().spacing(8), positioner -> positioner.marginTop(this.client.getWindow().getScaledHeight() / 4));
 
         renderService.addButton(directionalLayoutWidget, DONE, button -> {
-            renderService.getWidgets().forEach(AbstractPKUtilsWidget::saveConfiguration);
+            renderService.getWidgets().forEach(AbstractUCUtilsWidget::saveConfiguration);
             back();
         }, 150);
 
         renderService.addButton(directionalLayoutWidget, CANCEL, button -> {
             // restore configurations from the configuration file
-            renderService.getWidgets().forEach(AbstractPKUtilsWidget::loadConfiguration);
+            renderService.getWidgets().forEach(AbstractUCUtilsWidget::loadConfiguration);
             back();
         }, 150);
 
@@ -69,11 +69,11 @@ public class WidgetOptionsPositionScreen extends PKUtilsScreen {
         context.drawVerticalLine(scaledWidth / 2 - 1, 0, scaledHeight, GREEN.getRGB());
 
         // draw widget help lines
-        renderService.getWidgets().forEach(abstractPKUtilsWidget -> {
-            double xTopLeft = abstractPKUtilsWidget.getWidgetConfiguration().getX();
-            double yTopLeft = abstractPKUtilsWidget.getWidgetConfiguration().getY();
-            double xBottomRight = xTopLeft + abstractPKUtilsWidget.getWidth();
-            double yBottomRight = yTopLeft + abstractPKUtilsWidget.getHeight();
+        renderService.getWidgets().forEach(abstractUCUtilsWidget -> {
+            double xTopLeft = abstractUCUtilsWidget.getWidgetConfiguration().getX();
+            double yTopLeft = abstractUCUtilsWidget.getWidgetConfiguration().getY();
+            double xBottomRight = xTopLeft + abstractUCUtilsWidget.getWidth();
+            double yBottomRight = yTopLeft + abstractUCUtilsWidget.getHeight();
 
             context.drawHorizontalLine(0, scaledWidth, (int) yTopLeft, GRAY.getRGB());
             context.drawHorizontalLine(0, scaledWidth, (int) yBottomRight - 1, GRAY.getRGB());
@@ -88,7 +88,7 @@ public class WidgetOptionsPositionScreen extends PKUtilsScreen {
         int textX = mouseX + 10;
         int textY = mouseY + 10;
 
-        PKUtilsWidgetConfiguration widgetConfiguration = this.selectedWidget.getWidgetConfiguration();
+        UCUtilsWidgetConfiguration widgetConfiguration = this.selectedWidget.getWidgetConfiguration();
 
         // draw border around the selected widget
         double x = widgetConfiguration.getX();
@@ -122,7 +122,7 @@ public class WidgetOptionsPositionScreen extends PKUtilsScreen {
         this.oldMouseY = mouseY;
 
         if (nonNull(this.selectedWidget)) {
-            PKUtilsWidgetConfiguration widgetConfiguration = this.selectedWidget.getWidgetConfiguration();
+            UCUtilsWidgetConfiguration widgetConfiguration = this.selectedWidget.getWidgetConfiguration();
             widgetConfiguration.setX(widgetConfiguration.getX() + deltaX);
             widgetConfiguration.setY(widgetConfiguration.getY() + deltaY);
         }
@@ -133,9 +133,9 @@ public class WidgetOptionsPositionScreen extends PKUtilsScreen {
         boolean mouseClicked = super.mouseClicked(mouseX, mouseY, button);
 
         renderService.getWidgets().stream()
-                .filter(abstractPKUtilsWidget -> abstractPKUtilsWidget.isMouseOver(mouseX, mouseY))
+                .filter(abstractUCUtilsWidget -> abstractUCUtilsWidget.isMouseOver(mouseX, mouseY))
                 .findFirst()
-                .ifPresent(abstractPKUtilsWidget -> this.selectedWidget = abstractPKUtilsWidget);
+                .ifPresent(abstractUCUtilsWidget -> this.selectedWidget = abstractUCUtilsWidget);
 
         return mouseClicked;
     }

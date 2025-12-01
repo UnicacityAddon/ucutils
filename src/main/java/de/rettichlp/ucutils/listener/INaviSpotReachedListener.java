@@ -1,6 +1,6 @@
 package de.rettichlp.ucutils.listener;
 
-public interface INaviSpotReachedListener extends IPKUtilsListener {
+public interface INaviSpotReachedListener extends IUCUtilsListener {
 
     void onNaviSpotReached();
 }

@@ -27,9 +27,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import static de.rettichlp.ucutils.PKUtils.api;
-import static de.rettichlp.ucutils.PKUtils.player;
-import static de.rettichlp.ucutils.PKUtils.storage;
+import static de.rettichlp.ucutils.UCUtils.api;
+import static de.rettichlp.ucutils.UCUtils.player;
+import static de.rettichlp.ucutils.UCUtils.storage;
 import static de.rettichlp.ucutils.common.gui.screens.FactionActivityScreen.SortingType.NAME;
 import static de.rettichlp.ucutils.common.gui.screens.FactionActivityScreen.SortingType.RANK;
 import static de.rettichlp.ucutils.common.gui.screens.components.TableHeaderTextWidget.SortingDirection.NONE;

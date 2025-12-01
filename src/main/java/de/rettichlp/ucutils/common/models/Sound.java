@@ -9,7 +9,7 @@ import net.minecraft.util.Identifier;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 
-import static de.rettichlp.ucutils.PKUtils.configuration;
+import static de.rettichlp.ucutils.UCUtils.configuration;
 import static net.minecraft.client.sound.PositionedSoundInstance.master;
 
 @Getter
@@ -26,7 +26,7 @@ public enum Sound {
 
     @Contract(" -> new")
     public @NotNull Identifier getIdentifier() {
-        return Identifier.of("pkutils", this.path);
+        return Identifier.of("ucutils", this.path);
     }
 
     @Contract(" -> new")
