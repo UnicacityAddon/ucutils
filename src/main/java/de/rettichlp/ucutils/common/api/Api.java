@@ -68,7 +68,7 @@ public class Api {
             .header("Content-Type", "application/json")
             .header("X-Minecraft-UUID", MINECRAFT_UUID_STRING)
             .header("X-Minecraft-Name", MINECRAFT_NAME)
-            .header("X-PKU-Version", valueOf(utilService.getVersion()));
+            .header("X-UCU-Version", valueOf(utilService.getVersion()));
 
     @Getter
     private final Gson gson = new GsonBuilder()

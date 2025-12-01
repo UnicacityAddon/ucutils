@@ -23,7 +23,7 @@ public class MessageService {
     protected static final Text modMessagePrefix = Text.empty()
             .append(of("✦").copy().formatted(DARK_PURPLE))
             .append(of(" "))
-            .append(of("PKU").copy().formatted(LIGHT_PURPLE))
+            .append(of("UCU").copy().formatted(LIGHT_PURPLE))
             .append(of(" "))
             .append(of("|").copy().formatted(DARK_GRAY))
             .append(of(" "));
