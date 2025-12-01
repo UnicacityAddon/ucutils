@@ -1,6 +1,6 @@
 {
     "required": true,
-    "package": "de.rettichlp.pkutils.mixin",
+    "package": "de.rettichlp.ucutils.mixin",
     "compatibilityLevel": "JAVA_21",
     "mixins": [
         "EntityMixin",

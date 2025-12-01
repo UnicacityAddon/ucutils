@@ -1,0 +1,35 @@
+package de.rettichlp.ucutils.common.gui.widgets;
+
+import de.rettichlp.ucutils.common.gui.widgets.base.AbstractPKUtilsTextWidget;
+import de.rettichlp.ucutils.common.gui.widgets.base.PKUtilsWidget;
+import de.rettichlp.ucutils.common.gui.widgets.base.PKUtilsWidgetConfiguration;
+import lombok.AllArgsConstructor;
+import net.minecraft.text.Text;
+
+import static de.rettichlp.ucutils.PKUtils.configuration;
+import static net.minecraft.text.Text.empty;
+import static net.minecraft.text.Text.translatable;
+
+@PKUtilsWidget(registryName = "money", defaultX = 4.0, defaultY = 23.0)
+public class MoneyWidget extends AbstractPKUtilsTextWidget<MoneyWidget.Configuration> {
+
+    @Override
+    public Text text() {
+        return empty()
+                .append(keyValue("Geld", configuration.getMoneyCashAmount() + "$")).append(" ")
+                .append(keyValue("Bank", configuration.getMoneyBankAmount() + "$"));
+    }
+
+    @Override
+    public Text getDisplayName() {
+        return translatable("pkutils.options.widgets.money.options.name");
+    }
+
+    @Override
+    public Text getTooltip() {
+        return translatable("pkutils.options.widgets.money.options.tooltip");
+    }
+
+    @AllArgsConstructor
+    public static class Configuration extends PKUtilsWidgetConfiguration {}
+}

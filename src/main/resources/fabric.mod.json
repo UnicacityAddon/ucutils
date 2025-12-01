@@ -13,11 +13,11 @@
         "sources": "https://github.com/UnicacityAddon/pkutils"
     },
     "license": "Apache-2.0",
-    "icon": "assets/pkutils/icon.png",
+    "icon": "assets/ucutils/icon.png",
     "environment": "*",
     "entrypoints": {
         "main": [
-            "de.rettichlp.pkutils.PKUtils"
+            "de.rettichlp.ucutils.PKUtils"
         ]
     },
     "mixins": [
