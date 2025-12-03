@@ -20,7 +20,7 @@ import static java.util.regex.Pattern.compile;
 public class BlacklistListener implements IMessageReceiveListener {
 
     private static final Pattern BLACKLIST_HEADER_PATTERN = compile("^==== Blacklist .+ ====$");
-    private static final Pattern BLACKLIST_ENTRY_PATTERN = compile("^ » (?:\\[UC])?(?<playerName>[a-zA-Z0-9_]+) \\| (?<reason>.+) \\| (?<dateTime>.+) \\| (?<kills>\\d+) Kills \\| (?<price>\\d+)\\$(| \\(AFK\\))$");
+    private static final Pattern BLACKLIST_ENTRY_PATTERN = compile("^» (?:\\[UC])?(?<playerName>[a-zA-Z0-9_]+) \\| (?<reason>.+) \\| (?<dateTime>.+) \\| (?<kills>\\d+) Kills \\| (?<price>\\d+)\\$(| \\(AFK\\))$");
     private static final Pattern BLACKLIST_ENTRY_ADD = compile("^\\[Blacklist] (?:\\[UC])?(?<targetName>[a-zA-Z0-9_]+) wurde von (?:\\[UC])?(?<playerName>[a-zA-Z0-9_]+) auf die Blacklist gesetzt!$");
     private static final Pattern BLACKLIST_ENTRY_REMOVE = compile("^\\[Blacklist] (?:\\[UC])?(?<targetName>[a-zA-Z0-9_]+) wurde von (?:\\[UC])?(?<playerName>[a-zA-Z0-9_]+) von der Blacklist gelöscht!$");
 

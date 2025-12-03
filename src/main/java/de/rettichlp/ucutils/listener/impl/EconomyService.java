@@ -44,10 +44,10 @@ public class EconomyService implements IMessageReceiveListener {
     private static final Pattern CASH_FROM_BANK_PATTERN = compile("^Auszahlung: -(?<amount>\\d+)\\$$");
     private static final Pattern CASH_GET_PATTERN = compile("^\\+(?<amount>\\d+)\\$$");
     private static final Pattern CASH_REMOVE_PATTERN = compile("^-(?<amount>\\d+)\\$$");
-    private static final Pattern CASH_STATS_PATTERN = compile("^ - Geld: (?<amount>\\d+)\\$$");
+    private static final Pattern CASH_STATS_PATTERN = compile("^- Geld: (?<amount>\\d+)\\$$");
 
     // payday
-    private static final Pattern PAYDAY_TIME_PATTERN = compile("^ - Zeit seit Payday: (?<minutes>\\d+)/60 Minuten$");
+    private static final Pattern PAYDAY_TIME_PATTERN = compile("^- Zeit seit Payday: (?<minutes>\\d+)/60 Minuten$");
     private static final Pattern PAYDAY_SALARY_PATTERN = compile("^\\[PayDay] Du bekommst dein Gehalt von (?<money>\\d+)\\$ am PayDay ausgezahlt\\.$");
 
     // other

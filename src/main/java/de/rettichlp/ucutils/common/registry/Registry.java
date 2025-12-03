@@ -98,7 +98,7 @@ public class Registry {
         }
 
         ClientReceiveMessageEvents.ALLOW_GAME.register((message, overlay) -> {
-            String rawMessage = message.getString();
+            String rawMessage = message.getString().trim();
 
             // handle navi spot reached
             if (NAVI_TARGET_REACHED_MESSAGE.equals(rawMessage)) {
