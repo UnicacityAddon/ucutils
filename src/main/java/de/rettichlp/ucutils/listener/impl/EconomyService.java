@@ -40,14 +40,14 @@ public class EconomyService implements IMessageReceiveListener {
     private static final Pattern CASH_TAKE_PATTERN = compile("^(?:\\[UC])?(?<playerName>[a-zA-Z0-9_]+) hat dir (?<amount>\\d+)\\$ gegeben\\.$");
     private static final Pattern CASH_TO_FBANK_PATTERN = compile("^\\[F-Bank] (?:\\[UC])?(?<playerName>[a-zA-Z0-9_]+) hat (?<amount>\\d+)\\$ in die F-Bank eingezahlt\\.$");
     private static final Pattern CASH_FROM_FBANK_PATTERN = compile("^\\[F-Bank] (?:\\[UC])?(?<playerName>[a-zA-Z0-9_]+) hat (?<amount>\\d+)\\$ aus der F-Bank ausgezahlt\\.$");
-    private static final Pattern CASH_TO_BANK_PATTERN = compile("^Einzahlung: \\+(?<amount>\\d+)\\$$");
+    private static final Pattern CASH_TO_BANK_PATTERN = compile("^Eingezahlt: \\+(?<amount>\\d+)\\$$");
     private static final Pattern CASH_FROM_BANK_PATTERN = compile("^Auszahlung: -(?<amount>\\d+)\\$$");
     private static final Pattern CASH_GET_PATTERN = compile("^\\+(?<amount>\\d+)\\$$");
     private static final Pattern CASH_REMOVE_PATTERN = compile("^-(?<amount>\\d+)\\$$");
     private static final Pattern CASH_STATS_PATTERN = compile("^- Geld: (?<amount>\\d+)\\$$");
 
     // payday
-    private static final Pattern PAYDAY_TIME_PATTERN = compile("^- Zeit seit Payday: (?<minutes>\\d+)/60 Minuten$");
+    private static final Pattern PAYDAY_TIME_PATTERN = compile("^- Zeit seit PayDay: (?<minutes>\\d+)/60 Minuten$");
     private static final Pattern PAYDAY_SALARY_PATTERN = compile("^\\[PayDay] Du bekommst dein Gehalt von (?<money>\\d+)\\$ am PayDay ausgezahlt\\.$");
 
     // other
