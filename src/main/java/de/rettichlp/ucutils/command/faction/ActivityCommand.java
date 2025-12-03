@@ -25,16 +25,16 @@ public class ActivityCommand extends CommandBase {
     public LiteralArgumentBuilder<FabricClientCommandSource> execute(@NotNull LiteralArgumentBuilder<FabricClientCommandSource> node) {
         return node.executes(context -> {
             Faction faction = storage.getFaction(player.getGameProfile().name());
-            api.getFactionResetTime(faction, weeklyTime -> {
-                MinecraftClient client = MinecraftClient.getInstance();
-
-                LocalDateTime to = weeklyTime.nextOccurrence();
-                LocalDateTime from = to.minusWeeks(1);
-                api.getFactionPlayerData(from, to, faction.getMembers().stream().map(FactionMember::playerName).toList(), factionPlayerDataResponse -> client.execute(() -> {
-                    FactionActivityScreen factionActivityScreen = new FactionActivityScreen(faction, from, to, factionPlayerDataResponse, RANK, DESCENDING);
-                    client.setScreen(factionActivityScreen);
-                }));
-            });
+//            api.getFactionResetTime(faction, weeklyTime -> {
+//                MinecraftClient client = MinecraftClient.getInstance();
+//
+//                LocalDateTime to = weeklyTime.nextOccurrence();
+//                LocalDateTime from = to.minusWeeks(1);
+//                api.getFactionPlayerData(from, to, faction.getMembers().stream().map(FactionMember::playerName).toList(), factionPlayerDataResponse -> client.execute(() -> {
+//                    FactionActivityScreen factionActivityScreen = new FactionActivityScreen(faction, from, to, factionPlayerDataResponse, RANK, DESCENDING);
+//                    client.setScreen(factionActivityScreen);
+//                }));
+//            });
 
             return 1;
         });

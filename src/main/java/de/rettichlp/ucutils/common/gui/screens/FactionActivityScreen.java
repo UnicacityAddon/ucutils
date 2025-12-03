@@ -109,10 +109,10 @@ public class FactionActivityScreen extends FactionScreen {
     private void reopen(boolean withApiCall) {
         if (withApiCall) {
             List<String> playerNames = this.faction.getMembers().stream().map(FactionMember::playerName).toList();
-            api.getFactionPlayerData(this.from, this.to, playerNames, factionPlayerDataResponses -> {
-                FactionActivityScreen factionActivityScreen = new FactionActivityScreen(this.faction, this.from, this.to, factionPlayerDataResponses, this.sortingType, this.sortingDirection);
-                this.client.execute(() -> this.client.setScreen(factionActivityScreen));
-            });
+//            api.getFactionPlayerData(this.from, this.to, playerNames, factionPlayerDataResponses -> {
+//                FactionActivityScreen factionActivityScreen = new FactionActivityScreen(this.faction, this.from, this.to, factionPlayerDataResponses, this.sortingType, this.sortingDirection);
+//                this.client.execute(() -> this.client.setScreen(factionActivityScreen));
+//            });
 
             return;
         }

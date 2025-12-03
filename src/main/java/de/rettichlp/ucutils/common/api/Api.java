@@ -81,72 +81,6 @@ public class Api {
             .registerTypeAdapter(LocalTime.class, (JsonSerializer<LocalTime>) (src, typeOfSrc, context) -> new JsonPrimitive(src.toString()))
             .create();
 
-    public void getUserInfo(String playerName, Consumer<GetUserInfoResponse> callback) {
-        get("/v1/user/info?playerName=" + playerName, new TypeToken<>() {}, callback);
-    }
-
-    public void postUserRegister() {
-        // register user
-        post("/v1/user/register", new Object(), () -> LOGGER.info("Successfully registered user"));
-
-        // initialize websocket connection
-        String webSocketUrl = "ws://91.107.193.19:6010/ucutils/v1/ws";
-        this.httpClient.newWebSocketBuilder().buildAsync(create(webSocketUrl), new WebSocketService()).exceptionally(throwable -> {
-            LOGGER.error("Error while connecting to WebSocket", throwable);
-            return null;
-        });
-    }
-
-    public void getBlacklistReasons(@NotNull Faction faction, Consumer<List<BlacklistReason>> callback) {
-        get("/v1/blacklist/reasons?faction=" + faction.name(), new TypeToken<>() {}, callback);
-    }
-
-    public void postBlacklistReasons(@NotNull Faction faction, List<BlacklistReason> blacklistReasons) {
-        post("/v1/blacklist/reasons?faction=" + faction.name(), blacklistReasons, () -> LOGGER.info("Successfully updated blacklist reasons"));
-    }
-
-    public void getFactionMembers(Consumer<List<FactionEntry>> callback) {
-        get("/v2/faction/members", new TypeToken<>() {}, callback);
-    }
-
-    public void postFactionMembers() {
-        post("/v2/faction/members", storage.getFactionEntries(), () -> LOGGER.info("Successfully updated faction members"));
-    }
-
-    public void getFactionPlayerData(@NotNull ChronoLocalDateTime<LocalDate> from,
-                                     @NotNull ChronoLocalDateTime<LocalDate> to,
-                                     Iterable<String> playerNames,
-                                     Consumer<List<FactionPlayerDataResponse>> callback) {
-        String playerNamesParam = join(",", playerNames);
-        Instant fromInstant = from.atZone(utilService.getServerZoneId()).toInstant();
-        Instant toInstant = to.atZone(utilService.getServerZoneId()).toInstant();
-        get("/v2/faction/playerdata?playerNames=" + playerNamesParam + "&from=" + fromInstant + "&to=" + toInstant, new TypeToken<>() {}, callback);
-    }
-
-    public void getFactionResetTime(Faction faction, Consumer<WeeklyTime> callback) {
-        get("/v2/faction/resettime?faction=" + faction, new TypeToken<>() {}, callback);
-    }
-
-    public void putFactionActivityAdd(ActivityEntry.Type type) {
-        if (!storage.isUnicaCity()) {
-            return;
-        }
-
-        put("/v2/faction/activity/add?type=" + type, null, () -> notificationService.sendInfoNotification(type.getSuccessMessage()));
-    }
-
-    public void putFactionEquipAdd(EquipEntry.Type type) {
-        if (!storage.isUnicaCity()) {
-            return;
-        }
-
-        put("/v2/faction/equip/add?type=" + type, null, () -> notificationService.sendInfoNotification(type.getSuccessMessage()));
-    }
-
-    public void getBlacklistReasonData(Consumer<Map<Faction, List<BlacklistReason>>> callback) {
-        get("https://gist.githubusercontent.com/rettichlp/54e97f4dbb3988bf22554c01d62af666/raw/ucutils-blacklistreasons.json", new TypeToken<>() {}, callback);
-    }
-
     public void getModrinthVersions(Consumer<List<Map<String, Object>>> callback) {
         get("https://api.modrinth.com/v2/project/ucutils/version", new TypeToken<>() {}, callback);
     }
@@ -158,30 +92,6 @@ public class Api {
                 .build();
 
         sendRequest(httpRequest, typeToken, callback);
-    }
-
-    private void put(String uri, Object bodyObject, Runnable runnable) {
-        String jsonString = this.gson.toJson(bodyObject);
-        HttpRequest.BodyPublisher body = ofString(jsonString);
-
-        HttpRequest httpRequest = this.requestBuilder.copy()
-                .uri(create(this.baseUrl + uri))
-                .PUT(body)
-                .build();
-
-        sendRequest(httpRequest, null, object -> runnable.run());
-    }
-
-    private void post(String uri, Object bodyObject, Runnable runnable) {
-        String jsonString = this.gson.toJson(bodyObject);
-        HttpRequest.BodyPublisher body = ofString(jsonString);
-
-        HttpRequest httpRequest = this.requestBuilder.copy()
-                .uri(create(this.baseUrl + uri))
-                .POST(body)
-                .build();
-
-        sendRequest(httpRequest, null, object -> runnable.run());
     }
 
     private <T> void sendRequest(HttpRequest httpRequest, TypeToken<T> typeToken, Consumer<T> callback) {

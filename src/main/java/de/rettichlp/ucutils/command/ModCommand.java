@@ -48,22 +48,6 @@ public class ModCommand extends CommandBase {
     @Override
     public LiteralArgumentBuilder<FabricClientCommandSource> execute(@NotNull LiteralArgumentBuilder<FabricClientCommandSource> node) {
         return node
-                .then(literal("fakeActivity")
-                        .requires(fabricClientCommandSource -> commandService.isSuperUser())
-                        .then(argument("activityType", word())
-                                .suggests((context, builder) -> {
-                                    stream(ActivityEntry.Type.values()).forEach(activityType -> builder.suggest(activityType.name()));
-                                    return builder.buildFuture();
-                                })
-                                .executes(context -> {
-                                    String activityTypeString = context.getArgument("activityType", String.class);
-                                    stream(ActivityEntry.Type.values())
-                                            .filter(activityType -> activityType.name().equals(activityTypeString.toUpperCase()))
-                                            .findFirst()
-                                            .ifPresent(api::putFactionActivityAdd);
-
-                                    return 1;
-                                })))
                 .then(literal("userinfo")
                         .requires(fabricClientCommandSource -> commandService.isSuperUser())
                         .then(argument("player", word())
@@ -76,26 +60,26 @@ public class ModCommand extends CommandBase {
                                 })
                                 .executes(context -> {
                                     String playerName = context.getArgument("player", String.class);
-                                    api.getUserInfo(playerName, response -> {
-
-                                        player.sendMessage(empty(), false);
-
-                                        messageService.sendModMessage("UCUtils User Information - " + playerName, false);
-
-                                        messageService.sendModMessage(empty()
-                                                .append(of("Version").copy().formatted(GRAY))
-                                                .append(of(":").copy().formatted(DARK_GRAY)).append(" ")
-                                                .append(of(response.version()).copy().formatted(WHITE)), false);
-
-                                        messageService.sendModMessage(empty()
-                                                .append(of("Aktivitäten").copy().formatted(GRAY))
-                                                .append(of(":").copy().formatted(DARK_GRAY)).append(" ")
-                                                .append(of("Klick ↗").copy().styled(style -> style
-                                                        .withColor(WHITE)
-                                                        .withClickEvent(new ClickEvent.SuggestCommand("/activity player " + playerName)))), false);
-
-                                        player.sendMessage(empty(), false);
-                                    });
+//                                    api.getUserInfo(playerName, response -> {
+//
+//                                        player.sendMessage(empty(), false);
+//
+//                                        messageService.sendModMessage("UCUtils User Information - " + playerName, false);
+//
+//                                        messageService.sendModMessage(empty()
+//                                                .append(of("Version").copy().formatted(GRAY))
+//                                                .append(of(":").copy().formatted(DARK_GRAY)).append(" ")
+//                                                .append(of(response.version()).copy().formatted(WHITE)), false);
+//
+//                                        messageService.sendModMessage(empty()
+//                                                .append(of("Aktivitäten").copy().formatted(GRAY))
+//                                                .append(of(":").copy().formatted(DARK_GRAY)).append(" ")
+//                                                .append(of("Klick ↗").copy().styled(style -> style
+//                                                        .withColor(WHITE)
+//                                                        .withClickEvent(new ClickEvent.SuggestCommand("/activity player " + playerName)))), false);
+//
+//                                        player.sendMessage(empty(), false);
+//                                    });
 
                                     return 1;
                                 })))

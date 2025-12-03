@@ -93,16 +93,16 @@ public class FactionListener implements IKeyPressListener, IMessageReceiveListen
             this.lastFactionScreenExecution = currentTimeMillis();
 
             Faction faction = storage.getFaction(player.getGameProfile().name());
-            api.getFactionResetTime(faction, weeklyTime -> {
-                MinecraftClient client = MinecraftClient.getInstance();
-
-                LocalDateTime to = weeklyTime.nextOccurrence();
-                LocalDateTime from = to.minusWeeks(1);
-                api.getFactionPlayerData(from, to, faction.getMembers().stream().map(FactionMember::playerName).toList(), factionPlayerDataResponse -> client.execute(() -> {
-                    FactionActivityScreen factionActivityScreen = new FactionActivityScreen(faction, from, to, factionPlayerDataResponse, RANK, DESCENDING);
-                    client.setScreen(factionActivityScreen);
-                }));
-            });
+//            api.getFactionResetTime(faction, weeklyTime -> {
+//                MinecraftClient client = MinecraftClient.getInstance();
+//
+//                LocalDateTime to = weeklyTime.nextOccurrence();
+//                LocalDateTime from = to.minusWeeks(1);
+//                api.getFactionPlayerData(from, to, faction.getMembers().stream().map(FactionMember::playerName).toList(), factionPlayerDataResponse -> client.execute(() -> {
+//                    FactionActivityScreen factionActivityScreen = new FactionActivityScreen(faction, from, to, factionPlayerDataResponse, RANK, DESCENDING);
+//                    client.setScreen(factionActivityScreen);
+//                }));
+//            });
         }
     }
 
@@ -241,7 +241,7 @@ public class FactionListener implements IKeyPressListener, IMessageReceiveListen
         Matcher equipMatcher = EQUIP_PATTERN.matcher(message);
         if (equipMatcher.find()) {
             String type = equipMatcher.group("type");
-            fromDisplayName(type).ifPresent(api::putFactionEquipAdd);
+//            fromDisplayName(type).ifPresent(api::putFactionEquipAdd);
             return true;
         }
 
@@ -287,7 +287,7 @@ public class FactionListener implements IKeyPressListener, IMessageReceiveListen
                 })
                 .forEach(reinforcement -> {
                     reinforcement.setAddedAsActivity(true);
-                    api.putFactionActivityAdd(ActivityEntry.Type.REINFORCEMENT);
+//                    api.putFactionActivityAdd(ActivityEntry.Type.REINFORCEMENT);
                     LOGGER.info("Reinforcement reached, tracked activity");
                 });
 

@@ -77,7 +77,7 @@ public class SyncService {
             checkForUpdates();
 
             // login to UCUtils API
-            api.postUserRegister();
+//            api.postUserRegister();
         } else if (showPopupIfNotGiven) {
             LOGGER.info("Data usage not yet confirmed, showing confirmation popup");
             showDataUsageConfirmationPopup();
@@ -98,7 +98,7 @@ public class SyncService {
         }
 
         utilService.delayedAction(() -> {
-            api.postFactionMembers();
+//            api.postFactionMembers();
             storage.getPlayerFactionCache().clear();
         }, commandResponseRetrievers.size() * 1000L + 1200);
     }
@@ -126,20 +126,20 @@ public class SyncService {
     }
 
     public void syncFactionMembersWithApi() {
-        api.getFactionMembers(factionEntries -> {
-            storage.getFactionEntries().clear();
-            storage.getFactionEntries().addAll(factionEntries);
-            storage.getPlayerFactionCache().clear();
-            LOGGER.info("Successfully synced faction members with API");
-        });
+//        api.getFactionMembers(factionEntries -> {
+//            storage.getFactionEntries().clear();
+//            storage.getFactionEntries().addAll(factionEntries);
+//            storage.getPlayerFactionCache().clear();
+//            LOGGER.info("Successfully synced faction members with API");
+//        });
     }
 
     public void syncBlacklistReasonsFromApi() {
-        api.getBlacklistReasonData(factionListMap -> {
-            storage.getBlacklistReasons().clear();
-            storage.getBlacklistReasons().putAll(factionListMap);
-            LOGGER.info("Successfully synced blacklist reasons with API");
-        });
+//        api.getBlacklistReasonData(factionListMap -> {
+//            storage.getBlacklistReasons().clear();
+//            storage.getBlacklistReasons().putAll(factionListMap);
+//            LOGGER.info("Successfully synced blacklist reasons with API");
+//        });
     }
 
     public void checkForUpdates() {

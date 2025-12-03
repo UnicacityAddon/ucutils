@@ -123,7 +123,7 @@ public class MedicListener implements IMessageReceiveListener {
         if (karmaGetMatcher.find()) {
             long seconds = between(this.lastReviveStartetAt, now()).toSeconds();
             if (seconds > 6 && seconds < 10) {
-                api.putFactionActivityAdd(REVIVE);
+//                api.putFactionActivityAdd(REVIVE);
             }
             return true;
         }

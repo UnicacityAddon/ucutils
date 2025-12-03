@@ -63,20 +63,20 @@ public abstract class FactionScreen extends OptionsScreen {
 
         renderService.addButton(directionalLayoutWidget, translatable("ucutils.screen.faction.button.activity.name"), button -> {
             close();
-            api.getFactionPlayerData(this.from, this.to, this.faction.getMembers().stream().map(FactionMember::playerName).toList(), factionPlayerDataResponse -> this.client.execute(() -> {
-                FactionActivityScreen factionActivityScreen = new FactionActivityScreen(this.faction, this.from, this.to, factionPlayerDataResponse, RANK, DESCENDING);
-                this.client.setScreen(factionActivityScreen);
-            }));
+//            api.getFactionPlayerData(this.from, this.to, this.faction.getMembers().stream().map(FactionMember::playerName).toList(), factionPlayerDataResponse -> this.client.execute(() -> {
+//                FactionActivityScreen factionActivityScreen = new FactionActivityScreen(this.faction, this.from, this.to, factionPlayerDataResponse, RANK, DESCENDING);
+//                this.client.setScreen(factionActivityScreen);
+//            }));
         }, 100);
 
         directionalLayoutWidget.add(new EmptyWidget(132, 0));
 
         ButtonWidget buttonWidget = directionalLayoutWidget.add(new ButtonWidget.Builder(translatable("ucutils.screen.faction.button.blacklist.name"), button -> {
             close();
-            api.getBlacklistReasons(this.faction, blacklistReasons -> this.client.execute(() -> {
-                FactionBlacklistReasonScreen factionScreen = new FactionBlacklistReasonScreen(this.faction, this.from, this.to, blacklistReasons);
-                this.client.setScreen(factionScreen);
-            }));
+//            api.getBlacklistReasons(this.faction, blacklistReasons -> this.client.execute(() -> {
+//                FactionBlacklistReasonScreen factionScreen = new FactionBlacklistReasonScreen(this.faction, this.from, this.to, blacklistReasons);
+//                this.client.setScreen(factionScreen);
+//            }));
         }).width(100).build());
         buttonWidget.active = this.faction.isBadFaction() || commandService.isSuperUser();
 

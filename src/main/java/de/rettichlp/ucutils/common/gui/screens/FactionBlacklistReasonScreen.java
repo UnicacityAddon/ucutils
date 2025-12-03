@@ -83,16 +83,16 @@ public class FactionBlacklistReasonScreen extends FactionScreen {
 
     @Override
     public void doOnClose() {
-        api.postBlacklistReasons(this.faction, this.blacklistReasons);
+//        api.postBlacklistReasons(this.faction, this.blacklistReasons);
         super.doOnClose();
     }
 
     private void reopen(boolean withApiCall) {
         if (withApiCall) {
-            api.getBlacklistReasons(this.faction, blacklistReasons -> {
-                FactionBlacklistReasonScreen factionBlacklistReasonScreen = new FactionBlacklistReasonScreen(this.faction, this.from, this.to, blacklistReasons);
-                this.client.execute(() -> this.client.setScreen(factionBlacklistReasonScreen));
-            });
+//            api.getBlacklistReasons(this.faction, blacklistReasons -> {
+//                FactionBlacklistReasonScreen factionBlacklistReasonScreen = new FactionBlacklistReasonScreen(this.faction, this.from, this.to, blacklistReasons);
+//                this.client.execute(() -> this.client.setScreen(factionBlacklistReasonScreen));
+//            });
 
             return;
         }

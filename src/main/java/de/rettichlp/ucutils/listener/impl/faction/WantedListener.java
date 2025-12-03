@@ -170,7 +170,7 @@ public class WantedListener implements IMessageReceiveListener {
             // track activity if the killer player is within 60 blocks
             boolean killerIsWithin60Blocks = !MinecraftClient.getInstance().world.getEntitiesByType(instanceOf(PlayerEntity.class), player.getBoundingBox().expand(50), playerEntity -> playerEntity.getGameProfile().name().equals(playerName)).isEmpty();
             if (killerIsWithin60Blocks) {
-                api.putFactionActivityAdd(ARREST_KILL);
+//                api.putFactionActivityAdd(ARREST_KILL);
             }
 
             return false;
@@ -195,7 +195,7 @@ public class WantedListener implements IMessageReceiveListener {
             player.sendMessage(modifiedMessage, false);
 
             if (clientPlayerName.equals(playerName)) {
-                api.putFactionActivityAdd(ARREST);
+//                api.putFactionActivityAdd(ARREST);
             }
 
             return false;
@@ -222,7 +222,7 @@ public class WantedListener implements IMessageReceiveListener {
             player.sendMessage(modifiedMessage, false);
 
             if (clientPlayerName.equals(officerName)) {
-                api.putFactionActivityAdd(PARK_TICKET);
+//                api.putFactionActivityAdd(PARK_TICKET);
             }
 
             return false;
