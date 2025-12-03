@@ -33,7 +33,7 @@ import static net.minecraft.scoreboard.ScoreboardDisplaySlot.SIDEBAR;
 @UCUtilsListener
 public class GarbageManListener implements IMessageReceiveListener, ITickListener {
 
-    private static final String GARBAGE_MAN_TEXT = "müllmann";
+    private static final String GARBAGE_MAN_TEXT = "JobWaste";
     private static final Pattern GARBAGE_MAN_DROP_START = compile("^\\[Müllmann] Du hast genug Mülltonnen entleert\\.$");
     private static final Pattern GARBAGE_MAN_FINISHED = compile("^\\[Müllmann] Du hast den Job beendet\\.$");
 
@@ -127,10 +127,10 @@ public class GarbageManListener implements IMessageReceiveListener, ITickListene
     @AllArgsConstructor
     private enum WasteDropSpot {
 
-        GLASS("Glas", new BlockPos(876, 69, 350)),
-        METAL("Metall", new BlockPos(890, 69, 351)),
-        WASTE("Abfall", new BlockPos(903, 69, 381)),
-        WOOD("Holz", new BlockPos(913, 69, 372));
+        GLASS("Glas", new BlockPos(884, 67, 349)),
+        METAL("Metall", new BlockPos(900, 67, 392)),
+        WASTE("Abfall", new BlockPos(908, 67, 361)),
+        WOOD("Holz", new BlockPos(876, 69, 376));
 
         private final String displayName;
         private final BlockPos dropSpot;
