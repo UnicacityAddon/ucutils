@@ -1,0 +1,48 @@
+package de.rettichlp.ucutils.command;
+
+import com.mojang.brigadier.builder.LiteralArgumentBuilder;
+import de.rettichlp.ucutils.common.registry.CommandBase;
+import de.rettichlp.ucutils.common.registry.UCUtilsCommand;
+import de.rettichlp.ucutils.listener.impl.EventListener;
+import net.fabricmc.fabric.api.client.command.v2.FabricClientCommandSource;
+import org.jetbrains.annotations.NotNull;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
+import static de.rettichlp.ucutils.UCUtils.configuration;
+import static de.rettichlp.ucutils.UCUtils.messageService;
+import static de.rettichlp.ucutils.UCUtils.player;
+import static net.minecraft.text.Text.empty;
+import static net.minecraft.text.Text.of;
+
+@UCUtilsCommand(label = "notvisitedhouses")
+public class NotVisitedHousesCommand extends CommandBase {
+
+    @Override
+    public LiteralArgumentBuilder<FabricClientCommandSource> execute(@NotNull LiteralArgumentBuilder<FabricClientCommandSource> node) {
+        return node
+                .executes(context -> {
+                    List<Integer> doorNumbersVisited = configuration.getHalloweenClickedDoors().stream()
+                            .map(EventListener.HalloweenDoor::getDoorNumber)
+                            .toList();
+
+                    Collection<Integer> doorNumbersNotVisited = new ArrayList<>();
+                    for (int i = 1; i <= 828; i++) {
+                        if (!doorNumbersVisited.contains(i)) {
+                            doorNumbersNotVisited.add(i);
+                        }
+                    }
+
+                    player.sendMessage(empty(), false);
+
+                    messageService.sendModMessage("Noch nicht besuchte Häuser:", false);
+                    doorNumbersNotVisited.forEach(integer -> messageService.sendModMessage(of("Haus " + integer), false));
+
+                    player.sendMessage(empty(), false);
+
+                    return 1;
+                });
+    }
+}
