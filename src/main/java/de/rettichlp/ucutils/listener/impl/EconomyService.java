@@ -41,7 +41,7 @@ public class EconomyService implements IMessageReceiveListener {
     private static final Pattern CASH_TO_BANK_PATTERN = compile("^Eingezahlt: \\+(?<amount>\\d+)\\$$");
     private static final Pattern CASH_FROM_BANK_PATTERN = compile("^Auszahlung: -(?<amount>\\d+)\\$$");
     private static final Pattern CASH_GET_PATTERN = compile("^\\+(?<amount>\\d+)\\$$");
-    private static final Pattern CASH_REMOVE_PATTERN = compile("^-(?<amount>\\d+)\\$$");
+    private static final Pattern CASH_REMOVE_PATTERN = compile("^-(?<amount>\\d+)\\$( \\(Karte\\))?$");
     private static final Pattern CASH_STATS_PATTERN = compile("^- Geld: (?<amount>\\d+)\\$$");
 
     // payday
@@ -163,7 +163,11 @@ public class EconomyService implements IMessageReceiveListener {
         Matcher cashRemoveMatcher = CASH_REMOVE_PATTERN.matcher(message);
         if (cashRemoveMatcher.find()) {
             int amount = parseInt(cashRemoveMatcher.group("amount"));
-            configuration.setMoneyCashAmount(configuration.getMoneyCashAmount() - amount);
+            if (message.contains("(Karte)")) {
+                configuration.setMoneyBankAmount(configuration.getMoneyBankAmount() - amount);
+            } else {
+                configuration.setMoneyCashAmount(configuration.getMoneyCashAmount() - amount);
+            }
             return true;
         }
 
