@@ -21,6 +21,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.item.Item;
 import net.minecraft.text.Text;
 import net.minecraft.util.math.Box;
+import net.minecraft.util.math.Direction;
 import net.minecraft.world.entity.EntityLike;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Matrix4f;
@@ -37,6 +38,7 @@ import static java.util.stream.Collectors.toCollection;
 import static java.util.stream.StreamSupport.stream;
 import static net.minecraft.client.font.TextRenderer.TextLayerType.SEE_THROUGH;
 import static net.minecraft.client.gui.widget.DirectionalLayoutWidget.horizontal;
+import static net.minecraft.client.render.RenderLayer.getDebugQuads;
 import static net.minecraft.client.render.RenderLayer.getLines;
 import static net.minecraft.item.Items.COMPARATOR;
 import static net.minecraft.util.math.RotationAxis.POSITIVE_Y;
@@ -53,41 +55,113 @@ public class RenderService {
         return false;
     }
 
-    public void renderOutline(@NotNull MatrixStack matrices,
-                              @NotNull VertexConsumerProvider vertexConsumers,
-                              @NotNull EntityLike entity,
-                              double expandBoundingBox) {
+    public void drawOutline(@NotNull MatrixStack matrices,
+                            @NotNull VertexConsumerProvider vertexConsumers,
+                            @NotNull EntityLike entity,
+                            double expandBoundingBox) {
         Box box = entity.getBoundingBox().expand(expandBoundingBox);
+        drawOutline(matrices, vertexConsumers, box.minX, box.minY, box.minZ, box.maxX, box.maxY, box.maxZ, new Color(255, 255, 0, 150));
+    }
 
+    public void drawOutline(@NotNull MatrixStack matrices,
+                            @NotNull VertexConsumerProvider vertexConsumers,
+                            double x1,
+                            double y1,
+                            double z1,
+                            double x2,
+                            double y2,
+                            double z2,
+                            Color color) {
         Camera camera = MinecraftClient.getInstance().gameRenderer.getCamera();
         double camX = camera.getPos().x;
         double camY = camera.getPos().y;
         double camZ = camera.getPos().z;
 
-        float minX = (float) (box.minX - camX);
-        float minY = (float) (box.minY - camY);
-        float minZ = (float) (box.minZ - camZ);
-        float maxX = (float) (box.maxX - camX);
-        float maxY = (float) (box.maxY - camY);
-        float maxZ = (float) (box.maxZ - camZ);
+        float minX = (float) (x1 - camX);
+        float minY = (float) (y1 - camY);
+        float minZ = (float) (z1 - camZ);
+        float maxX = (float) (x2 - camX);
+        float maxY = (float) (y2 - camY);
+        float maxZ = (float) (z2 - camZ);
 
         VertexConsumer consumer = vertexConsumers.getBuffer(getLines());
         Matrix4f matrix = matrices.peek().getPositionMatrix();
 
-        drawLine(consumer, matrix, minX, minY, minZ, maxX, minY, minZ);
-        drawLine(consumer, matrix, maxX, minY, minZ, maxX, minY, maxZ);
-        drawLine(consumer, matrix, maxX, minY, maxZ, minX, minY, maxZ);
-        drawLine(consumer, matrix, minX, minY, maxZ, minX, minY, minZ);
+        drawLine(consumer, matrix, minX, minY, minZ, maxX, minY, minZ, color);
+        drawLine(consumer, matrix, maxX, minY, minZ, maxX, minY, maxZ, color);
+        drawLine(consumer, matrix, maxX, minY, maxZ, minX, minY, maxZ, color);
+        drawLine(consumer, matrix, minX, minY, maxZ, minX, minY, minZ, color);
 
-        drawLine(consumer, matrix, minX, maxY, minZ, maxX, maxY, minZ);
-        drawLine(consumer, matrix, maxX, maxY, minZ, maxX, maxY, maxZ);
-        drawLine(consumer, matrix, maxX, maxY, maxZ, minX, maxY, maxZ);
-        drawLine(consumer, matrix, minX, maxY, maxZ, minX, maxY, minZ);
+        drawLine(consumer, matrix, minX, maxY, minZ, maxX, maxY, minZ, color);
+        drawLine(consumer, matrix, maxX, maxY, minZ, maxX, maxY, maxZ, color);
+        drawLine(consumer, matrix, maxX, maxY, maxZ, minX, maxY, maxZ, color);
+        drawLine(consumer, matrix, minX, maxY, maxZ, minX, maxY, minZ, color);
 
-        drawLine(consumer, matrix, minX, minY, minZ, minX, maxY, minZ);
-        drawLine(consumer, matrix, maxX, minY, minZ, maxX, maxY, minZ);
-        drawLine(consumer, matrix, maxX, minY, maxZ, maxX, maxY, maxZ);
-        drawLine(consumer, matrix, minX, minY, maxZ, minX, maxY, maxZ);
+        drawLine(consumer, matrix, minX, minY, minZ, minX, maxY, minZ, color);
+        drawLine(consumer, matrix, maxX, minY, minZ, maxX, maxY, minZ, color);
+        drawLine(consumer, matrix, maxX, minY, maxZ, maxX, maxY, maxZ, color);
+        drawLine(consumer, matrix, minX, minY, maxZ, minX, maxY, maxZ, color);
+    }
+
+    public void drawArea(@NotNull MatrixStack matrices,
+                         @NotNull VertexConsumerProvider vertexConsumers,
+                         @NotNull Direction direction,
+                         float x,
+                         float y,
+                         float z,
+                         @NotNull Color color) {
+        Camera camera = MinecraftClient.getInstance().gameRenderer.getCamera();
+        double camX = camera.getPos().x;
+        double camY = camera.getPos().y;
+        double camZ = camera.getPos().z;
+
+        float modifiedX = (float) (x - camX);
+        float modifiedY = (float) (y - camY);
+        float modifiedZ = (float) (z - camZ);
+
+        VertexConsumer consumer = vertexConsumers.getBuffer(getDebugQuads());
+        Matrix4f matrix = matrices.peek().getPositionMatrix();
+
+        Color alphaColor = new Color(color.getRed(), color.getGreen(), color.getBlue(), 50);
+
+        switch (direction) {
+            case UP -> {
+                consumer.vertex(matrix, modifiedX, modifiedY + 1, modifiedZ).color(alphaColor.getRed(), alphaColor.getGreen(), alphaColor.getBlue(), alphaColor.getAlpha()).normal(0, 1, 0);
+                consumer.vertex(matrix, modifiedX + 1, modifiedY + 1, modifiedZ).color(alphaColor.getRed(), alphaColor.getGreen(), alphaColor.getBlue(), alphaColor.getAlpha()).normal(0, 1, 0);
+                consumer.vertex(matrix, modifiedX + 1, modifiedY + 1, modifiedZ + 1).color(alphaColor.getRed(), alphaColor.getGreen(), alphaColor.getBlue(), alphaColor.getAlpha()).normal(0, 1, 0);
+                consumer.vertex(matrix, modifiedX, modifiedY + 1, modifiedZ + 1).color(alphaColor.getRed(), alphaColor.getGreen(), alphaColor.getBlue(), alphaColor.getAlpha()).normal(0, 1, 0);
+            }
+            case DOWN -> {
+                consumer.vertex(matrix, modifiedX, modifiedY, modifiedZ).color(alphaColor.getRed(), alphaColor.getGreen(), alphaColor.getBlue(), alphaColor.getAlpha()).normal(0, 1, 0);
+                consumer.vertex(matrix, modifiedX + 1, modifiedY, modifiedZ).color(alphaColor.getRed(), alphaColor.getGreen(), alphaColor.getBlue(), alphaColor.getAlpha()).normal(0, 1, 0);
+                consumer.vertex(matrix, modifiedX + 1, modifiedY, modifiedZ + 1).color(alphaColor.getRed(), alphaColor.getGreen(), alphaColor.getBlue(), alphaColor.getAlpha()).normal(0, 1, 0);
+                consumer.vertex(matrix, modifiedX, modifiedY, modifiedZ + 1).color(alphaColor.getRed(), alphaColor.getGreen(), alphaColor.getBlue(), alphaColor.getAlpha()).normal(0, 1, 0);
+            }
+            case NORTH -> {
+                consumer.vertex(matrix, modifiedX, modifiedY, modifiedZ).color(alphaColor.getRed(), alphaColor.getGreen(), alphaColor.getBlue(), alphaColor.getAlpha()).normal(0, 1, 0);
+                consumer.vertex(matrix, modifiedX + 1, modifiedY, modifiedZ).color(alphaColor.getRed(), alphaColor.getGreen(), alphaColor.getBlue(), alphaColor.getAlpha()).normal(0, 1, 0);
+                consumer.vertex(matrix, modifiedX + 1, modifiedY + 1, modifiedZ).color(alphaColor.getRed(), alphaColor.getGreen(), alphaColor.getBlue(), alphaColor.getAlpha()).normal(0, 1, 0);
+                consumer.vertex(matrix, modifiedX, modifiedY + 1, modifiedZ).color(alphaColor.getRed(), alphaColor.getGreen(), alphaColor.getBlue(), alphaColor.getAlpha()).normal(0, 1, 0);
+            }
+            case EAST -> {
+                consumer.vertex(matrix, modifiedX + 1, modifiedY, modifiedZ).color(alphaColor.getRed(), alphaColor.getGreen(), alphaColor.getBlue(), alphaColor.getAlpha()).normal(0, 1, 0);
+                consumer.vertex(matrix, modifiedX + 1, modifiedY + 1, modifiedZ).color(alphaColor.getRed(), alphaColor.getGreen(), alphaColor.getBlue(), alphaColor.getAlpha()).normal(0, 1, 0);
+                consumer.vertex(matrix, modifiedX + 1, modifiedY + 1, modifiedZ + 1).color(alphaColor.getRed(), alphaColor.getGreen(), alphaColor.getBlue(), alphaColor.getAlpha()).normal(0, 1, 0);
+                consumer.vertex(matrix, modifiedX + 1, modifiedY, modifiedZ + 1).color(alphaColor.getRed(), alphaColor.getGreen(), alphaColor.getBlue(), alphaColor.getAlpha()).normal(0, 1, 0);
+            }
+            case SOUTH -> {
+                consumer.vertex(matrix, modifiedX, modifiedY, modifiedZ + 1).color(alphaColor.getRed(), alphaColor.getGreen(), alphaColor.getBlue(), alphaColor.getAlpha()).normal(0, 1, 0);
+                consumer.vertex(matrix, modifiedX + 1, modifiedY, modifiedZ + 1).color(alphaColor.getRed(), alphaColor.getGreen(), alphaColor.getBlue(), alphaColor.getAlpha()).normal(0, 1, 0);
+                consumer.vertex(matrix, modifiedX + 1, modifiedY + 1, modifiedZ + 1).color(alphaColor.getRed(), alphaColor.getGreen(), alphaColor.getBlue(), alphaColor.getAlpha()).normal(0, 1, 0);
+                consumer.vertex(matrix, modifiedX, modifiedY + 1, modifiedZ + 1).color(alphaColor.getRed(), alphaColor.getGreen(), alphaColor.getBlue(), alphaColor.getAlpha()).normal(0, 1, 0);
+            }
+            case WEST -> {
+                consumer.vertex(matrix, modifiedX, modifiedY, modifiedZ).color(alphaColor.getRed(), alphaColor.getGreen(), alphaColor.getBlue(), alphaColor.getAlpha()).normal(0, 1, 0);
+                consumer.vertex(matrix, modifiedX, modifiedY + 1, modifiedZ).color(alphaColor.getRed(), alphaColor.getGreen(), alphaColor.getBlue(), alphaColor.getAlpha()).normal(0, 1, 0);
+                consumer.vertex(matrix, modifiedX, modifiedY + 1, modifiedZ + 1).color(alphaColor.getRed(), alphaColor.getGreen(), alphaColor.getBlue(), alphaColor.getAlpha()).normal(0, 1, 0);
+                consumer.vertex(matrix, modifiedX, modifiedY, modifiedZ + 1).color(alphaColor.getRed(), alphaColor.getGreen(), alphaColor.getBlue(), alphaColor.getAlpha()).normal(0, 1, 0);
+            }
+        }
     }
 
     public void drawLine(@NotNull VertexConsumer consumer,
@@ -98,8 +172,21 @@ public class RenderService {
                          float x2,
                          float y2,
                          float z2) {
-        consumer.vertex(matrix, x1, y1, z1).color(1f, 1f, 0f, 0.6f).normal(0, 1, 0);
-        consumer.vertex(matrix, x2, y2, z2).color(1f, 1f, 0f, 0.6f).normal(0, 1, 0);
+        Color color = new Color(255, 255, 0, 150);
+        drawLine(consumer, matrix, x1, y1, z1, x2, y2, z2, color);
+    }
+
+    public void drawLine(@NotNull VertexConsumer consumer,
+                         Matrix4f matrix,
+                         float x1,
+                         float y1,
+                         float z1,
+                         float x2,
+                         float y2,
+                         float z2,
+                         @NotNull Color color) {
+        consumer.vertex(matrix, x1, y1, z1).color(color.getRed(), color.getGreen(), color.getBlue(), color.getAlpha()).normal(0, 1, 0);
+        consumer.vertex(matrix, x2, y2, z2).color(color.getRed(), color.getGreen(), color.getBlue(), color.getAlpha()).normal(0, 1, 0);
     }
 
     public void renderTextAboveEntity(@NotNull MatrixStack matrices,
