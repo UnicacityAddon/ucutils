@@ -2,13 +2,11 @@ package de.rettichlp.ucutils.listener.impl.job;
 
 import de.rettichlp.ucutils.common.models.Job;
 import de.rettichlp.ucutils.common.registry.UCUtilsListener;
-import de.rettichlp.ucutils.listener.ICommandSendListener;
 import de.rettichlp.ucutils.listener.IMessageReceiveListener;
 import de.rettichlp.ucutils.listener.IMoveListener;
 import de.rettichlp.ucutils.listener.INaviSpotReachedListener;
 import net.minecraft.text.Text;
 import net.minecraft.util.math.BlockPos;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.Optional;
 import java.util.regex.Matcher;
@@ -18,7 +16,6 @@ import static de.rettichlp.ucutils.UCUtils.commandService;
 import static de.rettichlp.ucutils.UCUtils.player;
 import static de.rettichlp.ucutils.UCUtils.storage;
 import static de.rettichlp.ucutils.UCUtils.utilService;
-import static de.rettichlp.ucutils.common.models.Job.LUMBERJACK;
 import static de.rettichlp.ucutils.common.models.Job.PIZZA_DELIVERY;
 import static de.rettichlp.ucutils.common.models.Job.TOBACCO_PLANTATION;
 import static de.rettichlp.ucutils.common.models.Job.URANIUM_TRANSPORT;
@@ -28,22 +25,11 @@ import static java.util.concurrent.TimeUnit.SECONDS;
 import static java.util.regex.Pattern.compile;
 
 @UCUtilsListener
-public class JobListener
-        implements ICommandSendListener, IMessageReceiveListener, IMoveListener, INaviSpotReachedListener {
+public class JobListener implements IMessageReceiveListener, IMoveListener, INaviSpotReachedListener {
 
-    private static final String SAWMILL_TEXT = "sägewerk";
-    private static final Pattern TRANSPORT_DELIVER_PATTERN = compile("^\\[Transport] Du hast (eine Holz Lieferung|eine Kiste|eine Waffenkiste|ein Weizen Paket|eine Schwarzpulverkiste) abgeliefert\\.$");
+    private static final Pattern TRANSPORT_DELIVER_PATTERN = compile("^\\[Transport] Du hast (eine Holz Lieferung|eine Kiste|eine Waffenkiste|ein Weizen Paket|eine Schwarzpulverkiste) abgeliefert( bei .+)?\\.$");
     private static final Pattern DRINK_TRANSPORT_DELIVER_PATTERN = compile("^\\[Bar] Du hast eine Flasche abgegeben!$");
     private static final Pattern PIZZA_JOB_TRANSPORT_GET_PIZZA_PATTERN = compile("^\\[Pizzalieferant] Sobald du 10 Pizzen dabei hast, wird dir deine erste Route angezeigt\\.$");
-
-    @Override
-    public boolean onCommandSend(@NotNull String command) {
-        if (SAWMILL_TEXT.equals(command)) {
-            utilService.delayedAction(() -> commandService.sendCommand("findtree"), 1000);
-        }
-
-        return true;
-    }
 
     @Override
     public boolean onMessageReceive(Text text, String message) {
@@ -73,13 +59,7 @@ public class JobListener
         if (optionalJob.isPresent()) {
             Job job = optionalJob.get();
             storage.setCurrentJob(job);
-
             job.startCountdown();
-
-            if (job == LUMBERJACK) {
-                utilService.delayedAction(() -> commandService.sendCommand("findtree"), 1000);
-            }
-
             return true;
         }
 
