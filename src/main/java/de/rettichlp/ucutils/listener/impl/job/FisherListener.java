@@ -48,6 +48,7 @@ public class FisherListener implements IMessageReceiveListener, INaviSpotReached
 
         Matcher fisherSpotFoundMatcher = FISHER_SPOT_FOUND_PATTERN.matcher(message);
         if (fisherSpotFoundMatcher.find()) {
+            commandService.sendCommand("stoproute");
             this.onFisherSpot = true;
 
             if (this.canCatchFish) {
