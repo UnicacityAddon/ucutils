@@ -31,7 +31,6 @@ UCUtils is a utility mod for the UnicaCity roleplay server, inspired by the form
 - Beim Hochseefischer-Job wird das Netz automatisch ausgeworfen und der gefangene Fisch am Ende automatisch abgegeben
 - Für den Transport des Tabaks zur Shisha-Bar wird der Tabak am Ende automatisch abgegeben
 - Der Müllmann-Job gibt am Ende den gesammelten Müll automatisch ab, ohne dass der `/dropwaste` Command ausgeführt werden muss
-- Für den Holzfäller-Job wird automatisch `/findtree` ausgeführt, um Bäume leichter zu finden, die sich zum Fällen eignen
 - Für den Pizzalieferanten-Job wird `/getpizza` automatisch ausgeführt, bis 10 Pizzen gesammelt wurden
 - Es werden Countdowns angezeigt, bis ein Job wieder ausgeführt werden kann
 - Bei der Abgabe von Uran am Atomkraftwerk muss man nicht mehr aus dem Auto aussteigen
@@ -67,9 +66,7 @@ UCUtils is a utility mod for the UnicaCity roleplay server, inspired by the form
 
 | Befehl                                                                                       | Beschreibung                                                                                                                                      |
 |----------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------|
-| `/activity <optional: Wochenindex>` `/activity player <Spielername> <optional: Wochenindex>` | Zeigt die eigene oder die Aktivität eines Spielern an. Wochenindex ist dabei für die aktuelle Woche 0 und für die letzte Woche -1 usw.            |
 | `/asetbl`                                                                                    | Setzt Blacklist-Gründe automatisch (Blacklist-Gründe können mit einem Ticket auf dem Discord beantragt werden)                                    |
-| `/equipped`                                                                                  | Zeigt das ausgerüstete Equip eines Spielers an                                                                                                    |
 | `/eigenbedarf`                                                                               | Nimmt eine eingestellte Menge an Drogen aus der Drogenbank einer Fraktion oder gibt diese an einen Spieler                                        |
 | `schwarzmarkt`                                                                               | Zeigt alle Schwarzmärkte an einschließlich des Zeitpunkts des letzten Besuchs des Ortes und einer Markierung ob sich der Schwarzmarkt dort befand |
 
@@ -87,4 +84,3 @@ UCUtils is a utility mod for the UnicaCity roleplay server, inspired by the form
 |-----------------------------------|------------------------------------------------------------------------------------|
 | `/acall <Spielername>`            | Ermöglicht das Anrufen mittels Spielername statt der Nummer                        |
 | `/asms <Spielername> <Nachricht>` | Ermöglicht das Schreiben einer SMS mittels Spielername statt der Nummer            |
-| `/reply <Nachricht>`              | Antwortet direkt mit einer SMS an den Spieler der zuletzt eine SMS geschrieben hat |
