@@ -1,0 +1,80 @@
+package de.rettichlp.ucutils.command;
+
+import com.mojang.brigadier.builder.LiteralArgumentBuilder;
+import de.rettichlp.ucutils.common.models.TodoEntry;
+import de.rettichlp.ucutils.common.registry.CommandBase;
+import de.rettichlp.ucutils.common.registry.UCUtilsCommand;
+import net.fabricmc.fabric.api.client.command.v2.FabricClientCommandSource;
+import org.jetbrains.annotations.NotNull;
+
+import java.util.List;
+
+import static com.mojang.brigadier.arguments.StringArgumentType.getString;
+import static com.mojang.brigadier.arguments.StringArgumentType.greedyString;
+import static de.rettichlp.ucutils.UCUtils.configuration;
+import static de.rettichlp.ucutils.UCUtils.messageService;
+import static de.rettichlp.ucutils.UCUtils.player;
+import static net.fabricmc.fabric.api.client.command.v2.ClientCommandManager.argument;
+import static net.fabricmc.fabric.api.client.command.v2.ClientCommandManager.literal;
+import static net.minecraft.text.Text.empty;
+import static net.minecraft.text.Text.of;
+import static net.minecraft.util.Formatting.WHITE;
+
+@UCUtilsCommand(label = "todo")
+public class TodoCommand extends CommandBase {
+
+    @Override
+    public LiteralArgumentBuilder<FabricClientCommandSource> execute(@NotNull LiteralArgumentBuilder<FabricClientCommandSource> node) {
+        return node
+                .then(literal("add")
+                        .then(argument("task", greedyString())
+                                .executes(context -> {
+                                    String taskString = getString(context, "task");
+                                    TodoEntry todoEntry = new TodoEntry(taskString);
+
+                                    configuration.getTodos().add(todoEntry);
+
+                                    sendTodoList();
+                                    return 1;
+                                })))
+                .then(literal("delete")
+                        .then(argument("id", greedyString())
+                                .executes(context -> {
+                                    String id = getString(context, "id");
+
+                                    configuration.getTodos()
+                                            .removeIf(todoEntry -> todoEntry.getCreatedAt().toString().equals(id));
+
+                                    sendTodoList();
+                                    return 1;
+                                })))
+                .then(literal("done")
+                        .then(argument("id", greedyString())
+                                .executes(context -> {
+                                    String id = getString(context, "id");
+
+                                    configuration.getTodos().stream()
+                                            .filter(todoEntry -> todoEntry.getCreatedAt().toString().equals(id))
+                                            .findFirst()
+                                            .ifPresent(todoEntry -> todoEntry.setDone(true));
+
+                                    sendTodoList();
+                                    return 1;
+                                })))
+                .executes(context -> {
+                    sendTodoList();
+                    return 1;
+                });
+    }
+
+    private void sendTodoList() {
+        List<TodoEntry> todos = configuration.getTodos();
+
+        player.sendMessage(empty(), false);
+        messageService.sendModMessage("TODOs:", false);
+        todos.forEach(todoEntry -> messageService.sendModMessage(empty()
+                .append(todoEntry.isDone() ? todoEntry.getDeleteButton() : todoEntry.getDoneButton()).append(" ")
+                .append(of(todoEntry.getTask()).copy().styled(style -> style.withColor(WHITE).withStrikethrough(todoEntry.isDone()))), false));
+        player.sendMessage(empty(), false);
+    }
+}

@@ -1,0 +1,107 @@
+package de.rettichlp.ucutils.listener.impl.faction;
+
+import de.rettichlp.ucutils.common.registry.UCUtilsListener;
+import de.rettichlp.ucutils.listener.IMessageReceiveListener;
+import de.rettichlp.ucutils.listener.INaviSpotReachedListener;
+import net.minecraft.text.Text;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import static de.rettichlp.ucutils.UCUtils.commandService;
+import static de.rettichlp.ucutils.UCUtils.player;
+import static de.rettichlp.ucutils.UCUtils.storage;
+import static de.rettichlp.ucutils.common.models.Sound.SERVICE;
+import static java.lang.Integer.parseInt;
+import static java.lang.Math.max;
+import static java.util.regex.Pattern.compile;
+
+@UCUtilsListener
+public class EmergencyServiceListener implements IMessageReceiveListener, INaviSpotReachedListener {
+
+    private static final Pattern SERVICE_PATTERN = compile("Ein Notruf von (?:\\[UC])?(?<playerName>[a-zA-Z0-9_]+) \\((?<message>.+)\\)\\.");
+    private static final Pattern SERVICE_ACCEPTED_PATTERN = compile("^(?:HQ: )?(?:\\[UC])?(?<playerName>[a-zA-Z0-9_]+) hat den Notruf von (?:\\[UC])?(?<senderName>[a-zA-Z0-9_]+) angenommen\\.$");
+    private static final Pattern SERVICE_REQUEUED_PATTERN = compile("^(?:\\[UC])?(?<playerName>[a-zA-Z0-9_]+) hat den Notruf von (?:\\[UC])?(?<senderName>[a-zA-Z0-9_]+) erneut geöffnet\\.$");
+    private static final Pattern SERVICE_DONE_PATTERN = compile("^Du hast den Service von (?:\\[UC])?(?<playerName>[a-zA-Z0-9_]+) als 'Erledigt' markiert\\.$");
+    private static final Pattern SERVICE_ABORTED_PATTERN = compile("^Der Service von (?:\\[UC])?(?<playerName>[a-zA-Z0-9_]+) wurde abgebrochen\\.$");
+    private static final Pattern SERVICE_DELETED_PATTERN = compile("^(?:\\[UC])?(?<playerName>[a-zA-Z0-9_]+) hat den Notruf von (?:\\[UC])?(?<senderName>[a-zA-Z0-9_]+) gelöscht\\.$");
+    private static final Pattern SERVICE_COUNT_PATTERN = compile("^Offene Notrufe \\((?<count>\\d+)\\)$");
+    private static final Pattern SERVICE_NONE_PATTERN = compile("^Fehler: Es ist kein Service offen\\.$");
+
+    private boolean activeService = false;
+
+    @Override
+    public boolean onMessageReceive(Text text, String message) {
+        Matcher serviceMatcher = SERVICE_PATTERN.matcher(message);
+        if (serviceMatcher.find()) {
+            storage.setActiveServices(storage.getActiveServices() + 1);
+            SERVICE.play();
+            return true;
+        }
+
+        Matcher serviceAcceptedMatcher = SERVICE_ACCEPTED_PATTERN.matcher(message);
+        if (serviceAcceptedMatcher.find()) {
+            storage.setActiveServices(max(0, storage.getActiveServices() - 1));
+
+            String playerName = serviceAcceptedMatcher.group("playerName");
+            if (playerName.equals(player.getGameProfile().name())) {
+                this.activeService = true;
+            }
+
+            return true;
+        }
+
+        Matcher serviceRequeuedMatcher = SERVICE_REQUEUED_PATTERN.matcher(message);
+        if (serviceRequeuedMatcher.find()) {
+            storage.setActiveServices(storage.getActiveServices() + 1);
+
+            String playerName = serviceRequeuedMatcher.group("playerName");
+            if (playerName.equals(player.getGameProfile().name())) {
+                this.activeService = false;
+            }
+
+            return true;
+        }
+
+        Matcher serviceDoneMatcher = SERVICE_DONE_PATTERN.matcher(message);
+        if (serviceDoneMatcher.find()) {
+//            api.putFactionActivityAdd(EMERGENCY_SERVICE);
+            this.activeService = false;
+            return true;
+        }
+
+        Matcher serviceAbortedMatcher = SERVICE_ABORTED_PATTERN.matcher(message);
+        if (serviceAbortedMatcher.find()) {
+            storage.setActiveServices(max(0, storage.getActiveServices() - 1));
+            return true;
+        }
+
+        Matcher serviceDeletedMatcher = SERVICE_DELETED_PATTERN.matcher(message);
+        if (serviceDeletedMatcher.find()) {
+            storage.setActiveServices(max(0, storage.getActiveServices() - 1));
+            return true;
+        }
+
+        Matcher serviceCountMatcher = SERVICE_COUNT_PATTERN.matcher(message);
+        if (serviceCountMatcher.find()) {
+            int count = parseInt(serviceCountMatcher.group("count"));
+            storage.setActiveServices(count);
+            return true;
+        }
+
+        Matcher serviceNoneMatcher = SERVICE_NONE_PATTERN.matcher(message);
+        if (serviceNoneMatcher.find()) {
+            storage.setActiveServices(0);
+            return true;
+        }
+
+        return true;
+    }
+
+    @Override
+    public void onNaviSpotReached() {
+        if (this.activeService) {
+            commandService.sendCommand("doneservice");
+        }
+    }
+}

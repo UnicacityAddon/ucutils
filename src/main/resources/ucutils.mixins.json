@@ -1,0 +1,21 @@
+{
+  "required": true,
+  "package": "de.rettichlp.ucutils.mixin",
+  "compatibilityLevel": "JAVA_21",
+  "mixins": [
+    "EntityMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  },
+  "overwrites": {
+    "requireAnnotations": true
+  },
+  "client": [
+    "ChatScreenMixin",
+    "ClientPlayerEntityMixin",
+    "EntityRendererMixin",
+    "GameMenuScreenMixin",
+    "PlayerListHudMixin"
+  ]
+}
