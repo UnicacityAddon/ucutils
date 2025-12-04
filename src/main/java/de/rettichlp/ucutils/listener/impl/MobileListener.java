@@ -14,7 +14,7 @@ import static java.util.regex.Pattern.compile;
 @UCUtilsListener
 public class MobileListener implements IMessageReceiveListener {
 
-    private static final Pattern MOBILE_NUMBER_PATTERN = compile("^(?:\\[UC])?(?<playerName>[a-zA-Z0-9_]+) gehört die Nummer (?<number>\\d+)\\.$");
+    private static final Pattern MOBILE_NUMBER_PATTERN = compile("^Nummer von (?:\\[UC])?(?<playerName>[a-zA-Z0-9_]+): (?<number>\\d+)$");
     private static final Pattern MOBILE_SMS_RECEIVE_PATTERN = compile("^Dein Handy klingelt! Eine Nachricht von (?:\\[UC])?(?<playerName>[a-zA-Z0-9_]+) \\((?<number>\\d+)\\)\\.$");
 
     @Override
