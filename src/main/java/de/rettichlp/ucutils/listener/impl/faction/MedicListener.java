@@ -9,10 +9,10 @@ import net.minecraft.text.Text;
 import org.jetbrains.annotations.NotNull;
 
 import java.time.LocalDateTime;
+import java.util.regex.MatchResult;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static de.rettichlp.ucutils.UCUtils.api;
 import static de.rettichlp.ucutils.UCUtils.commandService;
 import static de.rettichlp.ucutils.UCUtils.configuration;
 import static de.rettichlp.ucutils.UCUtils.messageService;
@@ -20,7 +20,6 @@ import static de.rettichlp.ucutils.UCUtils.player;
 import static de.rettichlp.ucutils.UCUtils.storage;
 import static de.rettichlp.ucutils.UCUtils.syncService;
 import static de.rettichlp.ucutils.UCUtils.utilService;
-import static de.rettichlp.ucutils.common.models.ActivityEntry.Type.REVIVE;
 import static java.lang.Integer.parseInt;
 import static java.lang.System.currentTimeMillis;
 import static java.time.Duration.between;
@@ -131,7 +130,7 @@ public class MedicListener implements IMessageReceiveListener {
         return true;
     }
 
-    private @NotNull HousebanEntry getHousebanEntry(@NotNull Matcher housebanEntryMatcher) {
+    private @NotNull HousebanEntry getHousebanEntry(@NotNull MatchResult housebanEntryMatcher) {
         String playerName = housebanEntryMatcher.group("playerName");
         String issuerPlayerName = housebanEntryMatcher.group("issuerPlayerName");
         String reasonsRaw = housebanEntryMatcher.group("reasons");

@@ -20,8 +20,6 @@ import static java.lang.Math.max;
 import static java.util.Collections.emptyList;
 import static java.util.Optional.ofNullable;
 import static java.util.regex.Pattern.compile;
-import static net.minecraft.text.ClickEvent.Action.RUN_COMMAND;
-import static net.minecraft.text.HoverEvent.Action.SHOW_TEXT;
 import static net.minecraft.text.Text.of;
 import static net.minecraft.util.Formatting.GRAY;
 import static net.minecraft.util.Formatting.UNDERLINE;

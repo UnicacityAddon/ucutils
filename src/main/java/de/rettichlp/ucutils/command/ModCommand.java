@@ -2,7 +2,6 @@ package de.rettichlp.ucutils.command;
 
 import com.mojang.authlib.GameProfile;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
-import de.rettichlp.ucutils.common.models.ActivityEntry;
 import de.rettichlp.ucutils.common.registry.CommandBase;
 import de.rettichlp.ucutils.common.registry.UCUtilsCommand;
 import net.fabricmc.fabric.api.client.command.v2.FabricClientCommandSource;
@@ -12,7 +11,6 @@ import net.minecraft.client.network.PlayerListEntry;
 import net.minecraft.text.ClickEvent;
 import org.jetbrains.annotations.NotNull;
 
-import java.net.URI;
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
@@ -20,7 +18,6 @@ import java.util.StringJoiner;
 
 import static com.mojang.brigadier.arguments.StringArgumentType.word;
 import static de.rettichlp.ucutils.UCUtils.MOD_ID;
-import static de.rettichlp.ucutils.UCUtils.api;
 import static de.rettichlp.ucutils.UCUtils.commandService;
 import static de.rettichlp.ucutils.UCUtils.messageService;
 import static de.rettichlp.ucutils.UCUtils.networkHandler;
@@ -30,12 +27,9 @@ import static de.rettichlp.ucutils.UCUtils.syncService;
 import static de.rettichlp.ucutils.UCUtils.utilService;
 import static java.net.URI.create;
 import static java.time.LocalDateTime.MIN;
-import static java.util.Arrays.stream;
 import static net.fabricmc.fabric.api.client.command.v2.ClientCommandManager.argument;
 import static net.fabricmc.fabric.api.client.command.v2.ClientCommandManager.literal;
 import static net.minecraft.command.CommandSource.suggestMatching;
-import static net.minecraft.text.ClickEvent.Action.OPEN_URL;
-import static net.minecraft.text.ClickEvent.Action.SUGGEST_COMMAND;
 import static net.minecraft.text.Text.empty;
 import static net.minecraft.text.Text.of;
 import static net.minecraft.util.Formatting.DARK_GRAY;

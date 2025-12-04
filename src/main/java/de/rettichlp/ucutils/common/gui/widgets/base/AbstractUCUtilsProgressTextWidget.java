@@ -4,10 +4,8 @@ import net.minecraft.client.gui.DrawContext;
 import net.minecraft.text.Text;
 import org.jetbrains.annotations.NotNull;
 
-import java.awt.Color;
 import java.time.temporal.Temporal;
 
-import static de.rettichlp.ucutils.UCUtils.renderService;
 import static de.rettichlp.ucutils.common.services.RenderService.TEXT_BOX_PADDING;
 import static java.lang.Math.max;
 import static java.lang.Math.min;

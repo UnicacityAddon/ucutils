@@ -4,7 +4,7 @@ import de.rettichlp.ucutils.listener.callback.PlayerEnterVehicleCallback;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.vehicle.MinecartEntity;
-import net.minecraft.world.entity.EntityLike;
+import net.minecraft.world.entity.UniquelyIdentifiable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -24,7 +24,7 @@ public abstract class EntityMixin {
             return;
         }
 
-        EntityLike self = (Entity) (Object) this;
+        UniquelyIdentifiable self = (Entity) (Object) this;
         if (self.getUuid().equals(player.getUuid())) {
             PlayerEnterVehicleCallback.EVENT.invoker().onEnter(vehicle);
         }

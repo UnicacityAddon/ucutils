@@ -1,35 +1,35 @@
 {
-    "schemaVersion": 1,
-    "id": "ucutils",
-    "version": "${version}",
-    "name": "UCUtils",
-    "description": "Essential utilities and QoL tools for the UnicaCity roleplay server.",
-    "authors": [
-        "RettichLP",
-        "fauli681"
-    ],
-    "contact": {
-        "homepage": "https://rettichlp.de/",
-        "sources": "https://github.com/UnicacityAddon/ucutils"
-    },
-    "license": "Apache-2.0",
-    "icon": "assets/ucutils/icon.png",
-    "environment": "*",
-    "entrypoints": {
-        "main": [
-          "de.rettichlp.ucutils.UCUtils"
-        ]
-    },
-    "mixins": [
-        "ucutils.mixins.json"
-    ],
-    "depends": {
-        "fabricloader": ">=0.17.0",
-        "minecraft": "~1.21.3",
-        "java": ">=21",
-        "fabric-api": "*"
-    },
-    "suggests": {
-        "another-mod": "*"
-    }
+  "schemaVersion": 1,
+  "id": "ucutils",
+  "version": "${version}",
+  "name": "UCUtils",
+  "description": "Essential utilities and QoL tools for the UnicaCity roleplay server.",
+  "authors": [
+    "RettichLP",
+    "fauli681"
+  ],
+  "contact": {
+    "homepage": "https://rettichlp.de/",
+    "sources": "https://github.com/UnicacityAddon/ucutils"
+  },
+  "license": "Apache-2.0",
+  "icon": "assets/ucutils/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "de.rettichlp.ucutils.UCUtils"
+    ]
+  },
+  "mixins": [
+    "ucutils.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=0.17.0",
+    "minecraft": "~1.21.3",
+    "java": ">=21",
+    "fabric-api": "*"
+  },
+  "suggests": {
+    "another-mod": "*"
+  }
 }

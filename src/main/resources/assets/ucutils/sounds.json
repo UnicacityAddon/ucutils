@@ -1,42 +1,42 @@
 {
-    "bomb": {
-        "sounds": [
-            {
-                "name": "ucutils:bomb_sound",
-                "stream": true
-            }
-        ]
-    },
-    "contract.fulfilled": {
-        "sounds": [
-            {
-                "name": "ucutils:contract_fulfilled_sound",
-                "stream": true
-            }
-        ]
-    },
-    "contract.set": {
-        "sounds": [
-            {
-                "name": "ucutils:contract_set_sound",
-                "stream": true
-            }
-        ]
-    },
-    "report": {
-        "sounds": [
-            {
-                "name": "ucutils:report_sound",
-                "stream": true
-            }
-        ]
-    },
-    "service": {
-        "sounds": [
-            {
-                "name": "ucutils:service_sound",
-                "stream": true
-            }
-        ]
-    }
+  "bomb": {
+    "sounds": [
+      {
+        "name": "ucutils:bomb_sound",
+        "stream": true
+      }
+    ]
+  },
+  "contract.fulfilled": {
+    "sounds": [
+      {
+        "name": "ucutils:contract_fulfilled_sound",
+        "stream": true
+      }
+    ]
+  },
+  "contract.set": {
+    "sounds": [
+      {
+        "name": "ucutils:contract_set_sound",
+        "stream": true
+      }
+    ]
+  },
+  "report": {
+    "sounds": [
+      {
+        "name": "ucutils:report_sound",
+        "stream": true
+      }
+    ]
+  },
+  "service": {
+    "sounds": [
+      {
+        "name": "ucutils:service_sound",
+        "stream": true
+      }
+    ]
+  }
 }

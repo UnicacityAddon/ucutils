@@ -167,17 +167,11 @@ public class Registry {
             }
         });
 
-        HudRenderCallback.EVENT.register((drawContext, tickCounter) -> {
-            getListenersImplementing(IHudRenderListener.class).forEach(iHudRenderListener -> iHudRenderListener.onHudRender(drawContext, tickCounter));
-        });
+        HudRenderCallback.EVENT.register((drawContext, tickCounter) -> getListenersImplementing(IHudRenderListener.class).forEach(iHudRenderListener -> iHudRenderListener.onHudRender(drawContext, tickCounter)));
 
-        PlayerEnterVehicleCallback.EVENT.register(vehicle -> {
-            getListenersImplementing(IEnterVehicleListener.class).forEach(iEnterVehicleListener -> iEnterVehicleListener.onEnterVehicle(vehicle));
-        });
+        PlayerEnterVehicleCallback.EVENT.register(vehicle -> getListenersImplementing(IEnterVehicleListener.class).forEach(iEnterVehicleListener -> iEnterVehicleListener.onEnterVehicle(vehicle)));
 
-        ScreenEvents.AFTER_INIT.register((client, screen, scaledWidth, scaledHeight) -> {
-            getListenersImplementing(IScreenOpenListener.class).forEach(iScreenOpenListener -> iScreenOpenListener.onScreenOpen(screen, scaledWidth, scaledHeight));
-        });
+        ScreenEvents.AFTER_INIT.register((client, screen, scaledWidth, scaledHeight) -> getListenersImplementing(IScreenOpenListener.class).forEach(iScreenOpenListener -> iScreenOpenListener.onScreenOpen(screen, scaledWidth, scaledHeight)));
 
         UseBlockCallback.EVENT.register((player, world, hand, hitResult) -> {
             if (hand != OFF_HAND && world.isClient()) {
@@ -195,9 +189,7 @@ public class Registry {
             return PASS;
         });
 
-        WorldRenderEvents.AFTER_ENTITIES.register(context -> {
-            getListenersImplementing(IEntityRenderListener.class).forEach(iEntityRenderListener -> iEntityRenderListener.onEntityRender(context));
-        });
+        WorldRenderEvents.AFTER_ENTITIES.register(context -> getListenersImplementing(IEntityRenderListener.class).forEach(iEntityRenderListener -> iEntityRenderListener.onEntityRender(context)));
 
         // prevent multiple registrations of listeners
         this.initialized = true;

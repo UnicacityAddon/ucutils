@@ -12,16 +12,12 @@ import java.util.function.Predicate;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static de.rettichlp.ucutils.UCUtils.api;
 import static de.rettichlp.ucutils.UCUtils.commandService;
 import static de.rettichlp.ucutils.UCUtils.factionService;
 import static de.rettichlp.ucutils.UCUtils.player;
 import static de.rettichlp.ucutils.UCUtils.storage;
 import static de.rettichlp.ucutils.UCUtils.syncService;
 import static de.rettichlp.ucutils.UCUtils.utilService;
-import static de.rettichlp.ucutils.common.models.ActivityEntry.Type.ARREST;
-import static de.rettichlp.ucutils.common.models.ActivityEntry.Type.ARREST_KILL;
-import static de.rettichlp.ucutils.common.models.ActivityEntry.Type.PARK_TICKET;
 import static java.lang.Integer.parseInt;
 import static java.lang.String.valueOf;
 import static java.lang.System.currentTimeMillis;

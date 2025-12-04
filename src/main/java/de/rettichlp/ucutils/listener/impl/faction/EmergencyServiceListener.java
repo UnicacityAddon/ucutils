@@ -8,11 +8,9 @@ import net.minecraft.text.Text;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static de.rettichlp.ucutils.UCUtils.api;
 import static de.rettichlp.ucutils.UCUtils.commandService;
 import static de.rettichlp.ucutils.UCUtils.player;
 import static de.rettichlp.ucutils.UCUtils.storage;
-import static de.rettichlp.ucutils.common.models.ActivityEntry.Type.EMERGENCY_SERVICE;
 import static de.rettichlp.ucutils.common.models.Sound.SERVICE;
 import static java.lang.Integer.parseInt;
 import static java.lang.Math.max;

@@ -1,11 +1,8 @@
 package de.rettichlp.ucutils.listener.impl.faction;
 
 import de.rettichlp.ucutils.common.Storage;
-import de.rettichlp.ucutils.common.gui.screens.FactionActivityScreen;
-import de.rettichlp.ucutils.common.models.ActivityEntry;
 import de.rettichlp.ucutils.common.models.BlackMarket;
 import de.rettichlp.ucutils.common.models.Faction;
-import de.rettichlp.ucutils.common.models.FactionMember;
 import de.rettichlp.ucutils.common.models.Reinforcement;
 import de.rettichlp.ucutils.common.registry.UCUtilsListener;
 import de.rettichlp.ucutils.listener.IKeyPressListener;
@@ -20,7 +17,6 @@ import net.minecraft.text.Text;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.Predicate;
@@ -28,23 +24,17 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import static de.rettichlp.ucutils.UCUtils.LOGGER;
-import static de.rettichlp.ucutils.UCUtils.api;
 import static de.rettichlp.ucutils.UCUtils.commandService;
 import static de.rettichlp.ucutils.UCUtils.configuration;
 import static de.rettichlp.ucutils.UCUtils.player;
 import static de.rettichlp.ucutils.UCUtils.storage;
 import static de.rettichlp.ucutils.common.Storage.ToggledChat.NONE;
 import static de.rettichlp.ucutils.common.configuration.options.Options.ReinforcementType.UNICACITYADDON;
-import static de.rettichlp.ucutils.common.gui.screens.FactionActivityScreen.SortingType.RANK;
-import static de.rettichlp.ucutils.common.gui.screens.components.TableHeaderTextWidget.SortingDirection.DESCENDING;
-import static de.rettichlp.ucutils.common.models.EquipEntry.Type.fromDisplayName;
 import static de.rettichlp.ucutils.common.models.Faction.FBI;
 import static de.rettichlp.ucutils.common.models.Faction.RETTUNGSDIENST;
-import static java.lang.Integer.parseInt;
 import static java.lang.System.currentTimeMillis;
 import static java.time.LocalDateTime.now;
 import static java.util.Arrays.stream;
-import static java.util.Comparator.comparing;
 import static java.util.Objects.nonNull;
 import static java.util.Optional.ofNullable;
 import static java.util.regex.Pattern.compile;

@@ -22,8 +22,6 @@ import static java.nio.file.Files.list;
 import static java.util.Arrays.stream;
 import static net.fabricmc.fabric.api.client.command.v2.ClientCommandManager.argument;
 import static net.minecraft.command.CommandSource.suggestMatching;
-import static net.minecraft.text.ClickEvent.Action.OPEN_FILE;
-import static net.minecraft.text.HoverEvent.Action.SHOW_TEXT;
 import static net.minecraft.text.Text.empty;
 import static net.minecraft.text.Text.of;
 import static net.minecraft.util.Formatting.AQUA;

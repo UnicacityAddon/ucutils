@@ -56,7 +56,7 @@ public class SyncService {
 
     public boolean dataUsageConfirmed() {
         int currentDataUsageConfirmationUID = configuration.getDataUsageConfirmationUID();
-        return currentDataUsageConfirmationUID >= REQUIRED_DATA_USAGE_CONFIRMATION_UID;
+        return true; // TODO currentDataUsageConfirmationUID >= REQUIRED_DATA_USAGE_CONFIRMATION_UID;
     }
 
     public void updateDataUsageConfirmedUID() {
@@ -69,10 +69,6 @@ public class SyncService {
         if (dataUsageConfirmed) {
             LOGGER.info("Data usage confirmed, proceeding with sync...");
 
-            // sync faction members
-            syncFactionMembersWithApi();
-            // sync blacklist reasons
-            syncBlacklistReasonsFromApi();
             // check for updates
             checkForUpdates();
 
@@ -123,23 +119,6 @@ public class SyncService {
         }, 1000);
 
         utilService.delayedAction(() -> this.gameSyncProcessActive = false, 2000);
-    }
-
-    public void syncFactionMembersWithApi() {
-//        api.getFactionMembers(factionEntries -> {
-//            storage.getFactionEntries().clear();
-//            storage.getFactionEntries().addAll(factionEntries);
-//            storage.getPlayerFactionCache().clear();
-//            LOGGER.info("Successfully synced faction members with API");
-//        });
-    }
-
-    public void syncBlacklistReasonsFromApi() {
-//        api.getBlacklistReasonData(factionListMap -> {
-//            storage.getBlacklistReasons().clear();
-//            storage.getBlacklistReasons().putAll(factionListMap);
-//            LOGGER.info("Successfully synced blacklist reasons with API");
-//        });
     }
 
     public void checkForUpdates() {

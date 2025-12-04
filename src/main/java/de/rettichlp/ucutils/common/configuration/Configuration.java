@@ -47,7 +47,7 @@ public class Configuration {
         this.minutesSinceLastPayDay += minutes;
 
         if (this.minutesSinceLastPayDay % 10 == 0) {
-            new Thread(this::saveToFile).start(); // save asynchronously every active 10 minutes
+            new Thread(this::saveToFile).start(); // asynchronously save every active 10 minutes
         }
     }
 

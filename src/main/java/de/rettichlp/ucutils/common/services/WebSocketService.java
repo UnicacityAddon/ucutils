@@ -26,8 +26,6 @@ public class WebSocketService implements WebSocket.Listener {
 
         WebSocketMessageType webSocketMessageType = fromValue(data);
         switch (webSocketMessageType) {
-            case REQUEST_UPDATE_FACTION_MEMBERS -> syncService.syncFactionMembersWithApi();
-            case REQUEST_UPDATE_BLACKLIST_REASONS -> syncService.syncBlacklistReasonsFromApi();
             case REQUEST_CHECK_FOR_UPDATES -> syncService.checkForUpdates();
             case UNKNOWN -> LOGGER.warn("Received unknown WebSocket message type: {}", data);
         }

@@ -1,19 +1,17 @@
 package de.rettichlp.ucutils.common.gui.widgets.alignment;
 
 import de.rettichlp.ucutils.common.gui.widgets.base.AbstractUCUtilsWidget;
+import de.rettichlp.ucutils.common.gui.widgets.base.UCUtilsWidgetConfiguration;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.text.Text;
 import org.jetbrains.annotations.NotNull;
 
-import java.awt.Color;
-
-import static de.rettichlp.ucutils.UCUtils.renderService;
 import static net.minecraft.text.Text.empty;
 
-public class AlignVerticalWidget extends AlignWidget<AbstractUCUtilsWidget> {
+public class AlignVerticalWidget extends AlignWidget<AbstractUCUtilsWidget<UCUtilsWidgetConfiguration>> {
 
     @Override
-    public void add(AbstractUCUtilsWidget entry) {
+    public void add(AbstractUCUtilsWidget<UCUtilsWidgetConfiguration> entry) {
         this.ucUtilsWidgets.add(entry);
     }
 
@@ -41,7 +39,7 @@ public class AlignVerticalWidget extends AlignWidget<AbstractUCUtilsWidget> {
     public void draw(@NotNull DrawContext drawContext, int x, int y, AbstractUCUtilsWidget.Alignment alignment) {
         int yOffset = y;
 
-        for (AbstractUCUtilsWidget ucUtilsWidget : this.ucUtilsWidgets) {
+        for (AbstractUCUtilsWidget<UCUtilsWidgetConfiguration> ucUtilsWidget : this.ucUtilsWidgets) {
             // apply alignment
             int alignmentXModifier = switch (alignment) {
                 case LEFT -> 0;
