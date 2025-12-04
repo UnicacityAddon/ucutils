@@ -80,14 +80,6 @@ public class Storage {
 
     @Getter
     @Setter
-    private int aBuyAmount = 10;
-
-    @Getter
-    @Setter
-    private boolean aBuyEnabled = false;
-
-    @Getter
-    @Setter
     private int activeServices = 0;
 
     @Getter
@@ -156,8 +148,6 @@ public class Storage {
         LOGGER.info("retrievedNumbers[{}]: {}", this.retrievedNumbers.size(), this.retrievedNumbers);
         // wantedEntries
         LOGGER.info("wantedEntries[{}]: {}", this.wantedEntries.size(), this.wantedEntries);
-        // aBuy
-        LOGGER.info("aBuy: {} {}", this.aBuyEnabled, this.aBuyAmount);
         // activeServices
         LOGGER.info("activeServices: {}", this.activeServices);
         // afk
