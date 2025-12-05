@@ -15,8 +15,8 @@ import static de.rettichlp.ucutils.UCUtils.commandService;
 import static de.rettichlp.ucutils.UCUtils.player;
 import static de.rettichlp.ucutils.UCUtils.storage;
 import static de.rettichlp.ucutils.common.models.Faction.FBI;
-import static de.rettichlp.ucutils.common.models.Faction.KERZAKOV;
-import static de.rettichlp.ucutils.common.models.Faction.WESTSIDEBALLAS;
+import static de.rettichlp.ucutils.common.models.Faction.KERZAKOV_FAMILIE;
+import static de.rettichlp.ucutils.common.models.Faction.WESTSIDE_BALLAS;
 import static java.util.Collections.emptySet;
 import static net.minecraft.util.Hand.MAIN_HAND;
 
@@ -25,8 +25,8 @@ public class FactionDoorListener implements IBlockRightClickListener {
 
     private static final Map<Faction, Set<BlockPos>> FACTION_DOOR_POSITIONS = Map.of(
             FBI, Set.of(new BlockPos(879, 62, -87)),
-            KERZAKOV, Set.of(new BlockPos(936, 69, 191), new BlockPos(936, 69, 174)),
-            WESTSIDEBALLAS, Set.of(new BlockPos(-166, 68, 205)));
+            KERZAKOV_FAMILIE, Set.of(new BlockPos(936, 69, 191), new BlockPos(936, 69, 174)),
+            WESTSIDE_BALLAS, Set.of(new BlockPos(-166, 68, 205)));
     private static final int DISTANCE = 4;
 
     @Override
