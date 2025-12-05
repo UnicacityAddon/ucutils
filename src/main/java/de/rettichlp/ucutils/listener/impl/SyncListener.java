@@ -21,7 +21,7 @@ public class SyncListener implements ICommandSendListener, IMessageReceiveListen
 
     @Override
     public boolean onCommandSend(@NotNull String command) {
-        if (syncService.isGameSyncProcessActive() && !command.contains("wanteds") && !command.contains("contractlist") && !command.contains("hausverbot list") && !command.contains("blacklist")) {
+        if (syncService.isGameSyncProcessActive() && !command.contains("memberinfoall") && !command.contains("wanteds") && !command.contains("contractlist") && !command.contains("hausverbot") && !command.contains("blacklist")) {
             notificationService.sendWarningNotification("Synchronisierung aktiv - Befehle blockiert");
             return false;
         }

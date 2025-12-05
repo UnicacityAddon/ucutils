@@ -37,6 +37,8 @@ public class SyncService {
     private boolean gameSyncProcessActive = false;
 
     public void syncFactionMembersWithCommand(Runnable runAfter) {
+        this.gameSyncProcessActive = true;
+
         List<String> factionMemberInfoCommands = stream(Faction.values())
                 .filter(faction -> faction != NULL)
                 .map(faction -> "memberinfoall " + faction.getDisplayName())
@@ -44,7 +46,11 @@ public class SyncService {
 
         commandService.sendCommands(factionMemberInfoCommands, 1000);
 
-        utilService.delayedAction(runAfter, Faction.values().length * 1000L + 1000);
+        utilService.delayedAction(() -> {
+            this.gameSyncProcessActive = false;
+            notificationService.sendSuccessNotification("Fraktionsmitglieder synchronisiert");
+            runAfter.run();
+        }, Faction.values().length * 1000L + 1000);
     }
 
     public void syncFactionSpecificData() {
@@ -66,7 +72,10 @@ public class SyncService {
             }
         }, COMMAND_COOLDOWN_MILLIS);
 
-        utilService.delayedAction(() -> this.gameSyncProcessActive = false, COMMAND_COOLDOWN_MILLIS * 2);
+        utilService.delayedAction(() -> {
+            this.gameSyncProcessActive = false;
+            notificationService.sendSuccessNotification("Fraktionsdaten synchronisiert");
+        }, COMMAND_COOLDOWN_MILLIS * 2);
     }
 
     public void checkForUpdates() {
