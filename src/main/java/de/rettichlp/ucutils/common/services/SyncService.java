@@ -82,7 +82,7 @@ public class SyncService {
         }
     }
 
-    public void syncFactionMembersWithCommandResponse() {
+    public void syncFactionMembersWithCommandResponse(Runnable runAfter) {
         List<CommandResponseRetriever> commandResponseRetrievers = stream(Faction.values())
                 .filter(faction -> faction != NULL)
                 .map(this::syncFactionMembersWithCommandResponse)
@@ -90,13 +90,14 @@ public class SyncService {
 
         for (int i = 0; i < commandResponseRetrievers.size(); i++) {
             CommandResponseRetriever commandResponseRetriever = commandResponseRetrievers.get(i);
-            utilService.delayedAction(commandResponseRetriever::execute, i * 1000L);
+            utilService.delayedAction(commandResponseRetriever::execute, i * 100L);
         }
 
         utilService.delayedAction(() -> {
 //            api.postFactionMembers();
             storage.getPlayerFactionCache().clear();
-        }, commandResponseRetrievers.size() * 1000L + 1200);
+            runAfter.run();
+        }, commandResponseRetrievers.size() * 100L + 100);
     }
 
     public void syncFactionSpecificData() {
