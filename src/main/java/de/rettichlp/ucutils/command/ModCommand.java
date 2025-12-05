@@ -80,11 +80,11 @@ public class ModCommand extends CommandBase {
                 .then(literal("sync")
                         .then(literal("faction")
                                 .executes(context -> {
-                                    syncService.syncFactionMembersWithCommandResponse();
+                                    syncService.syncFactionMembersWithCommand(() -> {});
                                     return 1;
                                 }))
                         .executes(context -> {
-                            syncService.sync(true);
+                            syncService.checkForUpdates();
                             syncService.syncFactionSpecificData();
                             return 1;
                         }))

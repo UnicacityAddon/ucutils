@@ -6,18 +6,21 @@ import de.rettichlp.ucutils.common.models.ContractEntry;
 import de.rettichlp.ucutils.common.models.Faction;
 import de.rettichlp.ucutils.common.models.HousebanEntry;
 import de.rettichlp.ucutils.common.models.WantedEntry;
-import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.render.entity.EntityRenderer;
+import net.minecraft.client.render.entity.state.EntityRenderState;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.scoreboard.Team;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 import net.minecraft.text.TextColor;
 import net.minecraft.util.Formatting;
 import org.jetbrains.annotations.NotNull;
-import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.util.List;
 import java.util.Optional;
@@ -37,89 +40,16 @@ import static net.minecraft.util.Formatting.DARK_RED;
 import static net.minecraft.util.Formatting.RED;
 
 @Mixin(EntityRenderer.class)
-public abstract class EntityRendererMixin {
+public abstract class EntityRendererMixin<T extends Entity, S extends EntityRenderState> {
 
-    @Final
-    @Shadow
-    private TextRenderer textRenderer;
-
-//    @ModifyVariable(
-//            method = "renderLabelIfPresent(Lnet/minecraft/client/render/entity/state/EntityRenderState;Lnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/command/OrderedRenderCommandQueue;Lnet/minecraft/client/render/state/CameraRenderState)V",
-//            at = @At("HEAD"),
-//            argsOnly = true
-//    )
-//    private EntityRenderState renderLabelIfPresent(EntityRenderState value) {
-//        if (!storage.isUnicaCity()) {
-//            return original;
-//        }
-//
-//        if (state instanceof PlayerEntityRenderState playerEntityRenderState && nonNull(playerEntityRenderState.displayName)) {
-//            Text targetDisplayName = playerEntityRenderState.displayName;
-//            String targetName = playerEntityRenderState.name;
-//            return getFormattedTargetDisplayName(targetDisplayName, targetName);
-//        } else if (state instanceof ItemEntityRenderState itemDisplayEntityRenderState && nonNull(itemDisplayEntityRenderState.displayName) && itemDisplayEntityRenderState.stack.isOf(Items.SKELETON_SKULL)) {
-//            Text targetDisplayName = itemDisplayEntityRenderState.displayName;
-//            String targetName = targetDisplayName.getString().substring(1); // ✞RettichLP -> RettichLP
-//
-//            LOGGER.debug("Original: {} -> {}, already modified: {}", targetDisplayName.getString(), targetName, targetName.contains(" "));
-//            // only modify names if not containing space with the faction info prefix - avoid duplicated rendering
-//            return targetName.contains(" ") ? original : getFormattedTargetDisplayName(targetDisplayName, targetName);
-//        }
-//
-//        return original;
-//    }
-//
-//    @Inject(
-//            method = "renderLabelIfPresent(Lnet/minecraft/client/render/entity/state/EntityRenderState;Lnet/minecraft/text/Text;Lnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumerProvider;I)V",
-//            at = @At("TAIL")
-//    )
-//    private void renderLabelIfPresent(EntityRenderState state,
-//                                      Text original,
-//                                      MatrixStack matrices,
-//                                      VertexConsumerProvider vertexConsumers,
-//                                      int light,
-//                                      CallbackInfo ci) {
-//        if (!storage.isUnicaCity()) {
-//            return;
-//        }
-//
-//        if (!(state instanceof PlayerEntityRenderState playerEntityRenderState && nonNull(playerEntityRenderState.displayName))) {
-//            return;
-//        }
-//
-//        String targetName = playerEntityRenderState.name;
-//
-//        // afk
-//        if (!configuration.getOptions().nameTag().additionalAfk() || !isAfk(targetName)) {
-//            return;
-//        }
-//
-//        Vec3d vec3d = state.nameLabelPos;
-//        if (vec3d == null) {
-//            return;
-//        }
-//
-//        boolean sneaking = !state.sneaking;
-//        matrices.push();
-//        matrices.translate(vec3d.x, vec3d.y + 0.5F, vec3d.z);
-//        matrices.multiply(this.dispatcher.getRotation());
-//        matrices.scale(0.02F, -0.02F, 0.02F);
-//
-//        Matrix4f matrix4f = matrices.peek().getPositionMatrix();
-//
-//        TextRenderer textRenderer = this.textRenderer;
-//
-//        Text text = of("ᴀꜰᴋ").copy().formatted(GOLD);
-//
-//        float x = (-textRenderer.getWidth(text)) / 2.0F;
-//
-//        textRenderer.draw(text, x, -12.5f, -2130706433, true, matrix4f, vertexConsumers, sneaking ? SEE_THROUGH : NORMAL, 0, light);
-//        if (sneaking) {
-//            textRenderer.draw(text, x, -12.5f, -1, true, matrix4f, vertexConsumers, NORMAL, 0, applyEmission(light, 2));
-//        }
-//
-//        matrices.pop();
-//    }
+    @Inject(method = "getDisplayName", at = @At("HEAD"), cancellable = true)
+    private void ucutils$getDisplayNameHead(T entity, CallbackInfoReturnable<Text> cir) {
+        Text originalDisplayName = entity.getDisplayName();
+        Text formattedDisplayName = entity instanceof PlayerEntity playerEntity && originalDisplayName != null
+                ? getFormattedTargetDisplayName(originalDisplayName, playerEntity.getGameProfile().name())
+                : originalDisplayName;
+        cir.setReturnValue(formattedDisplayName);
+    }
 
     @Unique
     private MutableText getFormattedTargetDisplayName(@NotNull Text targetDisplayName, String targetName) {

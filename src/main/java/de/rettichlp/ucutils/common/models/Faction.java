@@ -6,12 +6,12 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 import static de.rettichlp.ucutils.UCUtils.storage;
 import static java.util.Arrays.stream;
-import static java.util.Collections.emptySet;
 import static net.minecraft.text.Text.empty;
 import static net.minecraft.util.Formatting.AQUA;
 import static net.minecraft.util.Formatting.BLUE;
@@ -23,33 +23,34 @@ import static net.minecraft.util.Formatting.DARK_PURPLE;
 import static net.minecraft.util.Formatting.DARK_RED;
 import static net.minecraft.util.Formatting.GOLD;
 import static net.minecraft.util.Formatting.GRAY;
+import static net.minecraft.util.Formatting.GREEN;
 import static net.minecraft.util.Formatting.LIGHT_PURPLE;
 import static net.minecraft.util.Formatting.RED;
+import static net.minecraft.util.Formatting.WHITE;
 import static net.minecraft.util.Formatting.YELLOW;
 
 @Getter
 @AllArgsConstructor
 public enum Faction {
 
-    NULL("", "Keine Fraktion", false, GRAY, ""),
-    FBI("fbi", "F.B.I.", false, DARK_BLUE, "✯"),
-    POLIZEI("polizei", "Polizei", false, BLUE, "✯"),
-    RETTUNGSDIENST("rettungsdienst", "Rettungsdienst", false, DARK_RED, "✚"),
+    NULL("", false, GRAY, ""),
+    POLIZEI("Polizei", false, BLUE, "✯"),
+    FBI("FBI", false, DARK_BLUE, "✯"),
+    RETTUNGSDIENST("Rettungsdienst", false, DARK_RED, "✚"),
 
-    CALDERON("kartell", "Calderón Kartell", true, GOLD, "☀"),
-    KERZAKOV("kerzakov", "Kerzakov Familie", true, RED, "✮"),
-    LACOSANOSTRA("lcn", "La Cosa Nostra", true, DARK_AQUA, "⚜"),
-    LEMILIEU("le_milieu", "Le Milieu", true, DARK_AQUA, "Ⓜ"),
-    OBRIEN("obrien", "O'Brien Familie", true, DARK_GREEN, "☘"),
-    TRIADEN("triaden", "Triaden", true, RED, "☯"),
-    WESTSIDEBALLAS("ballas", "Westside Ballas", true, DARK_PURPLE, "☠"),
+    LA_COSA_NOSTRA("La Cosa Nostra", true, DARK_AQUA, "⚜"),
+    WESTSIDE_BALLAS("Westside Ballas", true, DARK_PURPLE, "☠"),
+    CALDERON_KARTELL("Calderón Kartell", true, GOLD, "☀"),
+    KERZAKOV_FAMILIE("Kerzakov Familie", true, RED, "✮"),
+    HAYAT_KARTELL("Hayat Kartell", true, DARK_GREEN, "Ħ"),
+    YAKUZA("Yakuza", true, GREEN, "☯"),
+    VELENTZAS("Velentzas", true, WHITE, "δ"),
 
-    HITMAN("hitman", "Hitman", false, AQUA, "➹"),
-    KIRCHE("kirche", "Kirche", false, LIGHT_PURPLE, "†"),
-    NEWS("news", "News", false, YELLOW, "✉"),
-    TERRORISTEN("terroristen", "Terroristen", false, GRAY, "❇");
+    HITMAN("Hitman", false, AQUA, "➹"),
+    TERRORISTEN("Terroristen", false, GRAY, "❇"),
+    KIRCHE("Kirche", false, LIGHT_PURPLE, "†"),
+    NEWS("News", false, YELLOW, "✉");
 
-    private final String apiName;
     private final String displayName;
     private final boolean isBadFaction;
     private final Formatting color;
@@ -68,21 +69,17 @@ public enum Faction {
                         .formatted(DARK_GRAY));
     }
 
-    public String getMemberInfoCommandName() {
-        return this == OBRIEN ? "Obrien" : this.displayName;
-    }
-
-    public Set<FactionMember> getMembers() {
+    public List<FactionMember> getMembers() {
         return storage.getFactionEntries().stream()
                 .filter(factionEntry -> factionEntry.faction() == this)
                 .findFirst()
                 .map(FactionEntry::members)
-                .orElse(emptySet());
+                .orElse(new ArrayList<>());
     }
 
     public static @NotNull Optional<Faction> fromDisplayName(String displayName) {
         return stream(values())
-                .filter(faction -> displayName.contains(faction.getDisplayName()))
+                .filter(faction -> faction.getDisplayName().equals(displayName))
                 .findFirst();
     }
 }

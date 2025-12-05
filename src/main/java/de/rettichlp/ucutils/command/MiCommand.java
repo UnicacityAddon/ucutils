@@ -29,7 +29,7 @@ public class MiCommand extends CommandBase {
                                 .map(Faction::getDisplayName), builder))
                         .executes(context -> {
                             String input = getString(context, "faction");
-                            fromDisplayName(input).ifPresentOrElse(faction -> commandService.sendCommand("memberinfo " + faction.getMemberInfoCommandName()),
+                            fromDisplayName(input).ifPresentOrElse(faction -> commandService.sendCommand("memberinfo " + faction.getDisplayName()),
                                     () -> messageService.sendModMessage("Die Fraktion " + input + " konnte nicht gefunden werden.", false));
 
                             return 1;
@@ -38,7 +38,7 @@ public class MiCommand extends CommandBase {
                 .executes(context -> {
                     String playerName = player.getGameProfile().name();
                     Faction faction = storage.getFaction(playerName);
-                    commandService.sendCommand("memberinfo " + faction.getMemberInfoCommandName());
+                    commandService.sendCommand("memberinfo " + faction.getDisplayName());
                     return 1;
                 });
     }

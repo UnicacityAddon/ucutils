@@ -15,8 +15,6 @@ import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.vehicle.MinecartEntity;
-import net.minecraft.scoreboard.Scoreboard;
-import net.minecraft.scoreboard.ScoreboardObjective;
 import net.minecraft.text.Text;
 
 import java.util.regex.Matcher;
@@ -31,7 +29,6 @@ import static de.rettichlp.ucutils.UCUtils.utilService;
 import static java.util.Objects.nonNull;
 import static java.util.Optional.ofNullable;
 import static java.util.regex.Pattern.compile;
-import static net.minecraft.scoreboard.ScoreboardDisplaySlot.SIDEBAR;
 import static net.minecraft.screen.slot.SlotActionType.PICKUP;
 import static net.minecraft.util.Formatting.AQUA;
 
@@ -46,7 +43,7 @@ public class CarListener
     @Override
     public void onEnterVehicle(Entity vehicle) {
         // the entity is a car
-        if (!isCar(vehicle)) {
+        if (!(vehicle instanceof MinecartEntity)) {
             return;
         }
 
@@ -119,19 +116,5 @@ public class CarListener
                 }
             }
         }
-    }
-
-    private boolean isCar(Entity vehicle) {
-        return vehicle instanceof MinecartEntity && isCarScoreboardVisible();
-    }
-
-    private boolean isCarScoreboardVisible() {
-        assert MinecraftClient.getInstance().world != null;
-        Scoreboard scoreboard = MinecraftClient.getInstance().world.getScoreboard();
-        ScoreboardObjective scoreboardObjective = scoreboard.getObjectiveForSlot(SIDEBAR);
-
-        // we check for a specific line on the scoreboard that only appears when in a car
-        return nonNull(scoreboardObjective) && scoreboard.getScoreboardEntries(scoreboardObjective).stream()
-                .anyMatch(entry -> entry.name().getString().contains("Zustand"));
     }
 }

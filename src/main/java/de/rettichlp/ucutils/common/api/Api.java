@@ -25,7 +25,6 @@ import java.util.UUID;
 import java.util.function.Consumer;
 
 import static de.rettichlp.ucutils.UCUtils.LOGGER;
-import static de.rettichlp.ucutils.UCUtils.syncService;
 import static de.rettichlp.ucutils.UCUtils.utilService;
 import static java.lang.String.valueOf;
 import static java.net.URI.create;
@@ -80,11 +79,6 @@ public class Api {
     }
 
     private <T> void sendRequest(HttpRequest httpRequest, TypeToken<T> typeToken, Consumer<T> callback) {
-        if (!syncService.dataUsageConfirmed()) {
-            LOGGER.warn("Data usage not confirmed, skipping API request: [{}] {}", httpRequest.method(), httpRequest.uri().toString());
-            return;
-        }
-
         this.httpClient.sendAsync(httpRequest, ofString())
                 .thenApply(this::catchDefaultApiError)
                 .thenApply(response -> ofNullable(typeToken)

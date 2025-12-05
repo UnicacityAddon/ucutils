@@ -11,6 +11,7 @@ import static de.rettichlp.ucutils.UCUtils.configuration;
 import static de.rettichlp.ucutils.UCUtils.messageService;
 import static de.rettichlp.ucutils.UCUtils.storage;
 import static de.rettichlp.ucutils.UCUtils.utilService;
+import static de.rettichlp.ucutils.common.services.CommandService.COMMAND_COOLDOWN_MILLIS;
 
 @UCUtilsCommand(label = "reichensteuer")
 public class RichTaxesCommand extends CommandBase {
@@ -25,7 +26,7 @@ public class RichTaxesCommand extends CommandBase {
                     commandService.sendCommand("bank info");
 
                     // execute command to check money in atm
-                    utilService.delayedAction(() -> commandService.sendCommand("atminfo"), 1000);
+                    utilService.delayedAction(() -> commandService.sendCommand("atminfo"), COMMAND_COOLDOWN_MILLIS);
 
                     // handle money withdraw
                     utilService.delayedAction(() -> {
@@ -52,7 +53,7 @@ public class RichTaxesCommand extends CommandBase {
                             commandService.sendCommand("bank abbuchen " + moneyAtmAmount);
                             messageService.sendModMessage("Du musst noch " + (moneyThatNeedsToBeWithdrawn - moneyAtmAmount) + "$ abbuchen.", false);
                         }
-                    }, 2000);
+                    }, COMMAND_COOLDOWN_MILLIS * 2);
 
                     return 1;
                 });
