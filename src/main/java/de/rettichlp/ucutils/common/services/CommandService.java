@@ -39,6 +39,10 @@ public class CommandService {
     }
 
     public void sendCommands(List<String> commandStrings) {
+        sendCommands(commandStrings, COMMAND_COOLDOWN_MILLIS);
+    }
+
+    public void sendCommands(List<String> commandStrings, long cooldownMillis) {
         // to modifiable list
         List<String> commands = new ArrayList<>(commandStrings);
 
@@ -52,7 +56,7 @@ public class CommandService {
 
                 sendCommand(commands.removeFirst());
             }
-        }, 0, COMMAND_COOLDOWN_MILLIS);
+        }, 0, cooldownMillis);
     }
 
     public boolean isSuperUser() {

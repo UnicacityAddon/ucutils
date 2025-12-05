@@ -1,7 +1,7 @@
 package de.rettichlp.ucutils.common.models;
 
-import java.util.Set;
+import java.util.List;
 
-public record FactionEntry(Faction faction, Set<FactionMember> members) {
+public record FactionEntry(Faction faction, List<FactionMember> members) {
 
 }

@@ -2,6 +2,9 @@ package de.rettichlp.ucutils.listener.impl.faction;
 
 import de.rettichlp.ucutils.common.Storage;
 import de.rettichlp.ucutils.common.models.BlackMarket;
+import de.rettichlp.ucutils.common.models.Faction;
+import de.rettichlp.ucutils.common.models.FactionEntry;
+import de.rettichlp.ucutils.common.models.FactionMember;
 import de.rettichlp.ucutils.common.models.Reinforcement;
 import de.rettichlp.ucutils.common.registry.UCUtilsListener;
 import de.rettichlp.ucutils.listener.IMessageReceiveListener;
@@ -15,6 +18,7 @@ import net.minecraft.text.Text;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.Predicate;
@@ -26,10 +30,13 @@ import static de.rettichlp.ucutils.UCUtils.commandService;
 import static de.rettichlp.ucutils.UCUtils.configuration;
 import static de.rettichlp.ucutils.UCUtils.player;
 import static de.rettichlp.ucutils.UCUtils.storage;
+import static de.rettichlp.ucutils.UCUtils.syncService;
 import static de.rettichlp.ucutils.common.Storage.ToggledChat.NONE;
 import static de.rettichlp.ucutils.common.configuration.options.Options.ReinforcementType.UNICACITYADDON;
 import static de.rettichlp.ucutils.common.models.Faction.FBI;
 import static de.rettichlp.ucutils.common.models.Faction.RETTUNGSDIENST;
+import static de.rettichlp.ucutils.common.models.Faction.fromDisplayName;
+import static java.lang.Integer.parseInt;
 import static java.lang.System.currentTimeMillis;
 import static java.time.LocalDateTime.now;
 import static java.util.Arrays.stream;
@@ -48,9 +55,13 @@ import static net.minecraft.util.Formatting.RED;
 @UCUtilsListener
 public class FactionListener implements IMessageReceiveListener, IMessageSendListener, IMoveListener {
 
+    private static final Pattern FACTION_MEMBER_ALL_HEADER = compile("^==== Mitglieder von (?<faction>.+) \\(\\d+/\\d+\\) ====$");
+    private static final Pattern FACTION_MEMBER_ALL_ENTRY = compile("^\\s*-\\s*(?<rank>\\d)\\s*\\|\\s*(?<playerNames>.+)$");
+
     private static final Pattern REINFORCEMENT_PATTERN = compile("^(?:(?<type>.+)! )?(?<senderRank>.+) (?:\\[UC])?(?<senderPlayerName>[a-zA-Z0-9_]+) benötigt Unterstützung in der Nähe von (?<naviPoint>.+)! \\((?<distance>\\d+) Meter entfernt\\)$");
     private static final Pattern REINFORCEMENT_BUTTON_PATTERN = compile("^ §7» §cRoute anzeigen §7\\| §cUnterwegs$");
     private static final Pattern REINFORCMENT_ON_THE_WAY_PATTERN = compile("^(?<senderRank>.+) (?:\\[UC])?(?<senderPlayerName>[a-zA-Z0-9_]+) kommt zum Verstärkungsruf von (?:\\[UC])?(?<target>[a-zA-Z0-9_]+)! \\((?<distance>\\d+) Meter entfernt\\)$");
+
     private static final Pattern EQUIP_PATTERN = compile("^\\[Equip] Du hast dich mit (?<type>.+) equipt!$");
 
     private static final ReinforcementConsumer<String, String, String, String> REINFORCEMENT = (type, sender, naviPoint, distance) -> empty()
@@ -70,10 +81,46 @@ public class FactionListener implements IMessageReceiveListener, IMessageSendLis
             .append(of(distance + "m").copy().formatted(DARK_AQUA))
             .append(of(")").copy().formatted(GRAY));
 
+    private Faction factionToCheck;
     private long lastBlackMarketCheck = 0;
 
     @Override
     public boolean onMessageReceive(Text text, String message) {
+        Matcher factionMemberAllHeaderMatcher = FACTION_MEMBER_ALL_HEADER.matcher(message);
+        if (factionMemberAllHeaderMatcher.find()) {
+            String factionDisplayName = factionMemberAllHeaderMatcher.group("faction");
+            fromDisplayName(factionDisplayName).ifPresentOrElse(faction -> this.factionToCheck = faction,
+                    () -> LOGGER.warn("Could not find faction for display name '{}'", factionDisplayName));
+
+            // clear old faction entry
+            storage.getFactionEntries().removeIf(factionEntry -> factionEntry.faction() == this.factionToCheck);
+            storage.getFactionEntries().add(new FactionEntry(this.factionToCheck, new ArrayList<>()));
+
+            return !syncService.isGameSyncProcessActive();
+        }
+
+        Matcher factionMemberAllEntryMatcher = FACTION_MEMBER_ALL_ENTRY.matcher(message);
+        if (factionMemberAllEntryMatcher.find() && this.factionToCheck != null) {
+            int rank = parseInt(factionMemberAllEntryMatcher.group("rank"));
+            String[] playerNames = factionMemberAllEntryMatcher.group("playerNames").split(", ");
+
+            List<FactionMember> factionMembersForRank = stream(playerNames)
+                    .map(playerName -> new FactionMember(playerName, rank))
+                    .toList();
+
+            storage.getFactionEntries().stream()
+                    .filter(factionEntry -> factionEntry.faction() == this.factionToCheck)
+                    .findFirst()
+                    .ifPresent(factionEntry -> factionEntry.members().addAll(factionMembersForRank));
+
+            LOGGER.info("Retrieved {} members for faction {}[rank={}] from command", factionMembersForRank.size(), this.factionToCheck.name(), rank);
+
+            // clear nametag render cache
+            storage.getPlayerFactionCache().clear();
+
+            return !syncService.isGameSyncProcessActive();
+        }
+
         Matcher reinforcementMatcher = REINFORCEMENT_PATTERN.matcher(message);
         if (reinforcementMatcher.find()) {
             String type = ofNullable(reinforcementMatcher.group("type")).orElse("Reinforcement");

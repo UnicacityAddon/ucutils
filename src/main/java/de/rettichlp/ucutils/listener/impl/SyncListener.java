@@ -36,14 +36,14 @@ public class SyncListener implements ICommandSendListener, IMessageReceiveListen
         // if a password is not set, start the game sync process
         Matcher serverPasswordMissingMatcher = SERVER_PASSWORD_MISSING_PATTERN.matcher(message);
         if (serverPasswordMissingMatcher.find()) {
-            syncService.syncFactionMembersWithCommandResponse(syncService::syncFactionSpecificData);
+            syncService.syncFactionMembersWithCommand(syncService::syncFactionSpecificData);
             return true;
         }
 
         // if a password is accepted, start the game sync process
         Matcher serverPasswordAcceptedMatcher = SERVER_PASSWORD_ACCEPTED_PATTERN.matcher(message);
         if (serverPasswordAcceptedMatcher.find()) {
-            syncService.syncFactionMembersWithCommandResponse(syncService::syncFactionSpecificData);
+            syncService.syncFactionMembersWithCommand(syncService::syncFactionSpecificData);
             return true;
         }
 

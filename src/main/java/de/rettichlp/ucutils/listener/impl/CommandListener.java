@@ -1,10 +1,7 @@
 package de.rettichlp.ucutils.listener.impl;
 
-import de.rettichlp.ucutils.common.models.CommandResponseRetriever;
 import de.rettichlp.ucutils.common.registry.UCUtilsListener;
 import de.rettichlp.ucutils.listener.ICommandSendListener;
-import de.rettichlp.ucutils.listener.IMessageReceiveListener;
-import net.minecraft.text.Text;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.StringJoiner;
@@ -12,12 +9,11 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import static de.rettichlp.ucutils.UCUtils.commandService;
-import static de.rettichlp.ucutils.UCUtils.storage;
 import static java.lang.Character.isUpperCase;
 import static java.util.regex.Pattern.compile;
 
 @UCUtilsListener
-public class CommandListener implements ICommandSendListener, IMessageReceiveListener {
+public class CommandListener implements ICommandSendListener {
 
     private static final Pattern COMMAND_NAVI_HOUSE_NUMBER_PATTERN = compile("^navi (?<number>\\d+)$");
 
@@ -48,13 +44,6 @@ public class CommandListener implements ICommandSendListener, IMessageReceiveLis
         }
 
         return true;
-    }
-
-    @Override
-    public boolean onMessageReceive(Text text, String message) {
-        return storage.getCommandResponseRetrievers().stream()
-                .filter(CommandResponseRetriever::isActive)
-                .noneMatch(commandResponseRetriever -> commandResponseRetriever.addAsResultIfMatch(message));
     }
 
     private boolean containsUppercase(@NotNull String input) {
