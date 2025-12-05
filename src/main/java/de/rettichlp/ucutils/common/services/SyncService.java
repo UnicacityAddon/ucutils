@@ -57,7 +57,7 @@ public class SyncService {
             switch (faction) {
                 case FBI, POLIZEI -> commandService.sendCommand("wanteds");
                 case HITMAN -> commandService.sendCommand("contractlist");
-                case RETTUNGSDIENST -> commandService.sendCommand("hausverbot list");
+                case RETTUNGSDIENST -> commandService.sendCommand("hausverbot");
                 default -> {
                     if (faction.isBadFaction()) {
                         commandService.sendCommand("blacklist");
