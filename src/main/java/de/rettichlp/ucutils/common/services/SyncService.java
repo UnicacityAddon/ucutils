@@ -160,7 +160,7 @@ public class SyncService {
 
     @Contract("_ -> new")
     private @NotNull CommandResponseRetriever syncFactionMembersWithCommandResponse(@NotNull Faction faction) {
-        String commandToExecute = "memberinfoall " + faction.getMemberInfoCommandName();
+        String commandToExecute = "memberinfoall " + faction.getDisplayName();
         return new CommandResponseRetriever(commandToExecute, FACTION_MEMBER_ALL_ENTRY, matchers -> {
             Set<FactionMember> factionMembers = new HashSet<>();
 
