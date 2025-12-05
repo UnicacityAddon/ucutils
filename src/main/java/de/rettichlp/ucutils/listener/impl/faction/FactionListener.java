@@ -2,10 +2,8 @@ package de.rettichlp.ucutils.listener.impl.faction;
 
 import de.rettichlp.ucutils.common.Storage;
 import de.rettichlp.ucutils.common.models.BlackMarket;
-import de.rettichlp.ucutils.common.models.Faction;
 import de.rettichlp.ucutils.common.models.Reinforcement;
 import de.rettichlp.ucutils.common.registry.UCUtilsListener;
-import de.rettichlp.ucutils.listener.IKeyPressListener;
 import de.rettichlp.ucutils.listener.IMessageReceiveListener;
 import de.rettichlp.ucutils.listener.IMessageSendListener;
 import de.rettichlp.ucutils.listener.IMoveListener;
@@ -48,7 +46,7 @@ import static net.minecraft.util.Formatting.GRAY;
 import static net.minecraft.util.Formatting.RED;
 
 @UCUtilsListener
-public class FactionListener implements IKeyPressListener, IMessageReceiveListener, IMessageSendListener, IMoveListener {
+public class FactionListener implements IMessageReceiveListener, IMessageSendListener, IMoveListener {
 
     private static final Pattern REINFORCEMENT_PATTERN = compile("^(?:(?<type>.+)! )?(?<senderRank>.+) (?:\\[UC])?(?<senderPlayerName>[a-zA-Z0-9_]+) benötigt Unterstützung in der Nähe von (?<naviPoint>.+)! \\((?<distance>\\d+) Meter entfernt\\)$");
     private static final Pattern REINFORCEMENT_BUTTON_PATTERN = compile("^ §7» §cRoute anzeigen §7\\| §cUnterwegs$");
@@ -72,29 +70,7 @@ public class FactionListener implements IKeyPressListener, IMessageReceiveListen
             .append(of(distance + "m").copy().formatted(DARK_AQUA))
             .append(of(")").copy().formatted(GRAY));
 
-    private long lastFactionScreenExecution = 0;
     private long lastBlackMarketCheck = 0;
-
-    @Override
-    public void onSwapHandsKeyPress() {
-        long now = currentTimeMillis();
-        boolean isCooldownOver = now - this.lastFactionScreenExecution > 5000;
-        if (player.isSneaking() && isCooldownOver) {
-            this.lastFactionScreenExecution = currentTimeMillis();
-
-            Faction faction = storage.getFaction(player.getGameProfile().name());
-//            api.getFactionResetTime(faction, weeklyTime -> {
-//                MinecraftClient client = MinecraftClient.getInstance();
-//
-//                LocalDateTime to = weeklyTime.nextOccurrence();
-//                LocalDateTime from = to.minusWeeks(1);
-//                api.getFactionPlayerData(from, to, faction.getMembers().stream().map(FactionMember::playerName).toList(), factionPlayerDataResponse -> client.execute(() -> {
-//                    FactionActivityScreen factionActivityScreen = new FactionActivityScreen(faction, from, to, factionPlayerDataResponse, RANK, DESCENDING);
-//                    client.setScreen(factionActivityScreen);
-//                }));
-//            });
-        }
-    }
 
     @Override
     public boolean onMessageReceive(Text text, String message) {
