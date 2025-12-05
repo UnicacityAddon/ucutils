@@ -16,7 +16,7 @@ import static java.util.regex.Pattern.compile;
 @UCUtilsListener
 public class SyncListener implements ICommandSendListener, IMessageReceiveListener {
 
-    private static final Pattern SERVER_PASSWORD_MISSING_PATTERN = compile("^» Schütze deinen Account mit /passwort new \\[Passwort]$");
+    private static final Pattern SERVER_PASSWORD_MISSING_PATTERN = compile("^» Schütze deinen Account mit /passwort new \\[Passwort].$");
     private static final Pattern SERVER_PASSWORD_ACCEPTED_PATTERN = compile("^Du hast deinen Account freigeschaltet\\.$");
 
     @Override
