@@ -5,9 +5,6 @@ import de.rettichlp.ucutils.common.models.Faction;
 import de.rettichlp.ucutils.common.models.FactionEntry;
 import de.rettichlp.ucutils.common.models.FactionMember;
 import lombok.Getter;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.screen.PopupScreen;
-import net.minecraft.client.gui.screen.Screen;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 
@@ -21,7 +18,6 @@ import java.util.regex.Pattern;
 import static de.rettichlp.ucutils.UCUtils.LOGGER;
 import static de.rettichlp.ucutils.UCUtils.api;
 import static de.rettichlp.ucutils.UCUtils.commandService;
-import static de.rettichlp.ucutils.UCUtils.configuration;
 import static de.rettichlp.ucutils.UCUtils.notificationService;
 import static de.rettichlp.ucutils.UCUtils.player;
 import static de.rettichlp.ucutils.UCUtils.storage;
@@ -38,7 +34,6 @@ import static java.util.concurrent.TimeUnit.MINUTES;
 import static java.util.regex.Pattern.compile;
 import static net.minecraft.text.Text.empty;
 import static net.minecraft.text.Text.of;
-import static net.minecraft.text.Text.translatable;
 import static net.minecraft.util.Formatting.DARK_GRAY;
 import static net.minecraft.util.Formatting.GRAY;
 import static net.minecraft.util.Formatting.GREEN;
@@ -47,40 +42,11 @@ import static net.minecraft.util.Formatting.RED;
 public class SyncService {
 
     private static final Pattern FACTION_MEMBER_ALL_ENTRY = compile("^\\s*-\\s*(?<rank>\\d)\\s*\\|\\s*(?<playerNames>.+)$");
-    private static final int REQUIRED_DATA_USAGE_CONFIRMATION_UID = 1;
 
     @Getter
     private LocalDateTime lastSyncTimestamp = MIN;
     @Getter
     private boolean gameSyncProcessActive = false;
-
-    public boolean dataUsageConfirmed() {
-        int currentDataUsageConfirmationUID = configuration.getDataUsageConfirmationUID();
-        return true; // TODO currentDataUsageConfirmationUID >= REQUIRED_DATA_USAGE_CONFIRMATION_UID;
-    }
-
-    public void updateDataUsageConfirmedUID() {
-        configuration.setDataUsageConfirmationUID(REQUIRED_DATA_USAGE_CONFIRMATION_UID);
-    }
-
-    public void sync(boolean showPopupIfNotGiven) {
-        boolean dataUsageConfirmed = dataUsageConfirmed();
-
-        if (dataUsageConfirmed) {
-            LOGGER.info("Data usage confirmed, proceeding with sync...");
-
-            // check for updates
-            checkForUpdates();
-
-            // login to UCUtils API
-//            api.postUserRegister();
-        } else if (showPopupIfNotGiven) {
-            LOGGER.info("Data usage not yet confirmed, showing confirmation popup");
-            showDataUsageConfirmationPopup();
-        } else {
-            LOGGER.info("Data usage not confirmed, skipping sync");
-        }
-    }
 
     public void syncFactionMembersWithCommandResponse(Runnable runAfter) {
         List<CommandResponseRetriever> commandResponseRetrievers = stream(Faction.values())
@@ -94,7 +60,6 @@ public class SyncService {
         }
 
         utilService.delayedAction(() -> {
-//            api.postFactionMembers();
             storage.getPlayerFactionCache().clear();
             runAfter.run();
         }, commandResponseRetrievers.size() * 100L + 100);
@@ -141,22 +106,6 @@ public class SyncService {
                         .append(of(latestVersion).copy().formatted(GREEN)), MAGENTA, MINUTES.toMillis(5));
             }
         });
-    }
-
-    private void showDataUsageConfirmationPopup() {
-        MinecraftClient client = MinecraftClient.getInstance();
-
-        PopupScreen dataUsageConfirmationScreen = new PopupScreen.Builder(client.currentScreen, empty().append(of("UCUtils")).append(" ").append(translatable("mco.terms.sentence.2")))
-                .message(translatable("ucutils.screen.data_usage_confirmation.message"))
-                .button(translatable("mco.terms.buttons.agree"), popupScreen -> {
-                    updateDataUsageConfirmedUID();
-                    sync(false);
-                    popupScreen.close();
-                })
-                .button(translatable("mco.terms.buttons.disagree"), Screen::close)
-                .build();
-
-        client.execute(() -> client.setScreen(dataUsageConfirmationScreen));
     }
 
     @Contract("_ -> new")

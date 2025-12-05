@@ -64,7 +64,7 @@ public class UCUtils implements ModInitializer {
             client.execute(() -> {
                 this.registry.registerListeners();
                 renderService.initializeWidgets();
-                syncService.sync(true);
+                syncService.checkForUpdates();
             });
         });
 
