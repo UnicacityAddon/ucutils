@@ -14,6 +14,7 @@ import static de.rettichlp.ucutils.UCUtils.syncService;
 import static de.rettichlp.ucutils.UCUtils.utilService;
 import static de.rettichlp.ucutils.common.models.Sound.CONTRACT_FULFILLED;
 import static de.rettichlp.ucutils.common.models.Sound.CONTRACT_SET;
+import static de.rettichlp.ucutils.common.services.CommandService.COMMAND_COOLDOWN_MILLIS;
 import static java.lang.Integer.parseInt;
 import static java.lang.System.currentTimeMillis;
 import static java.util.regex.Pattern.compile;
@@ -51,7 +52,7 @@ public class ContractListener implements IMessageReceiveListener {
         Matcher contractAddMatcher = CONTRACT_ADD_PATTERN.matcher(message);
         if (contractAddMatcher.find()) {
             // show all entries to sync
-            utilService.delayedAction(() -> commandService.sendCommandWithAfkCheck("contractlist"), 1000);
+            utilService.delayedAction(() -> commandService.sendCommandWithAfkCheck("contractlist"), COMMAND_COOLDOWN_MILLIS);
             CONTRACT_SET.play();
             return true;
         }

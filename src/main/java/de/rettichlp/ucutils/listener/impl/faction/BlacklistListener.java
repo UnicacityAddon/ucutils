@@ -12,6 +12,7 @@ import static de.rettichlp.ucutils.UCUtils.commandService;
 import static de.rettichlp.ucutils.UCUtils.storage;
 import static de.rettichlp.ucutils.UCUtils.syncService;
 import static de.rettichlp.ucutils.UCUtils.utilService;
+import static de.rettichlp.ucutils.common.services.CommandService.COMMAND_COOLDOWN_MILLIS;
 import static java.lang.Integer.parseInt;
 import static java.lang.System.currentTimeMillis;
 import static java.util.regex.Pattern.compile;
@@ -51,7 +52,7 @@ public class BlacklistListener implements IMessageReceiveListener {
         Matcher blacklistEntryAddMatcher = BLACKLIST_ENTRY_ADD.matcher(message);
         if (blacklistEntryAddMatcher.find()) {
             // show all entries to sync
-            utilService.delayedAction(() -> commandService.sendCommandWithAfkCheck("blacklist"), 1000);
+            utilService.delayedAction(() -> commandService.sendCommandWithAfkCheck("blacklist"), COMMAND_COOLDOWN_MILLIS);
             return true;
         }
 

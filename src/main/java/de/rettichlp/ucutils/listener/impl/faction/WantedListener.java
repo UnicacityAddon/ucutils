@@ -18,6 +18,7 @@ import static de.rettichlp.ucutils.UCUtils.player;
 import static de.rettichlp.ucutils.UCUtils.storage;
 import static de.rettichlp.ucutils.UCUtils.syncService;
 import static de.rettichlp.ucutils.UCUtils.utilService;
+import static de.rettichlp.ucutils.common.services.CommandService.COMMAND_COOLDOWN_MILLIS;
 import static java.lang.Integer.parseInt;
 import static java.lang.String.valueOf;
 import static java.lang.System.currentTimeMillis;
@@ -200,7 +201,7 @@ public class WantedListener implements IMessageReceiveListener {
         Matcher carCheckMatcher = CAR_CHECK_PATTERN.matcher(message);
         if (carCheckMatcher.find()) {
             String playerName = carCheckMatcher.group("playerName");
-            utilService.delayedAction(() -> commandService.sendCommand("memberinfo " + playerName), 1000);
+            utilService.delayedAction(() -> commandService.sendCommand("memberinfo " + playerName), COMMAND_COOLDOWN_MILLIS);
         }
 
         Matcher carParkticketMatcher = CAR_PARKTICKET_PATTERN.matcher(message);

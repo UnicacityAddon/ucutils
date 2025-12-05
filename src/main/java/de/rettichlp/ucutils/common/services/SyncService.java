@@ -23,6 +23,7 @@ import static de.rettichlp.ucutils.UCUtils.player;
 import static de.rettichlp.ucutils.UCUtils.storage;
 import static de.rettichlp.ucutils.UCUtils.utilService;
 import static de.rettichlp.ucutils.common.models.Faction.NULL;
+import static de.rettichlp.ucutils.common.services.CommandService.COMMAND_COOLDOWN_MILLIS;
 import static java.awt.Color.MAGENTA;
 import static java.lang.Integer.parseInt;
 import static java.time.LocalDateTime.MIN;
@@ -82,9 +83,9 @@ public class SyncService {
                     }
                 }
             }
-        }, 1000);
+        }, COMMAND_COOLDOWN_MILLIS);
 
-        utilService.delayedAction(() -> this.gameSyncProcessActive = false, 2000);
+        utilService.delayedAction(() -> this.gameSyncProcessActive = false, COMMAND_COOLDOWN_MILLIS * 2);
     }
 
     public void checkForUpdates() {
