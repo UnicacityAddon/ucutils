@@ -20,6 +20,7 @@ import static de.rettichlp.ucutils.UCUtils.player;
 import static de.rettichlp.ucutils.UCUtils.storage;
 import static de.rettichlp.ucutils.UCUtils.syncService;
 import static de.rettichlp.ucutils.UCUtils.utilService;
+import static de.rettichlp.ucutils.common.services.CommandService.COMMAND_COOLDOWN_MILLIS;
 import static java.lang.Integer.parseInt;
 import static java.lang.System.currentTimeMillis;
 import static java.time.Duration.between;
@@ -66,7 +67,7 @@ public class MedicListener implements IMessageReceiveListener {
         Matcher medicReviveStartMatcher = MEDIC_REVIVE_START.matcher(message);
         if (medicReviveStartMatcher.find()) {
             this.lastReviveStartetAt = now();
-            utilService.delayedAction(() -> commandService.sendCommand("dinfo"), 1000);
+            utilService.delayedAction(() -> commandService.sendCommand("dinfo"), COMMAND_COOLDOWN_MILLIS);
         }
 
         Matcher housebanHeaderMatcher = HOUSEBAN_HEADER_PATTERN.matcher(message);

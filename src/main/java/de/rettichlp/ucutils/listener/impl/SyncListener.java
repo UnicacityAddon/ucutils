@@ -16,12 +16,12 @@ import static java.util.regex.Pattern.compile;
 @UCUtilsListener
 public class SyncListener implements ICommandSendListener, IMessageReceiveListener {
 
-    private static final Pattern SERVER_PASSWORD_MISSING_PATTERN = compile("^» Schütze deinen Account mit /passwort new \\[Passwort]$");
+    private static final Pattern SERVER_PASSWORD_MISSING_PATTERN = compile("^» Schütze deinen Account mit /passwort new \\[Passwort].$");
     private static final Pattern SERVER_PASSWORD_ACCEPTED_PATTERN = compile("^Du hast deinen Account freigeschaltet\\.$");
 
     @Override
     public boolean onCommandSend(@NotNull String command) {
-        if (syncService.isGameSyncProcessActive() && !command.contains("wanteds") && !command.contains("contractlist") && !command.contains("hausverbot list") && !command.contains("blacklist")) {
+        if (syncService.isGameSyncProcessActive() && !command.contains("memberinfoall") && !command.contains("wanteds") && !command.contains("contractlist") && !command.contains("hausverbot") && !command.contains("blacklist")) {
             notificationService.sendWarningNotification("Synchronisierung aktiv - Befehle blockiert");
             return false;
         }
@@ -36,14 +36,14 @@ public class SyncListener implements ICommandSendListener, IMessageReceiveListen
         // if a password is not set, start the game sync process
         Matcher serverPasswordMissingMatcher = SERVER_PASSWORD_MISSING_PATTERN.matcher(message);
         if (serverPasswordMissingMatcher.find()) {
-            syncService.syncFactionSpecificData();
+            syncService.syncFactionMembersWithCommand(syncService::syncFactionSpecificData);
             return true;
         }
 
         // if a password is accepted, start the game sync process
         Matcher serverPasswordAcceptedMatcher = SERVER_PASSWORD_ACCEPTED_PATTERN.matcher(message);
         if (serverPasswordAcceptedMatcher.find()) {
-            syncService.syncFactionSpecificData();
+            syncService.syncFactionMembersWithCommand(syncService::syncFactionSpecificData);
             return true;
         }
 

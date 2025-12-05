@@ -6,12 +6,12 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 import static de.rettichlp.ucutils.UCUtils.storage;
 import static java.util.Arrays.stream;
-import static java.util.Collections.emptySet;
 import static net.minecraft.text.Text.empty;
 import static net.minecraft.util.Formatting.AQUA;
 import static net.minecraft.util.Formatting.BLUE;
@@ -69,17 +69,17 @@ public enum Faction {
                         .formatted(DARK_GRAY));
     }
 
-    public Set<FactionMember> getMembers() {
+    public List<FactionMember> getMembers() {
         return storage.getFactionEntries().stream()
                 .filter(factionEntry -> factionEntry.faction() == this)
                 .findFirst()
                 .map(FactionEntry::members)
-                .orElse(emptySet());
+                .orElse(new ArrayList<>());
     }
 
     public static @NotNull Optional<Faction> fromDisplayName(String displayName) {
         return stream(values())
-                .filter(faction -> displayName.contains(faction.getDisplayName()))
+                .filter(faction -> faction.getDisplayName().equals(displayName))
                 .findFirst();
     }
 }

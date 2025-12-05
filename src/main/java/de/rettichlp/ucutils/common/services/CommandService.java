@@ -18,6 +18,8 @@ import static java.util.Optional.ofNullable;
 
 public class CommandService {
 
+    public static long COMMAND_COOLDOWN_MILLIS = 500;
+
     private static final String UUID_RETTICHLP = "25855f4d-3874-4a7f-a6ad-e9e4f3042e19";
 
     public void sendCommand(String command) {
@@ -37,6 +39,10 @@ public class CommandService {
     }
 
     public void sendCommands(List<String> commandStrings) {
+        sendCommands(commandStrings, COMMAND_COOLDOWN_MILLIS);
+    }
+
+    public void sendCommands(List<String> commandStrings, long cooldownMillis) {
         // to modifiable list
         List<String> commands = new ArrayList<>(commandStrings);
 
@@ -50,7 +56,7 @@ public class CommandService {
 
                 sendCommand(commands.removeFirst());
             }
-        }, 0, 1000);
+        }, 0, cooldownMillis);
     }
 
     public boolean isSuperUser() {
@@ -61,6 +67,6 @@ public class CommandService {
         sendCommand("nummer " + playerName);
 
         utilService.delayedAction(() -> ofNullable(storage.getRetrievedNumbers().get(playerName))
-                .ifPresentOrElse(runWithNumber, () -> messageService.sendModMessage("Die Nummer von " + playerName + " konnte nicht abgerufen werden.", false)), 1000);
+                .ifPresentOrElse(runWithNumber, () -> messageService.sendModMessage("Die Nummer von " + playerName + " konnte nicht abgerufen werden.", false)), COMMAND_COOLDOWN_MILLIS);
     }
 }

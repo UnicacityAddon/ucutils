@@ -15,6 +15,7 @@ import java.util.regex.Pattern;
 import static de.rettichlp.ucutils.UCUtils.commandService;
 import static de.rettichlp.ucutils.UCUtils.messageService;
 import static de.rettichlp.ucutils.UCUtils.utilService;
+import static de.rettichlp.ucutils.common.services.CommandService.COMMAND_COOLDOWN_MILLIS;
 import static java.lang.Integer.parseInt;
 import static java.util.regex.Pattern.compile;
 
@@ -38,7 +39,7 @@ public class DepositCommand extends CommandBase implements IMessageReceiveListen
                         } else {
                             commandService.sendCommand("bank einzahlen " + amount);
                         }
-                    }, 1000);
+                    }, COMMAND_COOLDOWN_MILLIS);
 
                     return 1;
                 });

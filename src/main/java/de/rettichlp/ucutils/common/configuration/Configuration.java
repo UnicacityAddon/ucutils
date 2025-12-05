@@ -40,7 +40,6 @@ public class Configuration {
     private int predictedPayDayExp = 0;
     @Nullable
     private LocalDateTime firstAidLicenseExpireDateTime = null;
-    private int dataUsageConfirmationUID = 0;
     private Set<EventListener.HalloweenDoor> halloweenClickedDoors = new HashSet<>();
 
     public void addMinutesSinceLastPayDay(int minutes) {
