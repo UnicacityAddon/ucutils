@@ -37,13 +37,13 @@ public class SyncService {
                 continue;
             }
 
+            storage.getFactionEntries().clear();
+
             api.getFactionMembers(faction, factionMembers -> {
                 // to faction entry
                 FactionEntry factionEntry = new FactionEntry(faction, factionMembers);
 
-                storage.getFactionEntries().removeIf(fe -> fe.faction() == faction);
                 storage.getFactionEntries().add(factionEntry);
-
                 LOGGER.info("Faction members for faction {} synced ({} members)", faction, factionMembers.size());
             });
         }
