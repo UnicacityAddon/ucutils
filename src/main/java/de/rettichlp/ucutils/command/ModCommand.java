@@ -91,7 +91,6 @@ public class ModCommand extends CommandBase {
                 .executes(context -> {
                     String version = utilService.getVersion();
                     String authors = getAuthors();
-                    LocalDateTime lastSyncTimestamp = syncService.getLastSyncTimestamp();
 
                     player.sendMessage(empty(), false);
 
@@ -115,13 +114,6 @@ public class ModCommand extends CommandBase {
                             .append(of("https://github.com/UnicacityAddon/ucutils").copy().styled(style -> style
                                     .withColor(WHITE)
                                     .withClickEvent(new ClickEvent.OpenUrl(create("https://github.com/UnicacityAddon/ucutils"))))), false);
-
-                    messageService.sendModMessage(empty()
-                            .append(of("Letzte Synchronisierung").copy().formatted(GRAY))
-                            .append(of(":").copy().formatted(DARK_GRAY)).append(" ")
-                            .append(of(lastSyncTimestamp.equals(MIN)
-                                    ? "Nie"
-                                    : messageService.dateTimeToFriendlyString(lastSyncTimestamp)).copy().formatted(WHITE)), false);
 
                     player.sendMessage(empty(), false);
 

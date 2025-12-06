@@ -4,7 +4,6 @@ import de.rettichlp.ucutils.common.models.Faction;
 import de.rettichlp.ucutils.common.models.FactionEntry;
 import lombok.Getter;
 
-import java.time.LocalDateTime;
 import java.util.Map;
 
 import static de.rettichlp.ucutils.UCUtils.LOGGER;
@@ -17,8 +16,6 @@ import static de.rettichlp.ucutils.UCUtils.utilService;
 import static de.rettichlp.ucutils.common.models.Faction.NULL;
 import static de.rettichlp.ucutils.common.services.CommandService.COMMAND_COOLDOWN_MILLIS;
 import static java.awt.Color.MAGENTA;
-import static java.time.LocalDateTime.MIN;
-import static java.time.LocalDateTime.now;
 import static java.util.Objects.nonNull;
 import static java.util.Objects.requireNonNull;
 import static java.util.concurrent.TimeUnit.MINUTES;
@@ -31,8 +28,6 @@ import static net.minecraft.util.Formatting.RED;
 
 public class SyncService {
 
-    @Getter
-    private LocalDateTime lastSyncTimestamp = MIN;
     @Getter
     private boolean gameSyncProcessActive = false;
 
@@ -56,7 +51,6 @@ public class SyncService {
 
     public void syncFactionSpecificData() {
         this.gameSyncProcessActive = true;
-        this.lastSyncTimestamp = now();
 
         // parse from faction-related init commands after all faction members are synced
         utilService.delayedAction(() -> {
