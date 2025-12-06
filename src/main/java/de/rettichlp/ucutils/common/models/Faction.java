@@ -33,25 +33,26 @@ import static net.minecraft.util.Formatting.YELLOW;
 @AllArgsConstructor
 public enum Faction {
 
-    NULL("", false, GRAY, ""),
-    POLIZEI("Polizei", false, BLUE, "✯"),
-    FBI("FBI", false, DARK_BLUE, "✯"),
-    RETTUNGSDIENST("Rettungsdienst", false, DARK_RED, "✚"),
+    NULL("", "", false, GRAY, ""),
+    POLIZEI("Polizei", "police", false, BLUE, "✯"),
+    FBI("FBI", "fbi", false, DARK_BLUE, "✯"),
+    RETTUNGSDIENST("Rettungsdienst", "medic", false, DARK_RED, "✚"),
 
-    LA_COSA_NOSTRA("La Cosa Nostra", true, DARK_AQUA, "⚜"),
-    WESTSIDE_BALLAS("Westside Ballas", true, DARK_PURPLE, "☠"),
-    CALDERON_KARTELL("Calderón Kartell", true, GOLD, "☀"),
-    KERZAKOV_FAMILIE("Kerzakov Familie", true, RED, "✮"),
-    HAYAT_KARTELL("Hayat Kartell", true, DARK_GREEN, "Ħ"),
-    YAKUZA("Yakuza", true, GREEN, "☯"),
-    VELENTZAS("Velentzas", true, WHITE, "δ"),
+    LA_COSA_NOSTRA("La Cosa Nostra", "mafia", true, DARK_AQUA, "⚜"),
+    WESTSIDE_BALLAS("Westside Ballas", "gang", true, DARK_PURPLE, "☠"),
+    CALDERON_KARTELL("Calderón Kartell", "mexican", true, GOLD, "☀"),
+    KERZAKOV_FAMILIE("Kerzakov Familie", "kerzakov", true, RED, "✮"),
+    HAYAT_KARTELL("Hayat Kartell", "hayat_kartell", true, DARK_GREEN, "Ħ"),
+    YAKUZA("Yakuza", "yakuza", true, GREEN, "☯"),
+    VELENTZAS("Velentzas", "velentzas", true, WHITE, "δ"),
 
-    HITMAN("Hitman", false, AQUA, "➹"),
-    TERRORISTEN("Terroristen", false, GRAY, "❇"),
-    KIRCHE("Kirche", false, LIGHT_PURPLE, "†"),
-    NEWS("News", false, YELLOW, "✉");
+    HITMAN("Hitman", "hitman", false, AQUA, "➹"),
+    TERRORISTEN("Terroristen", "terror", false, GRAY, "❇"),
+    KIRCHE("Kirche", "church", false, LIGHT_PURPLE, "†"),
+    NEWS("News", "news", false, YELLOW, "✉");
 
     private final String displayName;
+    private final String apiKey;
     private final boolean isBadFaction;
     private final Formatting color;
     private final String icon;

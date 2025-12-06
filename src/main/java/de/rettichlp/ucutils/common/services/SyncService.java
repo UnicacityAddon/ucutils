@@ -1,12 +1,12 @@
 package de.rettichlp.ucutils.common.services;
 
 import de.rettichlp.ucutils.common.models.Faction;
+import de.rettichlp.ucutils.common.models.FactionEntry;
 import lombok.Getter;
 
-import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Map;
 
+import static de.rettichlp.ucutils.UCUtils.LOGGER;
 import static de.rettichlp.ucutils.UCUtils.api;
 import static de.rettichlp.ucutils.UCUtils.commandService;
 import static de.rettichlp.ucutils.UCUtils.notificationService;
@@ -16,9 +16,6 @@ import static de.rettichlp.ucutils.UCUtils.utilService;
 import static de.rettichlp.ucutils.common.models.Faction.NULL;
 import static de.rettichlp.ucutils.common.services.CommandService.COMMAND_COOLDOWN_MILLIS;
 import static java.awt.Color.MAGENTA;
-import static java.time.LocalDateTime.MIN;
-import static java.time.LocalDateTime.now;
-import static java.util.Arrays.stream;
 import static java.util.Objects.nonNull;
 import static java.util.Objects.requireNonNull;
 import static java.util.concurrent.TimeUnit.MINUTES;
@@ -32,30 +29,28 @@ import static net.minecraft.util.Formatting.RED;
 public class SyncService {
 
     @Getter
-    private LocalDateTime lastSyncTimestamp = MIN;
-    @Getter
     private boolean gameSyncProcessActive = false;
 
-    public void syncFactionMembersWithCommand(Runnable runAfter) {
-        this.gameSyncProcessActive = true;
+    public void syncFactionMembers() {
+        for (Faction faction : Faction.values()) {
+            if (faction == NULL) {
+                continue;
+            }
 
-        List<String> factionMemberInfoCommands = stream(Faction.values())
-                .filter(faction -> faction != NULL)
-                .map(faction -> "memberinfoall " + faction.getDisplayName())
-                .toList();
+            storage.getFactionEntries().clear();
 
-        commandService.sendCommands(factionMemberInfoCommands, 1000);
+            api.getFactionMembers(faction, factionMembers -> {
+                // to faction entry
+                FactionEntry factionEntry = new FactionEntry(faction, factionMembers);
 
-        utilService.delayedAction(() -> {
-            this.gameSyncProcessActive = false;
-            notificationService.sendSuccessNotification("Fraktionsmitglieder synchronisiert");
-            runAfter.run();
-        }, Faction.values().length * 1000L + 1000);
+                storage.getFactionEntries().add(factionEntry);
+                LOGGER.info("Faction members for faction {} synced ({} members)", faction, factionMembers.size());
+            });
+        }
     }
 
     public void syncFactionSpecificData() {
         this.gameSyncProcessActive = true;
-        this.lastSyncTimestamp = now();
 
         // parse from faction-related init commands after all faction members are synced
         utilService.delayedAction(() -> {

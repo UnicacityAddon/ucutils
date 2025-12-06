@@ -54,6 +54,8 @@ public class UCUtils implements ModInitializer {
     public void onInitialize() {
         // This entrypoint is suitable for setting up client-specific logic, such as rendering.
 
+        syncService.syncFactionMembers();
+
         this.registry.registerSounds();
 
         ClientPlayConnectionEvents.JOIN.register((handler, sender, client) -> {
@@ -64,6 +66,7 @@ public class UCUtils implements ModInitializer {
             client.execute(() -> {
                 this.registry.registerListeners();
                 renderService.initializeWidgets();
+                syncService.syncFactionSpecificData();
                 syncService.checkForUpdates();
             });
         });

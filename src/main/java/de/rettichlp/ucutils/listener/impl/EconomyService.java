@@ -47,6 +47,7 @@ public class EconomyService implements IMessageReceiveListener {
     // payday
     private static final Pattern PAYDAY_TIME_PATTERN = compile("^- Zeit seit PayDay: (?<minutes>\\d+)/60 Minuten$");
     private static final Pattern PAYDAY_SALARY_PATTERN = compile("^\\[PayDay] Du bekommst dein Gehalt von (?<money>\\d+)\\$ am PayDay ausgezahlt\\.$");
+    private static final Pattern PAYDAY_MINE_SALARY_PATTERN = compile("^\\[PayDay] Du bekommst deine Mine Einnahmen von (?<money>\\d+)\\$ am PayDay ausgezahlt\\.$");
 
     // other
     private static final Pattern ATM_MONEY_AMOUNT_PATTERN = compile("ATM \\d+: (?<moneyAtmAmount>\\d+)\\$/100000\\$");
@@ -190,6 +191,13 @@ public class EconomyService implements IMessageReceiveListener {
             int money = parseInt(paydaySalaryMatcher.group("money"));
             configuration.addPredictedPayDaySalary(money);
             storage.setCurrentJob(null);
+            return true;
+        }
+
+        Matcher paydayMineSalaryMatcher = PAYDAY_MINE_SALARY_PATTERN.matcher(message);
+        if (paydayMineSalaryMatcher.find()) {
+            int money = parseInt(paydayMineSalaryMatcher.group("money"));
+            configuration.addPredictedPayDaySalary(money);
             return true;
         }
 

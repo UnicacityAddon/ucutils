@@ -1,11 +1,14 @@
 # ucutils
 
-UCUtils is a utility mod for the UnicaCity roleplay server, inspired by the former UnicacityAddon. It provides useful commands, QoL features, and custom tools tailored for UnicaCity, enhancing gameplay and making everyday interactions smoother and more enjoyable.
+UCUtils is a utility mod for the UnicaCity roleplay server, inspired by the former UnicacityAddon. It provides useful commands, QoL
+features, and custom tools tailored for UnicaCity, enhancing gameplay and making everyday interactions smoother and more enjoyable.
 
 ## Features & Funktionen
 
 ### Allgemein
-- Sollte ein Command mit einem Großbuchstaben eingegeben werden (z. B. `/Afk` statt `/afk`) wird dieser Command automatisch zu einem gültigen Command umgewandelt
+
+- Sollte ein Command mit einem Großbuchstaben eingegeben werden (z. B. `/Afk` statt `/afk`) wird dieser Command automatisch zu einem
+  gültigen Command umgewandelt
 - Die Tabliste wird nach Teammitgliedern und Fraktionen (FBI, Polizei, Rettungsdienst, News) sortiert
 - Als Business-Besitzer wird in der Business-Info ein Button angezeigt, um die Einnahmen direkt abzubuchen
 - Wirft man eine Glasflasche in der Nähe eines Shops weg, wird diese als Pfand abgegeben
@@ -13,20 +16,22 @@ UCUtils is a utility mod for the UnicaCity roleplay server, inspired by the form
 - Es werden Sounds abgespielt für Notrufe, Bomben und weitere Situationen
 
 ### Auto
+
 - Das Auf-/Abschließen eines Fahrzeuges wurde teilweise automatisiert (automatisches Klicken des Items im Inventar)
 - Beim Rechtsklick auf das eigene Fahrzeug wird automatisch `/car lock` ausgeführt
 - Steigt man in ein Fahrzeug ein, wird dieses automatisch gestartet und abgeschlossen
 
 ### Fraktionen
+
 - Hinter dem Spielernamen befindet sich ein Symbol, um die dazugehörige Fraktion zu erkennen (auch für bewusstlose Personen)
-- Sollte ein Spieler Contract, auf der Blacklist stehen, Hausverbot oder Wanted-Punkte haben, wird der Name dementsprechend eingefärbt und in der Spielerliste angezeigt
-- Es werden für alle Fraktionen verschiedene Aktivitäten wie Reinforcements, Verhaftungen, Wiederbelebungen und weiteres gezählt
+- Sollte ein Spieler Contract, auf der Blacklist stehen, Hausverbot oder Wanted-Punkte haben, wird der Name dementsprechend eingefärbt
+  und in der Spielerliste angezeigt
 - Das Design der Reinforcements ist so überarbeitet, dass diese besser auffallen
 - Für das FBI, die Polizei und den Rettungsdienst gibt es einen Timer, der die Dauer der Bombe anzeigt
-- Für die Polizei wurde ein Minuspunkte-System hinzugefügt
 - Mit einem Rechtsklick auf ein Fraktionstor (nicht Fraktionstür) wird dieses automatisch geöffnet oder geschlossen
 
 ### Jobs
+
 - Bei Transport-Jobs werden nach der Eingabe des `/droptransport` alle weiteren Kisten automatisch abgegeben
 - Beim Hochseefischer-Job wird das Netz automatisch ausgeworfen und der gefangene Fisch am Ende automatisch abgegeben
 - Für den Transport des Tabaks zur Shisha-Bar wird der Tabak am Ende automatisch abgegeben
@@ -34,8 +39,10 @@ UCUtils is a utility mod for the UnicaCity roleplay server, inspired by the form
 - Für den Pizzalieferanten-Job wird `/getpizza` automatisch ausgeführt, bis 10 Pizzen gesammelt wurden
 - Es werden Countdowns angezeigt, bis ein Job wieder ausgeführt werden kann
 - Bei der Abgabe von Uran am Atomkraftwerk muss man nicht mehr aus dem Auto aussteigen
+- Aktive Mining XP-Booster werden angezeigt
 
 ### Widgets
+
 - Aktuelles Datum und Uhrzeit
 - Informationen über den PayDay (Dauer bis zum nächsten PayDay, Gehalt und Erfahrung)
 - Status des Autos (offen/abgeschlossen)
@@ -45,14 +52,13 @@ UCUtils is a utility mod for the UnicaCity roleplay server, inspired by the form
 
 **Allgemein**
 
-| Befehl                           | Beschreibung                                                                           |
-|----------------------------------|----------------------------------------------------------------------------------------|
-| `/ucutils`                       | Zeigt nützliche Status-Informationen über das Projekt an                               |
-| `/sync`                          | Startet die Synchronisierung um Daten wie Fraktionsmitglieder mit der Mod abzugleichen |
-| `/todo`                          | Zeigt eine Todoliste an (`/todo add <Aufgabe>`)                                        |
-| `/mi`                            | Alias für `/memberinfo`                                                                |
-| `/mia`                           | Alias für `/memberinfoall`                                                             |
-| `/todo`  (`/todo add <Aufgabe>`) | Zeigt eine Todoliste an                                                                |
+| Befehl                           | Beschreibung                                                                                |
+|----------------------------------|---------------------------------------------------------------------------------------------|
+| `/ucutils` (`/ucutils sync`)     | Zeigt nützliche Status-Informationen über das Projekt an oder startet eine Synchronisierung |
+| `/todo`                          | Zeigt eine Todoliste an (`/todo add <Aufgabe>`)                                             |
+| `/mi`                            | Alias für `/memberinfo`                                                                     |
+| `/mia`                           | Alias für `/memberinfoall`                                                                  |
+| `/todo`  (`/todo add <Aufgabe>`) | Zeigt eine Todoliste an                                                                     |
 
 **Chat**
 
@@ -64,11 +70,11 @@ UCUtils is a utility mod for the UnicaCity roleplay server, inspired by the form
 
 **Fraktionen**
 
-| Befehl                                                                                       | Beschreibung                                                                                                                                      |
-|----------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------|
-| `/asetbl`                                                                                    | Setzt Blacklist-Gründe automatisch (Blacklist-Gründe können mit einem Ticket auf dem Discord beantragt werden)                                    |
-| `/eigenbedarf`                                                                               | Nimmt eine eingestellte Menge an Drogen aus der Drogenbank einer Fraktion oder gibt diese an einen Spieler                                        |
-| `schwarzmarkt`                                                                               | Zeigt alle Schwarzmärkte an einschließlich des Zeitpunkts des letzten Besuchs des Ortes und einer Markierung ob sich der Schwarzmarkt dort befand |
+| Befehl          | Beschreibung                                                                                                                                      |
+|-----------------|---------------------------------------------------------------------------------------------------------------------------------------------------|
+| `/asetbl`       | Setzt Blacklist-Gründe automatisch (Blacklist-Gründe können mit einem Ticket auf dem Discord beantragt werden)                                    |
+| `/eigenbedarf`  | Nimmt eine eingestellte Menge an Drogen aus der Drogenbank einer Fraktion oder gibt diese an einen Spieler                                        |
+| `/schwarzmarkt` | Zeigt alle Schwarzmärkte an einschließlich des Zeitpunkts des letzten Besuchs des Ortes und einer Markierung ob sich der Schwarzmarkt dort befand |
 
 **Geld**
 
@@ -80,7 +86,7 @@ UCUtils is a utility mod for the UnicaCity roleplay server, inspired by the form
 
 **Handy**
 
-| Befehl                            | Beschreibung                                                                       |
-|-----------------------------------|------------------------------------------------------------------------------------|
-| `/acall <Spielername>`            | Ermöglicht das Anrufen mittels Spielername statt der Nummer                        |
-| `/asms <Spielername> <Nachricht>` | Ermöglicht das Schreiben einer SMS mittels Spielername statt der Nummer            |
+| Befehl                            | Beschreibung                                                            |
+|-----------------------------------|-------------------------------------------------------------------------|
+| `/acall <Spielername>`            | Ermöglicht das Anrufen mittels Spielername statt der Nummer             |
+| `/asms <Spielername> <Nachricht>` | Ermöglicht das Schreiben einer SMS mittels Spielername statt der Nummer |

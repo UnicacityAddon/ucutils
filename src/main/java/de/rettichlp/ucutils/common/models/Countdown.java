@@ -1,6 +1,7 @@
 package de.rettichlp.ucutils.common.models;
 
 import de.rettichlp.ucutils.common.gui.widgets.CountdownWidget;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import net.minecraft.text.Text;
 
@@ -16,6 +17,7 @@ import static net.minecraft.text.Text.of;
 import static net.minecraft.util.Formatting.GRAY;
 import static net.minecraft.util.Formatting.WHITE;
 
+@Getter
 @RequiredArgsConstructor
 public class Countdown {
 
