@@ -169,7 +169,7 @@ public class Storage {
     public Faction getFaction(String playerName) {
         Faction faction = this.factionEntries.stream()
                 .filter(factionEntry -> factionEntry.members().stream()
-                        .anyMatch(factionMember -> factionMember.playerName().equalsIgnoreCase(playerName)))
+                        .anyMatch(factionMember -> factionMember.username().equalsIgnoreCase(playerName)))
                 .findFirst()
                 .map(FactionEntry::faction)
                 .orElse(NULL);

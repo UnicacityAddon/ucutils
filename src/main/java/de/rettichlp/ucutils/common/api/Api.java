@@ -8,6 +8,8 @@ import com.google.gson.JsonSerializer;
 import com.google.gson.reflect.TypeToken;
 import com.mojang.authlib.GameProfile;
 import de.rettichlp.ucutils.common.api.response.ErrorResponse;
+import de.rettichlp.ucutils.common.models.Faction;
+import de.rettichlp.ucutils.common.models.FactionMember;
 import lombok.Getter;
 import net.minecraft.client.MinecraftClient;
 import org.jetbrains.annotations.Contract;
@@ -67,6 +69,10 @@ public class Api {
 
     public void getModrinthVersions(Consumer<List<Map<String, Object>>> callback) {
         get("https://api.modrinth.com/v2/project/ucutils/version", new TypeToken<>() {}, callback);
+    }
+
+    public void getFactionMembers(@NotNull Faction faction, Consumer<List<FactionMember>> callback) {
+        get("https://api.unicacity.eu/api/factions/" + faction.getApiKey() + "/members", new TypeToken<>() {}, callback);
     }
 
     private <T> void get(@NotNull String uri, TypeToken<T> typeToken, Consumer<T> callback) {

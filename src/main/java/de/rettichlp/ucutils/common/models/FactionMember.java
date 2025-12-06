@@ -1,5 +1,7 @@
 package de.rettichlp.ucutils.common.models;
 
-public record FactionMember(String playerName, int rank) {
+import java.util.UUID;
+
+public record FactionMember(int id, String username, UUID uuid, int rankNumber, String rankName, boolean isLeader, String gender) {
 
 }
