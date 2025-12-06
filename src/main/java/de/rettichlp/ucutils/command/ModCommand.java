@@ -1,35 +1,25 @@
 package de.rettichlp.ucutils.command;
 
-import com.mojang.authlib.GameProfile;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import de.rettichlp.ucutils.common.registry.CommandBase;
 import de.rettichlp.ucutils.common.registry.UCUtilsCommand;
 import net.fabricmc.fabric.api.client.command.v2.FabricClientCommandSource;
 import net.fabricmc.loader.api.FabricLoader;
 import net.fabricmc.loader.api.metadata.Person;
-import net.minecraft.client.network.PlayerListEntry;
 import net.minecraft.text.ClickEvent;
 import org.jetbrains.annotations.NotNull;
 
-import java.time.LocalDateTime;
 import java.util.Collection;
-import java.util.List;
 import java.util.StringJoiner;
 
-import static com.mojang.brigadier.arguments.StringArgumentType.word;
 import static de.rettichlp.ucutils.UCUtils.MOD_ID;
-import static de.rettichlp.ucutils.UCUtils.commandService;
 import static de.rettichlp.ucutils.UCUtils.messageService;
-import static de.rettichlp.ucutils.UCUtils.networkHandler;
 import static de.rettichlp.ucutils.UCUtils.player;
 import static de.rettichlp.ucutils.UCUtils.storage;
 import static de.rettichlp.ucutils.UCUtils.syncService;
 import static de.rettichlp.ucutils.UCUtils.utilService;
 import static java.net.URI.create;
-import static java.time.LocalDateTime.MIN;
-import static net.fabricmc.fabric.api.client.command.v2.ClientCommandManager.argument;
 import static net.fabricmc.fabric.api.client.command.v2.ClientCommandManager.literal;
-import static net.minecraft.command.CommandSource.suggestMatching;
 import static net.minecraft.text.Text.empty;
 import static net.minecraft.text.Text.of;
 import static net.minecraft.util.Formatting.DARK_GRAY;
@@ -42,50 +32,13 @@ public class ModCommand extends CommandBase {
     @Override
     public LiteralArgumentBuilder<FabricClientCommandSource> execute(@NotNull LiteralArgumentBuilder<FabricClientCommandSource> node) {
         return node
-                .then(literal("userinfo")
-                        .requires(fabricClientCommandSource -> commandService.isSuperUser())
-                        .then(argument("player", word())
-                                .suggests((context, builder) -> {
-                                    List<String> list = networkHandler.getPlayerList().stream()
-                                            .map(PlayerListEntry::getProfile)
-                                            .map(GameProfile::name)
-                                            .toList();
-                                    return suggestMatching(list, builder);
-                                })
-                                .executes(context -> {
-                                    String playerName = context.getArgument("player", String.class);
-//                                    api.getUserInfo(playerName, response -> {
-//
-//                                        player.sendMessage(empty(), false);
-//
-//                                        messageService.sendModMessage("UCUtils User Information - " + playerName, false);
-//
-//                                        messageService.sendModMessage(empty()
-//                                                .append(of("Version").copy().formatted(GRAY))
-//                                                .append(of(":").copy().formatted(DARK_GRAY)).append(" ")
-//                                                .append(of(response.version()).copy().formatted(WHITE)), false);
-//
-//                                        messageService.sendModMessage(empty()
-//                                                .append(of("Aktivitäten").copy().formatted(GRAY))
-//                                                .append(of(":").copy().formatted(DARK_GRAY)).append(" ")
-//                                                .append(of("Klick ↗").copy().styled(style -> style
-//                                                        .withColor(WHITE)
-//                                                        .withClickEvent(new ClickEvent.SuggestCommand("/activity player " + playerName)))), false);
-//
-//                                        player.sendMessage(empty(), false);
-//                                    });
-
-                                    return 1;
-                                })))
                 .then(literal("sync")
-                        .then(literal("faction")
-                                .executes(context -> {
-                                    syncService.syncFactionMembersWithCommand(() -> {});
-                                    return 1;
-                                }))
                         .executes(context -> {
+                            syncService.syncFactionMembers();
                             syncService.checkForUpdates();
-                            syncService.syncFactionSpecificData();
+
+                            utilService.delayedAction(syncService::syncFactionSpecificData, 2000);
+
                             return 1;
                         }))
                 .executes(context -> {
