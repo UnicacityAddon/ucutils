@@ -82,10 +82,12 @@ public class NameTagOptionsScreen extends OptionsScreen {
 
         stream(Faction.values())
                 .filter(faction -> faction != NULL)
-                .map(faction -> new CyclingButtonWidget.Builder<>(Color::getDisplayName)
-                        .values(Color.values())
-                        .initially(configuration.getOptions().nameTag().highlightFactions().getOrDefault(faction, WHITE))
-                        .build(of(faction.getDisplayName()), (button, value) -> configuration.getOptions().nameTag().highlightFactions().put(faction, value)))
+                .map(faction -> {
+                    Color initialValue = configuration.getOptions().nameTag().highlightFactions().getOrDefault(faction, WHITE);
+                    return new CyclingButtonWidget.Builder<>(Color::getDisplayName, () -> initialValue)
+                            .values(Color.values())
+                            .build(of(faction.getDisplayName()), (button, value) -> configuration.getOptions().nameTag().highlightFactions().put(faction, value));
+                })
                 .forEach(adder::add);
 
         return gridWidget;
