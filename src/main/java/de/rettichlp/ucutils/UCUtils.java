@@ -62,13 +62,16 @@ public class UCUtils implements ModInitializer {
             player = client.player;
             networkHandler = handler;
 
-            storage.setUnicaCity(isUnicaCity());
-            client.execute(() -> {
-                this.registry.registerListeners();
-                renderService.initializeWidgets();
-                syncService.syncFactionSpecificData();
-                syncService.checkForUpdates();
-            });
+            boolean isUnicaCity = isUnicaCity();
+            storage.setUnicaCity(isUnicaCity);
+            if (isUnicaCity) {
+                client.execute(() -> {
+                    this.registry.registerListeners();
+                    renderService.initializeWidgets();
+                    syncService.syncFactionSpecificData();
+                    syncService.checkForUpdates();
+                });
+            }
         });
 
         ClientCommandRegistrationCallback.EVENT.register((dispatcher, registryAccess) -> this.registry.registerCommands(dispatcher));
