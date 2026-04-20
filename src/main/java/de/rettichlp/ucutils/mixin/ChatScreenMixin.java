@@ -2,6 +2,7 @@ package de.rettichlp.ucutils.mixin;
 
 import de.rettichlp.ucutils.common.models.ScreenshotType;
 import net.minecraft.client.gui.screen.ChatScreen;
+import org.jetbrains.annotations.NotNull;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -17,7 +18,7 @@ import static java.lang.Thread.sleep;
 public abstract class ChatScreenMixin {
 
     @Inject(method = "sendMessage", at = @At("HEAD"))
-    private void keepChatOpenAfterCommand(String message, boolean addToHistory, CallbackInfo ci) {
+    private void ucutils$sendMessageHead(@NotNull String message, boolean addToHistory, CallbackInfo ci) {
         String[] messageParts = message.split(" ");
         if (messageParts.length >= 2 && message.startsWith("/screenshot ")) {
             String screenshotTypeString = messageParts[1].toLowerCase();

@@ -30,7 +30,7 @@ public abstract class GameMenuScreenMixin extends Screen {
                     ordinal = 0
             )
     )
-    private void addCustomButton(CallbackInfo ci, @Local @NotNull GridWidget gridWidget, @Local GridWidget.@NotNull Adder adder) {
+    private void ucutils$initWidgetsInvoke(CallbackInfo ci, @Local @NotNull GridWidget gridWidget, @Local GridWidget.@NotNull Adder adder) {
         ButtonWidget buttonWidget = ButtonWidget.builder(of("UCUtils Settings"), button -> this.client.setScreen(new MainOptionsScreen()))
                 .width(204)
                 .build();
