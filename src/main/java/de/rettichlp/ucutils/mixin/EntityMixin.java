@@ -5,6 +5,7 @@ import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.vehicle.MinecartEntity;
 import net.minecraft.world.entity.UniquelyIdentifiable;
+import org.jetbrains.annotations.NotNull;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -18,7 +19,7 @@ import static de.rettichlp.ucutils.UCUtils.storage;
 public abstract class EntityMixin {
 
     @Inject(method = "startRiding(Lnet/minecraft/entity/Entity;ZZ)Z", at = @At("RETURN"))
-    private void onStartRiding(Entity vehicle, boolean force, boolean emitEvent, CallbackInfoReturnable<Boolean> cir) {
+    private void ucutils$startRidingReturn(Entity vehicle, boolean force, boolean emitEvent, @NotNull CallbackInfoReturnable<Boolean> cir) {
         // only for successful start riding
         if (!cir.getReturnValue()) {
             return;
@@ -31,7 +32,7 @@ public abstract class EntityMixin {
     }
 
     @Inject(method = "stopRiding", at = @At("HEAD"))
-    private void onStopRiding(CallbackInfo ci) {
+    private void ucutils$stopRidingHead(CallbackInfo ci) {
         Entity self = (Entity) (Object) this;
         if (self instanceof ClientPlayerEntity && self.hasVehicle() && self.getVehicle() instanceof MinecartEntity minecartEntity && storage.isUnicaCity()) {
             storage.setMinecartEntityToHighlight(minecartEntity);
