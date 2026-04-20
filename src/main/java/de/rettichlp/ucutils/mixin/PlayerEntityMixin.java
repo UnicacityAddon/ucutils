@@ -1,14 +1,12 @@
 package de.rettichlp.ucutils.mixin;
 
+import com.mojang.authlib.GameProfile;
 import de.rettichlp.ucutils.common.configuration.options.NameTagOptions;
 import de.rettichlp.ucutils.common.models.BlacklistEntry;
 import de.rettichlp.ucutils.common.models.ContractEntry;
 import de.rettichlp.ucutils.common.models.Faction;
 import de.rettichlp.ucutils.common.models.HousebanEntry;
 import de.rettichlp.ucutils.common.models.WantedEntry;
-import net.minecraft.client.render.entity.EntityRenderer;
-import net.minecraft.client.render.entity.state.EntityRenderState;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.scoreboard.Team;
 import net.minecraft.text.MutableText;
@@ -33,31 +31,29 @@ import static de.rettichlp.ucutils.common.models.Color.WHITE;
 import static java.time.LocalDateTime.now;
 import static net.minecraft.scoreboard.AbstractTeam.CollisionRule.NEVER;
 import static net.minecraft.text.Text.empty;
+import static net.minecraft.text.Text.literal;
 import static net.minecraft.text.Text.of;
 import static net.minecraft.text.TextColor.fromFormatting;
 import static net.minecraft.util.Formatting.DARK_GRAY;
 import static net.minecraft.util.Formatting.DARK_RED;
 import static net.minecraft.util.Formatting.RED;
 
-@Mixin(EntityRenderer.class)
-public abstract class EntityRendererMixin<T extends Entity, S extends EntityRenderState> {
+@Mixin(PlayerEntity.class)
+public class PlayerEntityMixin {
 
-    @Inject(method = "getDisplayName", at = @At("HEAD"), cancellable = true)
-    private void ucutils$getDisplayNameHead(T entity, CallbackInfoReturnable<Text> cir) {
-        Text originalDisplayName = entity.getDisplayName();
-        Text formattedDisplayName = entity instanceof PlayerEntity playerEntity && originalDisplayName != null
-                ? getFormattedTargetDisplayName(originalDisplayName, playerEntity.getGameProfile().name())
-                : originalDisplayName;
-        cir.setReturnValue(formattedDisplayName);
+    @Inject(method = "getDisplayName", at = @At("RETURN"), cancellable = true)
+    private void ucutils$getDisplayName(@NotNull CallbackInfoReturnable<Text> cir) {
+        GameProfile gameProfile = ((PlayerEntity) (Object) this).getGameProfile();
+        cir.setReturnValue(getFormattedTargetDisplayName(gameProfile.name()));
     }
 
     @Unique
-    private MutableText getFormattedTargetDisplayName(@NotNull Text targetDisplayName, String targetName) {
+    private MutableText getFormattedTargetDisplayName(String targetName) {
         NameTagOptions nameTagOptions = configuration.getOptions().nameTag();
         Faction targetFaction = storage.getCachedFaction(targetName);
 
         Text newTargetDisplayNamePrefix = empty();
-        Text newTargetDisplayName = targetDisplayName.copy();
+        Text newTargetDisplayName = literal(targetName);
         Text newTargetDisplayNameSuffix = nameTagOptions.factionInformation() ? targetFaction.getNameTagSuffix() : empty();
         Formatting newTargetDisplayNameColor;
 
@@ -72,9 +68,9 @@ public abstract class EntityRendererMixin<T extends Entity, S extends EntityRend
         if (optionalTargetBlacklistEntry.isPresent() && nameTagOptions.additionalBlacklist()) {
             newTargetDisplayNameColor = RED;
             newTargetDisplayNamePrefix = !optionalTargetBlacklistEntry.get().isOutlaw() ? empty() : empty()
-                    .append(of("[").copy().formatted(DARK_GRAY))
-                    .append(of("V").copy().formatted(DARK_RED))
-                    .append(of("]").copy().formatted(DARK_GRAY));
+                                                                                                    .append(of("[").copy().formatted(DARK_GRAY))
+                                                                                                    .append(of("V").copy().formatted(DARK_RED))
+                                                                                                    .append(of("]").copy().formatted(DARK_GRAY));
         }
 
         // contract
