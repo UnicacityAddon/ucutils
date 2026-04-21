@@ -41,7 +41,7 @@ public class EconomyService implements IMessageReceiveListener {
     private static final Pattern CASH_TO_BANK_PATTERN = compile("^Eingezahlt: \\+(?<amount>\\d+)\\$$");
     private static final Pattern CASH_FROM_BANK_PATTERN = compile("^Auszahlung: -(?<amount>\\d+)\\$$");
     private static final Pattern CASH_GET_PATTERN = compile("^\\+(?<amount>\\d+)\\$$");
-    private static final Pattern CASH_GET_COMBO_PATTERN = compile("^\\[Combo] x\\d+ Fang-Combo! +(?<amount>\\d+)\\$$");
+    private static final Pattern CASH_GET_COMBO_PATTERN = compile("^\\[Combo] x\\d+ Fang-Combo! \\+(?<amount>\\d+)\\$$");
     private static final Pattern CASH_REMOVE_PATTERN = compile("^-(?<amount>\\d+)\\$( \\(Karte\\))?$");
     private static final Pattern CASH_STATS_PATTERN = compile("^- Geld: (?<amount>\\d+)\\$$");
 
