@@ -23,9 +23,7 @@ import static de.rettichlp.ucutils.UCUtils.utilService;
 import static de.rettichlp.ucutils.common.services.CommandService.COMMAND_COOLDOWN_MILLIS;
 import static java.lang.Integer.parseInt;
 import static java.lang.System.currentTimeMillis;
-import static java.time.Duration.between;
 import static java.time.Duration.ofMinutes;
-import static java.time.LocalDateTime.MIN;
 import static java.time.LocalDateTime.now;
 import static java.util.Arrays.asList;
 import static java.util.Collections.singletonList;
@@ -40,14 +38,13 @@ public class MedicListener implements IMessageReceiveListener {
     private static final Pattern MEDIC_BANDAGE_PATTERN = compile("^(?:\\[UC])?(?<playerName>[a-zA-Z0-9_]+) hat dich bandagiert\\.$");
     private static final Pattern MEDIC_PILL_PATTERN = compile("^\\[Medic] Doktor (?:\\[UC])?(?<playerName>[a-zA-Z0-9_]+) hat dir Schmerzpillen verabreicht\\.$");
     private static final Pattern MEDIC_REVIVE_START = compile("^Du beginnst mit der Wiederbelebung\\.$");
-    private static final Pattern HOUSEBAN_HEADER_PATTERN = compile("^Hausverbote \\(Rettungsdienst\\):$");
-    private static final Pattern HOUSEBAN_ENTRY_PATTERN = compile("^§[aec4](?:\\[UC])?(?<playerName>[a-zA-Z0-9_]+) \\| (?:\\[UC])?(?<issuerPlayerName>[a-zA-Z0-9_]+) \\| (?<reasons>.+) \\| (?<expireDateDay>\\d+)\\.(?<expireDateMonth>\\d+)\\.(?<expireDateYear>\\d+) (?<expireTimeHour>\\d+):(?<expireTimeMinute>\\d+) §8\\[§4Entfernen§8]$");
-    private static final Pattern HOUSEBAN_ADD_PATTERN = compile("^(?:\\[UC])?(?<issuerPlayerName>[a-zA-Z0-9_]+) hat (?:\\[UC])?(?<playerName>[a-zA-Z0-9_]+) ein Hausverbot erteilt\\. \\((?<reason>.+) \\| Ende: (?<expireDateDay>\\d+)\\.(?<expireDateMonth>\\d+)\\.(?<expireDateYear>\\d+) (?<expireTimeHour>\\d+):(?<expireTimeMinute>\\d+)\\)$");
-    private static final Pattern KARMA_GET_PATTERN = compile("^\\[Karma] \\+\\d Karma$");
+    private static final Pattern HOUSEBAN_HEADER_PATTERN = compile("^=== Hausverbote \\(\\d+\\) ===$");
+    private static final Pattern HOUSEBAN_ENTRY_PATTERN = compile("^» (?:\\[UC])?(?<playerName>[a-zA-Z0-9_]+) ➲ (?<reasons>.+) ➲ \\d+d \\((?<expireDateDay>\\d+)\\.(?<expireDateMonth>\\d+)\\.(?<expireDateYear>\\d+) (?<expireTimeHour>\\d+):(?<expireTimeMinute>\\d+)\\)$");
+    private static final Pattern HOUSEBAN_ADD_PATTERN = compile("^\\[HV] » (?:\\[UC])?(?<issuerPlayerName>[a-zA-Z0-9_]+) hat (?:\\[UC])?(?<playerName>[a-zA-Z0-9_]+)s Hausverbot gegeben\\. » (?<reason>.+) » \\d+d \\((?<expireDateDay>\\d+)\\.(?<expireDateMonth>\\d+)\\.(?<expireDateYear>\\d+) (?<expireTimeHour>\\d+):(?<expireTimeMinute>\\d+)\\)$");
+    private static final Pattern HOUSEBAN_REMOVE_PATTERN = compile("^\\[HV] » (?:\\[UC])?(?<issuerPlayerName>[a-zA-Z0-9_]+) hat (?:\\[UC])?(?<playerName>[a-zA-Z0-9_]+)s Hausverbot aufgehoben\\.$");
     private static final Pattern FIRST_AID_PATTERN = compile("^\\[Erste-Hilfe] (?:\\[UC])?(?<playerName>[a-zA-Z0-9_]+) hat dir ein Erste-Hilfe-Schein für 14 Tage ausgestellt\\.$");
     private static final Pattern FIRST_AID_LICENCES_PATTERN = compile("^- Erste-Hilfe-Schein: Vorhanden$");
 
-    private LocalDateTime lastReviveStartetAt = MIN;
     private long activeCheck = 0;
 
     @Override
@@ -66,7 +63,6 @@ public class MedicListener implements IMessageReceiveListener {
 
         Matcher medicReviveStartMatcher = MEDIC_REVIVE_START.matcher(message);
         if (medicReviveStartMatcher.find()) {
-            this.lastReviveStartetAt = now();
             utilService.delayedAction(() -> commandService.sendCommand("dinfo"), COMMAND_COOLDOWN_MILLIS);
         }
 
@@ -87,7 +83,6 @@ public class MedicListener implements IMessageReceiveListener {
         Matcher housebanAddMatcher = HOUSEBAN_ADD_PATTERN.matcher(message);
         if (housebanAddMatcher.find()) {
             String playerName = housebanAddMatcher.group("playerName");
-            String issuerPlayerName = housebanAddMatcher.group("issuerPlayerName");
             String reason = housebanAddMatcher.group("reason");
             int expireDateDay = parseInt(housebanAddMatcher.group("expireDateDay"));
             int expireDateMonth = parseInt(housebanAddMatcher.group("expireDateMonth"));
@@ -97,8 +92,15 @@ public class MedicListener implements IMessageReceiveListener {
 
             storage.getHousebanEntries().removeIf(housebanEntry -> housebanEntry.getPlayerName().equals(playerName));
             LocalDateTime unbanDateTime = LocalDateTime.of(expireDateYear, expireDateMonth, expireDateDay, expireTimeHour, expireTimeMinute);
-            HousebanEntry housebanEntry = new HousebanEntry(playerName, issuerPlayerName, singletonList(reason), unbanDateTime);
+            HousebanEntry housebanEntry = new HousebanEntry(playerName, singletonList(reason), unbanDateTime);
             storage.getHousebanEntries().add(housebanEntry);
+            return true;
+        }
+
+        Matcher housebanRemoveMatcher = HOUSEBAN_REMOVE_PATTERN.matcher(message);
+        if (housebanRemoveMatcher.find()) {
+            String playerName = housebanRemoveMatcher.group("playerName");
+            storage.getHousebanEntries().removeIf(housebanEntry -> housebanEntry.getPlayerName().equals(playerName));
             return true;
         }
 
@@ -119,21 +121,11 @@ public class MedicListener implements IMessageReceiveListener {
             return false; // hide message
         }
 
-        Matcher karmaGetMatcher = KARMA_GET_PATTERN.matcher(message);
-        if (karmaGetMatcher.find()) {
-            long seconds = between(this.lastReviveStartetAt, now()).toSeconds();
-            if (seconds > 6 && seconds < 10) {
-//                api.putFactionActivityAdd(REVIVE);
-            }
-            return true;
-        }
-
         return true;
     }
 
     private @NotNull HousebanEntry getHousebanEntry(@NotNull MatchResult housebanEntryMatcher) {
         String playerName = housebanEntryMatcher.group("playerName");
-        String issuerPlayerName = housebanEntryMatcher.group("issuerPlayerName");
         String reasonsRaw = housebanEntryMatcher.group("reasons");
         int expireDateDay = parseInt(housebanEntryMatcher.group("expireDateDay"));
         int expireDateMonth = parseInt(housebanEntryMatcher.group("expireDateMonth"));
@@ -144,6 +136,6 @@ public class MedicListener implements IMessageReceiveListener {
         String[] reasons = reasonsRaw.split(" \\+ ");
 
         LocalDateTime unbanDateTime = LocalDateTime.of(expireDateYear, expireDateMonth, expireDateDay, expireTimeHour, expireTimeMinute);
-        return new HousebanEntry(playerName, issuerPlayerName, asList(reasons), unbanDateTime);
+        return new HousebanEntry(playerName, asList(reasons), unbanDateTime);
     }
 }
