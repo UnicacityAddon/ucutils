@@ -41,6 +41,7 @@ public class EconomyService implements IMessageReceiveListener {
     private static final Pattern CASH_TO_BANK_PATTERN = compile("^Eingezahlt: \\+(?<amount>\\d+)\\$$");
     private static final Pattern CASH_FROM_BANK_PATTERN = compile("^Auszahlung: -(?<amount>\\d+)\\$$");
     private static final Pattern CASH_GET_PATTERN = compile("^\\+(?<amount>\\d+)\\$$");
+    private static final Pattern CASH_GET_COMBO_PATTERN = compile("^\\[Combo] x\\d+ Fang-Combo! \\+(?<amount>\\d+)\\$$");
     private static final Pattern CASH_REMOVE_PATTERN = compile("^-(?<amount>\\d+)\\$( \\(Karte\\))?$");
     private static final Pattern CASH_STATS_PATTERN = compile("^- Geld: (?<amount>\\d+)\\$$");
 
@@ -157,6 +158,13 @@ public class EconomyService implements IMessageReceiveListener {
         Matcher cashGetMatcher = CASH_GET_PATTERN.matcher(message);
         if (cashGetMatcher.find()) {
             int amount = parseInt(cashGetMatcher.group("amount"));
+            configuration.setMoneyCashAmount(configuration.getMoneyCashAmount() + amount);
+            return true;
+        }
+
+        Matcher cashGetComboMatcher = CASH_GET_COMBO_PATTERN.matcher(message);
+        if (cashGetComboMatcher.find()) {
+            int amount = parseInt(cashGetComboMatcher.group("amount"));
             configuration.setMoneyCashAmount(configuration.getMoneyCashAmount() + amount);
             return true;
         }
