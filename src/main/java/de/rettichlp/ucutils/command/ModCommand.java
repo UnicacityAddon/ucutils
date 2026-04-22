@@ -37,7 +37,10 @@ public class ModCommand extends CommandBase {
                             syncService.syncFactionMembers();
                             syncService.checkForUpdates();
 
-                            utilService.delayedAction(syncService::syncFactionSpecificData, 2000);
+                            utilService.delayedAction(() -> {
+                                storage.getPlayerFactionCache().clear();
+                                syncService.syncFactionSpecificData();
+                            }, 2000);
 
                             return 1;
                         }))

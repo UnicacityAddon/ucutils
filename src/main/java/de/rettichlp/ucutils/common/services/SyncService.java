@@ -38,7 +38,6 @@ public class SyncService {
             }
 
             storage.getFactionEntries().clear();
-            storage.getPlayerFactionCache().clear();
 
             api.getFactionMembers(faction, factionMembers -> {
                 // to faction entry
