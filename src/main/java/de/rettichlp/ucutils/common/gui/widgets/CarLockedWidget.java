@@ -37,9 +37,9 @@ public class CarLockedWidget extends AbstractUCUtilsTextWidget<CarLockedWidget.C
         return getWidgetConfiguration().getStyle() == MINIMALISTIC
                 ? (storage.isCarLocked() ? of("🔒").copy().formatted(GREEN) : of("🔓").copy().formatted(GOLD))
                 : empty()
-                .append(of("Fahrzeug").copy().formatted(GRAY))
-                .append(of(":").copy().formatted(DARK_GRAY)).append(" ")
-                .append(storage.isCarLocked() ? of("zu").copy().formatted(GREEN) : of("offen").copy().formatted(GOLD));
+                  .append(of("Fahrzeug").copy().formatted(GRAY))
+                  .append(of(":").copy().formatted(DARK_GRAY)).append(" ")
+                  .append(storage.isCarLocked() ? of("zu").copy().formatted(GREEN) : of("offen").copy().formatted(GOLD));
     }
 
     @Override

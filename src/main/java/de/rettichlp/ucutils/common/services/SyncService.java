@@ -17,7 +17,6 @@ import static de.rettichlp.ucutils.common.models.Faction.NULL;
 import static de.rettichlp.ucutils.common.services.CommandService.COMMAND_COOLDOWN_MILLIS;
 import static java.awt.Color.MAGENTA;
 import static java.util.Objects.nonNull;
-import static java.util.Objects.requireNonNull;
 import static java.util.concurrent.TimeUnit.MINUTES;
 import static net.minecraft.text.Text.empty;
 import static net.minecraft.text.Text.of;

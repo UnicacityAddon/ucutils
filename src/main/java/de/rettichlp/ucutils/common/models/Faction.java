@@ -13,6 +13,7 @@ import java.util.Optional;
 import static de.rettichlp.ucutils.UCUtils.storage;
 import static java.util.Arrays.stream;
 import static net.minecraft.text.Text.empty;
+import static net.minecraft.text.Text.literal;
 import static net.minecraft.util.Formatting.AQUA;
 import static net.minecraft.util.Formatting.BLUE;
 import static net.minecraft.util.Formatting.DARK_AQUA;
@@ -58,16 +59,12 @@ public enum Faction {
     private final String icon;
 
     public Text getNameTagSuffix() {
-        return this == NULL ? empty() : empty()
-                .append(Text.of("⌜")
-                        .copy()
-                        .formatted(DARK_GRAY))
-                .append(Text.of(this.icon)
-                        .copy()
-                        .formatted(this.color))
-                .append(Text.of("⌟")
-                        .copy()
-                        .formatted(DARK_GRAY));
+        return this != NULL
+                ? empty()
+                  .append(literal("⌜").copy().formatted(DARK_GRAY))
+                  .append(literal(this.icon).copy().formatted(this.color))
+                  .append(literal("⌟").copy().formatted(DARK_GRAY))
+                : empty();
     }
 
     public List<FactionMember> getMembers() {
