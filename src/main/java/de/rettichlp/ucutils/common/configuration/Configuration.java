@@ -1,7 +1,6 @@
 package de.rettichlp.ucutils.common.configuration;
 
 import de.rettichlp.ucutils.common.configuration.options.Options;
-import de.rettichlp.ucutils.common.models.TodoEntry;
 import de.rettichlp.ucutils.listener.impl.EventListener;
 import lombok.Data;
 import net.fabricmc.loader.api.FabricLoader;
@@ -13,10 +12,8 @@ import java.io.Reader;
 import java.io.Writer;
 import java.nio.file.Path;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -31,7 +28,6 @@ public class Configuration {
     private static final Path CONFIG_PATH = FabricLoader.getInstance().getConfigDir().resolve("ucutils.json");
 
     private Map<String, Object> widgets = new HashMap<>();
-    private List<TodoEntry> todos = new ArrayList<>();
     private Options options = new Options();
     private int moneyBankAmount = 0;
     private int moneyCashAmount = 0;
