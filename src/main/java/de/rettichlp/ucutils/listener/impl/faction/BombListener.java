@@ -37,7 +37,7 @@ import static net.minecraft.util.Formatting.RED;
 public class BombListener implements IMessageReceiveListener, IHudRenderListener {
 
     private static final Pattern BOMB_FOUND_PATTERN = compile("^News: ACHTUNG! Es wurde eine Bombe in der Nähe von (?<location>.+) gefunden!$");
-    private static final Pattern BOMB_STOP_PATTERN = compile("^News: Die Bombe konnte (erfolgreich|nicht) entschärft werden!$");
+    private static final Pattern BOMB_STOP_PATTERN = compile("^News: Die Bombe konnte (erfolgreich|nicht) entschärft werden!");
 
     private LocalDateTime bombPlantedTime = null;
     private String bombLocationString = "";
@@ -76,6 +76,10 @@ public class BombListener implements IMessageReceiveListener, IHudRenderListener
         long elapsedTimeInMillis = between(this.bombPlantedTime, now()).toMillis();
         long minutes = MILLISECONDS.toMinutes(elapsedTimeInMillis);
         long seconds = MILLISECONDS.toSeconds(elapsedTimeInMillis) % 60;
+
+        if (minutes >= 20) {
+            this.bombPlantedTime = null;
+        }
 
         Text timerText = empty()
                 .append(literal("Bombe").formatted(RED))

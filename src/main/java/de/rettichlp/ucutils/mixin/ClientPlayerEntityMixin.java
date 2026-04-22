@@ -26,7 +26,7 @@ public abstract class ClientPlayerEntityMixin {
     );
 
     @Inject(method = "dropSelectedItem", at = @At("HEAD"), cancellable = true)
-    private void onDropItem(boolean entireStack, CallbackInfoReturnable<Boolean> cir) {
+    private void ucutils$dropSelectedItemHead(boolean entireStack, CallbackInfoReturnable<Boolean> cir) {
         if (player.getMainHandStack().isOf(GLASS_BOTTLE) && isNearShop()) {
             // cancel drop
             cir.setReturnValue(null);

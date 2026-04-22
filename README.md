@@ -1,7 +1,8 @@
 # ucutils
 
-UCUtils is a utility mod for the UnicaCity roleplay server, inspired by the former UnicacityAddon. It provides useful commands, QoL
-features, and custom tools tailored for UnicaCity, enhancing gameplay and making everyday interactions smoother and more enjoyable.
+UCUtils ist eine Mod für den UnicaCity-Rollenspielserver, die vom früheren UnicacityAddon inspiriert wurde. Sie bietet nützliche
+Befehle, Komfortfunktionen und speziell für UnicaCity entwickelte Tools, die das Gameplay verbessern und alltägliche Interaktionen
+reibungsloser und angenehmer gestalten.
 
 ## Features & Funktionen
 
@@ -17,6 +18,7 @@ features, and custom tools tailored for UnicaCity, enhancing gameplay and making
 
 ### Auto
 
+- Beim Suchen seines Fahrzeugs (`/car find`) wird automatisch das erste Fahrzeug ausgewählt
 - Das Auf-/Abschließen eines Fahrzeuges wurde teilweise automatisiert (automatisches Klicken des Items im Inventar)
 - Beim Rechtsklick auf das eigene Fahrzeug wird automatisch `/car lock` ausgeführt
 - Steigt man in ein Fahrzeug ein, wird dieses automatisch gestartet und abgeschlossen
@@ -52,13 +54,11 @@ features, and custom tools tailored for UnicaCity, enhancing gameplay and making
 
 **Allgemein**
 
-| Befehl                           | Beschreibung                                                                                |
-|----------------------------------|---------------------------------------------------------------------------------------------|
-| `/ucutils` (`/ucutils sync`)     | Zeigt nützliche Status-Informationen über das Projekt an oder startet eine Synchronisierung |
-| `/todo`                          | Zeigt eine Todoliste an (`/todo add <Aufgabe>`)                                             |
-| `/mi`                            | Alias für `/memberinfo`                                                                     |
-| `/mia`                           | Alias für `/memberinfoall`                                                                  |
-| `/todo`  (`/todo add <Aufgabe>`) | Zeigt eine Todoliste an                                                                     |
+| Befehl                       | Beschreibung                                                                                |
+|------------------------------|---------------------------------------------------------------------------------------------|
+| `/ucutils` (`/ucutils sync`) | Zeigt nützliche Status-Informationen über das Projekt an oder startet eine Synchronisierung |
+| `/mi`                        | Alias für `/memberinfo`                                                                     |
+| `/mia`                       | Alias für `/memberinfoall`                                                                  |
 
 **Chat**
 
@@ -72,7 +72,6 @@ features, and custom tools tailored for UnicaCity, enhancing gameplay and making
 
 | Befehl          | Beschreibung                                                                                                                                      |
 |-----------------|---------------------------------------------------------------------------------------------------------------------------------------------------|
-| `/asetbl`       | Setzt Blacklist-Gründe automatisch (Blacklist-Gründe können mit einem Ticket auf dem Discord beantragt werden)                                    |
 | `/eigenbedarf`  | Nimmt eine eingestellte Menge an Drogen aus der Drogenbank einer Fraktion oder gibt diese an einen Spieler                                        |
 | `/schwarzmarkt` | Zeigt alle Schwarzmärkte an einschließlich des Zeitpunkts des letzten Besuchs des Ortes und einer Markierung ob sich der Schwarzmarkt dort befand |
 

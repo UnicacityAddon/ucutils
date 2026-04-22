@@ -30,18 +30,19 @@ public class EconomyService implements IMessageReceiveListener {
     // bank
     private static final Pattern BANK_STATEMENT_PATTERN = compile("^Ihr Bankguthaben beträgt: \\+(?<amount>\\d+)\\$$");
     private static final Pattern BANK_NEW_BALANCE_PAYDAY_PATTERN = compile("^Neuer Betrag: (?<amount>\\d+)\\$ \\([+-]\\d+\\$\\)$");
-    private static final Pattern BANK_TRANSFER_TO_PATTERN = compile("^Du hast (?:\\[UC])?(?<playerName>[a-zA-Z0-9_]+) (?<amount>\\d+)\\$ überwiesen\\.$");
-    private static final Pattern BANK_TRANSFER_GET_PATTERN = compile("^(?:\\[UC])?(?<playerName>[a-zA-Z0-9_]+) hat dir (?<amount>\\d+)\\$ überwiesen\\.$");
+    private static final Pattern BANK_TRANSFER_TO_PATTERN = compile("^Du hast (?:\\[UC])?(?<playerName>[a-zA-Z0-9_]+) (?<amount>\\d+)\\$ überwiesen!$");
+    private static final Pattern BANK_TRANSFER_GET_PATTERN = compile("^(?:\\[UC])?(?<playerName>[a-zA-Z0-9_]+) hat dir (?<amount>\\d+)\\$ überwiesen!$");
 
     // cash
-    private static final Pattern CASH_GIVE_PATTERN = compile("^Du hast (?:\\[UC])?(?<playerName>[a-zA-Z0-9_]+) (?<amount>\\d+)\\$ gegeben\\.$");
-    private static final Pattern CASH_TAKE_PATTERN = compile("^(?:\\[UC])?(?<playerName>[a-zA-Z0-9_]+) hat dir (?<amount>\\d+)\\$ gegeben\\.$");
-    private static final Pattern CASH_TO_FBANK_PATTERN = compile("^\\[F-Bank] (?:\\[UC])?(?<playerName>[a-zA-Z0-9_]+) hat (?<amount>\\d+)\\$ in die F-Bank eingezahlt\\.$");
-    private static final Pattern CASH_FROM_FBANK_PATTERN = compile("^\\[F-Bank] (?:\\[UC])?(?<playerName>[a-zA-Z0-9_]+) hat (?<amount>\\d+)\\$ aus der F-Bank ausgezahlt\\.$");
+    private static final Pattern CASH_GIVE_PATTERN = compile("^Du hast (?:\\[UC])?(?<playerName>[a-zA-Z0-9_]+) (?<amount>\\d+)\\$ gegeben!$");
+    private static final Pattern CASH_TAKE_PATTERN = compile("^(?:\\[UC])?(?<playerName>[a-zA-Z0-9_]+) hat dir (?<amount>\\d+)\\$ gegeben!$");
+    private static final Pattern CASH_TO_FBANK_PATTERN = compile("^\\[F-Bank] (?:\\[UC])?(?<playerName>[a-zA-Z0-9_]+) hat (?<amount>\\d+)\\$ in die Fraktionsbank eingezahlt\\.$");
+    private static final Pattern CASH_FROM_FBANK_PATTERN = compile("^\\[F-Bank] (?:\\[UC])?(?<playerName>[a-zA-Z0-9_]+) hat (?<amount>\\d+)\\$ aus der Fraktionsbank ausgezahlt\\.$");
     private static final Pattern CASH_TO_BANK_PATTERN = compile("^Eingezahlt: \\+(?<amount>\\d+)\\$$");
     private static final Pattern CASH_FROM_BANK_PATTERN = compile("^Auszahlung: -(?<amount>\\d+)\\$$");
     private static final Pattern CASH_GET_PATTERN = compile("^\\+(?<amount>\\d+)\\$$");
-    private static final Pattern CASH_REMOVE_PATTERN = compile("^-(?<amount>\\d+)\\$( \\(Karte\\))?$");
+    private static final Pattern CASH_GET_COMBO_PATTERN = compile("^\\[Combo] x\\d+ Fang-Combo! \\+(?<amount>\\d+)\\$$");
+    private static final Pattern CASH_REMOVE_PATTERN = compile("^-(?<amount>\\d+)\\$$");
     private static final Pattern CASH_STATS_PATTERN = compile("^- Geld: (?<amount>\\d+)\\$$");
 
     // payday
@@ -161,14 +162,17 @@ public class EconomyService implements IMessageReceiveListener {
             return true;
         }
 
+        Matcher cashGetComboMatcher = CASH_GET_COMBO_PATTERN.matcher(message);
+        if (cashGetComboMatcher.find()) {
+            int amount = parseInt(cashGetComboMatcher.group("amount"));
+            configuration.setMoneyCashAmount(configuration.getMoneyCashAmount() + amount);
+            return true;
+        }
+
         Matcher cashRemoveMatcher = CASH_REMOVE_PATTERN.matcher(message);
         if (cashRemoveMatcher.find()) {
             int amount = parseInt(cashRemoveMatcher.group("amount"));
-            if (message.contains("(Karte)")) {
-                configuration.setMoneyBankAmount(configuration.getMoneyBankAmount() - amount);
-            } else {
-                configuration.setMoneyCashAmount(configuration.getMoneyCashAmount() - amount);
-            }
+            configuration.setMoneyCashAmount(configuration.getMoneyCashAmount() - amount);
             return true;
         }
 

@@ -83,7 +83,7 @@ public abstract class PlayerListHudMixin {
     }).thenComparing(playerListEntry -> playerListEntry.getProfile().name());
 
     @Inject(method = "getPlayerName", at = @At("RETURN"), cancellable = true)
-    private void onGetPlayerName(PlayerListEntry playerListEntry, @NotNull CallbackInfoReturnable<Text> cir) {
+    private void ucutils$getPlayerNameReturn(PlayerListEntry playerListEntry, @NotNull CallbackInfoReturnable<Text> cir) {
         if (!storage.isUnicaCity()) {
             return;
         }
@@ -108,7 +108,7 @@ public abstract class PlayerListHudMixin {
     }
 
     @Inject(method = "collectPlayerEntries", at = @At("RETURN"), cancellable = true)
-    private void onCollectPlayerEntries(@NotNull CallbackInfoReturnable<List<PlayerListEntry>> cir) {
+    private void ucutils$collectPlayerEntriesReturn(@NotNull CallbackInfoReturnable<List<PlayerListEntry>> cir) {
         if (!storage.isUnicaCity()) {
             return;
         }

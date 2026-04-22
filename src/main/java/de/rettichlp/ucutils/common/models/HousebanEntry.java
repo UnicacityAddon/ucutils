@@ -11,7 +11,6 @@ import java.util.List;
 public class HousebanEntry {
 
     private String playerName;
-    private String issuerPlayerName;
     private List<String> reasons;
     private LocalDateTime unbanDateTime;
 }

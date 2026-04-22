@@ -44,7 +44,7 @@ public class WantedListener implements IMessageReceiveListener {
     private static final Pattern WANTED_ARREST_PATTERN = compile("^HQ: (?:\\[UC])?(?<targetName>[a-zA-Z0-9_]+) wurde von (?:\\[UC])?(?<playerName>[a-zA-Z0-9_]+) eingesperrt\\.$");
     private static final Pattern WANTED_UNARREST_PATTERN = compile("^HQ: (?:\\[UC])?(?<playerName>[a-zA-Z0-9_]+) hat (?:\\[UC])?(?<targetName>[a-zA-Z0-9_]+) aus dem Gefängnis entlassen\\.$");
     private static final Pattern WANTED_LIST_HEADER_PATTERN = compile("Online Spieler mit WantedPunkten:");
-    private static final Pattern WANTED_LIST_ENTRY_PATTERN = compile("- (?:\\[UC])?(?<playerName>[a-zA-Z0-9_]+) \\| (?<wantedPointAmount>\\d+) \\| (?<reason>.+)(?<afk> \\| AFK|)");
+    private static final Pattern WANTED_LIST_ENTRY_PATTERN = compile("- (?:\\[UC])?(?<playerName>[a-zA-Z0-9_]+) \\| (?<wantedPointAmount>\\d+) WPS \\((?<reason>.+)\\)(?<afk> \\| AFK|)");
     private static final Pattern LICENSE_DRIVING_GIVE_PATTERN = compile("^(Agent|Agentin|Beamter|Beamtin) (?:\\[UC])?(?<playerName>[a-zA-Z0-9_]+) hat (?:\\[UC])?(?<targetName>[a-zA-Z0-9_]+)(?:'s)* Führerschein zurückgegeben\\.$");
     private static final Pattern LICENSE_DRIVING_TAKE_PATTERN = compile("^(Agent|Agentin|Beamter|Beamtin) (?:\\[UC])?(?<playerName>[a-zA-Z0-9_]+) hat (?:\\[UC])?(?<targetName>[a-zA-Z0-9_]+)(?:'s)* Führerschein abgenommen\\.$");
     private static final Pattern LICENSE_GUN_GIVE_PATTERN = compile("^(Agent|Agentin|Beamter|Beamtin) (?:\\[UC])?(?<playerName>[a-zA-Z0-9_]+) hat (?:\\[UC])?(?<targetName>[a-zA-Z0-9_]+)(?:'s)* Waffenschein zurückgegeben\\.$");

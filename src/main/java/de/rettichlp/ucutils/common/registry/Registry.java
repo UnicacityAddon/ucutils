@@ -210,9 +210,11 @@ public class Registry {
     }
 
     private <T> Set<T> getListenersImplementing(Class<T> listenerInterface) {
-        return !storage.isUnicaCity() ? emptySet() : this.listenerInstances.stream()
-                .filter(listenerInterface::isInstance)
-                .map(listenerInterface::cast)
-                .collect(toSet());
+        return storage.isUnicaCity()
+                ? this.listenerInstances.stream()
+                  .filter(listenerInterface::isInstance)
+                  .map(listenerInterface::cast)
+                  .collect(toSet())
+                : emptySet();
     }
 }
