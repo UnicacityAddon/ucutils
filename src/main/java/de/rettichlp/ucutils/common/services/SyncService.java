@@ -54,7 +54,7 @@ public class SyncService {
 
         // parse from faction-related init commands after all faction members are synced
         utilService.delayedAction(() -> {
-            Faction faction = storage.getFaction(requireNonNull(player.getDisplayName()).getString());
+            Faction faction = storage.getFaction(player.getStringifiedName());
             switch (faction) {
                 case FBI, POLIZEI -> commandService.sendCommand("wanteds");
                 case HITMAN -> commandService.sendCommand("contractlist");
