@@ -27,7 +27,6 @@ import static net.minecraft.text.Text.empty;
 import static net.minecraft.text.Text.of;
 import static net.minecraft.util.Formatting.BLUE;
 import static net.minecraft.util.Formatting.DARK_AQUA;
-import static net.minecraft.util.Formatting.DARK_GRAY;
 import static net.minecraft.util.Formatting.GOLD;
 import static net.minecraft.util.Formatting.GRAY;
 import static net.minecraft.util.Formatting.RED;
@@ -44,7 +43,7 @@ public class WantedListener implements IMessageReceiveListener {
     private static final Pattern WANTED_ARREST_PATTERN = compile("^HQ: (?:\\[UC])?(?<targetName>[a-zA-Z0-9_]+) wurde von (?:\\[UC])?(?<playerName>[a-zA-Z0-9_]+) eingesperrt\\.$");
     private static final Pattern WANTED_UNARREST_PATTERN = compile("^HQ: (?:\\[UC])?(?<playerName>[a-zA-Z0-9_]+) hat (?:\\[UC])?(?<targetName>[a-zA-Z0-9_]+) aus dem Gefängnis entlassen\\.$");
     private static final Pattern WANTED_LIST_HEADER_PATTERN = compile("Online Spieler mit WantedPunkten:");
-    private static final Pattern WANTED_LIST_ENTRY_PATTERN = compile("- (?:\\[UC])?(?<playerName>[a-zA-Z0-9_]+) \\| (?<wantedPointAmount>\\d+) \\| (?<reason>.+)(?<afk> \\| AFK|)");
+    private static final Pattern WANTED_LIST_ENTRY_PATTERN = compile("- (?:\\[UC])?(?<playerName>[a-zA-Z0-9_]+) \\| (?<wantedPointAmount>\\d+) WPS \\((?<reason>.+)\\)");
     private static final Pattern LICENSE_DRIVING_GIVE_PATTERN = compile("^(Agent|Agentin|Beamter|Beamtin) (?:\\[UC])?(?<playerName>[a-zA-Z0-9_]+) hat (?:\\[UC])?(?<targetName>[a-zA-Z0-9_]+)(?:'s)* Führerschein zurückgegeben\\.$");
     private static final Pattern LICENSE_DRIVING_TAKE_PATTERN = compile("^(Agent|Agentin|Beamter|Beamtin) (?:\\[UC])?(?<playerName>[a-zA-Z0-9_]+) hat (?:\\[UC])?(?<targetName>[a-zA-Z0-9_]+)(?:'s)* Führerschein abgenommen\\.$");
     private static final Pattern LICENSE_GUN_GIVE_PATTERN = compile("^(Agent|Agentin|Beamter|Beamtin) (?:\\[UC])?(?<playerName>[a-zA-Z0-9_]+) hat (?:\\[UC])?(?<targetName>[a-zA-Z0-9_]+)(?:'s)* Waffenschein zurückgegeben\\.$");
@@ -288,7 +287,7 @@ public class WantedListener implements IMessageReceiveListener {
             String playerName = wantedListEntryMatcher.group("playerName");
             int wantedPointAmount = parseInt(wantedListEntryMatcher.group("wantedPointAmount"));
             String reason = wantedListEntryMatcher.group("reason");
-            boolean isAfk = wantedListEntryMatcher.group("afk").contains("AFK");
+            // boolean isAfk = wantedListEntryMatcher.group("afk").contains("AFK");
 
             WantedEntry wantedEntry = new WantedEntry(playerName, wantedPointAmount, reason);
             storage.getWantedEntries().add(wantedEntry);
@@ -303,9 +302,9 @@ public class WantedListener implements IMessageReceiveListener {
                         .append(of(reason).copy().formatted(color)).append(" ")
                         .append(of("(").copy().formatted(GRAY))
                         .append(of(valueOf(wantedPointAmount)).copy().formatted(BLUE))
-                        .append(of(")").copy().formatted(GRAY)).append(" ")
+                        .append(of(")").copy().formatted(GRAY))/*.append(" ")
                         .append(of(isAfk ? "|" : "").copy().formatted(DARK_GRAY)).append(" ")
-                        .append(of(isAfk ? "AFK" : "").copy().formatted(GRAY));
+                        .append(of(isAfk ? "AFK" : "").copy().formatted(GRAY))*/;
 
                 player.sendMessage(modifiedMessage, false);
             }
