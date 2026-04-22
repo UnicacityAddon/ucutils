@@ -4,6 +4,8 @@ import de.rettichlp.ucutils.listener.callback.PlayerEnterVehicleCallback;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.vehicle.MinecartEntity;
+import net.minecraft.text.MutableText;
+import net.minecraft.text.Text;
 import net.minecraft.world.entity.UniquelyIdentifiable;
 import org.jetbrains.annotations.NotNull;
 import org.spongepowered.asm.mixin.Mixin;
@@ -12,14 +14,21 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
+import static de.rettichlp.ucutils.UCUtils.factionService;
 import static de.rettichlp.ucutils.UCUtils.player;
 import static de.rettichlp.ucutils.UCUtils.storage;
+import static net.minecraft.text.Text.empty;
+import static net.minecraft.text.Text.literal;
+import static net.minecraft.util.Formatting.GRAY;
 
 @Mixin(Entity.class)
 public abstract class EntityMixin {
 
     @Inject(method = "startRiding(Lnet/minecraft/entity/Entity;ZZ)Z", at = @At("RETURN"))
-    private void ucutils$startRidingReturn(Entity vehicle, boolean force, boolean emitEvent, @NotNull CallbackInfoReturnable<Boolean> cir) {
+    private void ucutils$startRidingReturn(Entity vehicle,
+                                           boolean force,
+                                           boolean emitEvent,
+                                           @NotNull CallbackInfoReturnable<Boolean> cir) {
         // only for successful start riding
         if (!cir.getReturnValue()) {
             return;
@@ -37,5 +46,20 @@ public abstract class EntityMixin {
         if (self instanceof ClientPlayerEntity && self.hasVehicle() && self.getVehicle() instanceof MinecartEntity minecartEntity && storage.isUnicaCity()) {
             storage.setMinecartEntityToHighlight(minecartEntity);
         }
+    }
+
+    @Inject(method = "getCustomName", at = @At("RETURN"), cancellable = true)
+    private void ucutils$getDisplayName(@NotNull CallbackInfoReturnable<Text> cir) {
+        String displayNameString = cir.getReturnValue().getString();
+
+        // extract player name (✟RettichLP -> RettichLP)
+        String playerName = displayNameString.substring(1);
+
+        // enrich player name with faction information (RettichLP -> RettichLP ⌜✚⌟)
+        MutableText enrichedDisplayName = factionService.getEnrichedDisplayName(playerName);
+
+        cir.setReturnValue(empty()
+                .append(literal("✟").copy().formatted(GRAY))
+                .append(enrichedDisplayName));
     }
 }
