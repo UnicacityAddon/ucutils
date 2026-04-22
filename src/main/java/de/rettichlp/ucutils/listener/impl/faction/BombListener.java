@@ -77,6 +77,10 @@ public class BombListener implements IMessageReceiveListener, IHudRenderListener
         long minutes = MILLISECONDS.toMinutes(elapsedTimeInMillis);
         long seconds = MILLISECONDS.toSeconds(elapsedTimeInMillis) % 60;
 
+        if (minutes >= 20) {
+            this.bombPlantedTime = null;
+        }
+
         Text timerText = empty()
                 .append(literal("Bombe").formatted(RED))
                 .append(literal(":").formatted(GRAY)).append(" ")
