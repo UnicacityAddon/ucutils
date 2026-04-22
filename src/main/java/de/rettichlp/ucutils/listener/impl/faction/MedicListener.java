@@ -8,6 +8,7 @@ import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 import org.jetbrains.annotations.NotNull;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.regex.MatchResult;
 import java.util.regex.Matcher;
@@ -44,6 +45,7 @@ public class MedicListener implements IMessageReceiveListener {
     private static final Pattern HOUSEBAN_REMOVE_PATTERN = compile("^\\[HV] » (?:\\[UC])?(?<issuerPlayerName>[a-zA-Z0-9_]+) hat (?:\\[UC])?(?<playerName>[a-zA-Z0-9_]+)s Hausverbot aufgehoben\\.$");
     private static final Pattern FIRST_AID_PATTERN = compile("^\\[Erste-Hilfe] (?:\\[UC])?(?<playerName>[a-zA-Z0-9_]+) hat dir ein Erste-Hilfe-Schein für 14 Tage ausgestellt\\.$");
     private static final Pattern FIRST_AID_LICENCES_PATTERN = compile("^- Erste-Hilfe-Schein: Vorhanden$");
+    private static final Pattern LABOR_TRANSPORT_STARTED_PATTERN = compile("^\\[ʟᴀʙᴏʀ] Transport gestartet: (?<chestAmount>\\d+) ᴋɪsᴛᴇɴ mit (?<ingredientAmount>\\d+) (?<ingredient>.+)$");
 
     private long activeCheck = 0;
 
@@ -119,6 +121,13 @@ public class MedicListener implements IMessageReceiveListener {
 
             player.sendMessage(overwriteText, false);
             return false; // hide message
+        }
+
+        Matcher laborTransportStartedMatcher = LABOR_TRANSPORT_STARTED_PATTERN.matcher(message);
+        if (laborTransportStartedMatcher.find()) {
+            Duration duration = ofMinutes(5).plusSeconds(56); // please don't ask why it is like this
+            storage.getCountdowns().add(new Countdown("Labor Transport", duration, () -> {}));
+            return true;
         }
 
         return true;
