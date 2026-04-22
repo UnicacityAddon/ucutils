@@ -3,7 +3,9 @@ package de.rettichlp.ucutils.mixin;
 import de.rettichlp.ucutils.listener.callback.PlayerEnterVehicleCallback;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.vehicle.MinecartEntity;
+import net.minecraft.item.ItemStack;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 import net.minecraft.world.entity.UniquelyIdentifiable;
@@ -17,6 +19,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import static de.rettichlp.ucutils.UCUtils.factionService;
 import static de.rettichlp.ucutils.UCUtils.player;
 import static de.rettichlp.ucutils.UCUtils.storage;
+import static net.minecraft.item.Items.SKELETON_SKULL;
+import static net.minecraft.item.Items.WITHER_SKELETON_SKULL;
 import static net.minecraft.text.Text.empty;
 import static net.minecraft.text.Text.literal;
 import static net.minecraft.util.Formatting.GRAY;
@@ -49,7 +53,17 @@ public abstract class EntityMixin {
     }
 
     @Inject(method = "getCustomName", at = @At("RETURN"), cancellable = true)
-    private void ucutils$getDisplayName(@NotNull CallbackInfoReturnable<Text> cir) {
+    private void ucutils$getDisplayNameReturn(@NotNull CallbackInfoReturnable<Text> cir) {
+        Entity self = (Entity) (Object) this;
+        if (!(self instanceof ItemEntity itemEntity) || !itemEntity.hasCustomName()) {
+            return;
+        }
+
+        ItemStack itemStack = itemEntity.getStack();
+        if (!itemStack.isOf(SKELETON_SKULL) && !itemStack.isOf(WITHER_SKELETON_SKULL)) {
+            return;
+        }
+
         String displayNameString = cir.getReturnValue().getString();
 
         // extract player name (✟RettichLP -> RettichLP)
