@@ -60,6 +60,7 @@ public class NotificationService {
 
     public List<Notification> getActiveNotifications() {
         return this.notifications.stream()
+                .filter(Objects::nonNull)
                 .filter(notification -> now().isBefore(notification.getTimestamp().plus(notification.getDurationInMillis(), MILLISECONDS.toChronoUnit())))
                 .sorted(Comparator.comparing(Notification::getTimestamp))
                 .toList();
