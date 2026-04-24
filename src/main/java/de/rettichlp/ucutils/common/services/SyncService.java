@@ -56,7 +56,7 @@ public class SyncService {
             Faction faction = storage.getFaction(player.getStringifiedName());
             switch (faction) {
                 case FBI, POLIZEI -> commandService.sendCommand("wanteds");
-                case HITMAN -> commandService.sendCommand("contractlist");
+                case MERCENARY -> commandService.sendCommand("contractlist");
                 case RETTUNGSDIENST -> commandService.sendCommand("hausverbot");
                 default -> {
                     if (faction.isBadFaction()) {
