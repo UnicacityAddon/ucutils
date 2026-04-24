@@ -14,12 +14,10 @@ import static de.rettichlp.ucutils.UCUtils.storage;
 import static java.util.Arrays.stream;
 import static net.minecraft.text.Text.empty;
 import static net.minecraft.text.Text.literal;
-import static net.minecraft.util.Formatting.AQUA;
 import static net.minecraft.util.Formatting.BLUE;
 import static net.minecraft.util.Formatting.DARK_AQUA;
 import static net.minecraft.util.Formatting.DARK_BLUE;
 import static net.minecraft.util.Formatting.DARK_GRAY;
-import static net.minecraft.util.Formatting.DARK_GREEN;
 import static net.minecraft.util.Formatting.DARK_PURPLE;
 import static net.minecraft.util.Formatting.DARK_RED;
 import static net.minecraft.util.Formatting.GOLD;
@@ -27,7 +25,6 @@ import static net.minecraft.util.Formatting.GRAY;
 import static net.minecraft.util.Formatting.GREEN;
 import static net.minecraft.util.Formatting.LIGHT_PURPLE;
 import static net.minecraft.util.Formatting.RED;
-import static net.minecraft.util.Formatting.WHITE;
 import static net.minecraft.util.Formatting.YELLOW;
 
 @Getter
@@ -43,12 +40,9 @@ public enum Faction {
     WESTSIDE_BALLAS("Westside Ballas", "gang", true, DARK_PURPLE, "☠"),
     CALDERON_KARTELL("Calderón Kartell", "mexican", true, GOLD, "☀"),
     KERZAKOV_FAMILIE("Kerzakov Familie", "kerzakov", true, RED, "✮"),
-    HAYAT_KARTELL("Hayat Kartell", "hayat_kartell", true, DARK_GREEN, "Ħ"),
     YAKUZA("Yakuza", "yakuza", true, GREEN, "☯"),
-    VELENTZAS("Velentzas", "velentzas", true, WHITE, "δ"),
 
-    HITMAN("Hitman", "hitman", false, AQUA, "➹"),
-    TERRORISTEN("Terroristen", "terror", false, GRAY, "❇"),
+    MERCENARY("Söldner", "söldner", false, GRAY, "❇"),
     KIRCHE("Kirche", "church", false, LIGHT_PURPLE, "†"),
     NEWS("News", "news", false, YELLOW, "✉");
 
