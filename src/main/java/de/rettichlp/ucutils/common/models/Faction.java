@@ -43,12 +43,9 @@ public enum Faction {
     WESTSIDE_BALLAS("Westside Ballas", "gang", true, DARK_PURPLE, "☠"),
     CALDERON_KARTELL("Calderón Kartell", "mexican", true, GOLD, "☀"),
     KERZAKOV_FAMILIE("Kerzakov Familie", "kerzakov", true, RED, "✮"),
-    HAYAT_KARTELL("Hayat Kartell", "hayat_kartell", true, DARK_GREEN, "Ħ"),
     YAKUZA("Yakuza", "yakuza", true, GREEN, "☯"),
-    VELENTZAS("Velentzas", "velentzas", true, WHITE, "δ"),
 
-    HITMAN("Hitman", "hitman", false, AQUA, "➹"),
-    TERRORISTEN("Terroristen", "terror", false, GRAY, "❇"),
+    TERRORISTEN("Terroristen", "söldner", false, GRAY, "❇"),
     KIRCHE("Kirche", "church", false, LIGHT_PURPLE, "†"),
     NEWS("News", "news", false, YELLOW, "✉");
 
