@@ -21,6 +21,11 @@
   "ucutils.inventory.crystals": "Crystals",
   "ucutils.inventory.grab_bag": "Grab bag",
 
+  "ucutils.notification.error.api": "API request error (%s)",
+  "ucutils.notification.error.configuration": "Configuration could not be loaded",
+  "ucutils.notification.info.faction_data_synchronized": "Faction data synchronized",
+  "ucutils.notification.info.new_version": "New UCUtils version available",
+
   "ucutils.options.text.additional": "Additional",
   "ucutils.options.text.amount": "Amount",
   "ucutils.options.text.automation": "Automation",
