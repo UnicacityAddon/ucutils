@@ -60,11 +60,12 @@ public abstract class EntityMixin {
         }
 
         ItemStack itemStack = itemEntity.getStack();
-        if (!itemStack.isOf(SKELETON_SKULL) && !itemStack.isOf(WITHER_SKELETON_SKULL)) {
+        Text returnValue = cir.getReturnValue();
+        if (returnValue == null || (!itemStack.isOf(SKELETON_SKULL) && !itemStack.isOf(WITHER_SKELETON_SKULL))) {
             return;
         }
 
-        String displayNameString = cir.getReturnValue().getString();
+        String displayNameString = returnValue.getString();
 
         // extract player name (✟RettichLP -> RettichLP)
         String playerName = displayNameString.substring(1);
