@@ -107,7 +107,7 @@ public class BlackMarket {
 
         @Contract(pure = true)
         public @NotNull String getNavigationCommand() {
-            return "/navi " + this.x + " " + this.y + " " + this.z;
+            return "/navi " + this.x + "/" + this.y + "/" + this.z;
         }
 
         @Contract(value = " -> new", pure = true)
