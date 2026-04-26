@@ -26,6 +26,7 @@ import static de.rettichlp.ucutils.UCUtils.player;
 import static de.rettichlp.ucutils.UCUtils.renderService;
 import static de.rettichlp.ucutils.UCUtils.storage;
 import static de.rettichlp.ucutils.UCUtils.utilService;
+import static java.lang.Integer.parseInt;
 import static java.util.Objects.nonNull;
 import static java.util.Optional.ofNullable;
 import static java.util.regex.Pattern.compile;
@@ -39,6 +40,7 @@ public class CarListener
     private static final Pattern CAR_UNLOCK_PATTERN = compile("^\\[Car] Du hast deinen .+ aufgeschlossen\\.$");
     private static final Pattern CAR_LOCK_PATTERN = compile("^\\[Car] Du hast deinen .+ abgeschlossen\\.$");
     private static final Pattern CAR_LOCKED_OWN_PATTERN = compile("^\\[Car] Dein Fahrzeug ist abgeschlossen\\.$");
+    private static final Pattern CAR_FIND_PATTERN = compile("^\\[Car] Das Fahrzeug befindet sich bei » X: (?<x>\\d+) \\| Y: (?<y>\\d+) \\| Z: (?<z>\\d+)$");
 
     @Override
     public void onEnterVehicle(Entity vehicle) {
@@ -66,7 +68,7 @@ public class CarListener
         VertexConsumerProvider vertexConsumers = context.consumers();
         ClientWorld world = MinecraftClient.getInstance().world;
 
-        if (nonNull(matrices) && nonNull(vertexConsumers) && nonNull(world) && configuration.getOptions().car().highlight()) {
+        if (world != null && configuration.getOptions().car().highlight()) {
             ofNullable(storage.getMinecartEntityToHighlight())
                     .map(minecartEntity -> world.getEntityById(minecartEntity.getId()))
                     .ifPresent(minecartEntity -> renderService.renderTextAboveEntity(matrices, vertexConsumers, minecartEntity, Text.of("🚗").copy().formatted(AQUA), 0.05F));
@@ -90,6 +92,15 @@ public class CarListener
         Matcher carLockedOwnMatcher = CAR_LOCKED_OWN_PATTERN.matcher(message);
         if (carLockedOwnMatcher.find()) {
             commandService.sendCommand("car lock");
+            return true;
+        }
+
+        Matcher carFindMatcher = CAR_FIND_PATTERN.matcher(message);
+        if (carFindMatcher.find()) {
+            int x = parseInt(carFindMatcher.group("x"));
+            int y = parseInt(carFindMatcher.group("y"));
+            int z = parseInt(carFindMatcher.group("z"));
+            commandService.sendCommand("navi " + x + "/" + y + "/" + z);
             return true;
         }
 
