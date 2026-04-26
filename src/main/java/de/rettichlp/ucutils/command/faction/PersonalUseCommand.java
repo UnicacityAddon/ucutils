@@ -20,6 +20,7 @@ import static de.rettichlp.ucutils.UCUtils.commandService;
 import static de.rettichlp.ucutils.UCUtils.configuration;
 import static de.rettichlp.ucutils.UCUtils.messageService;
 import static de.rettichlp.ucutils.UCUtils.networkHandler;
+import static de.rettichlp.ucutils.UCUtils.utilService;
 import static java.lang.String.valueOf;
 import static java.util.regex.Pattern.compile;
 import static net.fabricmc.fabric.api.client.command.v2.ClientCommandManager.argument;
@@ -53,7 +54,7 @@ public class PersonalUseCommand extends CommandBase implements IMessageReceiveLi
                                     return 1;
                                 })))
                 .executes(context -> {
-                    commandService.sendCommands(createCommands("dbank get %name% %amount% %purity%"));
+                    commandService.sendCommands(createCommands("dbank get %name% %amount% %purity%"), 1000);
                     return 1;
                 });
     }
@@ -61,7 +62,7 @@ public class PersonalUseCommand extends CommandBase implements IMessageReceiveLi
     @Override
     public boolean onMessageReceive(Text text, String message) {
         if (DEAL_ACCEPTED.matcher(message).find() || DEAL_DECLINED.matcher(message).find()) {
-            removeAndExecuteFirst();
+            utilService.delayedAction(this::removeAndExecuteFirst, 500);
         }
 
         return true;
