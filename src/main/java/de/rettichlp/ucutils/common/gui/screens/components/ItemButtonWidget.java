@@ -21,6 +21,8 @@ public class ItemButtonWidget extends ButtonWidget {
 
     @Override
     protected void drawIcon(DrawContext context, int mouseX, int mouseY, float deltaTicks) {
+        drawButton(context);
+
         int x = getX() + (getWidth() / 2) - 8;
         int y = getY() + (getHeight() / 2) - 8;
 

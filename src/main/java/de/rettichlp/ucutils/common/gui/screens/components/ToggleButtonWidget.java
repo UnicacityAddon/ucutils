@@ -6,6 +6,7 @@ import net.minecraft.client.input.AbstractInput;
 
 import java.util.function.Consumer;
 
+import static net.minecraft.client.gui.DrawContext.HoverType.NONE;
 import static net.minecraft.screen.ScreenTexts.OFF;
 import static net.minecraft.screen.ScreenTexts.ON;
 import static net.minecraft.text.Text.empty;
@@ -38,6 +39,8 @@ public class ToggleButtonWidget extends ButtonWidget {
 
     @Override
     protected void drawIcon(DrawContext context, int mouseX, int mouseY, float deltaTicks) {
+        drawButton(context);
+        drawLabel(context.getHoverListener(this, NONE));
     }
 
     public void updateText() {
