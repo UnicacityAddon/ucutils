@@ -67,6 +67,7 @@ public class MedicListener implements IMessageReceiveListener {
         Matcher medicReviveStartMatcher = MEDIC_REVIVE_START_PATTERN.matcher(message);
         if (medicReviveStartMatcher.find()) {
             utilService.delayedAction(() -> commandService.sendCommand("dinfo"), COMMAND_COOLDOWN_MILLIS);
+            return true;
         }
 
         Matcher medicRespawnMatcher = MEDIC_RESPAWN_PATTERN.matcher(message);
