@@ -7,7 +7,10 @@ import net.minecraft.text.Text;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import static de.rettichlp.ucutils.UCUtils.commandService;
 import static de.rettichlp.ucutils.UCUtils.storage;
+import static de.rettichlp.ucutils.UCUtils.utilService;
+import static de.rettichlp.ucutils.common.services.CommandService.COMMAND_COOLDOWN_MILLIS;
 import static java.lang.Integer.parseInt;
 import static java.util.regex.Pattern.compile;
 
@@ -16,6 +19,7 @@ public class MobileListener implements IMessageReceiveListener {
 
     private static final Pattern MOBILE_NUMBER_PATTERN = compile("^Nummer von (?:\\[UC])?(?<playerName>[a-zA-Z0-9_]+): (?<number>\\d+)$");
     private static final Pattern MOBILE_SMS_RECEIVE_PATTERN = compile("^Dein Handy klingelt! Eine Nachricht von (?:\\[UC])?(?<playerName>[a-zA-Z0-9_]+) \\((?<number>\\d+)\\)\\.$");
+    private static final Pattern MOBILE_OFF_PATTERN = compile("^Dein Handy ist ausgeschaltet\\.$");
 
     @Override
     public boolean onMessageReceive(Text text, String message) {
@@ -35,6 +39,12 @@ public class MobileListener implements IMessageReceiveListener {
             storage.getRetrievedNumbers().put(playerName, number);
             storage.setLastReceivedSmsNumber(number);
 
+            return true;
+        }
+
+        Matcher mobileOffMatcher = MOBILE_OFF_PATTERN.matcher(message);
+        if (mobileOffMatcher.find()) {
+            utilService.delayedAction(() -> commandService.sendCommand("togglephone"), COMMAND_COOLDOWN_MILLIS);
             return true;
         }
 
