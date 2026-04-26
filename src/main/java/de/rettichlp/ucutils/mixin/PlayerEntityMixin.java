@@ -24,7 +24,7 @@ import static net.minecraft.util.Formatting.DARK_GRAY;
 public class PlayerEntityMixin {
 
     @Inject(method = "getDisplayName", at = @At("RETURN"), cancellable = true)
-    private void ucutils$getDisplayName(@NotNull CallbackInfoReturnable<Text> cir) {
+    private void ucutils$getDisplayNameReturn(@NotNull CallbackInfoReturnable<Text> cir) {
         GameProfile gameProfile = ((PlayerEntity) (Object) this).getGameProfile();
         cir.setReturnValue(factionService.getEnrichedDisplayName(gameProfile.name()));
     }
