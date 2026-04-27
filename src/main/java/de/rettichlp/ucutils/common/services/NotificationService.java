@@ -3,15 +3,12 @@ package de.rettichlp.ucutils.common.services;
 import de.rettichlp.ucutils.common.gui.widgets.NotificationWidget;
 import lombok.Data;
 import net.minecraft.text.Text;
-import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.List;
-import java.util.function.Supplier;
 
-import static de.rettichlp.ucutils.UCUtils.renderService;
 import static java.awt.Color.*;
 import static java.time.LocalDateTime.now;
 import static java.util.Objects.hash;
@@ -23,30 +20,25 @@ public class NotificationService {
 
     private final Collection<Notification> notifications = new ArrayList<>();
 
-    public void sendSuccessNotification(String message) {
-        sendNotification(message, GREEN, 5000);
+    public void sendSuccessNotification(Text text) {
+        sendNotification(text, GREEN, 5000);
     }
 
-    public void sendInfoNotification(String message) {
-        sendNotification(message, CYAN, 5000);
+    public void sendInfoNotification(Text text) {
+        sendNotification(text, CYAN, 5000);
     }
 
-    public void sendWarningNotification(String message) {
-        sendNotification(message, ORANGE, 5000);
+    public void sendWarningNotification(Text text) {
+        sendNotification(text, ORANGE, 5000);
     }
 
-    public void sendErrorNotification(String message) {
-        sendNotification(message, RED, 5000);
+    public void sendErrorNotification(Text text) {
+        sendNotification(text, RED, 5000);
     }
 
-    public void sendNotification(String message, Color color, long durationInMillis) {
-        sendNotification(() -> Text.of(message), color, durationInMillis);
-    }
-
-    public void sendNotification(@NotNull Supplier<Text> messageSupplier, Color color, long durationInMillis) {
-        Notification notification = new Notification(messageSupplier, durationInMillis);
-        notification.setBorderColor(color);
-        notification.setBackgroundColor(renderService.getSecondaryColor(color));
+    public void sendNotification(Text text, Color color, long durationInMillis) {
+        Notification notification = new Notification(text, durationInMillis);
+        notification.setColor(color);
         this.notifications.add(notification);
     }
 
@@ -62,15 +54,14 @@ public class NotificationService {
     public static class Notification {
 
         private final UUID id = randomUUID();
-        private final Supplier<Text> textSupplier;
+        private final Text text;
         private final long durationInMillis;
         private final LocalDateTime timestamp = now();
-        private Color borderColor = WHITE;
-        private Color backgroundColor = renderService.getSecondaryColor(WHITE);
+        private Color color = WHITE;
 
         @Override
         public int hashCode() {
-            return hash(this.id, this.textSupplier, this.durationInMillis, this.timestamp, this.borderColor, this.backgroundColor);
+            return hash(this.id, this.text, this.durationInMillis, this.timestamp, this.color);
         }
 
         @Override
@@ -79,7 +70,7 @@ public class NotificationService {
         }
 
         public NotificationWidget toWidget() {
-            return new NotificationWidget(this.getTextSupplier().get(), this.borderColor, this.timestamp, this.durationInMillis);
+            return new NotificationWidget(this.text, this.color, this.timestamp, this.durationInMillis);
         }
     }
 }

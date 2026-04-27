@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 import net.minecraft.entity.vehicle.MinecartEntity;
+import net.minecraft.text.Text;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
@@ -15,6 +16,7 @@ import static de.rettichlp.ucutils.common.Storage.ToggledChat.NONE;
 import static de.rettichlp.ucutils.common.models.Faction.NULL;
 import static java.util.Arrays.stream;
 import static java.util.Optional.ofNullable;
+import static net.minecraft.text.Text.translatable;
 
 public class Storage {
 
@@ -176,12 +178,12 @@ public class Storage {
     @AllArgsConstructor
     public enum ToggledChat {
 
-        NONE("", "Dauerhafter Chat deaktiviert"),
-        D_CHAT("d", "Dauerhafter D-Chat aktiviert"),
-        F_CHAT("f", "Dauerhafter F-Chat aktiviert"),
-        W_CHAT("w", "Dauerhafter Flüster-Chat aktiviert");
+        NONE("", translatable("ucutils.notification.toggled_chat.none")),
+        D_CHAT("d", translatable("ucutils.notification.toggled_chat.d")),
+        F_CHAT("f", translatable("ucutils.notification.toggled_chat.f")),
+        W_CHAT("w", translatable("ucutils.notification.toggled_chat.w"));
 
         private final String command;
-        private final String toggleMessage;
+        private final Text toggleMessage;
     }
 }

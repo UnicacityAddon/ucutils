@@ -21,6 +21,16 @@
   "ucutils.inventory.crystals": "Kristalle",
   "ucutils.inventory.grab_bag": "Wundertüte",
 
+  "ucutils.notification.error.api": "Fehler bei der API Abfrage (%s)",
+  "ucutils.notification.error.configuration": "Konfiguration konnte nicht geladen werden",
+  "ucutils.notification.info.faction_data_synchronized": "Fraktionsdaten synchronisiert",
+  "ucutils.notification.info.new_version": "Neue UCUtils Version verfügbar",
+  "ucutils.notification.info.screenshot_saved": "Screenshot gespeichert: '%s'",
+  "ucutils.notification.toggled_chat.none": "Dauerhafter Chat deaktiviert",
+  "ucutils.notification.toggled_chat.f": "Dauerhafter F-Chat aktiviert",
+  "ucutils.notification.toggled_chat.d": "Dauerhafter D-Chat aktiviert",
+  "ucutils.notification.toggled_chat.w": "Dauerhaftes Flüstern aktiviert",
+
   "ucutils.options.text.additional": "Erweitert",
   "ucutils.options.text.amount": "Menge",
   "ucutils.options.text.automation": "Automatisierung",
