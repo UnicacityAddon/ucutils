@@ -15,7 +15,6 @@ import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallback;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientLifecycleEvents;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
-import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
 import net.minecraft.client.network.ClientPlayerEntity;
 import org.slf4j.Logger;
@@ -62,7 +61,7 @@ public class UCUtils implements ModInitializer {
             player = client.player;
             networkHandler = handler;
 
-            boolean isUnicaCity = isUnicaCity();
+            boolean isUnicaCity = isUnicaCity(handler);
             storage.setUnicaCity(isUnicaCity);
             if (isUnicaCity) {
                 client.execute(() -> {
@@ -81,14 +80,11 @@ public class UCUtils implements ModInitializer {
         ClientLifecycleEvents.CLIENT_STOPPING.register(client -> configuration.saveToFile());
     }
 
-    private boolean isUnicaCity() {
+    private boolean isUnicaCity(ClientPlayNetworkHandler networkHandler) {
         if (getBoolean("fabric.development")) {
             return true;
         }
 
-        MinecraftClient client = MinecraftClient.getInstance();
-
-        ClientPlayNetworkHandler networkHandler = client.getNetworkHandler();
         if (isNull(networkHandler)) {
             LOGGER.warn("Not connected to UnicaCity: Network handler is null");
             return false;
