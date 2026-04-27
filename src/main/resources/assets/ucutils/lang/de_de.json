@@ -102,5 +102,7 @@
   "ucutils.screen.faction.blacklist.header.reason": "Grund",
   "ucutils.screen.faction.blacklist.header.price": "Preis",
   "ucutils.screen.faction.blacklist.header.kills": "Tode",
-  "ucutils.screen.shutdown_abort.button.name": "Herunterfahren abbrechen"
+  "ucutils.screen.shutdown_abort.button.name": "Herunterfahren abbrechen",
+  "ucutils.options.thirst.name": "Zeige Durst",
+  "ucutils.options.thirst.tooltip": "Zeige deinen Durst in deiner Hotbar an"
 }

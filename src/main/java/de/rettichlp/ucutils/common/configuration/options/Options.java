@@ -16,13 +16,8 @@ import java.util.List;
 
 import static de.rettichlp.ucutils.common.configuration.options.Options.AtmInformationType.NONE;
 import static de.rettichlp.ucutils.common.configuration.options.Options.ReinforcementType.UNICACITYADDON;
-import static net.minecraft.text.Text.empty;
-import static net.minecraft.text.Text.of;
-import static net.minecraft.text.Text.translatable;
-import static net.minecraft.util.Formatting.AQUA;
-import static net.minecraft.util.Formatting.BLUE;
-import static net.minecraft.util.Formatting.DARK_AQUA;
-import static net.minecraft.util.Formatting.RED;
+import static net.minecraft.text.Text.*;
+import static net.minecraft.util.Formatting.*;
 
 @Getter
 @Setter
@@ -36,6 +31,7 @@ public class Options {
     private ReinforcementType reinforcementType = UNICACITYADDON;
     private boolean customSounds = true;
     private AtmInformationType atmInformationType = NONE;
+    private boolean showThirst = true;
 
     @Getter
     @AllArgsConstructor

@@ -74,6 +74,8 @@ public class UCUtils implements ModInitializer {
             }
         });
 
+        syncService.checkThirst();
+
         ClientCommandRegistrationCallback.EVENT.register((dispatcher, registryAccess) -> this.registry.registerCommands(dispatcher));
 
         ClientLifecycleEvents.CLIENT_STOPPING.register(client -> configuration.saveToFile());

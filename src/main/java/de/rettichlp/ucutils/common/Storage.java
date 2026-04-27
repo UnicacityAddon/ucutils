@@ -1,30 +1,13 @@
 package de.rettichlp.ucutils.common;
 
-import de.rettichlp.ucutils.common.models.BlackMarket;
-import de.rettichlp.ucutils.common.models.BlacklistEntry;
-import de.rettichlp.ucutils.common.models.BlacklistReason;
-import de.rettichlp.ucutils.common.models.ContractEntry;
-import de.rettichlp.ucutils.common.models.Countdown;
-import de.rettichlp.ucutils.common.models.Faction;
-import de.rettichlp.ucutils.common.models.FactionEntry;
-import de.rettichlp.ucutils.common.models.HousebanEntry;
-import de.rettichlp.ucutils.common.models.Job;
-import de.rettichlp.ucutils.common.models.PlantEntry;
-import de.rettichlp.ucutils.common.models.Reinforcement;
-import de.rettichlp.ucutils.common.models.ShutdownReason;
-import de.rettichlp.ucutils.common.models.WantedEntry;
+import de.rettichlp.ucutils.common.models.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 import net.minecraft.entity.vehicle.MinecartEntity;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 import static de.rettichlp.ucutils.UCUtils.LOGGER;
 import static de.rettichlp.ucutils.UCUtils.storage;
@@ -110,6 +93,10 @@ public class Storage {
     @Getter
     @Setter
     private ToggledChat toggledChat = NONE;
+
+    @Getter
+    @Setter
+    private double thirst = -1.0;
 
     {
         this.blackMarkets.addAll(stream(BlackMarket.Type.values())
