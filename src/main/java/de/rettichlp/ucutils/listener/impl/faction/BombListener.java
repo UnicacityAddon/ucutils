@@ -16,9 +16,7 @@ import java.util.regex.Pattern;
 
 import static de.rettichlp.ucutils.UCUtils.player;
 import static de.rettichlp.ucutils.UCUtils.storage;
-import static de.rettichlp.ucutils.common.models.Faction.FBI;
-import static de.rettichlp.ucutils.common.models.Faction.POLIZEI;
-import static de.rettichlp.ucutils.common.models.Faction.RETTUNGSDIENST;
+import static de.rettichlp.ucutils.common.models.Faction.*;
 import static de.rettichlp.ucutils.common.models.Sound.BOMB_SOUND;
 import static java.lang.String.format;
 import static java.time.Duration.between;
@@ -28,10 +26,7 @@ import static java.util.concurrent.TimeUnit.MILLISECONDS;
 import static java.util.regex.Pattern.compile;
 import static net.minecraft.text.Text.empty;
 import static net.minecraft.text.Text.literal;
-import static net.minecraft.util.Formatting.BOLD;
-import static net.minecraft.util.Formatting.GOLD;
-import static net.minecraft.util.Formatting.GRAY;
-import static net.minecraft.util.Formatting.RED;
+import static net.minecraft.util.Formatting.*;
 
 @UCUtilsListener
 public class BombListener implements IMessageReceiveListener, IHudRenderListener {

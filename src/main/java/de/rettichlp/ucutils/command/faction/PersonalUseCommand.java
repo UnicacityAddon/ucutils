@@ -16,11 +16,7 @@ import java.util.regex.Pattern;
 
 import static com.mojang.brigadier.arguments.StringArgumentType.getString;
 import static com.mojang.brigadier.arguments.StringArgumentType.word;
-import static de.rettichlp.ucutils.UCUtils.commandService;
-import static de.rettichlp.ucutils.UCUtils.configuration;
-import static de.rettichlp.ucutils.UCUtils.messageService;
-import static de.rettichlp.ucutils.UCUtils.networkHandler;
-import static de.rettichlp.ucutils.UCUtils.utilService;
+import static de.rettichlp.ucutils.UCUtils.*;
 import static java.lang.String.valueOf;
 import static java.util.regex.Pattern.compile;
 import static net.fabricmc.fabric.api.client.command.v2.ClientCommandManager.argument;

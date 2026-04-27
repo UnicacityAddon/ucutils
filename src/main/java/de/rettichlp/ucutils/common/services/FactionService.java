@@ -1,11 +1,7 @@
 package de.rettichlp.ucutils.common.services;
 
 import de.rettichlp.ucutils.common.configuration.options.NameTagOptions;
-import de.rettichlp.ucutils.common.models.BlacklistEntry;
-import de.rettichlp.ucutils.common.models.ContractEntry;
-import de.rettichlp.ucutils.common.models.Faction;
-import de.rettichlp.ucutils.common.models.HousebanEntry;
-import de.rettichlp.ucutils.common.models.WantedEntry;
+import de.rettichlp.ucutils.common.models.*;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
@@ -13,21 +9,11 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Optional;
 
-import static de.rettichlp.ucutils.UCUtils.configuration;
-import static de.rettichlp.ucutils.UCUtils.factionService;
-import static de.rettichlp.ucutils.UCUtils.storage;
+import static de.rettichlp.ucutils.UCUtils.*;
 import static de.rettichlp.ucutils.common.models.Color.WHITE;
 import static java.time.LocalDateTime.now;
-import static net.minecraft.text.Text.empty;
-import static net.minecraft.text.Text.literal;
-import static net.minecraft.text.Text.of;
-import static net.minecraft.util.Formatting.DARK_GRAY;
-import static net.minecraft.util.Formatting.DARK_GREEN;
-import static net.minecraft.util.Formatting.DARK_RED;
-import static net.minecraft.util.Formatting.GOLD;
-import static net.minecraft.util.Formatting.GREEN;
-import static net.minecraft.util.Formatting.RED;
-import static net.minecraft.util.Formatting.YELLOW;
+import static net.minecraft.text.Text.*;
+import static net.minecraft.util.Formatting.*;
 
 public class FactionService {
 

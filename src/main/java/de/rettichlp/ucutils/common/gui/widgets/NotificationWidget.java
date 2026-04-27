@@ -6,7 +6,7 @@ import de.rettichlp.ucutils.common.gui.widgets.base.UCUtilsWidgetConfiguration;
 import lombok.RequiredArgsConstructor;
 import net.minecraft.text.Text;
 
-import java.awt.Color;
+import java.awt.*;
 import java.time.LocalDateTime;
 
 import static java.time.LocalDateTime.now;

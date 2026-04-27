@@ -24,10 +24,7 @@ import static net.fabricmc.fabric.api.client.command.v2.ClientCommandManager.arg
 import static net.minecraft.command.CommandSource.suggestMatching;
 import static net.minecraft.text.Text.empty;
 import static net.minecraft.text.Text.of;
-import static net.minecraft.util.Formatting.AQUA;
-import static net.minecraft.util.Formatting.DARK_AQUA;
-import static net.minecraft.util.Formatting.DARK_GRAY;
-import static net.minecraft.util.Formatting.GRAY;
+import static net.minecraft.util.Formatting.*;
 
 @UCUtilsCommand(label = "screenshot")
 public class ScreenshotCommand extends CommandBase {

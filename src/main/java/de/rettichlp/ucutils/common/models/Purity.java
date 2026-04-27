@@ -7,10 +7,7 @@ import net.minecraft.client.gui.tooltip.Tooltip;
 import net.minecraft.text.Text;
 
 import static net.minecraft.text.Text.translatable;
-import static net.minecraft.util.Formatting.DARK_GREEN;
-import static net.minecraft.util.Formatting.GREEN;
-import static net.minecraft.util.Formatting.RED;
-import static net.minecraft.util.Formatting.YELLOW;
+import static net.minecraft.util.Formatting.*;
 
 @Getter
 @AllArgsConstructor

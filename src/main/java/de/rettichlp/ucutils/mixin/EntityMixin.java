@@ -16,9 +16,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-import static de.rettichlp.ucutils.UCUtils.factionService;
-import static de.rettichlp.ucutils.UCUtils.player;
-import static de.rettichlp.ucutils.UCUtils.storage;
+import static de.rettichlp.ucutils.UCUtils.*;
 import static net.minecraft.item.Items.SKELETON_SKULL;
 import static net.minecraft.item.Items.WITHER_SKELETON_SKULL;
 import static net.minecraft.text.Text.empty;

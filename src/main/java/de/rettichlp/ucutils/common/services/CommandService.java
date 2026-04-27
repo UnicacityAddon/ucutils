@@ -6,12 +6,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.function.Consumer;
 
-import static de.rettichlp.ucutils.UCUtils.LOGGER;
-import static de.rettichlp.ucutils.UCUtils.messageService;
-import static de.rettichlp.ucutils.UCUtils.networkHandler;
-import static de.rettichlp.ucutils.UCUtils.player;
-import static de.rettichlp.ucutils.UCUtils.storage;
-import static de.rettichlp.ucutils.UCUtils.utilService;
+import static de.rettichlp.ucutils.UCUtils.*;
 import static java.lang.Boolean.getBoolean;
 import static java.util.Objects.nonNull;
 import static java.util.Optional.ofNullable;

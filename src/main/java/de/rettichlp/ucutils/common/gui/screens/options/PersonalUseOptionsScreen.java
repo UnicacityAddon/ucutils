@@ -5,27 +5,19 @@ import de.rettichlp.ucutils.common.models.InventoryItem;
 import de.rettichlp.ucutils.common.models.PersonalUseEntry;
 import de.rettichlp.ucutils.common.models.Purity;
 import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.gui.widget.DirectionalLayoutWidget;
-import net.minecraft.client.gui.widget.EmptyWidget;
-import net.minecraft.client.gui.widget.Positioner;
-import net.minecraft.client.gui.widget.TextFieldWidget;
-import net.minecraft.client.gui.widget.TextWidget;
+import net.minecraft.client.gui.widget.*;
 import net.minecraft.text.Text;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
-import static de.rettichlp.ucutils.UCUtils.LOGGER;
-import static de.rettichlp.ucutils.UCUtils.configuration;
-import static de.rettichlp.ucutils.UCUtils.renderService;
+import static de.rettichlp.ucutils.UCUtils.*;
 import static java.lang.Integer.parseInt;
 import static java.lang.String.valueOf;
 import static java.util.Arrays.stream;
 import static net.minecraft.client.gui.widget.DirectionalLayoutWidget.horizontal;
 import static net.minecraft.client.gui.widget.DirectionalLayoutWidget.vertical;
-import static net.minecraft.text.Text.empty;
-import static net.minecraft.text.Text.of;
-import static net.minecraft.text.Text.translatable;
+import static net.minecraft.text.Text.*;
 
 public class PersonalUseOptionsScreen extends OptionsScreen {
 

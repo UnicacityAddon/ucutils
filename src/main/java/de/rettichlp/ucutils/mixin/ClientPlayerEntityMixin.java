@@ -10,10 +10,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.util.List;
 
-import static de.rettichlp.ucutils.UCUtils.LOGGER;
-import static de.rettichlp.ucutils.UCUtils.networkHandler;
-import static de.rettichlp.ucutils.UCUtils.player;
-import static de.rettichlp.ucutils.UCUtils.storage;
+import static de.rettichlp.ucutils.UCUtils.*;
 import static net.minecraft.item.Items.GLASS_BOTTLE;
 
 @Mixin(ClientPlayerEntity.class)

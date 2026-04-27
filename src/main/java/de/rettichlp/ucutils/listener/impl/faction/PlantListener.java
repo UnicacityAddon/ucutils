@@ -29,11 +29,7 @@ import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static de.rettichlp.ucutils.UCUtils.commandService;
-import static de.rettichlp.ucutils.UCUtils.messageService;
-import static de.rettichlp.ucutils.UCUtils.player;
-import static de.rettichlp.ucutils.UCUtils.renderService;
-import static de.rettichlp.ucutils.UCUtils.storage;
+import static de.rettichlp.ucutils.UCUtils.*;
 import static java.time.Duration.between;
 import static java.time.LocalDateTime.now;
 import static java.util.Objects.nonNull;
@@ -41,19 +37,11 @@ import static java.util.regex.Pattern.compile;
 import static net.minecraft.block.Blocks.FERN;
 import static net.minecraft.block.Blocks.PODZOL;
 import static net.minecraft.entity.EquipmentSlot.MAINHAND;
-import static net.minecraft.item.Items.BONE_MEAL;
-import static net.minecraft.item.Items.PUMPKIN_SEEDS;
-import static net.minecraft.item.Items.WATER_BUCKET;
-import static net.minecraft.item.Items.WHEAT_SEEDS;
+import static net.minecraft.item.Items.*;
 import static net.minecraft.screen.slot.SlotActionType.PICKUP;
 import static net.minecraft.text.Text.empty;
 import static net.minecraft.text.Text.of;
-import static net.minecraft.util.Formatting.AQUA;
-import static net.minecraft.util.Formatting.BLUE;
-import static net.minecraft.util.Formatting.GOLD;
-import static net.minecraft.util.Formatting.GRAY;
-import static net.minecraft.util.Formatting.GREEN;
-import static net.minecraft.util.Formatting.RED;
+import static net.minecraft.util.Formatting.*;
 
 @UCUtilsListener
 public class PlantListener implements IBlockRightClickListener, IEntityRenderListener, IMessageReceiveListener, IScreenOpenListener {

@@ -9,14 +9,12 @@ import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 
-import java.awt.Color;
+import java.awt.*;
 
 import static java.lang.String.format;
 import static net.minecraft.text.Text.of;
 import static net.minecraft.text.Text.translatable;
-import static net.minecraft.util.Formatting.GRAY;
-import static net.minecraft.util.Formatting.RED;
-import static net.minecraft.util.Formatting.YELLOW;
+import static net.minecraft.util.Formatting.*;
 
 @UCUtilsWidget(registryName = "hearth", defaultX = 4.0, defaultY = 4.0, defaultEnabled = false)
 public class HearthWidget extends AbstractUCUtilsTextWidget<HearthWidget.Configuration> {

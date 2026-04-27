@@ -13,10 +13,7 @@ import static java.lang.Math.abs;
 import static java.lang.String.format;
 import static java.time.format.DateTimeFormatter.ofPattern;
 import static net.minecraft.text.Text.of;
-import static net.minecraft.util.Formatting.DARK_GRAY;
-import static net.minecraft.util.Formatting.DARK_PURPLE;
-import static net.minecraft.util.Formatting.LIGHT_PURPLE;
-import static net.minecraft.util.Formatting.WHITE;
+import static net.minecraft.util.Formatting.*;
 
 public class MessageService {
 

@@ -10,12 +10,8 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
-import static com.mojang.brigadier.arguments.StringArgumentType.getString;
-import static com.mojang.brigadier.arguments.StringArgumentType.greedyString;
-import static com.mojang.brigadier.arguments.StringArgumentType.word;
-import static de.rettichlp.ucutils.UCUtils.commandService;
-import static de.rettichlp.ucutils.UCUtils.networkHandler;
-import static de.rettichlp.ucutils.UCUtils.storage;
+import static com.mojang.brigadier.arguments.StringArgumentType.*;
+import static de.rettichlp.ucutils.UCUtils.*;
 import static net.fabricmc.fabric.api.client.command.v2.ClientCommandManager.argument;
 import static net.minecraft.command.CommandSource.suggestMatching;
 

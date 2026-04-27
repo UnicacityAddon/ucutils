@@ -14,18 +14,7 @@ import static de.rettichlp.ucutils.UCUtils.storage;
 import static java.util.Arrays.stream;
 import static net.minecraft.text.Text.empty;
 import static net.minecraft.text.Text.literal;
-import static net.minecraft.util.Formatting.BLUE;
-import static net.minecraft.util.Formatting.DARK_AQUA;
-import static net.minecraft.util.Formatting.DARK_BLUE;
-import static net.minecraft.util.Formatting.DARK_GRAY;
-import static net.minecraft.util.Formatting.DARK_PURPLE;
-import static net.minecraft.util.Formatting.DARK_RED;
-import static net.minecraft.util.Formatting.GOLD;
-import static net.minecraft.util.Formatting.GRAY;
-import static net.minecraft.util.Formatting.GREEN;
-import static net.minecraft.util.Formatting.LIGHT_PURPLE;
-import static net.minecraft.util.Formatting.RED;
-import static net.minecraft.util.Formatting.YELLOW;
+import static net.minecraft.util.Formatting.*;
 
 @Getter
 @AllArgsConstructor
