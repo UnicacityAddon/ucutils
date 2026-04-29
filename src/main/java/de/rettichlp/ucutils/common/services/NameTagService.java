@@ -6,6 +6,8 @@ import de.rettichlp.ucutils.common.models.ContractEntry;
 import de.rettichlp.ucutils.common.models.Faction;
 import de.rettichlp.ucutils.common.models.HousebanEntry;
 import de.rettichlp.ucutils.common.models.WantedEntry;
+import lombok.NonNull;
+import net.minecraft.scoreboard.Team;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
@@ -14,7 +16,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Optional;
 
 import static de.rettichlp.ucutils.UCUtils.configuration;
-import static de.rettichlp.ucutils.UCUtils.factionService;
+import static de.rettichlp.ucutils.UCUtils.networkHandler;
 import static de.rettichlp.ucutils.UCUtils.storage;
 import static de.rettichlp.ucutils.common.models.Color.WHITE;
 import static java.time.LocalDateTime.now;
@@ -86,7 +88,7 @@ public class NameTagService {
                 .findAny();
 
         if (optionalTargetWantedEntry.isPresent() && nameTagOptions.additionalWanted()) {
-            newTargetDisplayNameColor = factionService.getWantedPointColor(optionalTargetWantedEntry.get().getWantedPointAmount());
+            newTargetDisplayNameColor = getWantedPointColor(optionalTargetWantedEntry.get().getWantedPointAmount());
         }
 
         return empty()
@@ -95,6 +97,25 @@ public class NameTagService {
                 .append(newTargetDisplayName.copy().formatted(newTargetDisplayNameColor))
                 .append(" ")
                 .append(newTargetDisplayNameSuffix);
+    }
+
+    public String revertEnrichment(@NonNull Text text) {
+        String string = text.getString();
+        String[] strings = string.split(" ");
+
+        // if faction information enabled, the last index is faction information
+        return configuration.getOptions().nameTag().factionInformation()
+                ? strings[strings.length - 2]
+                : strings[strings.length - 1];
+    }
+
+    public boolean isAfk(String targetName) {
+        return networkHandler.getPlayerList().stream()
+                .filter(entry -> entry.getProfile().name().equals(targetName))
+                .anyMatch(entry -> {
+                    Team team = entry.getScoreboardTeam();
+                    return team != null && team.getName().endsWith("_afk");
+                });
     }
 
     public @NotNull Formatting getWantedPointColor(int wantedPointAmount) {
