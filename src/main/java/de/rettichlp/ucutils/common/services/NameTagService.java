@@ -29,7 +29,7 @@ import static net.minecraft.util.Formatting.GREEN;
 import static net.minecraft.util.Formatting.RED;
 import static net.minecraft.util.Formatting.YELLOW;
 
-public class FactionService {
+public class NameTagService {
 
     public MutableText getEnrichedDisplayName(String targetName) {
         NameTagOptions nameTagOptions = configuration.getOptions().nameTag();
