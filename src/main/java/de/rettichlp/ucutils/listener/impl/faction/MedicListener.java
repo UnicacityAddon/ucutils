@@ -21,6 +21,8 @@ import static de.rettichlp.ucutils.UCUtils.player;
 import static de.rettichlp.ucutils.UCUtils.storage;
 import static de.rettichlp.ucutils.UCUtils.syncService;
 import static de.rettichlp.ucutils.UCUtils.utilService;
+import static de.rettichlp.ucutils.common.Storage.MEDIC_BANDAGE_DURATION;
+import static de.rettichlp.ucutils.common.Storage.MEDIC_PILL_DURATION;
 import static de.rettichlp.ucutils.common.services.CommandService.COMMAND_COOLDOWN_MILLIS;
 import static java.lang.Integer.parseInt;
 import static java.lang.System.currentTimeMillis;
@@ -37,7 +39,9 @@ import static net.minecraft.util.Formatting.AQUA;
 public class MedicListener implements IMessageReceiveListener {
 
     private static final Pattern MEDIC_BANDAGE_PATTERN = compile("^(?:\\[UC])?(?<playerName>[a-zA-Z0-9_]+) hat dich bandagiert\\.$");
+    private static final Pattern MEDIC_BANDAGE_GIVE_PATTERN = compile("^Du hast (?:\\[UC])?(?<playerName>[a-zA-Z0-9_]+) bandagiert\\.$");
     private static final Pattern MEDIC_PILL_PATTERN = compile("^\\[Medic] Doktor (?:\\[UC])?(?<playerName>[a-zA-Z0-9_]+) hat dir Schmerzpillen verabreicht\\.$");
+    private static final Pattern MEDIC_PILL_GIVE_PATTERN = compile("^\\[Medic] Du hast (?:\\[UC])?(?<playerName>[a-zA-Z0-9_]+) Schmerzpillen verabreicht\\.$");
     private static final Pattern MEDIC_REVIVE_START_PATTERN = compile("^Du beginnst mit der Wiederbelebung von (?:\\[UC])?(?<playerName>[a-zA-Z0-9_]+)\\.\\.\\.$");
     private static final Pattern MEDIC_RESPAWN_PATTERN = compile("^\\[Friedhof] Du lebst nun wieder\\.$");
     private static final Pattern HOUSEBAN_HEADER_PATTERN = compile("^=== Hausverbote \\(\\d+\\) ===$");
@@ -54,13 +58,27 @@ public class MedicListener implements IMessageReceiveListener {
     public boolean onMessageReceive(Text text, String message) {
         Matcher medicBandageMatcher = MEDIC_BANDAGE_PATTERN.matcher(message);
         if (medicBandageMatcher.find()) {
-            storage.getCountdowns().add(new Countdown("Bandage", ofMinutes(4)));
+            storage.getCountdowns().add(new Countdown("Bandage", MEDIC_BANDAGE_DURATION));
+            return true;
+        }
+
+        Matcher medicBandageGiveMatcher = MEDIC_BANDAGE_GIVE_PATTERN.matcher(message);
+        if (medicBandageGiveMatcher.find()) {
+            String playerName = medicBandageGiveMatcher.group("playerName");
+            storage.getMedicBandageCooldowns().put(playerName, now().plus(MEDIC_BANDAGE_DURATION));
             return true;
         }
 
         Matcher medicPillMatcher = MEDIC_PILL_PATTERN.matcher(message);
         if (medicPillMatcher.find()) {
-            storage.getCountdowns().add(new Countdown("Schmerzpille", ofMinutes(4)));
+            storage.getCountdowns().add(new Countdown("Schmerzpille", MEDIC_PILL_DURATION));
+            return true;
+        }
+
+        Matcher medicPillGiveMatcher = MEDIC_PILL_GIVE_PATTERN.matcher(message);
+        if (medicPillGiveMatcher.find()) {
+            String playerName = medicBandageGiveMatcher.group("playerName");
+            storage.getMedicPillCooldowns().put(playerName, now().plus(MEDIC_PILL_DURATION));
             return true;
         }
 

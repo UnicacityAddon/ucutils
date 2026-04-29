@@ -20,6 +20,8 @@ import net.minecraft.entity.vehicle.MinecartEntity;
 import net.minecraft.text.Text;
 import org.jetbrains.annotations.Nullable;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -31,11 +33,15 @@ import static de.rettichlp.ucutils.UCUtils.LOGGER;
 import static de.rettichlp.ucutils.UCUtils.storage;
 import static de.rettichlp.ucutils.common.Storage.ToggledChat.NONE;
 import static de.rettichlp.ucutils.common.models.Faction.NULL;
+import static java.time.Duration.ofMinutes;
 import static java.util.Arrays.stream;
 import static java.util.Optional.ofNullable;
 import static net.minecraft.text.Text.translatable;
 
 public class Storage {
+
+    public static final Duration MEDIC_BANDAGE_DURATION = ofMinutes(4);
+    public static final Duration MEDIC_PILL_DURATION = ofMinutes(4);
 
     @Getter
     private final List<ShutdownReason> activeShutdowns = new ArrayList<>();
@@ -60,6 +66,12 @@ public class Storage {
 
     @Getter
     private final List<HousebanEntry> housebanEntries = new ArrayList<>();
+
+    @Getter
+    private final Map<String, LocalDateTime> medicBandageCooldowns = new HashMap<>();
+
+    @Getter
+    private final Map<String, LocalDateTime> medicPillCooldowns = new HashMap<>();
 
     @Getter
     private final List<PlantEntry> plantEntries = new ArrayList<>();
@@ -136,6 +148,10 @@ public class Storage {
         this.factionEntries.forEach(factionEntry -> LOGGER.info("factionEntries[{}:{}]: {}", factionEntry.faction(), factionEntry.members().size(), factionEntry.members()));
         // housebanEntries
         LOGGER.info("housebanEntries[{}]: {}", this.housebanEntries.size(), this.housebanEntries);
+        // medicBandageCooldowns
+        LOGGER.info("medicBandageCooldowns[{}]: {}", this.medicBandageCooldowns.size(), this.medicBandageCooldowns);
+        // medicPillCooldowns
+        LOGGER.info("medicPillCooldowns[{}]: {}", this.medicPillCooldowns.size(), this.medicPillCooldowns);
         // playerFactionCache
         LOGGER.info("playerFactionCache[{}]: {}", this.playerFactionCache.size(), this.playerFactionCache);
         // reinforcements
