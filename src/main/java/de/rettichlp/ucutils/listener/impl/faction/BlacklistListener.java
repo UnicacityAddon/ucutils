@@ -47,7 +47,7 @@ public class BlacklistListener implements IMessageReceiveListener {
         Matcher blacklistEntryAddMatcher = BLACKLIST_ENTRY_ADD.matcher(message);
         if (blacklistEntryAddMatcher.find()) {
             // show all entries to sync
-            utilService.delayedAction(() -> commandService.sendCommandWithAfkCheck("blacklist"), COMMAND_COOLDOWN_MILLIS);
+            utilService.delayedAction(() -> commandService.sendCommandWithHiddenOutput("blacklist"), COMMAND_COOLDOWN_MILLIS);
             return true;
         }
 
