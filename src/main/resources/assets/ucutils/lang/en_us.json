@@ -77,6 +77,8 @@
   "ucutils.options.atm_information.value.g_bank.tooltip": "Shows your group bank balance",
   "ucutils.options.atm_information.value.both.name": "Faction + Group",
   "ucutils.options.atm_information.value.both.tooltip": "Shows both your faction and group bank balances",
+  "ucutils.options.thirst.name": "Thirst display",
+  "ucutils.options.thirst.tooltip": "Displays your thirst above your hunger bar",
   "ucutils.options.widgets.car_locked.options.name": "Car Locked",
   "ucutils.options.widgets.car_locked.options.tooltip": "Shows whether your car is locked or unlocked",
   "ucutils.options.widgets.car_locked.options.style.name": "Style",
@@ -111,7 +113,5 @@
   "ucutils.screen.faction.blacklist.header.reason": "Reason",
   "ucutils.screen.faction.blacklist.header.price": "Price",
   "ucutils.screen.faction.blacklist.header.kills": "Kills",
-  "ucutils.screen.shutdown_abort.button.name": "Abort shutdown",
-  "ucutils.options.thirst.name": "Show Thirst",
-  "ucutils.options.thirst.tooltip": "Display your thirst on your hotbar"
+  "ucutils.screen.shutdown_abort.button.name": "Abort shutdown"
 }
