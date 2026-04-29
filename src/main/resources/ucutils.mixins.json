@@ -16,6 +16,7 @@
     "ChatScreenMixin",
     "ClientPlayerEntityMixin",
     "GameMenuScreenMixin",
+    "InGameHudMixin",
     "PlayerEntityRendererMixin",
     "PlayerListHudMixin"
   ]

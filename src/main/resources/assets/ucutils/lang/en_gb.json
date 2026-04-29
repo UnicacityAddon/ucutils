@@ -112,5 +112,7 @@
   "ucutils.screen.faction.blacklist.header.reason": "Reason",
   "ucutils.screen.faction.blacklist.header.price": "Price",
   "ucutils.screen.faction.blacklist.header.kills": "Kills",
-  "ucutils.screen.shutdown_abort.button.name": "Abort shutdown"
+  "ucutils.screen.shutdown_abort.button.name": "Abort shutdown",
+  "ucutils.options.thirst.name": "Show Thirst",
+  "ucutils.options.thirst.tooltip": "Display your thirst on your hotbar"
 }
