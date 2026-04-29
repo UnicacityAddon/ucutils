@@ -60,7 +60,7 @@ public class MedicListener implements IMessageReceiveListener {
 
         Matcher medicPillMatcher = MEDIC_PILL_PATTERN.matcher(message);
         if (medicPillMatcher.find()) {
-            storage.getCountdowns().add(new Countdown("Schmerzpille", ofMinutes(2)));
+            storage.getCountdowns().add(new Countdown("Schmerzpille", ofMinutes(4)));
             return true;
         }
 
