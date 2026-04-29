@@ -39,9 +39,6 @@ import static net.minecraft.util.Formatting.RED;
 
 public class SyncService {
 
-    @Getter
-    private boolean gameSyncProcessActive = false;
-
     private ScheduledExecutorService scheduler;
     private ScheduledFuture<?> scheduledTask;
 
@@ -71,27 +68,20 @@ public class SyncService {
     }
 
     public void syncFactionSpecificData() {
-        this.gameSyncProcessActive = true;
-
         // parse from faction-related init commands after all faction members are synced
         utilService.delayedAction(() -> {
             Faction faction = storage.getFaction(player.getStringifiedName());
             switch (faction) {
-                case FBI, POLIZEI -> commandService.sendCommand("wanteds");
-                case MERCENARY -> commandService.sendCommand("contractlist");
-                case RETTUNGSDIENST -> commandService.sendCommand("hausverbot");
+                case FBI, POLIZEI -> commandService.sendCommandWithHiddenOutput("wanteds");
+                case MERCENARY -> commandService.sendCommandWithHiddenOutput("contractlist");
+                case RETTUNGSDIENST -> commandService.sendCommandWithHiddenOutput("hausverbot");
                 default -> {
                     if (faction.isBadFaction()) {
-                        commandService.sendCommand("blacklist");
+                        commandService.sendCommandWithHiddenOutput("blacklist");
                     }
                 }
             }
         }, COMMAND_COOLDOWN_MILLIS);
-
-        utilService.delayedAction(() -> {
-            this.gameSyncProcessActive = false;
-            notificationService.sendSuccessNotification(translatable("ucutils.notification.info.faction_data_synchronized"));
-        }, COMMAND_COOLDOWN_MILLIS * 2);
     }
 
     public void checkForUpdates() {
