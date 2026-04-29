@@ -8,6 +8,7 @@ import java.util.function.Consumer;
 
 import static de.rettichlp.ucutils.UCUtils.LOGGER;
 import static de.rettichlp.ucutils.UCUtils.messageService;
+import static de.rettichlp.ucutils.UCUtils.nameTagService;
 import static de.rettichlp.ucutils.UCUtils.networkHandler;
 import static de.rettichlp.ucutils.UCUtils.player;
 import static de.rettichlp.ucutils.UCUtils.storage;
@@ -28,7 +29,7 @@ public class CommandService {
     }
 
     public boolean sendCommandWithAfkCheck(String command) {
-        boolean isAfk = storage.isAfk();
+        boolean isAfk = nameTagService.isAfk(player.getStringifiedName());
         LOGGER.info("UCUtils executing command with AFK check (is AFK: {}): {}", isAfk, command);
 
         if (!isAfk) {
