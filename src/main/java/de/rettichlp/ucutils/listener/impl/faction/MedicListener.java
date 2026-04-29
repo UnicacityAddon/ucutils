@@ -19,13 +19,11 @@ import static de.rettichlp.ucutils.UCUtils.configuration;
 import static de.rettichlp.ucutils.UCUtils.messageService;
 import static de.rettichlp.ucutils.UCUtils.player;
 import static de.rettichlp.ucutils.UCUtils.storage;
-import static de.rettichlp.ucutils.UCUtils.syncService;
 import static de.rettichlp.ucutils.UCUtils.utilService;
 import static de.rettichlp.ucutils.common.Storage.MEDIC_BANDAGE_DURATION;
 import static de.rettichlp.ucutils.common.Storage.MEDIC_PILL_DURATION;
 import static de.rettichlp.ucutils.common.services.CommandService.COMMAND_COOLDOWN_MILLIS;
 import static java.lang.Integer.parseInt;
-import static java.lang.System.currentTimeMillis;
 import static java.time.Duration.ofMinutes;
 import static java.time.LocalDateTime.now;
 import static java.util.Arrays.asList;
@@ -51,8 +49,6 @@ public class MedicListener implements IMessageReceiveListener {
     private static final Pattern FIRST_AID_PATTERN = compile("^\\[Erste-Hilfe] (?:\\[UC])?(?<playerName>[a-zA-Z0-9_]+) hat dir ein Erste-Hilfe-Schein für 14 Tage ausgestellt\\.$");
     private static final Pattern FIRST_AID_LICENCES_PATTERN = compile("^- Erste-Hilfe-Schein: Vorhanden$");
     private static final Pattern LABOR_TRANSPORT_STARTED_PATTERN = compile("^\\[ʟᴀʙᴏʀ] Transport gestartet: (?<chestAmount>\\d+) ᴋɪsᴛᴇɴ mit (?<ingredientAmount>\\d+) (?<ingredient>.+)$");
-
-    private long activeCheck = 0;
 
     @Override
     public boolean onMessageReceive(Text text, String message) {
@@ -95,16 +91,15 @@ public class MedicListener implements IMessageReceiveListener {
 
         Matcher housebanHeaderMatcher = HOUSEBAN_HEADER_PATTERN.matcher(message);
         if (housebanHeaderMatcher.find()) {
-            this.activeCheck = currentTimeMillis();
             storage.getHousebanEntries().clear();
-            return !syncService.isGameSyncProcessActive();
+            return commandService.showCommandOutputMessage("hausverbot");
         }
 
         Matcher housebanEntryMatcher = HOUSEBAN_ENTRY_PATTERN.matcher(message);
-        if (housebanEntryMatcher.find() && currentTimeMillis() - this.activeCheck < 100) {
+        if (housebanEntryMatcher.find()) {
             HousebanEntry housebanEntry = getHousebanEntry(housebanEntryMatcher);
             storage.getHousebanEntries().add(housebanEntry);
-            return !syncService.isGameSyncProcessActive();
+            return commandService.showCommandOutputMessage("hausverbot");
         }
 
         Matcher housebanAddMatcher = HOUSEBAN_ADD_PATTERN.matcher(message);

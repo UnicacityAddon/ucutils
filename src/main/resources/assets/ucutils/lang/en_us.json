@@ -23,7 +23,6 @@
 
   "ucutils.notification.error.api": "API request error (%s)",
   "ucutils.notification.error.configuration": "Configuration could not be loaded",
-  "ucutils.notification.info.faction_data_synchronized": "Faction data synchronized",
   "ucutils.notification.info.new_version": "New UCUtils version available",
   "ucutils.notification.info.screenshot_saved": "Screenshot saved: '%s'",
   "ucutils.notification.toggled_chat.none": "Persistent chat disabled",

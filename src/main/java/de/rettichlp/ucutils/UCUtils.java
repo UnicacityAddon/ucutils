@@ -68,12 +68,11 @@ public class UCUtils implements ModInitializer {
                     this.registry.registerListeners();
                     renderService.initializeWidgets();
                     syncService.syncFactionSpecificData();
+                    syncService.startRepeatingSync();
                     syncService.checkForUpdates();
                 });
             }
         });
-
-        syncService.checkThirst();
 
         ClientCommandRegistrationCallback.EVENT.register((dispatcher, registryAccess) -> this.registry.registerCommands(dispatcher));
 
