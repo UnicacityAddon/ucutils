@@ -34,7 +34,7 @@ public class SyncService {
                 return;
             }
 
-            commandService.sendCommandWithHiddenOutput("health");
+            utilService.delayedAction(() -> commandService.sendCommandWithHiddenOutput("health"), COMMAND_COOLDOWN_MILLIS);
         }, 0, 3, MINUTES);
     }
 
