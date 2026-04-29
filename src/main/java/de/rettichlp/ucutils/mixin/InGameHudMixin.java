@@ -13,6 +13,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import static de.rettichlp.ucutils.UCUtils.MOD_ID;
 import static de.rettichlp.ucutils.UCUtils.configuration;
+import static de.rettichlp.ucutils.UCUtils.player;
 import static de.rettichlp.ucutils.UCUtils.storage;
 import static net.minecraft.client.gl.RenderPipelines.GUI_TEXTURED;
 import static org.spongepowered.asm.mixin.injection.At.Shift.AFTER;
@@ -46,15 +47,16 @@ public abstract class InGameHudMixin {
         }
 
         Profilers.get().swap("thirst");
-        renderThirst(context, r, m);
+        renderThirst(context, player.getAir() < player.getMaxAir() ? (r - 10) : r, m);
+        Profilers.get().pop();
     }
 
     @Unique
-    private void renderThirst(DrawContext context, int y, int rightX) {
+    private void renderThirst(DrawContext context, int top, int left) {
         double thirst = storage.getThirst();
 
-        for (int i = 0; i < 10; ++i) {
-            int x = rightX - (i * 8) - 10;
+        for (int i = 1; i <= 10; ++i) {
+            int o = left - (i - 1) * 8 - 9;
 
             Identifier texture = THIRST_EMPTY_TEXTURE;
 
@@ -65,7 +67,7 @@ public abstract class InGameHudMixin {
                 texture = THIRST_HALF_TEXTURE;
             }
 
-            context.drawTexture(GUI_TEXTURED, texture, x, y, 0, 0, 9, 9, 9, 9);
+            context.drawTexture(GUI_TEXTURED, texture, o, top, 0, 0, 9, 9, 9, 9);
         }
     }
 }
