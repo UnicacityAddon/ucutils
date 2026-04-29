@@ -70,7 +70,7 @@ public class CommandService {
 
     public void sendCommandWithHiddenOutput(String command) {
         this.hideCommandOutputCommands.put(command, currentTimeMillis());
-        sendCommand(command);
+        sendCommandWithAfkCheck(command);
     }
 
     public boolean showCommandOutputMessage(String command) {
