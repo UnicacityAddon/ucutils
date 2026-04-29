@@ -14,8 +14,13 @@ import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static de.rettichlp.ucutils.UCUtils.*;
-import static de.rettichlp.ucutils.common.models.Job.*;
+import static de.rettichlp.ucutils.UCUtils.commandService;
+import static de.rettichlp.ucutils.UCUtils.player;
+import static de.rettichlp.ucutils.UCUtils.storage;
+import static de.rettichlp.ucutils.UCUtils.utilService;
+import static de.rettichlp.ucutils.common.models.Job.PIZZA_DELIVERY;
+import static de.rettichlp.ucutils.common.models.Job.TOBACCO_PLANTATION;
+import static de.rettichlp.ucutils.common.models.Job.URANIUM_TRANSPORT;
 import static java.lang.Integer.parseInt;
 import static java.time.Duration.between;
 import static java.time.LocalDateTime.now;

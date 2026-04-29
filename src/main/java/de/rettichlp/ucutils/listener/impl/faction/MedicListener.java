@@ -14,7 +14,13 @@ import java.util.regex.MatchResult;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static de.rettichlp.ucutils.UCUtils.*;
+import static de.rettichlp.ucutils.UCUtils.commandService;
+import static de.rettichlp.ucutils.UCUtils.configuration;
+import static de.rettichlp.ucutils.UCUtils.messageService;
+import static de.rettichlp.ucutils.UCUtils.player;
+import static de.rettichlp.ucutils.UCUtils.storage;
+import static de.rettichlp.ucutils.UCUtils.syncService;
+import static de.rettichlp.ucutils.UCUtils.utilService;
 import static de.rettichlp.ucutils.common.services.CommandService.COMMAND_COOLDOWN_MILLIS;
 import static java.lang.Integer.parseInt;
 import static java.lang.System.currentTimeMillis;

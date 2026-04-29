@@ -11,7 +11,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import static de.rettichlp.ucutils.UCUtils.*;
+import static de.rettichlp.ucutils.UCUtils.configuration;
+import static de.rettichlp.ucutils.UCUtils.messageService;
+import static de.rettichlp.ucutils.UCUtils.player;
 import static net.minecraft.text.Text.empty;
 import static net.minecraft.text.Text.of;
 

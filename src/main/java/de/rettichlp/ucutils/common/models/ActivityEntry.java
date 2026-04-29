@@ -7,7 +7,9 @@ import org.jetbrains.annotations.NotNull;
 import java.time.Instant;
 import java.util.List;
 
-import static de.rettichlp.ucutils.common.models.Faction.*;
+import static de.rettichlp.ucutils.common.models.Faction.FBI;
+import static de.rettichlp.ucutils.common.models.Faction.POLIZEI;
+import static de.rettichlp.ucutils.common.models.Faction.RETTUNGSDIENST;
 import static java.util.Arrays.asList;
 import static java.util.Objects.nonNull;
 

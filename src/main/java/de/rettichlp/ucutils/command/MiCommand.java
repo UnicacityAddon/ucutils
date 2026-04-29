@@ -9,7 +9,10 @@ import org.jetbrains.annotations.NotNull;
 
 import static com.mojang.brigadier.arguments.StringArgumentType.getString;
 import static com.mojang.brigadier.arguments.StringArgumentType.greedyString;
-import static de.rettichlp.ucutils.UCUtils.*;
+import static de.rettichlp.ucutils.UCUtils.commandService;
+import static de.rettichlp.ucutils.UCUtils.messageService;
+import static de.rettichlp.ucutils.UCUtils.player;
+import static de.rettichlp.ucutils.UCUtils.storage;
 import static de.rettichlp.ucutils.common.models.Faction.fromDisplayName;
 import static java.util.Arrays.stream;
 import static net.fabricmc.fabric.api.client.command.v2.ClientCommandManager.argument;

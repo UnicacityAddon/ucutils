@@ -12,7 +12,9 @@ import static net.minecraft.client.gui.screen.ConfirmLinkScreen.opening;
 import static net.minecraft.client.gui.widget.DirectionalLayoutWidget.horizontal;
 import static net.minecraft.screen.ScreenTexts.BACK;
 import static net.minecraft.screen.ScreenTexts.DONE;
-import static net.minecraft.text.Text.*;
+import static net.minecraft.text.Text.empty;
+import static net.minecraft.text.Text.of;
+import static net.minecraft.text.Text.translatable;
 
 public abstract class OptionsScreen extends UCUtilsScreen {
 

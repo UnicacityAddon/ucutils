@@ -20,7 +20,13 @@ import static de.rettichlp.ucutils.UCUtils.storage;
 import static java.util.Comparator.comparing;
 import static net.minecraft.text.Text.of;
 import static net.minecraft.text.TextColor.fromFormatting;
-import static net.minecraft.util.Formatting.*;
+import static net.minecraft.util.Formatting.BLUE;
+import static net.minecraft.util.Formatting.BOLD;
+import static net.minecraft.util.Formatting.DARK_BLUE;
+import static net.minecraft.util.Formatting.DARK_GRAY;
+import static net.minecraft.util.Formatting.DARK_RED;
+import static net.minecraft.util.Formatting.GOLD;
+import static net.minecraft.util.Formatting.RED;
 
 @Mixin(PlayerListHud.class)
 public abstract class PlayerListHudMixin {

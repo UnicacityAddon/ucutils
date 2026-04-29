@@ -10,7 +10,9 @@ import static net.minecraft.screen.ScreenTexts.OFF;
 import static net.minecraft.screen.ScreenTexts.ON;
 import static net.minecraft.text.Text.empty;
 import static net.minecraft.text.Text.of;
-import static net.minecraft.util.Formatting.*;
+import static net.minecraft.util.Formatting.GRAY;
+import static net.minecraft.util.Formatting.GREEN;
+import static net.minecraft.util.Formatting.RED;
 
 public class ToggleButtonWidget extends ButtonWidget {
 

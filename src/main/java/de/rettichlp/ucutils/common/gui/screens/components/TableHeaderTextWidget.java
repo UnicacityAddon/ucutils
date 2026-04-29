@@ -12,7 +12,9 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Comparator;
 import java.util.function.Consumer;
 
-import static de.rettichlp.ucutils.common.gui.screens.components.TableHeaderTextWidget.SortingDirection.*;
+import static de.rettichlp.ucutils.common.gui.screens.components.TableHeaderTextWidget.SortingDirection.ASCENDING;
+import static de.rettichlp.ucutils.common.gui.screens.components.TableHeaderTextWidget.SortingDirection.DESCENDING;
+import static de.rettichlp.ucutils.common.gui.screens.components.TableHeaderTextWidget.SortingDirection.NONE;
 import static net.minecraft.text.Text.empty;
 import static net.minecraft.text.Text.of;
 import static net.minecraft.util.Formatting.AQUA;

@@ -17,8 +17,13 @@ import org.jetbrains.annotations.NotNull;
 
 import static de.rettichlp.ucutils.UCUtils.storage;
 import static de.rettichlp.ucutils.common.gui.widgets.CarLockedWidget.Style.MINIMALISTIC;
-import static net.minecraft.text.Text.*;
-import static net.minecraft.util.Formatting.*;
+import static net.minecraft.text.Text.empty;
+import static net.minecraft.text.Text.of;
+import static net.minecraft.text.Text.translatable;
+import static net.minecraft.util.Formatting.DARK_GRAY;
+import static net.minecraft.util.Formatting.GOLD;
+import static net.minecraft.util.Formatting.GRAY;
+import static net.minecraft.util.Formatting.GREEN;
 
 @UCUtilsWidget(registryName = "car_locked", defaultX = 110.0, defaultY = 4.0)
 public class CarLockedWidget extends AbstractUCUtilsTextWidget<CarLockedWidget.Configuration> {

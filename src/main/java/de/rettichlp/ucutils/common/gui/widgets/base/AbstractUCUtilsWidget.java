@@ -12,8 +12,13 @@ import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.Map;
 
-import static de.rettichlp.ucutils.UCUtils.*;
-import static de.rettichlp.ucutils.common.gui.widgets.base.AbstractUCUtilsWidget.Alignment.*;
+import static de.rettichlp.ucutils.UCUtils.LOGGER;
+import static de.rettichlp.ucutils.UCUtils.api;
+import static de.rettichlp.ucutils.UCUtils.configuration;
+import static de.rettichlp.ucutils.UCUtils.notificationService;
+import static de.rettichlp.ucutils.common.gui.widgets.base.AbstractUCUtilsWidget.Alignment.CENTER;
+import static de.rettichlp.ucutils.common.gui.widgets.base.AbstractUCUtilsWidget.Alignment.LEFT;
+import static de.rettichlp.ucutils.common.gui.widgets.base.AbstractUCUtilsWidget.Alignment.RIGHT;
 import static java.util.Objects.isNull;
 import static java.util.Optional.ofNullable;
 import static net.minecraft.text.Text.translatable;

@@ -5,7 +5,7 @@ import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 import org.jetbrains.annotations.NotNull;
 
-import java.awt.*;
+import java.awt.Color;
 
 import static de.rettichlp.ucutils.UCUtils.renderService;
 import static de.rettichlp.ucutils.common.services.RenderService.TEXT_BOX_PADDING;

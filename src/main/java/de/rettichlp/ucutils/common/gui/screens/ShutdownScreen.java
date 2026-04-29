@@ -8,7 +8,9 @@ import net.minecraft.text.Text;
 import static de.rettichlp.ucutils.UCUtils.renderService;
 import static de.rettichlp.ucutils.UCUtils.storage;
 import static net.minecraft.client.gui.widget.DirectionalLayoutWidget.vertical;
-import static net.minecraft.text.Text.*;
+import static net.minecraft.text.Text.empty;
+import static net.minecraft.text.Text.of;
+import static net.minecraft.text.Text.translatable;
 import static net.minecraft.util.Formatting.GOLD;
 import static net.minecraft.util.Formatting.GRAY;
 

@@ -12,12 +12,19 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Collection;
 import java.util.StringJoiner;
 
-import static de.rettichlp.ucutils.UCUtils.*;
+import static de.rettichlp.ucutils.UCUtils.MOD_ID;
+import static de.rettichlp.ucutils.UCUtils.messageService;
+import static de.rettichlp.ucutils.UCUtils.player;
+import static de.rettichlp.ucutils.UCUtils.storage;
+import static de.rettichlp.ucutils.UCUtils.syncService;
+import static de.rettichlp.ucutils.UCUtils.utilService;
 import static java.net.URI.create;
 import static net.fabricmc.fabric.api.client.command.v2.ClientCommandManager.literal;
 import static net.minecraft.text.Text.empty;
 import static net.minecraft.text.Text.of;
-import static net.minecraft.util.Formatting.*;
+import static net.minecraft.util.Formatting.DARK_GRAY;
+import static net.minecraft.util.Formatting.GRAY;
+import static net.minecraft.util.Formatting.WHITE;
 
 @UCUtilsCommand(label = "ucutils")
 public class ModCommand extends CommandBase {

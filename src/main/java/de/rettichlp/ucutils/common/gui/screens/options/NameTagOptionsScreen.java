@@ -4,7 +4,11 @@ import de.rettichlp.ucutils.common.gui.screens.OptionsScreen;
 import de.rettichlp.ucutils.common.models.Color;
 import de.rettichlp.ucutils.common.models.Faction;
 import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.gui.widget.*;
+import net.minecraft.client.gui.widget.CyclingButtonWidget;
+import net.minecraft.client.gui.widget.DirectionalLayoutWidget;
+import net.minecraft.client.gui.widget.GridWidget;
+import net.minecraft.client.gui.widget.Positioner;
+import net.minecraft.client.gui.widget.TextWidget;
 import net.minecraft.text.Text;
 import org.jetbrains.annotations.NotNull;
 

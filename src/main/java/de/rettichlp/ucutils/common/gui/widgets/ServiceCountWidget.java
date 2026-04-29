@@ -7,7 +7,7 @@ import de.rettichlp.ucutils.common.gui.widgets.base.UCUtilsWidgetConfiguration;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.text.Text;
 
-import java.awt.*;
+import java.awt.Color;
 
 import static de.rettichlp.ucutils.UCUtils.storage;
 import static java.awt.Color.RED;

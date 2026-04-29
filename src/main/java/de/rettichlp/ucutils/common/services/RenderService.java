@@ -26,7 +26,7 @@ import net.minecraft.world.entity.EntityLike;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Matrix4f;
 
-import java.awt.*;
+import java.awt.Color;
 import java.util.LinkedHashSet;
 import java.util.Objects;
 import java.util.function.BiConsumer;

@@ -15,7 +15,9 @@ import static de.rettichlp.ucutils.UCUtils.configuration;
 import static de.rettichlp.ucutils.UCUtils.renderService;
 import static java.lang.String.valueOf;
 import static net.minecraft.client.gui.widget.DirectionalLayoutWidget.horizontal;
-import static net.minecraft.text.Text.*;
+import static net.minecraft.text.Text.empty;
+import static net.minecraft.text.Text.of;
+import static net.minecraft.text.Text.translatable;
 import static net.minecraft.util.Formatting.DARK_GRAY;
 
 @UCUtilsWidget(registryName = "payday", defaultX = 126.0, defaultY = 4.0)
