@@ -17,14 +17,25 @@ import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Pattern;
 
-import static de.rettichlp.ucutils.UCUtils.*;
+import static de.rettichlp.ucutils.UCUtils.LOGGER;
+import static de.rettichlp.ucutils.UCUtils.api;
+import static de.rettichlp.ucutils.UCUtils.commandService;
+import static de.rettichlp.ucutils.UCUtils.notificationService;
+import static de.rettichlp.ucutils.UCUtils.player;
+import static de.rettichlp.ucutils.UCUtils.storage;
+import static de.rettichlp.ucutils.UCUtils.utilService;
 import static de.rettichlp.ucutils.common.models.Faction.NULL;
 import static de.rettichlp.ucutils.common.services.CommandService.COMMAND_COOLDOWN_MILLIS;
 import static java.awt.Color.MAGENTA;
 import static java.util.Objects.nonNull;
 import static java.util.concurrent.TimeUnit.MINUTES;
-import static net.minecraft.text.Text.*;
-import static net.minecraft.util.Formatting.*;
+import static net.minecraft.text.Text.empty;
+import static net.minecraft.text.Text.literal;
+import static net.minecraft.text.Text.translatable;
+import static net.minecraft.util.Formatting.DARK_GRAY;
+import static net.minecraft.util.Formatting.GRAY;
+import static net.minecraft.util.Formatting.GREEN;
+import static net.minecraft.util.Formatting.RED;
 
 public class SyncService {
 
