@@ -23,7 +23,6 @@
 
   "ucutils.notification.error.api": "Fehler bei der API Abfrage (%s)",
   "ucutils.notification.error.configuration": "Konfiguration konnte nicht geladen werden",
-  "ucutils.notification.info.faction_data_synchronized": "Fraktionsdaten synchronisiert",
   "ucutils.notification.info.new_version": "Neue UCUtils Version verfügbar",
   "ucutils.notification.info.screenshot_saved": "Screenshot gespeichert: '%s'",
   "ucutils.notification.toggled_chat.none": "Dauerhafter Chat deaktiviert",

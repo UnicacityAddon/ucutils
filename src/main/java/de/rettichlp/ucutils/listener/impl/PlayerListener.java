@@ -6,6 +6,7 @@ import de.rettichlp.ucutils.listener.IAbsorptionGetListener;
 import de.rettichlp.ucutils.listener.IMessageReceiveListener;
 import de.rettichlp.ucutils.listener.ITickListener;
 import net.minecraft.network.ClientConnection;
+import net.minecraft.text.HoverEvent;
 import net.minecraft.text.Text;
 
 import java.io.IOException;
@@ -21,6 +22,7 @@ import static de.rettichlp.ucutils.UCUtils.storage;
 import static de.rettichlp.ucutils.UCUtils.utilService;
 import static de.rettichlp.ucutils.common.models.ShutdownReason.CEMETERY;
 import static de.rettichlp.ucutils.common.models.ShutdownReason.JAIL;
+import static java.lang.Double.parseDouble;
 import static java.lang.Integer.parseInt;
 import static java.lang.Runtime.getRuntime;
 import static java.lang.System.getProperty;
@@ -42,6 +44,10 @@ public class PlayerListener implements IAbsorptionGetListener, IMessageReceiveLi
     private static final Pattern DEAD_PATTERN = compile("^Du bist nun für (?<minutes>\\d+) Minuten auf dem Friedhof$");
     private static final Pattern DEAD_DESPAWN_PATTERN = compile("^Verdammt\\.{3} mein Kopf dröhnt so\\.{3}$");
     private static final Pattern DEAD_AREVIVE_PATTERN = compile("^Du wurdest von (?:\\[UC])?(?<playerName>[a-zA-Z0-9_]+) wiederbelebt\\.$");
+
+    // health
+    private static final Pattern HEALTH_THIRST_PATTERN = compile("^§b» Durst§7: §b((§7)?#)+$");
+    private static final Pattern HEALTH_THIRST_HOVER_PATTERN = compile("^§.(?<value>\\d+\\.\\d+)§./§.20\\.0$");
 
     // jail
     private static final Pattern JAIL_PATTERN = compile("^\\[Gefängnis] Du bist nun für (?<minutes>\\d+) Minuten im Gefängnis\\.$");
@@ -68,6 +74,23 @@ public class PlayerListener implements IAbsorptionGetListener, IMessageReceiveLi
             int minutes = parseInt(deadMatcher.group("minutes"));
             storage.getCountdowns().add(new Countdown("Friedhof", ofMinutes(minutes)));
             return true;
+        }
+
+        Matcher healthThirstMatcher = HEALTH_THIRST_PATTERN.matcher(message);
+        if (healthThirstMatcher.find()) {
+            text.getSiblings().stream()
+                    .map(sibling -> sibling.getStyle().getHoverEvent())
+                    .filter(hoverEvent -> hoverEvent instanceof HoverEvent.ShowText)
+                    .map(hoverEvent -> ((HoverEvent.ShowText) hoverEvent).value().getString())
+                    .findFirst()
+                    .ifPresent(hoverString -> {
+                        Matcher healthThirstHoverMatcher = HEALTH_THIRST_HOVER_PATTERN.matcher(hoverString);
+                        if (healthThirstHoverMatcher.find()) {
+                            storage.setThirst(parseDouble(healthThirstHoverMatcher.group("value")));
+                        }
+                    });
+
+            return commandService.showCommandOutputMessage("health");
         }
 
         Matcher jailMatcher = JAIL_PATTERN.matcher(message);
