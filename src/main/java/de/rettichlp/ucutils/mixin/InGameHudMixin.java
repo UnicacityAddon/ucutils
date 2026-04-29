@@ -15,7 +15,10 @@ import static de.rettichlp.ucutils.UCUtils.MOD_ID;
 import static de.rettichlp.ucutils.UCUtils.configuration;
 import static de.rettichlp.ucutils.UCUtils.player;
 import static de.rettichlp.ucutils.UCUtils.storage;
+import static java.lang.Math.clamp;
+import static java.lang.Math.round;
 import static net.minecraft.client.gl.RenderPipelines.GUI_TEXTURED;
+import static net.minecraft.registry.tag.FluidTags.WATER;
 import static org.spongepowered.asm.mixin.injection.At.Shift.AFTER;
 
 @Mixin(InGameHud.class)
@@ -42,28 +45,34 @@ public abstract class InGameHudMixin {
                                                 CallbackInfo ci,
                                                 @Local(ordinal = 3) int m,
                                                 @Local(ordinal = 8) int r) {
-        if (!configuration.getOptions().showThirst() || storage.getThirst() == -1) {
+        if (!configuration.getOptions().showHydration() || storage.getHydration() == -1) {
             return;
         }
 
-        Profilers.get().swap("thirst");
-        renderThirst(context, player.getAir() < player.getMaxAir() ? (r - 10) : r, m);
+        Profilers.get().swap("hydration");
+        renderHydration(context, r, m);
         Profilers.get().pop();
     }
 
     @Unique
-    private void renderThirst(DrawContext context, int top, int left) {
-        double thirst = storage.getThirst();
+    private void renderHydration(DrawContext context, int top, int left) {
+        double maxHydrated = 20;
+        long round = round(storage.getHydration());
+        int hydration = (int) clamp(round, 0, maxHydrated);
 
-        for (int i = 1; i <= 10; ++i) {
-            int o = left - (i - 1) * 8 - 9;
+        if (player.isSubmergedIn(WATER) || player.getAir() < player.getMaxAir()) {
+            top -= 10;
+        }
+
+        for (int n = 0; n < 10; n++) {
+            int o = left - 9 - n * 8;
 
             Identifier texture = THIRST_EMPTY_TEXTURE;
 
-            double currentThirst = thirst - (i * 2.0);
-            if (currentThirst >= 2.0) {
+            int hydrationLeft = hydration - (n * 2);
+            if (hydrationLeft >= 2.0) {
                 texture = THIRST_FULL_TEXTURE;
-            } else if (currentThirst >= 1.0) {
+            } else if (hydrationLeft >= 1.0) {
                 texture = THIRST_HALF_TEXTURE;
             }
 

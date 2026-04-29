@@ -115,7 +115,7 @@ public class Storage {
 
     @Getter
     @Setter
-    private double thirst = -1.0;
+    private double hydration = -1.0;
 
     @Getter
     @Setter
@@ -166,14 +166,14 @@ public class Storage {
         LOGGER.info("carLocked: {}", this.carLocked);
         // currentJob
         LOGGER.info("currentJob: {}", this.currentJob);
+        // hydration
+        LOGGER.info("hydration: {}", this.hydration);
         // lastReceivedSmsNumber
         LOGGER.info("lastReceivedSmsNumber: {}", this.lastReceivedSmsNumber);
         // minecartEntityToHighlight
         LOGGER.info("minecartEntityToHighlight: {}", this.minecartEntityToHighlight);
         // moneyAtmAmount
         LOGGER.info("moneyAtmAmount: {}", this.moneyAtmAmount);
-        // thirst
-        LOGGER.info("thirst: {}", this.thirst);
         // toggledChat
         LOGGER.info("toggledChat: {}", this.toggledChat);
         // unicaCity
