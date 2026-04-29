@@ -107,7 +107,7 @@ public class Storage {
 
     @Getter
     @Setter
-    private boolean unicaCity = false;
+    private double thirst = -1.0;
 
     @Getter
     @Setter
@@ -115,7 +115,7 @@ public class Storage {
 
     @Getter
     @Setter
-    private double thirst = -1.0;
+    private boolean unicaCity = false;
 
     {
         this.blackMarkets.addAll(stream(BlackMarket.Type.values())
@@ -162,10 +162,12 @@ public class Storage {
         LOGGER.info("minecartEntityToHighlight: {}", this.minecartEntityToHighlight);
         // moneyAtmAmount
         LOGGER.info("moneyAtmAmount: {}", this.moneyAtmAmount);
-        // unicaCity
-        LOGGER.info("unicaCity: {}", this.unicaCity);
+        // thirst
+        LOGGER.info("thirst: {}", this.thirst);
         // toggledChat
         LOGGER.info("toggledChat: {}", this.toggledChat);
+        // unicaCity
+        LOGGER.info("unicaCity: {}", this.unicaCity);
     }
 
     public Faction getCachedFaction(String playerName) {
