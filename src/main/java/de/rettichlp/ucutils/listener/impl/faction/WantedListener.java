@@ -13,7 +13,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import static de.rettichlp.ucutils.UCUtils.commandService;
-import static de.rettichlp.ucutils.UCUtils.factionService;
+import static de.rettichlp.ucutils.UCUtils.nameTagService;
 import static de.rettichlp.ucutils.UCUtils.player;
 import static de.rettichlp.ucutils.UCUtils.storage;
 import static de.rettichlp.ucutils.UCUtils.syncService;
@@ -293,7 +293,7 @@ public class WantedListener implements IMessageReceiveListener {
             WantedEntry wantedEntry = new WantedEntry(playerName, wantedPointAmount, reason);
             storage.getWantedEntries().add(wantedEntry);
 
-            Formatting color = factionService.getWantedPointColor(wantedPointAmount);
+            Formatting color = nameTagService.getWantedPointColor(wantedPointAmount);
 
             if (!syncService.isGameSyncProcessActive()) {
                 Text modifiedMessage = empty()

@@ -5,8 +5,8 @@ import de.rettichlp.ucutils.common.api.Api;
 import de.rettichlp.ucutils.common.configuration.Configuration;
 import de.rettichlp.ucutils.common.registry.Registry;
 import de.rettichlp.ucutils.common.services.CommandService;
-import de.rettichlp.ucutils.common.services.FactionService;
 import de.rettichlp.ucutils.common.services.MessageService;
+import de.rettichlp.ucutils.common.services.NameTagService;
 import de.rettichlp.ucutils.common.services.NotificationService;
 import de.rettichlp.ucutils.common.services.RenderService;
 import de.rettichlp.ucutils.common.services.SyncService;
@@ -34,8 +34,8 @@ public class UCUtils implements ModInitializer {
     public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
 
     public static final CommandService commandService = new CommandService();
-    public static final FactionService factionService = new FactionService();
     public static final MessageService messageService = new MessageService();
+    public static final NameTagService nameTagService = new NameTagService();
     public static final NotificationService notificationService = new NotificationService();
     public static final RenderService renderService = new RenderService();
     public static final SyncService syncService = new SyncService();

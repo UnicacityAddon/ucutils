@@ -14,7 +14,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.util.List;
 
-import static de.rettichlp.ucutils.UCUtils.factionService;
+import static de.rettichlp.ucutils.UCUtils.nameTagService;
 import static de.rettichlp.ucutils.UCUtils.networkHandler;
 import static net.minecraft.scoreboard.AbstractTeam.CollisionRule.NEVER;
 import static net.minecraft.text.TextColor.fromFormatting;
@@ -26,7 +26,7 @@ public class PlayerEntityMixin {
     @Inject(method = "getDisplayName", at = @At("RETURN"), cancellable = true)
     private void ucutils$getDisplayNameReturn(@NotNull CallbackInfoReturnable<Text> cir) {
         GameProfile gameProfile = ((PlayerEntity) (Object) this).getGameProfile();
-        cir.setReturnValue(factionService.getEnrichedDisplayName(gameProfile.name()));
+        cir.setReturnValue(nameTagService.getEnrichedDisplayName(gameProfile.name()));
     }
 
     @Unique
