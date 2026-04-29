@@ -42,12 +42,12 @@ public abstract class InGameHudMixin {
                                                 CallbackInfo ci,
                                                 @Local(ordinal = 3) int m,
                                                 @Local(ordinal = 8) int r) {
-        if (!configuration.getOptions().showThirst() || storage.getThirst() == -1) {
+        if (!configuration.getOptions().showHydration() || storage.getHydration() == -1) {
             return;
         }
 
-        Profilers.get().swap("thirst");
-        renderThirst(context, player.getAir() < player.getMaxAir() ? (r - 10) : r, m);
+        Profilers.get().swap("hydration");
+        renderHydration(context, r, m);
         Profilers.get().pop();
     }
 
