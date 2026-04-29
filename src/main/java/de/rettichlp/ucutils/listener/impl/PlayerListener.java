@@ -15,6 +15,7 @@ import java.util.regex.Pattern;
 import static de.rettichlp.ucutils.UCUtils.LOGGER;
 import static de.rettichlp.ucutils.UCUtils.commandService;
 import static de.rettichlp.ucutils.UCUtils.configuration;
+import static de.rettichlp.ucutils.UCUtils.nameTagService;
 import static de.rettichlp.ucutils.UCUtils.player;
 import static de.rettichlp.ucutils.UCUtils.storage;
 import static de.rettichlp.ucutils.UCUtils.utilService;
@@ -37,10 +38,6 @@ public class PlayerListener implements IAbsorptionGetListener, IMessageReceiveLi
     private static final String SHUTDOWN_TIMEOUT = "5";
     private static final int PRAY_DELAY_IN_SECONDS = 30;
 
-    // afk
-    private static final Pattern AFK_START_PATTERN = compile("^Du bist nun im AFK-Modus\\.$");
-    private static final Pattern AFK_END_PATTERN = compile("^Du bist nun nicht mehr im AFK-Modus\\.$");
-
     // dead
     private static final Pattern DEAD_PATTERN = compile("^Du bist nun für (?<minutes>\\d+) Minuten auf dem Friedhof$");
     private static final Pattern DEAD_DESPAWN_PATTERN = compile("^Verdammt\\.{3} mein Kopf dröhnt so\\.{3}$");
@@ -60,18 +57,6 @@ public class PlayerListener implements IAbsorptionGetListener, IMessageReceiveLi
 
     @Override
     public boolean onMessageReceive(Text text, String message) {
-        Matcher afkStartMatcher = AFK_START_PATTERN.matcher(message);
-        if (afkStartMatcher.find()) {
-            storage.setAfk(true);
-            return true;
-        }
-
-        Matcher afkEndMatcher = AFK_END_PATTERN.matcher(message);
-        if (afkEndMatcher.find()) {
-            storage.setAfk(false);
-            return true;
-        }
-
         Matcher deadAReviveMatcher = DEAD_AREVIVE_PATTERN.matcher(message);
         if (deadAReviveMatcher.find()) {
             storage.getActiveShutdowns().removeIf(shutdownReason -> shutdownReason == CEMETERY);
@@ -125,7 +110,7 @@ public class PlayerListener implements IAbsorptionGetListener, IMessageReceiveLi
 
     @Override
     public void onTick() {
-        if (player.age % 1200 == 0 && !storage.isAfk()) {
+        if (player.age % 1200 == 0 && !nameTagService.isAfk(player.getStringifiedName())) {
             configuration.addMinutesSinceLastPayDay(1);
         }
     }

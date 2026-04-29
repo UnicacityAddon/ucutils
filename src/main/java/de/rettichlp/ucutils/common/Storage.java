@@ -94,10 +94,6 @@ public class Storage {
 
     @Getter
     @Setter
-    private boolean afk = false;
-
-    @Getter
-    @Setter
     private boolean carLocked = true;
 
     @Getter
@@ -166,8 +162,6 @@ public class Storage {
         LOGGER.info("wantedEntries[{}]: {}", this.wantedEntries.size(), this.wantedEntries);
         // activeServices
         LOGGER.info("activeServices: {}", this.activeServices);
-        // afk
-        LOGGER.info("afk: {}", this.afk);
         // carLocked
         LOGGER.info("carLocked: {}", this.carLocked);
         // currentJob
