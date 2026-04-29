@@ -21,7 +21,6 @@ public class MainOptionsScreen extends OptionsScreen {
     private static final Text NOTIFICATION_SOUNDS_NAME = translatable("ucutils.options.notification_sounds.name");
     private static final Text NOTIFICATION_SOUNDS_TOOLTIP = translatable("ucutils.options.notification_sounds.tooltip");
     private static final Text BANK_INFORMATION_NAME = translatable("ucutils.options.atm_information.name");
-
     private static final Text THIRST_NAME = translatable("ucutils.options.thirst.name");
     private static final Text THIRST_TOOLTIP = translatable("ucutils.options.thirst.tooltip");
 
