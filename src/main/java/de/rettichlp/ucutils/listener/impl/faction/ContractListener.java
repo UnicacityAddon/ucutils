@@ -10,13 +10,11 @@ import java.util.regex.Pattern;
 
 import static de.rettichlp.ucutils.UCUtils.commandService;
 import static de.rettichlp.ucutils.UCUtils.storage;
-import static de.rettichlp.ucutils.UCUtils.syncService;
 import static de.rettichlp.ucutils.UCUtils.utilService;
 import static de.rettichlp.ucutils.common.models.Sound.CONTRACT_FULFILLED;
 import static de.rettichlp.ucutils.common.models.Sound.CONTRACT_SET;
 import static de.rettichlp.ucutils.common.services.CommandService.COMMAND_COOLDOWN_MILLIS;
 import static java.lang.Integer.parseInt;
-import static java.lang.System.currentTimeMillis;
 import static java.util.regex.Pattern.compile;
 
 @UCUtilsListener
@@ -28,25 +26,22 @@ public class ContractListener implements IMessageReceiveListener {
     private static final Pattern CONTRACT_REMOVE_PATTERN = compile("^\\[Contract] Das Kopfgeld auf (?:\\[UC])?(?<targetName>[a-zA-Z0-9_]+) wurde entfernt\\.$");
     private static final Pattern CONTRACT_KILL_PATTERN = compile("^\\[Contract] (?:\\[UC])?(?<playerName>[a-zA-Z0-9_]+) hat (?:\\[UC])?(?<targetName>[a-zA-Z0-9_]+) getötet\\. \\((?<price>\\d+)\\$\\)$");
 
-    private long activeCheck = 0;
-
     @Override
     public boolean onMessageReceive(Text text, String message) {
         Matcher contractHeaderMatcher = CONTRACT_HEADER_PATTERN.matcher(message);
         if (contractHeaderMatcher.find()) {
-            this.activeCheck = currentTimeMillis();
             storage.getContractEntries().clear();
-            return !syncService.isGameSyncProcessActive();
+            return commandService.showCommandOutputMessage("contract");
         }
 
         Matcher contractEntryMatcher = CONTRACT_ENTRY_PATTERN.matcher(message);
-        if (contractEntryMatcher.find() && currentTimeMillis() - this.activeCheck < 100) {
+        if (contractEntryMatcher.find()) {
             String playerName = contractEntryMatcher.group("playerName");
             int price = parseInt(contractEntryMatcher.group("price"));
 
             ContractEntry contractEntry = new ContractEntry(playerName, price);
             storage.getContractEntries().add(contractEntry);
-            return !syncService.isGameSyncProcessActive();
+            return commandService.showCommandOutputMessage("contract");
         }
 
         Matcher contractAddMatcher = CONTRACT_ADD_PATTERN.matcher(message);

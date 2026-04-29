@@ -13,6 +13,7 @@ import static de.rettichlp.ucutils.UCUtils.notificationService;
 import static de.rettichlp.ucutils.common.models.ScreenshotType.OTHER;
 import static de.rettichlp.ucutils.common.models.ScreenshotType.fromDisplayName;
 import static java.lang.Thread.sleep;
+import static net.minecraft.text.Text.translatable;
 
 @Mixin(ChatScreen.class)
 public abstract class ChatScreenMixin {
@@ -23,7 +24,7 @@ public abstract class ChatScreenMixin {
         if (messageParts.length >= 2 && message.startsWith("/screenshot ")) {
             String screenshotTypeString = messageParts[1].toLowerCase();
             ScreenshotType screenshotType = fromDisplayName(screenshotTypeString).orElse(OTHER);
-            screenshotType.take(file -> notificationService.sendInfoNotification("Screenshot gespeichert: '" + file.getName() + "'"));
+            screenshotType.take(file -> notificationService.sendInfoNotification(translatable("ucutils.notification.info.screenshot_saved", file.getName())));
 
             try {
                 sleep(5);

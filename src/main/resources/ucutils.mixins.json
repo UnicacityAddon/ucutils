@@ -4,6 +4,8 @@
   "compatibilityLevel": "JAVA_21",
   "mixins": [
     "EntityMixin",
+    "ItemStackMixin",
+    "MinecartEntityMixin",
     "PlayerEntityMixin"
   ],
   "injectors": {
@@ -16,6 +18,8 @@
     "ChatScreenMixin",
     "ClientPlayerEntityMixin",
     "GameMenuScreenMixin",
+    "InGameHudMixin",
+    "PlayerEntityRendererMixin",
     "PlayerListHudMixin"
   ]
 }

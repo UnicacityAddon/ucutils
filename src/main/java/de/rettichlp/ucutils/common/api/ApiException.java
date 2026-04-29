@@ -7,6 +7,7 @@ import java.net.http.HttpResponse;
 
 import static de.rettichlp.ucutils.UCUtils.LOGGER;
 import static de.rettichlp.ucutils.UCUtils.notificationService;
+import static net.minecraft.text.Text.translatable;
 
 @Getter
 public class ApiException extends RuntimeException {
@@ -24,7 +25,7 @@ public class ApiException extends RuntimeException {
     }
 
     public void sendNotification() {
-        notificationService.sendErrorNotification("Fehler bei der Abfrage (" + this.response.statusCode() + ")");
+        notificationService.sendErrorNotification(translatable("ucutils.notification.error.api", this.response.statusCode()));
     }
 
     public void log() {

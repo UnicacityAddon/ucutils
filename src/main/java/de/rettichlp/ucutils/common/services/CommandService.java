@@ -1,18 +1,24 @@
 package de.rettichlp.ucutils.common.services;
 
+import lombok.Getter;
+
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.function.Consumer;
 
 import static de.rettichlp.ucutils.UCUtils.LOGGER;
 import static de.rettichlp.ucutils.UCUtils.messageService;
+import static de.rettichlp.ucutils.UCUtils.nameTagService;
 import static de.rettichlp.ucutils.UCUtils.networkHandler;
 import static de.rettichlp.ucutils.UCUtils.player;
 import static de.rettichlp.ucutils.UCUtils.storage;
 import static de.rettichlp.ucutils.UCUtils.utilService;
 import static java.lang.Boolean.getBoolean;
+import static java.lang.System.currentTimeMillis;
 import static java.util.Objects.nonNull;
 import static java.util.Optional.ofNullable;
 
@@ -22,13 +28,16 @@ public class CommandService {
 
     private static final String UUID_RETTICHLP = "25855f4d-3874-4a7f-a6ad-e9e4f3042e19";
 
+    @Getter
+    private final Map<String, Long> hideCommandOutputCommands = new HashMap<>();
+
     public void sendCommand(String command) {
         LOGGER.info("UCUtils executing command: {}", command);
         networkHandler.sendChatCommand(command);
     }
 
     public boolean sendCommandWithAfkCheck(String command) {
-        boolean isAfk = storage.isAfk();
+        boolean isAfk = nameTagService.isAfk(player.getStringifiedName());
         LOGGER.info("UCUtils executing command with AFK check (is AFK: {}): {}", isAfk, command);
 
         if (!isAfk) {
@@ -57,6 +66,16 @@ public class CommandService {
                 sendCommand(commands.removeFirst());
             }
         }, 0, cooldownMillis);
+    }
+
+    public void sendCommandWithHiddenOutput(String command) {
+        this.hideCommandOutputCommands.put(command, currentTimeMillis());
+        sendCommandWithAfkCheck(command);
+    }
+
+    public boolean showCommandOutputMessage(String command) {
+        long executionTime = this.hideCommandOutputCommands.getOrDefault(command, 0L);
+        return currentTimeMillis() - executionTime > 1000;
     }
 
     public boolean isSuperUser() {

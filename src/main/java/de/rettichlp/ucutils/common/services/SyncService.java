@@ -2,7 +2,6 @@ package de.rettichlp.ucutils.common.services;
 
 import de.rettichlp.ucutils.common.models.Faction;
 import de.rettichlp.ucutils.common.models.FactionEntry;
-import lombok.Getter;
 
 import java.util.Map;
 
@@ -17,9 +16,11 @@ import static de.rettichlp.ucutils.common.models.Faction.NULL;
 import static de.rettichlp.ucutils.common.services.CommandService.COMMAND_COOLDOWN_MILLIS;
 import static java.awt.Color.MAGENTA;
 import static java.util.Objects.nonNull;
+import static java.util.concurrent.Executors.newSingleThreadScheduledExecutor;
 import static java.util.concurrent.TimeUnit.MINUTES;
 import static net.minecraft.text.Text.empty;
-import static net.minecraft.text.Text.of;
+import static net.minecraft.text.Text.literal;
+import static net.minecraft.text.Text.translatable;
 import static net.minecraft.util.Formatting.DARK_GRAY;
 import static net.minecraft.util.Formatting.GRAY;
 import static net.minecraft.util.Formatting.GREEN;
@@ -27,8 +28,15 @@ import static net.minecraft.util.Formatting.RED;
 
 public class SyncService {
 
-    @Getter
-    private boolean gameSyncProcessActive = false;
+    public void startRepeatingSync() {
+        newSingleThreadScheduledExecutor().scheduleAtFixedRate(() -> {
+            if (!storage.isUnicaCity()) {
+                return;
+            }
+
+            utilService.delayedAction(() -> commandService.sendCommandWithHiddenOutput("health"), COMMAND_COOLDOWN_MILLIS);
+        }, 0, 3, MINUTES);
+    }
 
     public void syncFactionMembers() {
         for (Faction faction : Faction.values()) {
@@ -49,27 +57,20 @@ public class SyncService {
     }
 
     public void syncFactionSpecificData() {
-        this.gameSyncProcessActive = true;
-
         // parse from faction-related init commands after all faction members are synced
         utilService.delayedAction(() -> {
             Faction faction = storage.getFaction(player.getStringifiedName());
             switch (faction) {
-                case FBI, POLIZEI -> commandService.sendCommand("wanteds");
-                case MERCENARY -> commandService.sendCommand("contractlist");
-                case RETTUNGSDIENST -> commandService.sendCommand("hausverbot");
+                case FBI, POLIZEI -> commandService.sendCommandWithHiddenOutput("wanteds");
+                case MERCENARY -> commandService.sendCommandWithHiddenOutput("contractlist");
+                case RETTUNGSDIENST -> commandService.sendCommandWithHiddenOutput("hausverbot");
                 default -> {
                     if (faction.isBadFaction()) {
-                        commandService.sendCommand("blacklist");
+                        commandService.sendCommandWithHiddenOutput("blacklist");
                     }
                 }
             }
         }, COMMAND_COOLDOWN_MILLIS);
-
-        utilService.delayedAction(() -> {
-            this.gameSyncProcessActive = false;
-            notificationService.sendSuccessNotification("Fraktionsdaten synchronisiert");
-        }, COMMAND_COOLDOWN_MILLIS * 2);
     }
 
     public void checkForUpdates() {
@@ -83,12 +84,12 @@ public class SyncService {
 
             String currentVersion = utilService.getVersion();
             if (nonNull(latestVersion) && !currentVersion.equals(latestVersion)) {
-                notificationService.sendNotification(() -> empty()
-                        .append(of("Neue UCUtils Version verfügbar").copy().formatted(GRAY))
-                        .append(of(":").copy().formatted(DARK_GRAY)).append(" ")
-                        .append(of(currentVersion).copy().formatted(RED)).append(" ")
-                        .append(of("→").copy().formatted(GRAY)).append(" ")
-                        .append(of(latestVersion).copy().formatted(GREEN)), MAGENTA, MINUTES.toMillis(5));
+                notificationService.sendNotification(empty()
+                        .append(translatable("ucutils.notification.info.new_version").copy().formatted(GRAY))
+                        .append(literal(":").copy().formatted(DARK_GRAY)).append(" ")
+                        .append(literal(currentVersion).copy().formatted(RED)).append(" ")
+                        .append(literal("→").copy().formatted(GRAY)).append(" ")
+                        .append(literal(latestVersion).copy().formatted(GREEN)), MAGENTA, MINUTES.toMillis(5));
             }
         });
     }

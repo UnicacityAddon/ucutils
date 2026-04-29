@@ -17,8 +17,11 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 import net.minecraft.entity.vehicle.MinecartEntity;
+import net.minecraft.text.Text;
 import org.jetbrains.annotations.Nullable;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -30,10 +33,15 @@ import static de.rettichlp.ucutils.UCUtils.LOGGER;
 import static de.rettichlp.ucutils.UCUtils.storage;
 import static de.rettichlp.ucutils.common.Storage.ToggledChat.NONE;
 import static de.rettichlp.ucutils.common.models.Faction.NULL;
+import static java.time.Duration.ofMinutes;
 import static java.util.Arrays.stream;
 import static java.util.Optional.ofNullable;
+import static net.minecraft.text.Text.translatable;
 
 public class Storage {
+
+    public static final Duration MEDIC_BANDAGE_DURATION = ofMinutes(4);
+    public static final Duration MEDIC_PILL_DURATION = ofMinutes(4);
 
     @Getter
     private final List<ShutdownReason> activeShutdowns = new ArrayList<>();
@@ -60,6 +68,12 @@ public class Storage {
     private final List<HousebanEntry> housebanEntries = new ArrayList<>();
 
     @Getter
+    private final Map<String, LocalDateTime> medicBandageCooldowns = new HashMap<>();
+
+    @Getter
+    private final Map<String, LocalDateTime> medicPillCooldowns = new HashMap<>();
+
+    @Getter
     private final List<PlantEntry> plantEntries = new ArrayList<>();
 
     @Getter
@@ -77,10 +91,6 @@ public class Storage {
     @Getter
     @Setter
     private int activeServices = 0;
-
-    @Getter
-    @Setter
-    private boolean afk = false;
 
     @Getter
     @Setter
@@ -105,11 +115,15 @@ public class Storage {
 
     @Getter
     @Setter
-    private boolean unicaCity = false;
+    private double thirst = -1.0;
 
     @Getter
     @Setter
     private ToggledChat toggledChat = NONE;
+
+    @Getter
+    @Setter
+    private boolean unicaCity = false;
 
     {
         this.blackMarkets.addAll(stream(BlackMarket.Type.values())
@@ -134,6 +148,10 @@ public class Storage {
         this.factionEntries.forEach(factionEntry -> LOGGER.info("factionEntries[{}:{}]: {}", factionEntry.faction(), factionEntry.members().size(), factionEntry.members()));
         // housebanEntries
         LOGGER.info("housebanEntries[{}]: {}", this.housebanEntries.size(), this.housebanEntries);
+        // medicBandageCooldowns
+        LOGGER.info("medicBandageCooldowns[{}]: {}", this.medicBandageCooldowns.size(), this.medicBandageCooldowns);
+        // medicPillCooldowns
+        LOGGER.info("medicPillCooldowns[{}]: {}", this.medicPillCooldowns.size(), this.medicPillCooldowns);
         // playerFactionCache
         LOGGER.info("playerFactionCache[{}]: {}", this.playerFactionCache.size(), this.playerFactionCache);
         // reinforcements
@@ -144,8 +162,6 @@ public class Storage {
         LOGGER.info("wantedEntries[{}]: {}", this.wantedEntries.size(), this.wantedEntries);
         // activeServices
         LOGGER.info("activeServices: {}", this.activeServices);
-        // afk
-        LOGGER.info("afk: {}", this.afk);
         // carLocked
         LOGGER.info("carLocked: {}", this.carLocked);
         // currentJob
@@ -156,10 +172,12 @@ public class Storage {
         LOGGER.info("minecartEntityToHighlight: {}", this.minecartEntityToHighlight);
         // moneyAtmAmount
         LOGGER.info("moneyAtmAmount: {}", this.moneyAtmAmount);
-        // unicaCity
-        LOGGER.info("unicaCity: {}", this.unicaCity);
+        // thirst
+        LOGGER.info("thirst: {}", this.thirst);
         // toggledChat
         LOGGER.info("toggledChat: {}", this.toggledChat);
+        // unicaCity
+        LOGGER.info("unicaCity: {}", this.unicaCity);
     }
 
     public Faction getCachedFaction(String playerName) {
@@ -189,12 +207,12 @@ public class Storage {
     @AllArgsConstructor
     public enum ToggledChat {
 
-        NONE("", "Dauerhafter Chat deaktiviert"),
-        D_CHAT("d", "Dauerhafter D-Chat aktiviert"),
-        F_CHAT("f", "Dauerhafter F-Chat aktiviert"),
-        W_CHAT("w", "Dauerhafter Flüster-Chat aktiviert");
+        NONE("", translatable("ucutils.notification.toggled_chat.none")),
+        D_CHAT("d", translatable("ucutils.notification.toggled_chat.d")),
+        F_CHAT("f", translatable("ucutils.notification.toggled_chat.f")),
+        W_CHAT("w", translatable("ucutils.notification.toggled_chat.w"));
 
         private final String command;
-        private final String toggleMessage;
+        private final Text toggleMessage;
     }
 }

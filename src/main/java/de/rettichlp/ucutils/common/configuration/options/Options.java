@@ -36,6 +36,7 @@ public class Options {
     private ReinforcementType reinforcementType = UNICACITYADDON;
     private boolean customSounds = true;
     private AtmInformationType atmInformationType = NONE;
+    private boolean showThirst = true;
 
     @Getter
     @AllArgsConstructor

@@ -16,7 +16,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-import static de.rettichlp.ucutils.UCUtils.factionService;
+import static de.rettichlp.ucutils.UCUtils.nameTagService;
 import static de.rettichlp.ucutils.UCUtils.player;
 import static de.rettichlp.ucutils.UCUtils.storage;
 import static net.minecraft.item.Items.SKELETON_SKULL;
@@ -60,17 +60,18 @@ public abstract class EntityMixin {
         }
 
         ItemStack itemStack = itemEntity.getStack();
-        if (!itemStack.isOf(SKELETON_SKULL) && !itemStack.isOf(WITHER_SKELETON_SKULL)) {
+        Text returnValue = cir.getReturnValue();
+        if (returnValue == null || (!itemStack.isOf(SKELETON_SKULL) && !itemStack.isOf(WITHER_SKELETON_SKULL))) {
             return;
         }
 
-        String displayNameString = cir.getReturnValue().getString();
+        String displayNameString = returnValue.getString();
 
         // extract player name (✟RettichLP -> RettichLP)
         String playerName = displayNameString.substring(1);
 
         // enrich player name with faction information (RettichLP -> RettichLP ⌜✚⌟)
-        MutableText enrichedDisplayName = factionService.getEnrichedDisplayName(playerName);
+        MutableText enrichedDisplayName = nameTagService.getEnrichedDisplayName(playerName);
 
         cir.setReturnValue(empty()
                 .append(literal("✟").copy().formatted(GRAY))

@@ -6,6 +6,7 @@ import de.rettichlp.ucutils.listener.IAbsorptionGetListener;
 import de.rettichlp.ucutils.listener.IMessageReceiveListener;
 import de.rettichlp.ucutils.listener.ITickListener;
 import net.minecraft.network.ClientConnection;
+import net.minecraft.text.HoverEvent;
 import net.minecraft.text.Text;
 
 import java.io.IOException;
@@ -15,11 +16,13 @@ import java.util.regex.Pattern;
 import static de.rettichlp.ucutils.UCUtils.LOGGER;
 import static de.rettichlp.ucutils.UCUtils.commandService;
 import static de.rettichlp.ucutils.UCUtils.configuration;
+import static de.rettichlp.ucutils.UCUtils.nameTagService;
 import static de.rettichlp.ucutils.UCUtils.player;
 import static de.rettichlp.ucutils.UCUtils.storage;
 import static de.rettichlp.ucutils.UCUtils.utilService;
 import static de.rettichlp.ucutils.common.models.ShutdownReason.CEMETERY;
 import static de.rettichlp.ucutils.common.models.ShutdownReason.JAIL;
+import static java.lang.Double.parseDouble;
 import static java.lang.Integer.parseInt;
 import static java.lang.Runtime.getRuntime;
 import static java.lang.System.getProperty;
@@ -37,14 +40,15 @@ public class PlayerListener implements IAbsorptionGetListener, IMessageReceiveLi
     private static final String SHUTDOWN_TIMEOUT = "5";
     private static final int PRAY_DELAY_IN_SECONDS = 30;
 
-    // afk
-    private static final Pattern AFK_START_PATTERN = compile("^Du bist nun im AFK-Modus\\.$");
-    private static final Pattern AFK_END_PATTERN = compile("^Du bist nun nicht mehr im AFK-Modus\\.$");
-
     // dead
     private static final Pattern DEAD_PATTERN = compile("^Du bist nun für (?<minutes>\\d+) Minuten auf dem Friedhof$");
     private static final Pattern DEAD_DESPAWN_PATTERN = compile("^Verdammt\\.{3} mein Kopf dröhnt so\\.{3}$");
     private static final Pattern DEAD_AREVIVE_PATTERN = compile("^Du wurdest von (?:\\[UC])?(?<playerName>[a-zA-Z0-9_]+) wiederbelebt\\.$");
+
+    // health
+    private static final Pattern HEALTH_HEADER_PATTERN = compile("^=== Zustand von (?:\\[UC])?(?<playerName>[a-zA-Z0-9_]+) ===$");
+    private static final Pattern HEALTH_ENTRY_PATTERN = compile("^§.» (?<type>Gesundheit|Blut §.\\[§..+§.]|Hunger|Durst|Fett|Muskeln)§.: §.((§.)?#)+$");
+    private static final Pattern HEALTH_ENTRY_HOVER_PATTERN = compile("^§.(?<value>\\d+(\\.\\d+)?)§./§.20\\.0$");
 
     // jail
     private static final Pattern JAIL_PATTERN = compile("^\\[Gefängnis] Du bist nun für (?<minutes>\\d+) Minuten im Gefängnis\\.$");
@@ -60,18 +64,6 @@ public class PlayerListener implements IAbsorptionGetListener, IMessageReceiveLi
 
     @Override
     public boolean onMessageReceive(Text text, String message) {
-        Matcher afkStartMatcher = AFK_START_PATTERN.matcher(message);
-        if (afkStartMatcher.find()) {
-            storage.setAfk(true);
-            return true;
-        }
-
-        Matcher afkEndMatcher = AFK_END_PATTERN.matcher(message);
-        if (afkEndMatcher.find()) {
-            storage.setAfk(false);
-            return true;
-        }
-
         Matcher deadAReviveMatcher = DEAD_AREVIVE_PATTERN.matcher(message);
         if (deadAReviveMatcher.find()) {
             storage.getActiveShutdowns().removeIf(shutdownReason -> shutdownReason == CEMETERY);
@@ -83,6 +75,32 @@ public class PlayerListener implements IAbsorptionGetListener, IMessageReceiveLi
             int minutes = parseInt(deadMatcher.group("minutes"));
             storage.getCountdowns().add(new Countdown("Friedhof", ofMinutes(minutes)));
             return true;
+        }
+
+        Matcher healthHeaderMatcher = HEALTH_HEADER_PATTERN.matcher(message);
+        if (healthHeaderMatcher.find()) {
+            return commandService.showCommandOutputMessage("health");
+        }
+
+        Matcher healthEntryMatcher = HEALTH_ENTRY_PATTERN.matcher(message);
+        if (healthEntryMatcher.find()) {
+            if (!healthEntryMatcher.group("type").contains("Durst")) {
+                return commandService.showCommandOutputMessage("health");
+            }
+
+            text.getSiblings().stream()
+                    .map(sibling -> sibling.getStyle().getHoverEvent())
+                    .filter(hoverEvent -> hoverEvent instanceof HoverEvent.ShowText)
+                    .map(hoverEvent -> ((HoverEvent.ShowText) hoverEvent).value().getString())
+                    .findFirst()
+                    .ifPresent(hoverString -> {
+                        Matcher healthEntryHoverMatcher = HEALTH_ENTRY_HOVER_PATTERN.matcher(hoverString);
+                        if (healthEntryHoverMatcher.find()) {
+                            storage.setThirst(parseDouble(healthEntryHoverMatcher.group("value")));
+                        }
+                    });
+
+            return commandService.showCommandOutputMessage("health");
         }
 
         Matcher jailMatcher = JAIL_PATTERN.matcher(message);
@@ -125,7 +143,7 @@ public class PlayerListener implements IAbsorptionGetListener, IMessageReceiveLi
 
     @Override
     public void onTick() {
-        if (player.age % 1200 == 0 && !storage.isAfk()) {
+        if (player.age % 1200 == 0 && !nameTagService.isAfk(player.getStringifiedName())) {
             configuration.addMinutesSinceLastPayDay(1);
         }
     }

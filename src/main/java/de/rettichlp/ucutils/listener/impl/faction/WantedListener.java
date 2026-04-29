@@ -13,15 +13,13 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import static de.rettichlp.ucutils.UCUtils.commandService;
-import static de.rettichlp.ucutils.UCUtils.factionService;
+import static de.rettichlp.ucutils.UCUtils.nameTagService;
 import static de.rettichlp.ucutils.UCUtils.player;
 import static de.rettichlp.ucutils.UCUtils.storage;
-import static de.rettichlp.ucutils.UCUtils.syncService;
 import static de.rettichlp.ucutils.UCUtils.utilService;
 import static de.rettichlp.ucutils.common.services.CommandService.COMMAND_COOLDOWN_MILLIS;
 import static java.lang.Integer.parseInt;
 import static java.lang.String.valueOf;
-import static java.lang.System.currentTimeMillis;
 import static java.util.regex.Pattern.compile;
 import static net.minecraft.text.Text.empty;
 import static net.minecraft.text.Text.of;
@@ -56,8 +54,6 @@ public class WantedListener implements IMessageReceiveListener {
     private static final Pattern CAR_PARKTICKET_REMOVE_PATTERN = compile("^HQ: (?:\\[UC])?(?<playerName>[a-zA-Z0-9_]+) hat ein Strafzettel von dem Fahrzeug \\[(?<plate>[A-Z0-9-]+)] entfernt\\.$");
     private static final Pattern SEARCH_TRUNK_PATTERN = compile("^HQ: (?:\\[UC])?(?<playerName>[a-zA-Z0-9_]+) hat den Kofferraum vom Fahrzeug (?<plate>.+) durchsucht, over\\.$");
     private static final Pattern TRACKER_AGENT_PATTERN = compile("^HQ: (Agent|Agentin) (?:\\[UC])?(?<playerName>[a-zA-Z0-9_]+) hat ein Peilsender an (?:\\[UC])?(?<targetName>[a-zA-Z0-9_]+) befestigt, over\\.$");
-
-    private long activeCheck = 0;
 
     @Override
     public boolean onMessageReceive(Text text, String message) {
@@ -278,13 +274,12 @@ public class WantedListener implements IMessageReceiveListener {
 
         Matcher wantedListHeaderMatcher = WANTED_LIST_HEADER_PATTERN.matcher(message);
         if (wantedListHeaderMatcher.find()) {
-            this.activeCheck = currentTimeMillis();
             storage.getWantedEntries().clear();
-            return !syncService.isGameSyncProcessActive();
+            return commandService.showCommandOutputMessage("wanteds");
         }
 
         Matcher wantedListEntryMatcher = WANTED_LIST_ENTRY_PATTERN.matcher(message);
-        if (wantedListEntryMatcher.find() && (currentTimeMillis() - this.activeCheck < 100)) {
+        if (wantedListEntryMatcher.find()) {
             String playerName = wantedListEntryMatcher.group("playerName");
             int wantedPointAmount = parseInt(wantedListEntryMatcher.group("wantedPointAmount"));
             String reason = wantedListEntryMatcher.group("reason");
@@ -293,9 +288,9 @@ public class WantedListener implements IMessageReceiveListener {
             WantedEntry wantedEntry = new WantedEntry(playerName, wantedPointAmount, reason);
             storage.getWantedEntries().add(wantedEntry);
 
-            Formatting color = factionService.getWantedPointColor(wantedPointAmount);
+            Formatting color = nameTagService.getWantedPointColor(wantedPointAmount);
 
-            if (!syncService.isGameSyncProcessActive()) {
+            if (commandService.showCommandOutputMessage("wanteds")) {
                 Text modifiedMessage = empty()
                         .append(of("➥").copy().formatted(GRAY)).append(" ")
                         .append(of(playerName).copy().formatted(color)).append(" ")

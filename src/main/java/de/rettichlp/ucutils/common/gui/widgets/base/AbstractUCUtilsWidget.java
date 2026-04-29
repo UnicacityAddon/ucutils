@@ -21,6 +21,7 @@ import static de.rettichlp.ucutils.common.gui.widgets.base.AbstractUCUtilsWidget
 import static de.rettichlp.ucutils.common.gui.widgets.base.AbstractUCUtilsWidget.Alignment.RIGHT;
 import static java.util.Objects.isNull;
 import static java.util.Optional.ofNullable;
+import static net.minecraft.text.Text.translatable;
 
 @Getter
 public abstract class AbstractUCUtilsWidget<C extends UCUtilsWidgetConfiguration> {
@@ -94,7 +95,7 @@ public abstract class AbstractUCUtilsWidget<C extends UCUtilsWidgetConfiguration
                 this.widgetConfiguration.setX(getDefaultX());
                 this.widgetConfiguration.setY(getDefaultY());
             } catch (Exception e) {
-                notificationService.sendErrorNotification("Konfiguration konnte nicht geladen werden");
+                notificationService.sendErrorNotification(translatable("ucutils.notification.error.configuration"));
                 LOGGER.error("Could not load configuration for widget {}", registryName, e);
             }
 

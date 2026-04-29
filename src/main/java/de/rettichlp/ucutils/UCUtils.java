@@ -5,8 +5,8 @@ import de.rettichlp.ucutils.common.api.Api;
 import de.rettichlp.ucutils.common.configuration.Configuration;
 import de.rettichlp.ucutils.common.registry.Registry;
 import de.rettichlp.ucutils.common.services.CommandService;
-import de.rettichlp.ucutils.common.services.FactionService;
 import de.rettichlp.ucutils.common.services.MessageService;
+import de.rettichlp.ucutils.common.services.NameTagService;
 import de.rettichlp.ucutils.common.services.NotificationService;
 import de.rettichlp.ucutils.common.services.RenderService;
 import de.rettichlp.ucutils.common.services.SyncService;
@@ -15,7 +15,6 @@ import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallback;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientLifecycleEvents;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
-import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
 import net.minecraft.client.network.ClientPlayerEntity;
 import org.slf4j.Logger;
@@ -34,8 +33,8 @@ public class UCUtils implements ModInitializer {
     public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
 
     public static final CommandService commandService = new CommandService();
-    public static final FactionService factionService = new FactionService();
     public static final MessageService messageService = new MessageService();
+    public static final NameTagService nameTagService = new NameTagService();
     public static final NotificationService notificationService = new NotificationService();
     public static final RenderService renderService = new RenderService();
     public static final SyncService syncService = new SyncService();
@@ -62,13 +61,14 @@ public class UCUtils implements ModInitializer {
             player = client.player;
             networkHandler = handler;
 
-            boolean isUnicaCity = isUnicaCity();
+            boolean isUnicaCity = isUnicaCity(handler);
             storage.setUnicaCity(isUnicaCity);
             if (isUnicaCity) {
                 client.execute(() -> {
                     this.registry.registerListeners();
                     renderService.initializeWidgets();
                     syncService.syncFactionSpecificData();
+                    syncService.startRepeatingSync();
                     syncService.checkForUpdates();
                 });
             }
@@ -79,14 +79,11 @@ public class UCUtils implements ModInitializer {
         ClientLifecycleEvents.CLIENT_STOPPING.register(client -> configuration.saveToFile());
     }
 
-    private boolean isUnicaCity() {
+    private boolean isUnicaCity(ClientPlayNetworkHandler networkHandler) {
         if (getBoolean("fabric.development")) {
             return true;
         }
 
-        MinecraftClient client = MinecraftClient.getInstance();
-
-        ClientPlayNetworkHandler networkHandler = client.getNetworkHandler();
         if (isNull(networkHandler)) {
             LOGGER.warn("Not connected to UnicaCity: Network handler is null");
             return false;

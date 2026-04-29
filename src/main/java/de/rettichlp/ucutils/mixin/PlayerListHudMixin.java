@@ -1,7 +1,9 @@
 package de.rettichlp.ucutils.mixin;
 
+import de.rettichlp.ucutils.common.models.BlacklistEntry;
 import net.minecraft.client.gui.hud.PlayerListHud;
 import net.minecraft.client.network.PlayerListEntry;
+import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 import net.minecraft.text.TextColor;
 import org.jetbrains.annotations.NotNull;
@@ -14,11 +16,12 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 
 import static de.rettichlp.ucutils.UCUtils.networkHandler;
 import static de.rettichlp.ucutils.UCUtils.storage;
 import static java.util.Comparator.comparing;
-import static net.minecraft.text.Text.of;
+import static net.minecraft.text.Text.literal;
 import static net.minecraft.text.TextColor.fromFormatting;
 import static net.minecraft.util.Formatting.BLUE;
 import static net.minecraft.util.Formatting.BOLD;
@@ -27,6 +30,7 @@ import static net.minecraft.util.Formatting.DARK_GRAY;
 import static net.minecraft.util.Formatting.DARK_RED;
 import static net.minecraft.util.Formatting.GOLD;
 import static net.minecraft.util.Formatting.RED;
+import static net.minecraft.util.Formatting.WHITE;
 
 @Mixin(PlayerListHud.class)
 public abstract class PlayerListHudMixin {
@@ -91,19 +95,23 @@ public abstract class PlayerListHudMixin {
         String playerName = playerListEntry.getProfile().name();
         Text originText = cir.getReturnValue();
 
-        String icon = "";
+        MutableText text = null;
 
-        if (storage.getWantedEntries().stream()
-                .anyMatch(wantedEntry -> wantedEntry.getPlayerName().equals(playerName))) {
-            icon = " 🔍";
-        } else if (storage.getBlacklistEntries().stream()
-                .anyMatch(blacklistEntry -> blacklistEntry.getPlayerName().equals(playerName))) {
-            icon = " 💀";
+        boolean isWanted = storage.getWantedEntries().stream()
+                .anyMatch(wantedEntry -> wantedEntry.getPlayerName().equals(playerName));
+
+        Optional<BlacklistEntry> optionalBlacklistEntry = storage.getBlacklistEntries().stream()
+                .filter(be -> be.getPlayerName().equals(playerName))
+                .findFirst();
+
+        if (isWanted) {
+            text = literal(" 🔍").formatted(RED, BOLD);
+        } else if (optionalBlacklistEntry.isPresent()) {
+            text = literal(" 💀").formatted(optionalBlacklistEntry.get().isOutlaw() ? RED : WHITE, BOLD);
         }
 
-        if (!icon.isBlank()) {
-            cir.setReturnValue(originText.copy().append(" ")
-                    .append(of(icon).copy().formatted(RED, BOLD)));
+        if (text != null) {
+            cir.setReturnValue(originText.copy().append(" ").append(text));
         }
     }
 

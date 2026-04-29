@@ -19,11 +19,11 @@ import static de.rettichlp.ucutils.UCUtils.configuration;
 import static de.rettichlp.ucutils.UCUtils.messageService;
 import static de.rettichlp.ucutils.UCUtils.player;
 import static de.rettichlp.ucutils.UCUtils.storage;
-import static de.rettichlp.ucutils.UCUtils.syncService;
 import static de.rettichlp.ucutils.UCUtils.utilService;
+import static de.rettichlp.ucutils.common.Storage.MEDIC_BANDAGE_DURATION;
+import static de.rettichlp.ucutils.common.Storage.MEDIC_PILL_DURATION;
 import static de.rettichlp.ucutils.common.services.CommandService.COMMAND_COOLDOWN_MILLIS;
 import static java.lang.Integer.parseInt;
-import static java.lang.System.currentTimeMillis;
 import static java.time.Duration.ofMinutes;
 import static java.time.LocalDateTime.now;
 import static java.util.Arrays.asList;
@@ -37,8 +37,11 @@ import static net.minecraft.util.Formatting.AQUA;
 public class MedicListener implements IMessageReceiveListener {
 
     private static final Pattern MEDIC_BANDAGE_PATTERN = compile("^(?:\\[UC])?(?<playerName>[a-zA-Z0-9_]+) hat dich bandagiert\\.$");
+    private static final Pattern MEDIC_BANDAGE_GIVE_PATTERN = compile("^Du hast (?:\\[UC])?(?<playerName>[a-zA-Z0-9_]+) bandagiert\\.$");
     private static final Pattern MEDIC_PILL_PATTERN = compile("^\\[Medic] Doktor (?:\\[UC])?(?<playerName>[a-zA-Z0-9_]+) hat dir Schmerzpillen verabreicht\\.$");
-    private static final Pattern MEDIC_REVIVE_START = compile("^Du beginnst mit der Wiederbelebung\\.$");
+    private static final Pattern MEDIC_PILL_GIVE_PATTERN = compile("^\\[Medic] Du hast (?:\\[UC])?(?<playerName>[a-zA-Z0-9_]+) Schmerzpillen verabreicht\\.$");
+    private static final Pattern MEDIC_REVIVE_START_PATTERN = compile("^Du beginnst mit der Wiederbelebung von (?:\\[UC])?(?<playerName>[a-zA-Z0-9_]+)\\.\\.\\.$");
+    private static final Pattern MEDIC_RESPAWN_PATTERN = compile("^\\[Friedhof] Du lebst nun wieder\\.$");
     private static final Pattern HOUSEBAN_HEADER_PATTERN = compile("^=== Hausverbote \\(\\d+\\) ===$");
     private static final Pattern HOUSEBAN_ENTRY_PATTERN = compile("^» (?:\\[UC])?(?<playerName>[a-zA-Z0-9_]+) ➲ (?<reasons>.+) ➲ \\d+d \\((?<expireDateDay>\\d+)\\.(?<expireDateMonth>\\d+)\\.(?<expireDateYear>\\d+) (?<expireTimeHour>\\d+):(?<expireTimeMinute>\\d+)\\)$");
     private static final Pattern HOUSEBAN_ADD_PATTERN = compile("^\\[HV] » (?:\\[UC])?(?<issuerPlayerName>[a-zA-Z0-9_]+) hat (?:\\[UC])?(?<playerName>[a-zA-Z0-9_]+)s Hausverbot gegeben\\. » (?<reason>.+) » \\d+d \\((?<expireDateDay>\\d+)\\.(?<expireDateMonth>\\d+)\\.(?<expireDateYear>\\d+) (?<expireTimeHour>\\d+):(?<expireTimeMinute>\\d+)\\)$");
@@ -47,39 +50,56 @@ public class MedicListener implements IMessageReceiveListener {
     private static final Pattern FIRST_AID_LICENCES_PATTERN = compile("^- Erste-Hilfe-Schein: Vorhanden$");
     private static final Pattern LABOR_TRANSPORT_STARTED_PATTERN = compile("^\\[ʟᴀʙᴏʀ] Transport gestartet: (?<chestAmount>\\d+) ᴋɪsᴛᴇɴ mit (?<ingredientAmount>\\d+) (?<ingredient>.+)$");
 
-    private long activeCheck = 0;
-
     @Override
     public boolean onMessageReceive(Text text, String message) {
         Matcher medicBandageMatcher = MEDIC_BANDAGE_PATTERN.matcher(message);
         if (medicBandageMatcher.find()) {
-            storage.getCountdowns().add(new Countdown("Bandage", ofMinutes(4)));
+            storage.getCountdowns().add(new Countdown("Bandage", MEDIC_BANDAGE_DURATION));
+            return true;
+        }
+
+        Matcher medicBandageGiveMatcher = MEDIC_BANDAGE_GIVE_PATTERN.matcher(message);
+        if (medicBandageGiveMatcher.find()) {
+            String playerName = medicBandageGiveMatcher.group("playerName");
+            storage.getMedicBandageCooldowns().put(playerName, now().plus(MEDIC_BANDAGE_DURATION));
             return true;
         }
 
         Matcher medicPillMatcher = MEDIC_PILL_PATTERN.matcher(message);
         if (medicPillMatcher.find()) {
-            storage.getCountdowns().add(new Countdown("Schmerzpille", ofMinutes(2)));
+            storage.getCountdowns().add(new Countdown("Schmerzpille", MEDIC_PILL_DURATION));
             return true;
         }
 
-        Matcher medicReviveStartMatcher = MEDIC_REVIVE_START.matcher(message);
+        Matcher medicPillGiveMatcher = MEDIC_PILL_GIVE_PATTERN.matcher(message);
+        if (medicPillGiveMatcher.find()) {
+            String playerName = medicBandageGiveMatcher.group("playerName");
+            storage.getMedicPillCooldowns().put(playerName, now().plus(MEDIC_PILL_DURATION));
+            return true;
+        }
+
+        Matcher medicReviveStartMatcher = MEDIC_REVIVE_START_PATTERN.matcher(message);
         if (medicReviveStartMatcher.find()) {
             utilService.delayedAction(() -> commandService.sendCommand("dinfo"), COMMAND_COOLDOWN_MILLIS);
+            return true;
+        }
+
+        Matcher medicRespawnMatcher = MEDIC_RESPAWN_PATTERN.matcher(message);
+        if (medicRespawnMatcher.find()) {
+            utilService.delayedAction(() -> commandService.sendCommand("togglephone"), COMMAND_COOLDOWN_MILLIS);
         }
 
         Matcher housebanHeaderMatcher = HOUSEBAN_HEADER_PATTERN.matcher(message);
         if (housebanHeaderMatcher.find()) {
-            this.activeCheck = currentTimeMillis();
             storage.getHousebanEntries().clear();
-            return !syncService.isGameSyncProcessActive();
+            return commandService.showCommandOutputMessage("hausverbot");
         }
 
         Matcher housebanEntryMatcher = HOUSEBAN_ENTRY_PATTERN.matcher(message);
-        if (housebanEntryMatcher.find() && currentTimeMillis() - this.activeCheck < 100) {
+        if (housebanEntryMatcher.find()) {
             HousebanEntry housebanEntry = getHousebanEntry(housebanEntryMatcher);
             storage.getHousebanEntries().add(housebanEntry);
-            return !syncService.isGameSyncProcessActive();
+            return commandService.showCommandOutputMessage("hausverbot");
         }
 
         Matcher housebanAddMatcher = HOUSEBAN_ADD_PATTERN.matcher(message);
