@@ -47,6 +47,7 @@ public class ModCommand extends CommandBase {
                 .executes(context -> {
                     String version = utilService.getVersion();
                     String authors = getAuthors();
+                    String contributors = getContributors();
 
                     player.sendMessage(empty(), false);
 
@@ -71,6 +72,11 @@ public class ModCommand extends CommandBase {
                                     .withColor(WHITE)
                                     .withClickEvent(new ClickEvent.OpenUrl(create("https://github.com/UnicacityAddon/ucutils"))))), false);
 
+                    messageService.sendModMessage(empty()
+                            .append(of("Contributors").copy().formatted(GRAY))
+                            .append(of(":").copy().formatted(DARK_GRAY)).append(" ")
+                            .append(of(contributors).copy().formatted(WHITE)), false);
+
                     player.sendMessage(empty(), false);
 
                     storage.print();
@@ -86,6 +92,17 @@ public class ModCommand extends CommandBase {
 
         StringJoiner stringJoiner = new StringJoiner(", ");
         authors.forEach(person -> stringJoiner.add(person.getName()));
+
+        return stringJoiner.toString();
+    }
+
+    private String getContributors() {
+        Collection<Person> contributors = FabricLoader.getInstance().getModContainer(MOD_ID)
+                .map(modContainer -> modContainer.getMetadata().getContributors())
+                .orElseThrow(() -> new NullPointerException("Cannot find contributors"));
+
+        StringJoiner stringJoiner = new StringJoiner(", ");
+        contributors.forEach(person -> stringJoiner.add(person.getName()));
 
         return stringJoiner.toString();
     }
