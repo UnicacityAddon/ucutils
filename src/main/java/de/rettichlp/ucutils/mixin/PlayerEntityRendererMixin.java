@@ -12,6 +12,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import static de.rettichlp.ucutils.UCUtils.configuration;
 import static de.rettichlp.ucutils.UCUtils.nameTagService;
 import static java.util.Optional.ofNullable;
 import static net.minecraft.text.Text.literal;
@@ -35,7 +36,7 @@ public abstract class PlayerEntityRendererMixin {
 
                     // handle medical information (bandages + pills)
                     MutableText medicInformation = nameTagService.getMedicInformation(playerName);
-                    boolean medicInformationPresent = !medicInformation.getSiblings().isEmpty();
+                    boolean medicInformationPresent = !medicInformation.getSiblings().isEmpty() && configuration.getOptions().nameTag().additionalMedicalInformation();
                     if (medicInformationPresent) {
                         matrixStack.translate(0.0F, 1.8F, 0.0F);
                         orderedRenderCommandQueue.submitLabel(matrixStack, playerEntityRenderState.nameLabelPos, 0, medicInformation, !playerEntityRenderState.sneaking, playerEntityRenderState.light, playerEntityRenderState.squaredDistanceToCamera, cameraRenderState);

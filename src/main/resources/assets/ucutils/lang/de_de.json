@@ -65,6 +65,8 @@
   "ucutils.options.nametag.additional.wanted.tooltip": "Zeigt gesuchte Spieler an",
   "ucutils.options.nametag.additional.afk.name": "AFK",
   "ucutils.options.nametag.additional.afk.tooltip": "Zeigt AFK Spieler an",
+  "ucutils.options.nametag.additional.medical_information.name": "Information für Ärzte",
+  "ucutils.options.nametag.additional.medical_information.tooltip": "Zeigt die restliche Wirkungsdauer von Bandagen und Schmerzpillen unter dem Spielernamen an",
   "ucutils.options.notification_sounds.name": "Benachrichtigungstöne",
   "ucutils.options.notification_sounds.tooltip": "Spielt Töne für einige Benachrichtigungen ab",
   "ucutils.options.reinforcement_style.name": "Reinforcement Stil",

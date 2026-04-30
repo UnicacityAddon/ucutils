@@ -65,6 +65,8 @@
   "ucutils.options.nametag.additional.wanted.tooltip": "Highlights wanted players",
   "ucutils.options.nametag.additional.afk.name": "AFK",
   "ucutils.options.nametag.additional.afk.tooltip": "Highlights afk players",
+  "ucutils.options.nametag.additional.medical_information.name": "Medical information",
+  "ucutils.options.nametag.additional.medical_information.tooltip": "Shows the cooldown of bandages and pills below the players name",
   "ucutils.options.notification_sounds.name": "Notification sounds",
   "ucutils.options.notification_sounds.tooltip": "Play custom sounds for some notifications",
   "ucutils.options.reinforcement_style.name": "Reinforcement style",
