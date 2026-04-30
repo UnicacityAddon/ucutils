@@ -36,16 +36,12 @@ public enum Sound {
     }
 
     public void play() {
-        if (configuration.getOptions().customSounds()) {
-            PositionedSoundInstance positionedSoundInstance = master(getSoundEvent(), 1.0F, 1.0F);
-            MinecraftClient.getInstance().getSoundManager().play(positionedSoundInstance);
-        }
+        PositionedSoundInstance positionedSoundInstance = master(getSoundEvent(), 1.0F, 1.0F);
+        MinecraftClient.getInstance().getSoundManager().play(positionedSoundInstance);
     }
 
     public void play(float pitch, float volume) {
-        if (configuration.getOptions().customSounds()) {
-            PositionedSoundInstance positionedSoundInstance = master(getSoundEvent(), pitch, volume);
-            MinecraftClient.getInstance().getSoundManager().play(positionedSoundInstance);
-        }
+        PositionedSoundInstance positionedSoundInstance = master(getSoundEvent(), pitch, volume);
+        MinecraftClient.getInstance().getSoundManager().play(positionedSoundInstance);
     }
 }
