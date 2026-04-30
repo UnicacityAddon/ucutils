@@ -1,4 +1,12 @@
 {
+  "bank_robbery": {
+    "sounds": [
+      {
+        "name": "ucutils:bank_robbery_sound",
+        "stream": true
+      }
+    ]
+  },
   "bomb": {
     "sounds": [
       {
@@ -19,6 +27,14 @@
     "sounds": [
       {
         "name": "ucutils:contract_set_sound",
+        "stream": true
+      }
+    ]
+  },
+  "fire": {
+    "sounds": [
+      {
+        "name": "ucutils:fire_sound",
         "stream": true
       }
     ]

@@ -9,16 +9,17 @@ import net.minecraft.util.Identifier;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 
-import static de.rettichlp.ucutils.UCUtils.configuration;
 import static net.minecraft.client.sound.PositionedSoundInstance.master;
 
 @Getter
 @AllArgsConstructor
 public enum Sound {
 
+    BANK_ROBBERY("bank_robbery"),
     BOMB_SOUND("bomb"),
     CONTRACT_FULFILLED("contract.fulfilled"),
     CONTRACT_SET("contract.set"),
+    FIRE("fire"),
     REPORT("report"), // TODO use sound
     SERVICE("service");
 
