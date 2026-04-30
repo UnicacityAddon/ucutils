@@ -73,7 +73,7 @@ public class MedicListener implements IMessageReceiveListener {
 
         Matcher medicPillGiveMatcher = MEDIC_PILL_GIVE_PATTERN.matcher(message);
         if (medicPillGiveMatcher.find()) {
-            String playerName = medicBandageGiveMatcher.group("playerName");
+            String playerName = medicPillGiveMatcher.group("playerName");
             storage.getMedicPillCooldowns().put(playerName, now().plus(MEDIC_PILL_DURATION));
             return true;
         }
