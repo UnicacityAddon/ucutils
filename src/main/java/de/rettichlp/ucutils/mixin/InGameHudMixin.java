@@ -3,6 +3,7 @@ package de.rettichlp.ucutils.mixin;
 import com.llamalad7.mixinextras.sugar.Local;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.hud.InGameHud;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.profiler.Profilers;
 import org.spongepowered.asm.mixin.Mixin;
@@ -61,6 +62,10 @@ public abstract class InGameHudMixin {
         int hydration = (int) clamp(round, 0, maxHydrated);
 
         if (player.isSubmergedIn(WATER) || player.getAir() < player.getMaxAir()) {
+            top -= 10;
+        }
+
+        if (player.getVehicle() instanceof LivingEntity) {
             top -= 10;
         }
 
