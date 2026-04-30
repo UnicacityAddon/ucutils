@@ -96,7 +96,7 @@ public class PlayerListener implements IAbsorptionGetListener, IMessageReceiveLi
                     .ifPresent(hoverString -> {
                         Matcher healthEntryHoverMatcher = HEALTH_ENTRY_HOVER_PATTERN.matcher(hoverString);
                         if (healthEntryHoverMatcher.find()) {
-                            storage.setThirst(parseDouble(healthEntryHoverMatcher.group("value")));
+                            storage.setHydration(parseDouble(healthEntryHoverMatcher.group("value")));
                         }
                     });
 

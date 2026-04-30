@@ -40,6 +40,8 @@ public class NameTagOptionsScreen extends OptionsScreen {
     private static final Text NAMETAG_ADDITIONAL_WANTED_TOOLTIP = translatable("ucutils.options.nametag.additional.wanted.tooltip");
     private static final Text NAMETAG_ADDITIONAL_AFK_NAME = translatable("ucutils.options.nametag.additional.afk.name");
     private static final Text NAMETAG_ADDITIONAL_AFK_TOOLTIP = translatable("ucutils.options.nametag.additional.afk.tooltip");
+    private static final Text NAMETAG_ADDITIONAL_MEDICAL_INFORMATION_NAME = translatable("ucutils.options.nametag.additional.medical_information.name");
+    private static final Text NAMETAG_ADDITIONAL_MEDICAL_INFORMATION_TOOLTIP = translatable("ucutils.options.nametag.additional.medical_information.tooltip");
 
     public NameTagOptionsScreen(Screen parent) {
         super(parent, TEXT_NAMETAG);
@@ -68,6 +70,7 @@ public class NameTagOptionsScreen extends OptionsScreen {
 
         DirectionalLayoutWidget directionalLayoutWidget5 = directionalLayoutWidget.add(horizontal().spacing(8));
         renderService.addToggleButton(directionalLayoutWidget5, NAMETAG_ADDITIONAL_AFK_NAME, NAMETAG_ADDITIONAL_AFK_TOOLTIP, (options, value) -> options.nameTag().additionalAfk(value), options -> options.nameTag().additionalAfk(), 150);
+        renderService.addToggleButton(directionalLayoutWidget5, NAMETAG_ADDITIONAL_MEDICAL_INFORMATION_NAME, NAMETAG_ADDITIONAL_MEDICAL_INFORMATION_TOOLTIP, (options, value) -> options.nameTag().additionalMedicalInformation(value), options -> options.nameTag().additionalMedicalInformation(), 150);
 
         directionalLayoutWidget.forEachChild(this::addDrawableChild);
     }
