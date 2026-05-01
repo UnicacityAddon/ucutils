@@ -9,6 +9,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import static de.rettichlp.ucutils.UCUtils.commandService;
+import static de.rettichlp.ucutils.UCUtils.configuration;
 import static de.rettichlp.ucutils.UCUtils.player;
 import static de.rettichlp.ucutils.UCUtils.storage;
 import static de.rettichlp.ucutils.common.models.Sound.SERVICE;
@@ -35,7 +36,11 @@ public class EmergencyServiceListener implements IMessageReceiveListener, INaviS
         Matcher serviceMatcher = SERVICE_PATTERN.matcher(message);
         if (serviceMatcher.find()) {
             storage.setActiveServices(storage.getActiveServices() + 1);
-            SERVICE.play();
+
+            if (configuration.getOptions().sound().service()) {
+                SERVICE.play();
+            }
+
             return true;
         }
 

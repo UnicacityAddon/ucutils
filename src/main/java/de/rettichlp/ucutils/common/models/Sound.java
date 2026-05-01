@@ -9,16 +9,17 @@ import net.minecraft.util.Identifier;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 
-import static de.rettichlp.ucutils.UCUtils.configuration;
 import static net.minecraft.client.sound.PositionedSoundInstance.master;
 
 @Getter
 @AllArgsConstructor
 public enum Sound {
 
+    BANK_ROBBERY("bank_robbery"),
     BOMB_SOUND("bomb"),
     CONTRACT_FULFILLED("contract.fulfilled"),
     CONTRACT_SET("contract.set"),
+    FIRE("fire"),
     REPORT("report"), // TODO use sound
     SERVICE("service");
 
@@ -35,16 +36,12 @@ public enum Sound {
     }
 
     public void play() {
-        if (configuration.getOptions().customSounds()) {
-            PositionedSoundInstance positionedSoundInstance = master(getSoundEvent(), 1.0F, 1.0F);
-            MinecraftClient.getInstance().getSoundManager().play(positionedSoundInstance);
-        }
+        PositionedSoundInstance positionedSoundInstance = master(getSoundEvent(), 1.0F, 1.0F);
+        MinecraftClient.getInstance().getSoundManager().play(positionedSoundInstance);
     }
 
     public void play(float pitch, float volume) {
-        if (configuration.getOptions().customSounds()) {
-            PositionedSoundInstance positionedSoundInstance = master(getSoundEvent(), pitch, volume);
-            MinecraftClient.getInstance().getSoundManager().play(positionedSoundInstance);
-        }
+        PositionedSoundInstance positionedSoundInstance = master(getSoundEvent(), pitch, volume);
+        MinecraftClient.getInstance().getSoundManager().play(positionedSoundInstance);
     }
 }

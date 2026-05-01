@@ -1,6 +1,7 @@
 package de.rettichlp.ucutils.listener.impl.faction;
 
 import de.rettichlp.ucutils.common.models.Countdown;
+import de.rettichlp.ucutils.common.models.Faction;
 import de.rettichlp.ucutils.common.models.HousebanEntry;
 import de.rettichlp.ucutils.common.registry.UCUtilsListener;
 import de.rettichlp.ucutils.listener.IMessageReceiveListener;
@@ -22,6 +23,7 @@ import static de.rettichlp.ucutils.UCUtils.storage;
 import static de.rettichlp.ucutils.UCUtils.utilService;
 import static de.rettichlp.ucutils.common.Storage.MEDIC_BANDAGE_DURATION;
 import static de.rettichlp.ucutils.common.Storage.MEDIC_PILL_DURATION;
+import static de.rettichlp.ucutils.common.models.Sound.FIRE;
 import static de.rettichlp.ucutils.common.services.CommandService.COMMAND_COOLDOWN_MILLIS;
 import static java.lang.Integer.parseInt;
 import static java.time.Duration.ofMinutes;
@@ -49,6 +51,7 @@ public class MedicListener implements IMessageReceiveListener {
     private static final Pattern FIRST_AID_PATTERN = compile("^\\[Erste-Hilfe] (?:\\[UC])?(?<playerName>[a-zA-Z0-9_]+) hat dir ein Erste-Hilfe-Schein für 14 Tage ausgestellt\\.$");
     private static final Pattern FIRST_AID_LICENCES_PATTERN = compile("^- Erste-Hilfe-Schein: Vorhanden$");
     private static final Pattern LABOR_TRANSPORT_STARTED_PATTERN = compile("^\\[ʟᴀʙᴏʀ] Transport gestartet: (?<chestAmount>\\d+) ᴋɪsᴛᴇɴ mit (?<ingredientAmount>\\d+) (?<ingredient>.+)$");
+    private static final Pattern FIRE_START_PATTERN = compile("^News: Es wurde ein Feuer bei .+ gemeldet!$");
 
     @Override
     public boolean onMessageReceive(Text text, String message) {
@@ -147,6 +150,13 @@ public class MedicListener implements IMessageReceiveListener {
         if (laborTransportStartedMatcher.find()) {
             Duration duration = ofMinutes(5).plusSeconds(56); // please don't ask why it is like this
             storage.getCountdowns().add(new Countdown("Labor Transport", duration, () -> {}));
+            return true;
+        }
+
+        Faction playerFaction = storage.getFaction(player.getGameProfile().name());
+        Matcher fireStartMatcher = FIRE_START_PATTERN.matcher(message);
+        if (fireStartMatcher.find() && configuration.getOptions().sound().fire().verify(playerFaction)) {
+            FIRE.play();
             return true;
         }
 

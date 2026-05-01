@@ -8,7 +8,6 @@ import java.awt.Color;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
@@ -19,6 +18,7 @@ import static java.awt.Color.ORANGE;
 import static java.awt.Color.RED;
 import static java.awt.Color.WHITE;
 import static java.time.LocalDateTime.now;
+import static java.util.Comparator.comparing;
 import static java.util.Objects.hash;
 import static java.util.Objects.nonNull;
 import static java.util.UUID.randomUUID;
@@ -54,7 +54,7 @@ public class NotificationService {
         return this.notifications.stream()
                 .filter(Objects::nonNull)
                 .filter(notification -> now().isBefore(notification.getTimestamp().plus(notification.getDurationInMillis(), MILLISECONDS.toChronoUnit())))
-                .sorted(Comparator.comparing(Notification::getTimestamp))
+                .sorted(comparing(Notification::getTimestamp))
                 .toList();
     }
 
