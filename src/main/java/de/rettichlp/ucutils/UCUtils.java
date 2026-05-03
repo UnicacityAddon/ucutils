@@ -80,7 +80,7 @@ public class UCUtils implements ModInitializer {
     }
 
     private boolean isUnicaCity(ClientPlayNetworkHandler networkHandler) {
-        if (getBoolean("fabric.development")) {
+        if (getBoolean("fabric.development") || !configuration.getOptions().checkUnicacityServer()) {
             return true;
         }
 
