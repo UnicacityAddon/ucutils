@@ -14,11 +14,10 @@ import java.time.LocalDateTime;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import static de.rettichlp.ucutils.UCUtils.configuration;
 import static de.rettichlp.ucutils.UCUtils.player;
 import static de.rettichlp.ucutils.UCUtils.storage;
-import static de.rettichlp.ucutils.common.models.Faction.FBI;
-import static de.rettichlp.ucutils.common.models.Faction.POLIZEI;
-import static de.rettichlp.ucutils.common.models.Faction.RETTUNGSDIENST;
+import static de.rettichlp.ucutils.common.models.Sound.BANK_ROBBERY;
 import static de.rettichlp.ucutils.common.models.Sound.BOMB_SOUND;
 import static java.lang.String.format;
 import static java.time.Duration.between;
@@ -34,8 +33,9 @@ import static net.minecraft.util.Formatting.GRAY;
 import static net.minecraft.util.Formatting.RED;
 
 @UCUtilsListener
-public class BombListener implements IMessageReceiveListener, IHudRenderListener {
+public class MajorEventListener implements IMessageReceiveListener, IHudRenderListener {
 
+    private static final Pattern BANK_ROBBERY_PATTERN = compile("^News: Es wurde ein Raub in der Staatsbank gemeldet!$");
     private static final Pattern BOMB_FOUND_PATTERN = compile("^News: ACHTUNG! Es wurde eine Bombe in der Nähe von (?<location>.+) gefunden!$");
     private static final Pattern BOMB_STOP_PATTERN = compile("^News: Die Bombe konnte (erfolgreich|nicht) entschärft werden!");
 
@@ -45,15 +45,21 @@ public class BombListener implements IMessageReceiveListener, IHudRenderListener
     @Override
     public boolean onMessageReceive(Text text, String message) {
         Faction playerFaction = storage.getFaction(player.getGameProfile().name());
-        if (playerFaction != POLIZEI && playerFaction != FBI && playerFaction != RETTUNGSDIENST) {
-            return true;
+
+        Matcher bankRobberyMatcher = BANK_ROBBERY_PATTERN.matcher(message);
+        if (bankRobberyMatcher.find() && configuration.getOptions().sound().bankRobbery().verify(playerFaction)) {
+            BANK_ROBBERY.play();
         }
 
         Matcher bombFoundMatcher = BOMB_FOUND_PATTERN.matcher(message);
         if (bombFoundMatcher.find()) {
             this.bombPlantedTime = now();
             this.bombLocationString = bombFoundMatcher.group("location");
-            BOMB_SOUND.play();
+
+            if (configuration.getOptions().sound().bomb().verify(playerFaction)) {
+                BOMB_SOUND.play();
+            }
+
             return true;
         }
 

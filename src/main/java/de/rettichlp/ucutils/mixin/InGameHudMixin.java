@@ -46,6 +46,10 @@ public abstract class InGameHudMixin {
                                                 CallbackInfo ci,
                                                 @Local(ordinal = 3) int m,
                                                 @Local(ordinal = 8) int r) {
+        if (!storage.isUnicaCity()) {
+            return;
+        }
+
         if (!configuration.getOptions().showHydration() || storage.getHydration() == -1) {
             return;
         }

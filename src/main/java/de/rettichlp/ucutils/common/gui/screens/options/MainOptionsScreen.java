@@ -17,12 +17,13 @@ public class MainOptionsScreen extends OptionsScreen {
     private static final Text TEXT_NAMETAG = translatable("ucutils.options.text.nametag");
     private static final Text TEXT_PERSONAL_USE = translatable("ucutils.options.text.personal_use");
     private static final Text TEXT_WIDGETS = translatable("ucutils.options.text.widgets");
+    private static final Text TEXT_SOUNDS = translatable("ucutils.options.text.sounds");
     private static final Text REINFORCEMENT_STYLE_NAME = translatable("ucutils.options.reinforcement_style.name");
-    private static final Text NOTIFICATION_SOUNDS_NAME = translatable("ucutils.options.notification_sounds.name");
-    private static final Text NOTIFICATION_SOUNDS_TOOLTIP = translatable("ucutils.options.notification_sounds.tooltip");
     private static final Text BANK_INFORMATION_NAME = translatable("ucutils.options.atm_information.name");
     private static final Text HYDRATION_NAME = translatable("ucutils.options.hydration.name");
     private static final Text HYDRATION_TOOLTIP = translatable("ucutils.options.hydration.tooltip");
+    private static final Text CHECK_UNICACITY_SERVER_NAME = translatable("ucutils.options.check_unicacity_server.name");
+    private static final Text CHECK_UNICACITY_SERVER_TOOLTIP = translatable("ucutils.options.check_unicacity_server.tooltip");
 
     public MainOptionsScreen() {
         super(new GameMenuScreen(true));
@@ -40,7 +41,7 @@ public class MainOptionsScreen extends OptionsScreen {
 
         DirectionalLayoutWidget directionalLayoutWidget2 = directionalLayoutWidget.add(horizontal().spacing(8));
         renderService.addButton(directionalLayoutWidget2, TEXT_CAR, button -> this.client.setScreen(new CarOptionsScreen(this)), 150);
-        renderService.addToggleButton(directionalLayoutWidget2, NOTIFICATION_SOUNDS_NAME, NOTIFICATION_SOUNDS_TOOLTIP, Options::customSounds, Options::customSounds, 150);
+        renderService.addButton(directionalLayoutWidget2, TEXT_SOUNDS, button -> this.client.setScreen(new SoundOptionsScreen(this)), 150);
 
         DirectionalLayoutWidget directionalLayoutWidget3 = directionalLayoutWidget.add(horizontal().spacing(8));
         renderService.addButton(directionalLayoutWidget3, TEXT_WIDGETS, button -> this.client.setScreen(new WidgetOptionsScreen(this)), 150);
@@ -48,6 +49,7 @@ public class MainOptionsScreen extends OptionsScreen {
 
         DirectionalLayoutWidget directionalLayoutWidget4 = directionalLayoutWidget.add(horizontal().spacing(8));
         renderService.addToggleButton(directionalLayoutWidget4, HYDRATION_NAME, HYDRATION_TOOLTIP, Options::showHydration, Options::showHydration, 150);
+        renderService.addToggleButton(directionalLayoutWidget4, CHECK_UNICACITY_SERVER_NAME, CHECK_UNICACITY_SERVER_TOOLTIP, Options::checkUnicacityServer, Options::checkUnicacityServer, 150);
 
         directionalLayoutWidget.forEachChild(this::addDrawableChild);
     }

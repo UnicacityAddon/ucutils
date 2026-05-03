@@ -9,6 +9,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import static de.rettichlp.ucutils.UCUtils.commandService;
+import static de.rettichlp.ucutils.UCUtils.configuration;
 import static de.rettichlp.ucutils.UCUtils.storage;
 import static de.rettichlp.ucutils.UCUtils.utilService;
 import static de.rettichlp.ucutils.common.models.Sound.CONTRACT_FULFILLED;
@@ -48,7 +49,11 @@ public class ContractListener implements IMessageReceiveListener {
         if (contractAddMatcher.find()) {
             // show all entries to sync
             utilService.delayedAction(() -> commandService.sendCommandWithAfkCheck("contractlist"), COMMAND_COOLDOWN_MILLIS);
-            CONTRACT_SET.play();
+
+            if (configuration.getOptions().sound().contractSet()) {
+                CONTRACT_SET.play();
+            }
+
             return true;
         }
 
@@ -63,7 +68,11 @@ public class ContractListener implements IMessageReceiveListener {
         if (contractKillMatcher.find()) {
             String targetName = contractKillMatcher.group("targetName");
             storage.getContractEntries().removeIf(contractEntry -> contractEntry.getPlayerName().equals(targetName));
-            CONTRACT_FULFILLED.play();
+
+            if (configuration.getOptions().sound().contractFulfilled()) {
+                CONTRACT_FULFILLED.play();
+            }
+
             return true;
         }
 

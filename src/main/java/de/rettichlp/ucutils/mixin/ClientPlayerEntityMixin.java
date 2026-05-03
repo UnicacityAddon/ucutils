@@ -27,6 +27,10 @@ public abstract class ClientPlayerEntityMixin {
 
     @Inject(method = "dropSelectedItem", at = @At("HEAD"), cancellable = true)
     private void ucutils$dropSelectedItemHead(boolean entireStack, CallbackInfoReturnable<Boolean> cir) {
+        if (!storage.isUnicaCity()) {
+            return;
+        }
+
         if (player.getMainHandStack().isOf(GLASS_BOTTLE) && isNearShop()) {
             // cancel drop
             cir.setReturnValue(null);
@@ -40,7 +44,7 @@ public abstract class ClientPlayerEntityMixin {
     @Unique
     private boolean isNearShop() {
         BlockPos playerPos = player.getBlockPos();
-        return storage.isUnicaCity() && SHOP_LOCATIONS.stream()
+        return SHOP_LOCATIONS.stream()
                 .anyMatch(blockPos -> playerPos.isWithinDistance(blockPos, 10));
     }
 }

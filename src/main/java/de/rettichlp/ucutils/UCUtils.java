@@ -80,7 +80,7 @@ public class UCUtils implements ModInitializer {
     }
 
     private boolean isUnicaCity(ClientPlayNetworkHandler networkHandler) {
-        if (getBoolean("fabric.development")) {
+        if (getBoolean("fabric.development") || !configuration.getOptions().checkUnicacityServer()) {
             return true;
         }
 
@@ -89,9 +89,9 @@ public class UCUtils implements ModInitializer {
             return false;
         }
 
-        String addressString = networkHandler.getConnection().getAddress().toString(); // tcp.unicacity.de./50.114.4.xxx:25565
+        String addressString = networkHandler.getConnection().getAddress().toString(); // mc-3534.unicacity.eu/148.251.232.237:25565
         // for LabyMod players, there is no dot at the end of the domain
-        if (!addressString.matches("mc-9401\\.unicacity\\.eu\\.?/\\d+\\.\\d+\\.\\d+\\.\\d+:25565")) {
+        if (!addressString.matches("mc-\\d{1,4}\\.unicacity\\.eu\\.?/\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}:\\d+")) {
             LOGGER.warn("Not connected to UnicaCity: {}", addressString);
             return false;
         }
