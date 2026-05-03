@@ -10,12 +10,17 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import static de.rettichlp.ucutils.UCUtils.nameTagService;
+import static de.rettichlp.ucutils.UCUtils.storage;
 
 @Mixin(PlayerEntity.class)
 public class PlayerEntityMixin {
 
     @Inject(method = "getDisplayName", at = @At("RETURN"), cancellable = true)
     private void ucutils$getDisplayNameReturn(@NotNull CallbackInfoReturnable<Text> cir) {
+        if (!storage.isUnicaCity()) {
+            return;
+        }
+
         GameProfile gameProfile = ((PlayerEntity) (Object) this).getGameProfile();
         cir.setReturnValue(nameTagService.getEnrichedDisplayName(gameProfile.name()));
     }

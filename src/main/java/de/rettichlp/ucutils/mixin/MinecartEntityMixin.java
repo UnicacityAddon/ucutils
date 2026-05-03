@@ -23,8 +23,12 @@ public abstract class MinecartEntityMixin {
 
     @Inject(method = "interact", at = @At("HEAD"))
     private void ucutils$interactHead(PlayerEntity player, Hand hand, CallbackInfoReturnable<ActionResult> cir) {
+        if (!storage.isUnicaCity()) {
+            return;
+        }
+
         Entity entity = (Entity) (Object) this;
-        if (entity instanceof MinecartEntity && player.isSneaking() && storage.isUnicaCity() && currentTimeMillis() - this.lastClick > 1000) {
+        if (entity instanceof MinecartEntity && player.isSneaking() && currentTimeMillis() - this.lastClick > 1000) {
             commandService.sendCommand("checkkfz");
             this.lastClick = currentTimeMillis();
         }

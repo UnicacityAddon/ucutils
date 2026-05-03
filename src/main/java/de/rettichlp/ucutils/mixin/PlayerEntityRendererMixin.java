@@ -14,6 +14,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import static de.rettichlp.ucutils.UCUtils.configuration;
 import static de.rettichlp.ucutils.UCUtils.nameTagService;
+import static de.rettichlp.ucutils.UCUtils.storage;
 import static java.util.Optional.ofNullable;
 import static net.minecraft.text.Text.literal;
 import static net.minecraft.util.Formatting.GOLD;
@@ -29,6 +30,10 @@ public abstract class PlayerEntityRendererMixin {
                                               @NonNull OrderedRenderCommandQueue orderedRenderCommandQueue,
                                               CameraRenderState cameraRenderState,
                                               CallbackInfo ci) {
+        if (!storage.isUnicaCity()) {
+            return;
+        }
+
         ofNullable(playerEntityRenderState.displayName) // something like "[HV] RettichLP ⌜✚⌟"
                 .map(nameTagService::revertEnrichment) // something like "RettichLP"
                 .ifPresent(playerName -> {
