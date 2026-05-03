@@ -37,6 +37,7 @@ public class Options {
     private ReinforcementType reinforcementType = UNICACITYADDON;
     private AtmInformationType atmInformationType = NONE;
     private boolean showHydration = true;
+    private boolean checkUnicacityServer = true;
 
     @Getter
     @AllArgsConstructor
