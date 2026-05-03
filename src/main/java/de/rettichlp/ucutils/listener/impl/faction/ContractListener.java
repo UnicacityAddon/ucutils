@@ -22,10 +22,10 @@ import static java.util.regex.Pattern.compile;
 public class ContractListener implements IMessageReceiveListener {
 
     private static final Pattern CONTRACT_HEADER_PATTERN = compile("^\\[Contracts] Kopfgelder:$");
-    private static final Pattern CONTRACT_ENTRY_PATTERN = compile("^(?:\\[UC])?(?<playerName>[a-zA-Z0-9_]+) \\[(?<price>\\d+)\\$](?: \\(AFK\\))?$");
+    private static final Pattern CONTRACT_ENTRY_PATTERN = compile("^- (?:\\[UC])?(?<playerName>[a-zA-Z0-9_]+) \\[(?<price>\\d+)\\$](?: \\(AFK\\))?$");
     private static final Pattern CONTRACT_ADD_PATTERN = compile("^\\[Contract] Es wurde ein Kopfgeld auf (?:\\[UC])?(?<targetName>[a-zA-Z0-9_]+) \\((?<price>\\d+)\\$\\) ausgesetzt\\.$");
-    private static final Pattern CONTRACT_REMOVE_PATTERN = compile("^\\[Contract] Das Kopfgeld auf (?:\\[UC])?(?<targetName>[a-zA-Z0-9_]+) wurde entfernt\\.$");
-    private static final Pattern CONTRACT_KILL_PATTERN = compile("^\\[Contract] (?:\\[UC])?(?<playerName>[a-zA-Z0-9_]+) hat (?:\\[UC])?(?<targetName>[a-zA-Z0-9_]+) getötet\\. \\((?<price>\\d+)\\$\\)$");
+    private static final Pattern CONTRACT_REMOVE_PATTERN = compile("^\\[Contract] (?:\\[UC])?(?<playerName>[a-zA-Z0-9_]+) hat (?:\\[UC])?(?<targetName>[a-zA-Z0-9_]+) von der Contract Liste gelöscht\\. \\[-(?<price>\\d+)\\$]$");
+    private static final Pattern CONTRACT_KILL_PATTERN = compile("^\\[Contract] (?:\\[UC])?(?<playerName>[a-zA-Z0-9_]+) hat (?:\\[UC])?(?<targetName>[a-zA-Z0-9_]+) getötet\\. Kopfgeld: (?<price>\\d+)\\$$");
 
     @Override
     public boolean onMessageReceive(Text text, String message) {
@@ -48,7 +48,7 @@ public class ContractListener implements IMessageReceiveListener {
         Matcher contractAddMatcher = CONTRACT_ADD_PATTERN.matcher(message);
         if (contractAddMatcher.find()) {
             // show all entries to sync
-            utilService.delayedAction(() -> commandService.sendCommandWithAfkCheck("contractlist"), COMMAND_COOLDOWN_MILLIS);
+            utilService.delayedAction(() -> commandService.sendCommandWithHiddenOutput("contractlist"), COMMAND_COOLDOWN_MILLIS);
 
             if (configuration.getOptions().sound().contractSet()) {
                 CONTRACT_SET.play();
