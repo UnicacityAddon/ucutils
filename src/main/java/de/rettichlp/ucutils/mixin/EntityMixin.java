@@ -33,6 +33,10 @@ public abstract class EntityMixin {
                                            boolean force,
                                            boolean emitEvent,
                                            @NotNull CallbackInfoReturnable<Boolean> cir) {
+        if (!storage.isUnicaCity()) {
+            return;
+        }
+
         // only for successful start riding
         if (!cir.getReturnValue()) {
             return;
@@ -46,14 +50,22 @@ public abstract class EntityMixin {
 
     @Inject(method = "stopRiding", at = @At("HEAD"))
     private void ucutils$stopRidingHead(CallbackInfo ci) {
+        if (!storage.isUnicaCity()) {
+            return;
+        }
+
         Entity self = (Entity) (Object) this;
-        if (self instanceof ClientPlayerEntity && self.hasVehicle() && self.getVehicle() instanceof MinecartEntity minecartEntity && storage.isUnicaCity()) {
+        if (self instanceof ClientPlayerEntity && self.hasVehicle() && self.getVehicle() instanceof MinecartEntity minecartEntity) {
             storage.setMinecartEntityToHighlight(minecartEntity);
         }
     }
 
     @Inject(method = "getCustomName", at = @At("RETURN"), cancellable = true)
     private void ucutils$getDisplayNameReturn(@NotNull CallbackInfoReturnable<Text> cir) {
+        if (!storage.isUnicaCity()) {
+            return;
+        }
+
         Entity self = (Entity) (Object) this;
         if (!(self instanceof ItemEntity itemEntity) || !itemEntity.hasCustomName()) {
             return;
