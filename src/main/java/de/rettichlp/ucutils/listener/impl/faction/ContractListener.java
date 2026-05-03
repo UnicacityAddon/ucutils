@@ -32,7 +32,7 @@ public class ContractListener implements IMessageReceiveListener {
         Matcher contractHeaderMatcher = CONTRACT_HEADER_PATTERN.matcher(message);
         if (contractHeaderMatcher.find()) {
             storage.getContractEntries().clear();
-            return commandService.showCommandOutputMessage("contract");
+            return commandService.showCommandOutputMessage("contractlist");
         }
 
         Matcher contractEntryMatcher = CONTRACT_ENTRY_PATTERN.matcher(message);
@@ -42,7 +42,7 @@ public class ContractListener implements IMessageReceiveListener {
 
             ContractEntry contractEntry = new ContractEntry(playerName, price);
             storage.getContractEntries().add(contractEntry);
-            return commandService.showCommandOutputMessage("contract");
+            return commandService.showCommandOutputMessage("contractlist");
         }
 
         Matcher contractAddMatcher = CONTRACT_ADD_PATTERN.matcher(message);
