@@ -71,7 +71,7 @@ public abstract class InGameHudMixin {
         }
 
         if (player.getVehicle() instanceof LivingEntity livingEntity) {
-            int hearthRows = (int) ceil((double) livingEntity.getHealth() / 20);
+            int hearthRows = (int) ceil(livingEntity.getHealth() / 20.0);
             top -= hearthRows * 10;
         }
 
