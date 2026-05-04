@@ -72,7 +72,6 @@ public class FactionListener implements IMessageReceiveListener, IMessageSendLis
             .append(of(distance + "m").copy().formatted(DARK_AQUA))
             .append(of(")").copy().formatted(GRAY));
 
-    private Faction factionToCheck;
     private long lastBlackMarketCheck = 0;
 
     @Override
@@ -84,10 +83,6 @@ public class FactionListener implements IMessageReceiveListener, IMessageSendLis
             String senderPlayerName = reinforcementMatcher.group("senderPlayerName");
             String naviPoint = reinforcementMatcher.group("naviPoint");
             String distance = reinforcementMatcher.group("distance");
-
-            Reinforcement reinforcement = new Reinforcement(type, senderPlayerName, naviPoint, distance);
-            LOGGER.info("Found new reinforcement: {}", reinforcement);
-            storage.trackReinforcement(reinforcement);
 
             boolean modernReinforcementStyle = configuration.getOptions().reinforcementType() == UNICACITYADDON;
             if (modernReinforcementStyle) {
@@ -107,44 +102,6 @@ public class FactionListener implements IMessageReceiveListener, IMessageSendLis
                 MinecraftClient.getInstance().execute(() -> player.sendMessage(empty(), false));
             }
 
-            List<ClickEvent> clickEvents = text.getSiblings().stream()
-                    .map(Text::getStyle)
-                    .map(Style::getClickEvent)
-                    .filter(Objects::nonNull)
-                    .filter(clickEvent -> clickEvent.getAction() == RUN_COMMAND)
-                    .toList();
-
-            // origin reinforcement sender retrieving
-//            String senderName = clickEvents.stream()
-//                    .map(ClickEvent::getValue)
-//                    .filter(commandString -> commandString.startsWith("/reinf onway "))
-//                    .map(commandString -> commandString.replace("/reinf onway ", ""))
-//                    .toList().getFirst();
-
-            // block position retrieving
-//            BlockPos blockPos = clickEvents.stream()
-//                    .map(ClickEvent::getValue)
-//                    .filter(commandString -> commandString.startsWith("/navi "))
-//                    .map(commandString -> commandString.replace("/navi ", ""))
-//                    .map(naviArguments -> {
-//                        String[] split = naviArguments.split(" ");
-//                        int x = parseInt(split[0]);
-//                        int y = parseInt(split[1]);
-//                        int z = parseInt(split[2]);
-//                        return new BlockPos(x, y, z);
-//                    })
-//                    .toList().getFirst();
-
-//            LOGGER.info("Found reinforcement buttons: {} | {}", senderName, blockPos.toShortString());
-
-//            storage.getReinforcements().stream()
-//                    .filter(reinforcement -> reinforcement.getSenderPlayerName().equals(senderName))
-//                    .max(comparing(Reinforcement::getCreatedAt))
-//                    .ifPresent(reinforcement -> {
-//                        reinforcement.setBlockPos(blockPos);
-//                        LOGGER.info("Updated reinforcement: {}", reinforcement);
-//                    });
-
             return true;
         }
 
@@ -154,49 +111,6 @@ public class FactionListener implements IMessageReceiveListener, IMessageSendLis
             String senderPlayerName = reinforcementOnTheWayMatcher.group("senderPlayerName");
             String target = reinforcementOnTheWayMatcher.group("target");
             String distance = reinforcementOnTheWayMatcher.group("distance");
-
-            // mark all reinforcements of the sender (and not self) within the last 30 seconds as on-the-way
-            String playerName = player.getGameProfile().name();
-            storage.getReinforcements().stream()
-                    .filter(reinforcement -> {
-                        boolean equals = playerName.equals(senderPlayerName);
-                        LOGGER.debug("Comparing sender player names for reinforcement acceptance: {} == {} -> {}", playerName, senderPlayerName, equals);
-                        return equals;
-                    }) // the client is on the way
-                    .filter(reinforcement -> {
-                        boolean b = !playerName.equals(target);
-                        LOGGER.debug("Comparing own player names for reinforcement acceptance: {} != {} -> {}", playerName, target, b);
-                        return b;
-                    }) // don't accept your own reinforcement
-                    .filter(reinforcement -> {
-                        boolean equals = reinforcement.getSenderPlayerName().equals(target);
-                        LOGGER.debug("Comparing target player names for reinforcement acceptance: {} == {} -> {}", reinforcement.getSenderPlayerName(), target, equals);
-                        return equals;
-                    }) // find all reinforcements of the target
-                    .filter(reinforcement -> {
-                        boolean b = !reinforcement.getAcceptedPlayerNames().contains(senderPlayerName);
-                        LOGGER.debug("Checking if reinforcement was already accepted by the player: {} contains {} -> {}", reinforcement.getAcceptedPlayerNames(), senderPlayerName, !b);
-                        return b;
-                    }) // not already accepted by the player
-                    .filter(reinforcement -> {
-                        boolean after = reinforcement.getCreatedAt().isAfter(now().minusSeconds(30));
-                        LOGGER.debug("Checking if reinforcement was created within the last 30 seconds: {} after {} -> {}", reinforcement.getCreatedAt(), now().minusSeconds(30), after);
-                        return after;
-                    }) // only recent ones
-                    .filter(reinforcement -> {
-                        boolean b = switch (reinforcement.getType()) { // reinforcement types that should be accepted
-                            case "Medic benötigt" ->
-                                    storage.getFaction(senderPlayerName) == RETTUNGSDIENST; // only medics accept medic calls
-                            case "Drogenabnahme" -> storage.getFaction(senderPlayerName) == FBI; // only FBI accept drug bust calls
-                            default -> true; // all others accept all calls
-                        };
-                        LOGGER.debug("Checking if reinforcement type {} should be accepted by the player in faction {}: -> {}", reinforcement.getType(), storage.getFaction(senderPlayerName), b);
-                        return b;
-                    })
-                    .forEach(reinforcement -> {
-                        reinforcement.getAcceptedPlayerNames().add(senderPlayerName);
-                        LOGGER.info("Reinforcement accepted: {}", reinforcement);
-                    });
 
             boolean modernReinforcementStyle = configuration.getOptions().reinforcementType() == UNICACITYADDON;
             if (modernReinforcementStyle) {
@@ -230,36 +144,6 @@ public class FactionListener implements IMessageReceiveListener, IMessageSendLis
 
     @Override
     public void onMove(BlockPos blockPos) {
-        String playerName = player.getGameProfile().name();
-
-        // for all reinforcements within 60 blocks that were not from yourself and were accepted
-        storage.getReinforcements().stream()
-                .filter(reinforcement -> {
-                    boolean b = nonNull(reinforcement.getBlockPos());
-                    LOGGER.debug("Checking if reinforcement has a block position set: {} -> {}", reinforcement, b);
-                    return b;
-                }) // check if the block position was set
-                .filter(reinforcement -> {
-                    boolean withinDistance = reinforcement.getBlockPos().isWithinDistance(player.getBlockPos(), 60);
-                    LOGGER.debug("Checking if reinforcement is within 60 blocks: {} -> {}", reinforcement, withinDistance);
-                    return withinDistance;
-                })
-                .filter(reinforcement -> {
-                    boolean contains = reinforcement.getAcceptedPlayerNames().contains(playerName);
-                    LOGGER.debug("Checking if reinforcement was accepted by the player: {} contains {} -> {}", reinforcement.getAcceptedPlayerNames(), playerName, contains);
-                    return contains;
-                })
-                .filter(reinforcement -> {
-                    boolean b = !reinforcement.isAddedAsActivity();
-                    LOGGER.debug("Checking if reinforcement was already added as activity: {} -> {}", reinforcement, !b);
-                    return b;
-                })
-                .forEach(reinforcement -> {
-                    reinforcement.setAddedAsActivity(true);
-//                    api.putFactionActivityAdd(ActivityEntry.Type.REINFORCEMENT);
-                    LOGGER.info("Reinforcement reached, tracked activity");
-                });
-
         // mark the black market spot as visited if within 60 blocks
         if (currentTimeMillis() - this.lastBlackMarketCheck >= 3000) { // every 3 seconds to reduce performance impact
             this.lastBlackMarketCheck = currentTimeMillis();
