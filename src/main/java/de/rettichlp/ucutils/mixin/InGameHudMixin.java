@@ -76,16 +76,16 @@ public abstract class InGameHudMixin {
         for (int n = 0; n < 10; n++) {
             int o = left - 9 - n * 8;
 
-            Identifier texture = THIRST_EMPTY_TEXTURE;
+            // always render empty hydration
+            context.drawTexture(GUI_TEXTURED, HYDRATION_EMPTY_TEXTURE, o, top, 0, 0, 9, 9, 9, 9);
 
+            // render texture depending on hydration
             int hydrationLeft = hydration - (n * 2);
             if (hydrationLeft >= 2.0) {
-                texture = THIRST_FULL_TEXTURE;
+                context.drawTexture(GUI_TEXTURED, HYDRATION_FULL_TEXTURE, o, top, 0, 0, 9, 9, 9, 9);
             } else if (hydrationLeft >= 1.0) {
-                texture = THIRST_HALF_TEXTURE;
+                context.drawTexture(GUI_TEXTURED, HYDRATION_HALF_TEXTURE, o, top, 0, 0, 9, 9, 9, 9);
             }
-
-            context.drawTexture(GUI_TEXTURED, texture, o, top, 0, 0, 9, 9, 9, 9);
         }
     }
 }
