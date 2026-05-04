@@ -16,6 +16,7 @@ import static de.rettichlp.ucutils.UCUtils.MOD_ID;
 import static de.rettichlp.ucutils.UCUtils.configuration;
 import static de.rettichlp.ucutils.UCUtils.player;
 import static de.rettichlp.ucutils.UCUtils.storage;
+import static java.lang.Math.ceil;
 import static java.lang.Math.clamp;
 import static java.lang.Math.round;
 import static net.minecraft.client.gl.RenderPipelines.GUI_TEXTURED;
@@ -69,8 +70,9 @@ public abstract class InGameHudMixin {
             top -= 10;
         }
 
-        if (player.getVehicle() instanceof LivingEntity) {
-            top -= 10;
+        if (player.getVehicle() instanceof LivingEntity livingEntity) {
+            int hearthRows = (int) ceil((double) livingEntity.getHealth() / 20);
+            top -= (hearthRows - 1) * 10;
         }
 
         for (int n = 0; n < 10; n++) {
