@@ -47,6 +47,8 @@ public class UCUtils implements ModInitializer {
     public static ClientPlayerEntity player;
     public static ClientPlayNetworkHandler networkHandler;
 
+    private static final String NEOPROTECT_ENTRYPOINT = "c970141b-0cca-4ad2-894b-21ac9c171cbe.shield.neoprotect.ovh";
+
     private final Registry registry = new Registry();
 
     @Override
@@ -89,13 +91,14 @@ public class UCUtils implements ModInitializer {
             return false;
         }
 
-        String addressString = networkHandler.getConnection().getAddress().toString(); // mc-3534.unicacity.eu/148.251.232.237:25565
+        String addressString = networkHandler.getConnection().getAddress().toString();
         // for LabyMod players, there is no dot at the end of the domain
-        if (!addressString.matches("mc-\\d{1,4}\\.unicacity\\.eu\\.?/\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}:\\d+")) {
+        if (!addressString.matches(NEOPROTECT_ENTRYPOINT + "\\.?/\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}:\\d+")) {
             LOGGER.warn("Not connected to UnicaCity: {}", addressString);
             return false;
         }
 
+        LOGGER.info("Connected to UnicaCity: {}", addressString);
         return true;
     }
 }
