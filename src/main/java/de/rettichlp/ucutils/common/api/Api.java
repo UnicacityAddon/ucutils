@@ -6,12 +6,10 @@ import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonPrimitive;
 import com.google.gson.JsonSerializer;
 import com.google.gson.reflect.TypeToken;
-import com.mojang.authlib.GameProfile;
 import de.rettichlp.ucutils.common.api.response.ErrorResponse;
 import de.rettichlp.ucutils.common.models.Faction;
 import de.rettichlp.ucutils.common.models.FactionMember;
 import lombok.Getter;
-import net.minecraft.client.MinecraftClient;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 
@@ -23,12 +21,9 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 import java.util.function.Consumer;
 
 import static de.rettichlp.ucutils.UCUtils.LOGGER;
-import static de.rettichlp.ucutils.UCUtils.utilService;
-import static java.lang.String.valueOf;
 import static java.net.URI.create;
 import static java.net.http.HttpResponse.BodyHandlers.ofString;
 import static java.util.Objects.nonNull;
@@ -36,25 +31,10 @@ import static java.util.Optional.ofNullable;
 
 public class Api {
 
-    private static final String MINECRAFT_UUID_STRING = ofNullable(MinecraftClient.getInstance())
-            .map(MinecraftClient::getGameProfile)
-            .map(GameProfile::id)
-            .map(UUID::toString)
-            .orElse("");
-
-    private static final String MINECRAFT_NAME = ofNullable(MinecraftClient.getInstance())
-            .map(MinecraftClient::getGameProfile)
-            .map(GameProfile::name)
-            .orElse("");
-
     private final HttpClient httpClient = HttpClient.newBuilder().build();
-    private final String baseUrl = "https://ucutils.rettichlp.de"; //http://localhost:6010/ucutils
     private final HttpRequest.Builder requestBuilder = HttpRequest.newBuilder()
             .header("Accept", "application/json")
-            .header("Content-Type", "application/json")
-            .header("X-Minecraft-UUID", MINECRAFT_UUID_STRING)
-            .header("X-Minecraft-Name", MINECRAFT_NAME)
-            .header("X-UCU-Version", valueOf(utilService.getVersion()));
+            .header("Content-Type", "application/json");
 
     @Getter
     private final Gson gson = new GsonBuilder()
@@ -77,7 +57,7 @@ public class Api {
 
     private <T> void get(@NotNull String uri, TypeToken<T> typeToken, Consumer<T> callback) {
         HttpRequest httpRequest = this.requestBuilder.copy()
-                .uri(uri.startsWith("https://") ? create(uri) : create(this.baseUrl + uri))
+                .uri(create(uri))
                 .GET()
                 .build();
 
