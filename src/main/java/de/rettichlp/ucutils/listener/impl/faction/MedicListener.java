@@ -21,8 +21,6 @@ import static de.rettichlp.ucutils.UCUtils.messageService;
 import static de.rettichlp.ucutils.UCUtils.player;
 import static de.rettichlp.ucutils.UCUtils.storage;
 import static de.rettichlp.ucutils.UCUtils.utilService;
-import static de.rettichlp.ucutils.common.Storage.MEDIC_BANDAGE_DURATION;
-import static de.rettichlp.ucutils.common.Storage.MEDIC_PILL_DURATION;
 import static de.rettichlp.ucutils.common.models.Sound.FIRE;
 import static de.rettichlp.ucutils.common.services.CommandService.COMMAND_COOLDOWN_MILLIS;
 import static java.lang.Integer.parseInt;
@@ -37,6 +35,9 @@ import static net.minecraft.util.Formatting.AQUA;
 
 @UCUtilsListener
 public class MedicListener implements IMessageReceiveListener {
+
+    public static final Duration MEDIC_BANDAGE_DURATION = ofMinutes(4);
+    public static final Duration MEDIC_PILL_DURATION = ofMinutes(4);
 
     private static final Pattern MEDIC_BANDAGE_PATTERN = compile("^(?:\\[UC])?(?<playerName>[a-zA-Z0-9_]+) hat dich bandagiert\\.$");
     private static final Pattern MEDIC_BANDAGE_GIVE_PATTERN = compile("^Du hast (?:\\[UC])?(?<playerName>[a-zA-Z0-9_]+) bandagiert\\.$");

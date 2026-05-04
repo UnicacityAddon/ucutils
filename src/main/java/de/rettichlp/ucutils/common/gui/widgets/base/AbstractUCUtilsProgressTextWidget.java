@@ -7,13 +7,13 @@ import org.jetbrains.annotations.NotNull;
 import java.time.temporal.Temporal;
 
 import static de.rettichlp.ucutils.common.services.RenderService.TEXT_BOX_PADDING;
-import static java.lang.Math.max;
-import static java.lang.Math.min;
+import static java.lang.Math.clamp;
 import static java.time.Duration.between;
 import static java.time.LocalDateTime.now;
 
 public abstract class AbstractUCUtilsProgressTextWidget<C extends UCUtilsWidgetConfiguration> extends AbstractUCUtilsTextWidget<C> {
 
+    @Override
     public abstract Text text();
 
     @Override
@@ -33,6 +33,6 @@ public abstract class AbstractUCUtilsProgressTextWidget<C extends UCUtilsWidgetC
     protected double calculateProgress(Temporal creationTime, long durationInMillis) {
         long elapsedMillis = between(creationTime, now()).toMillis();
         double progress = (double) elapsedMillis / durationInMillis;
-        return min(1.0, max(0.0, progress));
+        return clamp(progress, 0.0, 1.0);
     }
 }

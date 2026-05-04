@@ -1,5 +1,6 @@
 package de.rettichlp.ucutils.common.services;
 
+import com.mojang.brigadier.Message;
 import de.rettichlp.ucutils.common.configuration.options.NameTagOptions;
 import de.rettichlp.ucutils.common.models.BlacklistEntry;
 import de.rettichlp.ucutils.common.models.ContractEntry;
@@ -103,7 +104,7 @@ public class NameTagService {
                 .append(newTargetDisplayNameSuffix);
     }
 
-    public String revertEnrichment(@NonNull Text text) {
+    public String revertEnrichment(@NonNull Message text) {
         String string = text.getString();
         String[] strings = string.split(" ");
 

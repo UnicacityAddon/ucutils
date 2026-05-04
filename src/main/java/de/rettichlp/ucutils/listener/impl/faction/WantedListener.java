@@ -3,8 +3,6 @@ package de.rettichlp.ucutils.listener.impl.faction;
 import de.rettichlp.ucutils.common.models.WantedEntry;
 import de.rettichlp.ucutils.common.registry.UCUtilsListener;
 import de.rettichlp.ucutils.listener.IMessageReceiveListener;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 
@@ -29,7 +27,6 @@ import static net.minecraft.util.Formatting.DARK_GRAY;
 import static net.minecraft.util.Formatting.GOLD;
 import static net.minecraft.util.Formatting.GRAY;
 import static net.minecraft.util.Formatting.RED;
-import static net.minecraft.util.TypeFilter.instanceOf;
 
 @UCUtilsListener
 public class WantedListener implements IMessageReceiveListener {
@@ -159,13 +156,6 @@ public class WantedListener implements IMessageReceiveListener {
                     .append(of(playerName).copy().formatted(BLUE));
 
             player.sendMessage(modifiedMessage, false);
-
-            // track activity if the killer player is within 60 blocks
-            boolean killerIsWithin60Blocks = !MinecraftClient.getInstance().world.getEntitiesByType(instanceOf(PlayerEntity.class), player.getBoundingBox().expand(50), playerEntity -> playerEntity.getGameProfile().name().equals(playerName)).isEmpty();
-            if (killerIsWithin60Blocks) {
-//                api.putFactionActivityAdd(ARREST_KILL);
-            }
-
             return false;
         }
 
@@ -186,11 +176,6 @@ public class WantedListener implements IMessageReceiveListener {
                     .append(of(playerName).copy().formatted(BLUE));
 
             player.sendMessage(modifiedMessage, false);
-
-            if (clientPlayerName.equals(playerName)) {
-//                api.putFactionActivityAdd(ARREST);
-            }
-
             return false;
         }
 
@@ -213,11 +198,6 @@ public class WantedListener implements IMessageReceiveListener {
                     .append(of(officerName).copy().formatted(BLUE));
 
             player.sendMessage(modifiedMessage, false);
-
-            if (clientPlayerName.equals(officerName)) {
-//                api.putFactionActivityAdd(PARK_TICKET);
-            }
-
             return false;
         }
 

@@ -20,7 +20,6 @@ import net.minecraft.entity.vehicle.MinecartEntity;
 import net.minecraft.text.Text;
 import org.jetbrains.annotations.Nullable;
 
-import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -33,15 +32,11 @@ import static de.rettichlp.ucutils.UCUtils.LOGGER;
 import static de.rettichlp.ucutils.UCUtils.storage;
 import static de.rettichlp.ucutils.common.Storage.ToggledChat.NONE;
 import static de.rettichlp.ucutils.common.models.Faction.NULL;
-import static java.time.Duration.ofMinutes;
 import static java.util.Arrays.stream;
 import static java.util.Optional.ofNullable;
 import static net.minecraft.text.Text.translatable;
 
 public class Storage {
-
-    public static final Duration MEDIC_BANDAGE_DURATION = ofMinutes(4);
-    public static final Duration MEDIC_PILL_DURATION = ofMinutes(4);
 
     @Getter
     private final List<ShutdownReason> activeShutdowns = new ArrayList<>();
