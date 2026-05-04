@@ -7,10 +7,8 @@ import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Optional;
 import java.util.function.Consumer;
 
-import static java.util.Arrays.stream;
 import static net.minecraft.client.util.ScreenshotRecorder.takeScreenshot;
 import static net.minecraft.util.Util.getFormattedCurrentTime;
 
@@ -66,11 +64,5 @@ public enum ScreenshotType {
 
             ++i;
         }
-    }
-
-    public static @NotNull Optional<ScreenshotType> fromDisplayName(String displayName) {
-        return stream(values())
-                .filter(screenshotType -> displayName.equalsIgnoreCase(screenshotType.getDisplayName()))
-                .findFirst();
     }
 }
