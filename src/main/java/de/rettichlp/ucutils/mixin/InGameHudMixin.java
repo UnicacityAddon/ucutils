@@ -26,13 +26,13 @@ import static org.spongepowered.asm.mixin.injection.At.Shift.AFTER;
 public abstract class InGameHudMixin {
 
     @Unique
-    private static final Identifier THIRST_EMPTY_TEXTURE = Identifier.of(MOD_ID, "textures/hud/thirst_empty.png");
+    private static final Identifier HYDRATION_EMPTY_TEXTURE = Identifier.of(MOD_ID, "textures/hud/hydration_empty.png");
 
     @Unique
-    private static final Identifier THIRST_HALF_TEXTURE = Identifier.of(MOD_ID, "textures/hud/thirst_half.png");
+    private static final Identifier HYDRATION_HALF_TEXTURE = Identifier.of(MOD_ID, "textures/hud/hydration_half.png");
 
     @Unique
-    private static final Identifier THIRST_FULL_TEXTURE = Identifier.of(MOD_ID, "textures/hud/thirst_full.png");
+    private static final Identifier HYDRATION_FULL_TEXTURE = Identifier.of(MOD_ID, "textures/hud/hydration_full.png");
 
     @Inject(
             method = "renderStatusBars",
