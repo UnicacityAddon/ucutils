@@ -50,7 +50,7 @@ public abstract class InGameHudMixin {
             return;
         }
 
-        if (!configuration.getOptions().showHydration() || storage.getHydration() == -1) {
+        if (!configuration.getOptions().showHydration() || storage.getHydration() < 0) {
             return;
         }
 
