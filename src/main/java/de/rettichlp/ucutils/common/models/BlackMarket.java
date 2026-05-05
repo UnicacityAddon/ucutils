@@ -70,35 +70,14 @@ public class BlackMarket {
     @AllArgsConstructor
     public enum Type {
 
-        ABANDONED_HOUSE_MINE("Verlassenes Haus (Eisenstollen)", 985, 105, 433),
-        AIRPORT_UCA("Flughafen (UCA)", -78, 63, 637),
-        ALCATRAZ("Alcatraz", 1154, 83, 695),
-        BARRACKS("Baracken", 1796, 71, 373),
-        BEACH_MEX("Strand (Mex)", -524, 66, -236),
-        BRIDGE_HOUSEADDONSHOP("Brücke (Hausaddonshop)", 80, 58, -11),
-        CHINATOWN_HARBOR("Hafen (Chinatown)", 1172, 69, -464),
-        CHINATOWN_HOUSE_472("Haus 472 (Chinatown)", 1205, 69, -11),
-        CHINATOWN_MILL("Mühle (Chinatown)", 1225, 68, 19),
-        CINEMA_RUINS("Kino (Ruine)", 743, 69, 315),
-        CONTAINER_HALL("Containerhalle", -93, 69, -43),
-        FARM("Farm", 461, 75, 593),
-        HARBOR("Hafen", -405, 69, 29),
-        HUNTING_JACK("Jagdhütte", 388, 72, -275),
-        LAS_UNICAS_AIRPORT("Flughafen Las Unicas", 1694, 69, 557),
-        LAS_UNICAS_DANCE_FLOOR("Tanzfläche (Las-Unicas)", 1341, 64, 355),
-        LAS_UNICAS_STATE_BANK("Staatsbank (Las-Unicas)", 1466, 64, 145),
-        LAS_UNICAS_SWIMMING_POOL("Schwimmbad (Las-Unicas)", 1647, 52, 241),
-        MARINA("Yachthafen", 285, 63, -635),
-        MEX_SUBWAY("Mex U-Bahn", -92, 52, -33),
-        PSYCHIATRIC_HOSPITAL("Psychiatrie", 1689, 66, -390),
-        RICE_FIELD("Reisfeld", 1282, 64, -526),
-        SHISHABAR("Shishabar", -136, 74, -74),
-        SH_PARK_CAVE("SH Park (Höhle)", 64, 67, 347),
-        SOCCER_FIELD_GANG("Fußballplatz (Gang)", -468, 69, 425),
-        SUBWAY_KERZAKOV("U-Bahn (Kerzakov-Gebiet)", 849, 52, 262),
-        UNDER_OLD_MALL_BRIDGE("Unter alter Mall Brücke", 81, 58, -118),
-        URANIUM_MOUNTAIN("Uran Berg", -437, 167, 800),
-        VIP_LOUNGE("VIP Lounge", -115, 70, -129);
+        JAIL("Gefängnis", -777, 64, 143),
+        PANEL_BUILDING("Plattenbau", 470, 69, 424),
+        AIRPORT("Flughafen", -292, 69, 636),
+        SH_PARK("Park an der Stadthalle", 58, 70, 355),
+        FARM("Farm", 427, 82, 512),
+        CINEMA("Kino", 770, 68, 331),
+        CHURCH("Wohnwagen an der Kirche", -304, 71, -206),
+        SUBWAY_MEXICAN("U-Bahn (Mexikanisches Kartell)", -94, 51, -34);
 
         private final String displayName;
         private final int x;
