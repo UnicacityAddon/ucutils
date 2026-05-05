@@ -7,6 +7,7 @@ import de.rettichlp.ucutils.common.models.ContractEntry;
 import de.rettichlp.ucutils.common.models.Countdown;
 import de.rettichlp.ucutils.common.models.Faction;
 import de.rettichlp.ucutils.common.models.FactionEntry;
+import de.rettichlp.ucutils.common.models.FactionMember;
 import de.rettichlp.ucutils.common.models.HousebanEntry;
 import de.rettichlp.ucutils.common.models.Job;
 import de.rettichlp.ucutils.common.models.PlantEntry;
@@ -26,6 +27,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 
 import static de.rettichlp.ucutils.UCUtils.LOGGER;
@@ -189,6 +191,13 @@ public class Storage {
 
         this.playerFactionCache.put(playerName, faction);
         return faction;
+    }
+
+    public Optional<FactionMember> getFactionMember(String playerName) {
+        return this.factionEntries.stream()
+                .flatMap(factionEntry -> factionEntry.members().stream())
+                .filter(factionMember -> factionMember.username().equals(playerName))
+                .findFirst();
     }
 
     public void trackReinforcement(Reinforcement reinforcement) {
