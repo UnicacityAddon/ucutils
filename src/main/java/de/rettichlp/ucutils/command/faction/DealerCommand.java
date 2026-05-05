@@ -18,6 +18,7 @@ public class DealerCommand extends CommandBase {
     @Override
     public LiteralArgumentBuilder<FabricClientCommandSource> execute(@NotNull LiteralArgumentBuilder<FabricClientCommandSource> node) {
         return node
+                .requires(fabricClientCommandSource -> storage.getFaction(player.getStringifiedName()).isBadFaction())
                 .executes(context -> {
                     player.sendMessage(empty(), false);
 
