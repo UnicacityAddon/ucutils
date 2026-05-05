@@ -7,12 +7,16 @@ import de.rettichlp.ucutils.common.registry.UCUtilsListener;
 import de.rettichlp.ucutils.listener.IMessageReceiveListener;
 import de.rettichlp.ucutils.listener.IMessageSendListener;
 import de.rettichlp.ucutils.listener.IMoveListener;
+import lombok.NonNull;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.passive.VillagerEntity;
 import net.minecraft.text.Text;
+import net.minecraft.text.TextColor;
+import net.minecraft.util.Formatting;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.function.Predicate;
 import java.util.regex.Matcher;
@@ -47,7 +51,7 @@ public class FactionListener implements IMessageReceiveListener, IMessageSendLis
     private static final Pattern REINFORCEMENT_BUTTON_PATTERN = compile("^ §7» §cRoute anzeigen §7\\| §cUnterwegs$");
     private static final Pattern REINFORCMENT_ON_THE_WAY_PATTERN = compile("^(?<senderRank>.+) (?:\\[UC])?(?<senderPlayerName>[a-zA-Z0-9_]+) kommt zum Verstärkungsruf von (?:\\[UC])?(?<target>[a-zA-Z0-9_]+)! \\((?<distance>\\d+) Meter entfernt\\)$");
 
-    private static final Pattern FACTION_CHAT_PATTERN = compile("^(?<playerPrefix>\\p{L}) (?:\\[UC])?(?<senderPlayerName>[a-zA-Z0-9_]+): (?<message>.+)$");
+    private static final Pattern FACTION_CHAT_PATTERN = compile("^(?<playerPrefix>[\\p{L} ]+) (?:\\[UC])?(?<senderPlayerName>[a-zA-Z0-9_]+): (?<message>.+)$");
 
     private static final ReinforcementConsumer<String, String, String, String> REINFORCEMENT = (type, sender, naviPoint, distance) -> empty()
             .append(of(type).copy().formatted(RED, BOLD)).append(" ")
@@ -117,13 +121,22 @@ public class FactionListener implements IMessageReceiveListener, IMessageSendLis
 
         Matcher factionChatMatcher = FACTION_CHAT_PATTERN.matcher(message);
         if (factionChatMatcher.find()) {
-            String playerPrefix = factionChatMatcher.group("playerPrefix");
-            String senderPlayerName = factionChatMatcher.group("senderPlayerName");
-            String factionMessage = factionChatMatcher.group("message");
-
             if (!configuration.getOptions().changeFactionChatColor()) {
                 return true;
             }
+
+            Formatting primaryFormatting = configuration.getOptions().factionChatColorPrimary().getFormatting();
+            Formatting secondaryFormatting = configuration.getOptions().factionChatColorSecondary().getFormatting();
+
+            // check if color already matches formatting
+            List<Text> siblings = text.getSiblings();
+            if (siblings.size() != 3 || messageMatchesColor(siblings, primaryFormatting, secondaryFormatting)) {
+                return true;
+            }
+
+            String playerPrefix = factionChatMatcher.group("playerPrefix");
+            String senderPlayerName = factionChatMatcher.group("senderPlayerName");
+            String factionMessage = factionChatMatcher.group("message");
 
             Optional<FactionMember> optionalFactionMember = storage.getFactionMember(senderPlayerName);
             if (optionalFactionMember.isEmpty()) {
@@ -136,11 +149,11 @@ public class FactionListener implements IMessageReceiveListener, IMessageSendLis
             }
 
             player.sendMessage(empty()
-                    .append(literal(playerPrefix).formatted(configuration.getOptions().factionChatColorPrimary().getFormatting()))
+                    .append(literal(playerPrefix).formatted(primaryFormatting))
                     .append(literal(" "))
-                    .append(literal(senderPlayerName).formatted(configuration.getOptions().factionChatColorPrimary().getFormatting()))
+                    .append(literal(senderPlayerName).formatted(primaryFormatting))
                     .append(literal(": ").formatted(DARK_GRAY))
-                    .append(literal(factionMessage).formatted(configuration.getOptions().factionChatColorSecondary().getFormatting())), false);
+                    .append(literal(factionMessage).formatted(secondaryFormatting)), false);
 
             return false;
         }
@@ -198,5 +211,11 @@ public class FactionListener implements IMessageReceiveListener, IMessageSendLis
     public interface ReinforcementOnTheWayConsumer<Sender, Target, Distance> {
 
         Text create(String sender, String target, String distance);
+    }
+
+    private boolean messageMatchesColor(@NonNull List<Text> siblings, Formatting primaryFormatting, Formatting secondaryFormatting) {
+        TextColor primaryFormattingCurrent = siblings.get(0).getStyle().getColor();
+        TextColor secondaryFormattingCurrent = siblings.get(2).getStyle().getColor();
+        return primaryFormattingCurrent == null || secondaryFormattingCurrent == null || primaryFormattingCurrent.getRgb() == primaryFormatting.getColorValue() || secondaryFormattingCurrent.getRgb() == secondaryFormatting.getColorValue();
     }
 }
