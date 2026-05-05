@@ -16,13 +16,12 @@ import static de.rettichlp.ucutils.UCUtils.configuration;
 import static de.rettichlp.ucutils.UCUtils.messageService;
 import static de.rettichlp.ucutils.UCUtils.player;
 import static de.rettichlp.ucutils.UCUtils.storage;
-import static de.rettichlp.ucutils.UCUtils.utilService;
 import static java.lang.Integer.parseInt;
 import static java.lang.Math.max;
 import static java.util.Collections.emptyList;
 import static java.util.Optional.ofNullable;
 import static java.util.regex.Pattern.compile;
-import static net.minecraft.sound.SoundEvents.BLOCK_AMETHYST_BLOCK_HIT;
+import static net.minecraft.sound.SoundEvents.BLOCK_NOTE_BLOCK_BANJO;
 import static net.minecraft.text.Text.of;
 import static net.minecraft.util.Formatting.GRAY;
 import static net.minecraft.util.Formatting.UNDERLINE;
@@ -230,11 +229,9 @@ public class EconomyService implements IMessageReceiveListener {
             configuration.setMinutesSinceLastPayDay(57);
 
             if (configuration.getMoneyBankAmount() >= 100000) {
-                player.playSound(BLOCK_AMETHYST_BLOCK_HIT, 1, 1);
-                utilService.delayedAction(() -> player.playSound(BLOCK_AMETHYST_BLOCK_HIT, 1, 1.5f), 20);
-                utilService.delayedAction(() -> player.playSound(BLOCK_AMETHYST_BLOCK_HIT, 1, 1), 40);
-
                 messageService.sendModMessage("Du hast mehr als 100000$ auf der Bank!", false);
+                player.playSound(BLOCK_NOTE_BLOCK_BANJO.value(), 1, 0.1f);
+                player.playSound(BLOCK_NOTE_BLOCK_BANJO.value(), 1, 1);
             }
 
             return true;
