@@ -4,15 +4,18 @@ import de.rettichlp.ucutils.common.models.ScreenshotType;
 import net.minecraft.client.gui.screen.ChatScreen;
 import org.jetbrains.annotations.NotNull;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import java.util.Optional;
+
 import static de.rettichlp.ucutils.UCUtils.LOGGER;
 import static de.rettichlp.ucutils.UCUtils.notificationService;
 import static de.rettichlp.ucutils.common.models.ScreenshotType.OTHER;
-import static de.rettichlp.ucutils.common.models.ScreenshotType.fromDisplayName;
 import static java.lang.Thread.sleep;
+import static java.util.Arrays.stream;
 import static net.minecraft.text.Text.translatable;
 
 @Mixin(ChatScreen.class)
@@ -32,5 +35,12 @@ public abstract class ChatScreenMixin {
                 LOGGER.warn("Interrupted while trying to keep chat open", e);
             }
         }
+    }
+
+    @Unique
+    private @NotNull Optional<ScreenshotType> fromDisplayName(String displayName) {
+        return stream(ScreenshotType.values())
+                .filter(screenshotType -> displayName.equalsIgnoreCase(screenshotType.getDisplayName()))
+                .findFirst();
     }
 }

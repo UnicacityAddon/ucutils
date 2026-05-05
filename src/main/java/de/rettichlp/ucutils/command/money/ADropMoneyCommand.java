@@ -1,4 +1,4 @@
-package de.rettichlp.ucutils.command;
+package de.rettichlp.ucutils.command.money;
 
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import de.rettichlp.ucutils.common.registry.CommandBase;

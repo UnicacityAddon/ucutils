@@ -27,12 +27,12 @@ import static net.minecraft.util.Formatting.YELLOW;
 
 @Getter
 @AllArgsConstructor
-public class BlackMarket {
+public class Dealer {
 
     private final Type type;
     @Nullable
     private final LocalDateTime visitedAt;
-    private boolean found; // whether the black market was found or not
+    private boolean found; // whether the dealer was found or not
 
     public Text getText() {
         return empty()
@@ -70,14 +70,12 @@ public class BlackMarket {
     @AllArgsConstructor
     public enum Type {
 
-        JAIL("Gefängnis", -777, 64, 143),
-        PANEL_BUILDING("Plattenbau", 470, 69, 424),
-        AIRPORT("Flughafen", -292, 69, 636),
-        SH_PARK("Park an der Stadthalle", 58, 70, 355),
-        FARM("Farm", 427, 82, 512),
-        CINEMA("Kino", 770, 68, 331),
-        CHURCH("Wohnwagen an der Kirche", -304, 71, -206),
-        SUBWAY_MEXICAN("U-Bahn (Mexikanisches Kartell)", -94, 51, -34);
+        PAPER_COMPANY("Papierfabrik", -37, 70, -279),
+        HARBOR("Hafen", -417, 69, 185),
+        MEXICAN("Wohnwagen (Mex)", -381, 69, -198),
+        WINE_MAKER("Winzer", -2, 88, 598),
+        ALTSTADT("Altstadt", 0, 0, 0),
+        AIRPORT("Flughafen", -93, 64, 924);
 
         private final String displayName;
         private final int x;

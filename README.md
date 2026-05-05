@@ -14,14 +14,17 @@ reibungsloser und angenehmer gestalten.
 - Als Business-Besitzer wird in der Business-Info ein Button angezeigt, um die Einnahmen direkt abzubuchen
 - Wirft man eine Glasflasche in der Nähe eines Shops weg, wird diese als Pfand abgegeben
 - Es wird angezeigt wie lang der Cooldown für Bandagen, Schmerzpillen und Absorption ist
-- Es werden Sounds abgespielt für Notrufe, Bomben und weitere Situationen
+- Es werden Sounds abgespielt für Notrufe, Bomben, Feuer, Staatsbankraub und weitere Situationen
+- Über der Hungerleiste wird der Durst angezeigt
 
 ### Auto
 
 - Beim Suchen seines Fahrzeugs (`/car find`) wird automatisch das erste Fahrzeug ausgewählt
+- Werden die Koordinaten eines Autos angezeigt, wird automatisch eine Navigation zu diesen gestartet
 - Das Auf-/Abschließen eines Fahrzeuges wurde teilweise automatisiert (automatisches Klicken des Items im Inventar)
 - Beim Rechtsklick auf das eigene Fahrzeug wird automatisch `/car lock` ausgeführt
 - Steigt man in ein Fahrzeug ein, wird dieses automatisch gestartet und abgeschlossen
+- Das zuletzt gefahrene Fahrzeug wird mit einem Symbol markiert
 
 ### Fraktionen
 
@@ -31,6 +34,11 @@ reibungsloser und angenehmer gestalten.
 - Das Design der Reinforcements ist so überarbeitet, dass diese besser auffallen
 - Für das FBI, die Polizei und den Rettungsdienst gibt es einen Timer, der die Dauer der Bombe anzeigt
 - Mit einem Rechtsklick auf ein Fraktionstor (nicht Fraktionstür) wird dieses automatisch geöffnet oder geschlossen
+- Für den Rettungsdienst wird der Cooldown von Bandagen und Schmerzpillen unter dem Spielernamen angezeigt
+- Wenn man den Navi-Punkt eines Notrufs erreicht, wird der Notruf automatisch als erledigt markiert
+- Der Fraktionschat kann individuell eingefärbt werden
+- Eine Plantage kann direkt durch gleichzeitiges Schleichen und Klicken mit einem Samen in der Hand gelegt werden
+- Eine Plantage kann durch einen Rechtsklick mit einem Wassereimer oder Dünger direkt gewässert beziehungsweise gedüngt werden
 
 ### Jobs
 
@@ -54,11 +62,13 @@ reibungsloser und angenehmer gestalten.
 
 **Allgemein**
 
-| Befehl                       | Beschreibung                                                                                |
-|------------------------------|---------------------------------------------------------------------------------------------|
-| `/ucutils` (`/ucutils sync`) | Zeigt nützliche Status-Informationen über das Projekt an oder startet eine Synchronisierung |
-| `/mi`                        | Alias für `/memberinfo`                                                                     |
-| `/mia`                       | Alias für `/memberinfoall`                                                                  |
+| Befehl                            | Beschreibung                                                                                                    |
+|-----------------------------------|-----------------------------------------------------------------------------------------------------------------|
+| `/ucutils` (`/ucutils sync`)      | Zeigt nützliche Status-Informationen über das Projekt an oder startet eine Synchronisierung                     |
+| `/mi`                             | Alias für `/memberinfo`                                                                                         |
+| `/mia`                            | Alias für `/memberinfoall`                                                                                      |
+| `/screenshot`                     | Erstellt einen Screenshot in einer bestimmten Kategorie                                                         |
+| `/shutdown <friedhof\|gefängnis>` | Aktiviert das automatische Herunterfahren des PCs nachdem man nicht mehr auf dem Friedhof oder im Gefängnis ist |
 
 **Chat**
 
@@ -74,18 +84,19 @@ reibungsloser und angenehmer gestalten.
 |-----------------|---------------------------------------------------------------------------------------------------------------------------------------------------|
 | `/eigenbedarf`  | Nimmt eine eingestellte Menge an Drogen aus der Drogenbank einer Fraktion oder gibt diese an einen Spieler                                        |
 | `/schwarzmarkt` | Zeigt alle Schwarzmärkte an einschließlich des Zeitpunkts des letzten Besuchs des Ortes und einer Markierung ob sich der Schwarzmarkt dort befand |
+| `/dealer`       | Zeigt alle Dealer an einschließlich des Zeitpunkts des letzten Besuchs des Ortes und einer Markierung ob sich der Dealer dort befand              |
 
 **Geld**
 
-| Befehl           | Beschreibung                                                                                                                                                                         |
-|------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `/einzahlen`     | Zahlt das gesamte Bargeld in den ATM in der Nähe ein                                                                                                                                 |
-| `/reichensteuer` | Bucht so viel geld vom Konto ab bis nur noch 100000$ auf diesem sind oder der ATM leer ist                                                                                           |
-| `/adropmoney`    | Bucht für den Geldtransport-Job 16000\$ vom Konto ab, sodass das Geld vom Geldtransport-Job in den ATM eingezahlt werden kann und bucht die 16000$ anschließend zurück auf das Konto |
+| Befehl        | Beschreibung                                                                                                                                                                         |
+|---------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `/einzahlen`  | Zahlt das gesamte Bargeld in den ATM in der Nähe ein                                                                                                                                 |
+| `/adropmoney` | Bucht für den Geldtransport-Job 16000\$ vom Konto ab, sodass das Geld vom Geldtransport-Job in den ATM eingezahlt werden kann und bucht die 16000$ anschließend zurück auf das Konto |
 
 **Handy**
 
-| Befehl                            | Beschreibung                                                            |
-|-----------------------------------|-------------------------------------------------------------------------|
-| `/acall <Spielername>`            | Ermöglicht das Anrufen mittels Spielername statt der Nummer             |
-| `/asms <Spielername> <Nachricht>` | Ermöglicht das Schreiben einer SMS mittels Spielername statt der Nummer |
+| Befehl                            | Beschreibung                                                             |
+|-----------------------------------|--------------------------------------------------------------------------|
+| `/acall <Spielername>`            | Ermöglicht das Anrufen mittels Spielername statt der Nummer              |
+| `/asms <Spielername> <Nachricht>` | Ermöglicht das Schreiben einer SMS mittels Spielername statt der Nummer  |
+| `/reply <Nachricht>`              | Antwortet direkt auf eine SMS                                            |

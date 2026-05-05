@@ -23,7 +23,7 @@ public class EmergencyServiceListener implements IMessageReceiveListener, INaviS
     private static final Pattern SERVICE_PATTERN = compile("Ein Notruf von (?:\\[UC])?(?<playerName>[a-zA-Z0-9_]+) \\((?<mobileNumber>\\d+)\\): \"(?<message>.+)\"");
     private static final Pattern SERVICE_ACCEPTED_PATTERN = compile("^(?:HQ: )?(?:\\[UC])?(?<playerName>[a-zA-Z0-9_]+) hat den Notruf von (?:\\[UC])?(?<senderName>[a-zA-Z0-9_]+) angenommen\\. \\((?<distance>\\d+)m entfernt\\)$");
     private static final Pattern SERVICE_REQUEUED_PATTERN = compile("^(?:\\[UC])?(?<playerName>[a-zA-Z0-9_]+) hat den Notruf von (?:\\[UC])?(?<senderName>[a-zA-Z0-9_]+) \\((?<mobileNumber>\\d+)\\) wieder geöffnet\\.$");
-    private static final Pattern SERVICE_DONE_PATTERN = compile("^Du hast den Service von (?:\\[UC])?(?<playerName>[a-zA-Z0-9_]+) als 'Erledigt' markiert\\.$");
+    private static final Pattern SERVICE_DONE_PATTERN = compile("^Du hast den Service von (?:\\[UC])?(?<playerName>[a-zA-Z0-9_]+) als 'Erledigt' markiert!$");
     private static final Pattern SERVICE_ABORTED_PATTERN = compile("^Der Service von (?:\\[UC])?(?<playerName>[a-zA-Z0-9_]+) wurde abgebrochen\\.$");
     private static final Pattern SERVICE_DELETED_PATTERN = compile("^Der Notruf von (?:\\[UC])?(?<senderName>[a-zA-Z0-9_]+) wurde von (?:\\[UC])?(?<playerName>[a-zA-Z0-9_]+) gelöscht\\.$");
     private static final Pattern SERVICE_COUNT_PATTERN = compile("^Offene Notrufe \\((?<count>\\d+)\\):");
@@ -70,7 +70,6 @@ public class EmergencyServiceListener implements IMessageReceiveListener, INaviS
 
         Matcher serviceDoneMatcher = SERVICE_DONE_PATTERN.matcher(message);
         if (serviceDoneMatcher.find()) {
-//            api.putFactionActivityAdd(EMERGENCY_SERVICE);
             this.activeService = false;
             return true;
         }

@@ -2,22 +2,23 @@ package de.rettichlp.ucutils.listener.impl.faction;
 
 import de.rettichlp.ucutils.common.Storage;
 import de.rettichlp.ucutils.common.models.BlackMarket;
-import de.rettichlp.ucutils.common.models.Faction;
-import de.rettichlp.ucutils.common.models.Reinforcement;
+import de.rettichlp.ucutils.common.models.Dealer;
+import de.rettichlp.ucutils.common.models.FactionMember;
 import de.rettichlp.ucutils.common.registry.UCUtilsListener;
 import de.rettichlp.ucutils.listener.IMessageReceiveListener;
 import de.rettichlp.ucutils.listener.IMessageSendListener;
 import de.rettichlp.ucutils.listener.IMoveListener;
+import lombok.NonNull;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.passive.VillagerEntity;
-import net.minecraft.text.ClickEvent;
-import net.minecraft.text.Style;
 import net.minecraft.text.Text;
+import net.minecraft.text.TextColor;
+import net.minecraft.util.Formatting;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 
 import java.util.List;
-import java.util.Objects;
+import java.util.Optional;
 import java.util.function.Predicate;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -29,20 +30,18 @@ import static de.rettichlp.ucutils.UCUtils.player;
 import static de.rettichlp.ucutils.UCUtils.storage;
 import static de.rettichlp.ucutils.common.Storage.ToggledChat.NONE;
 import static de.rettichlp.ucutils.common.configuration.options.Options.ReinforcementType.UNICACITYADDON;
-import static de.rettichlp.ucutils.common.models.Faction.FBI;
-import static de.rettichlp.ucutils.common.models.Faction.RETTUNGSDIENST;
 import static java.lang.System.currentTimeMillis;
 import static java.time.LocalDateTime.now;
 import static java.util.Arrays.stream;
-import static java.util.Objects.nonNull;
 import static java.util.Optional.ofNullable;
 import static java.util.regex.Pattern.compile;
-import static net.minecraft.text.ClickEvent.Action.RUN_COMMAND;
 import static net.minecraft.text.Text.empty;
+import static net.minecraft.text.Text.literal;
 import static net.minecraft.text.Text.of;
 import static net.minecraft.util.Formatting.AQUA;
 import static net.minecraft.util.Formatting.BOLD;
 import static net.minecraft.util.Formatting.DARK_AQUA;
+import static net.minecraft.util.Formatting.DARK_GRAY;
 import static net.minecraft.util.Formatting.GRAY;
 import static net.minecraft.util.Formatting.RED;
 
@@ -53,7 +52,7 @@ public class FactionListener implements IMessageReceiveListener, IMessageSendLis
     private static final Pattern REINFORCEMENT_BUTTON_PATTERN = compile("^ §7» §cRoute anzeigen §7\\| §cUnterwegs$");
     private static final Pattern REINFORCMENT_ON_THE_WAY_PATTERN = compile("^(?<senderRank>.+) (?:\\[UC])?(?<senderPlayerName>[a-zA-Z0-9_]+) kommt zum Verstärkungsruf von (?:\\[UC])?(?<target>[a-zA-Z0-9_]+)! \\((?<distance>\\d+) Meter entfernt\\)$");
 
-    private static final Pattern EQUIP_PATTERN = compile("^\\[Equip] Du hast dich mit (?<type>.+) equipt!$");
+    private static final Pattern FACTION_CHAT_PATTERN = compile("^(?<playerPrefix>[\\p{L} ]+) (?:\\[UC])?(?<senderPlayerName>[a-zA-Z0-9_]+): (?<message>.+)$");
 
     private static final ReinforcementConsumer<String, String, String, String> REINFORCEMENT = (type, sender, naviPoint, distance) -> empty()
             .append(of(type).copy().formatted(RED, BOLD)).append(" ")
@@ -72,8 +71,7 @@ public class FactionListener implements IMessageReceiveListener, IMessageSendLis
             .append(of(distance + "m").copy().formatted(DARK_AQUA))
             .append(of(")").copy().formatted(GRAY));
 
-    private Faction factionToCheck;
-    private long lastBlackMarketCheck = 0;
+    private long lastBlackMarketAndDealerCheck = 0;
 
     @Override
     public boolean onMessageReceive(Text text, String message) {
@@ -84,10 +82,6 @@ public class FactionListener implements IMessageReceiveListener, IMessageSendLis
             String senderPlayerName = reinforcementMatcher.group("senderPlayerName");
             String naviPoint = reinforcementMatcher.group("naviPoint");
             String distance = reinforcementMatcher.group("distance");
-
-            Reinforcement reinforcement = new Reinforcement(type, senderPlayerName, naviPoint, distance);
-            LOGGER.info("Found new reinforcement: {}", reinforcement);
-            storage.trackReinforcement(reinforcement);
 
             boolean modernReinforcementStyle = configuration.getOptions().reinforcementType() == UNICACITYADDON;
             if (modernReinforcementStyle) {
@@ -107,44 +101,6 @@ public class FactionListener implements IMessageReceiveListener, IMessageSendLis
                 MinecraftClient.getInstance().execute(() -> player.sendMessage(empty(), false));
             }
 
-            List<ClickEvent> clickEvents = text.getSiblings().stream()
-                    .map(Text::getStyle)
-                    .map(Style::getClickEvent)
-                    .filter(Objects::nonNull)
-                    .filter(clickEvent -> clickEvent.getAction() == RUN_COMMAND)
-                    .toList();
-
-            // origin reinforcement sender retrieving
-//            String senderName = clickEvents.stream()
-//                    .map(ClickEvent::getValue)
-//                    .filter(commandString -> commandString.startsWith("/reinf onway "))
-//                    .map(commandString -> commandString.replace("/reinf onway ", ""))
-//                    .toList().getFirst();
-
-            // block position retrieving
-//            BlockPos blockPos = clickEvents.stream()
-//                    .map(ClickEvent::getValue)
-//                    .filter(commandString -> commandString.startsWith("/navi "))
-//                    .map(commandString -> commandString.replace("/navi ", ""))
-//                    .map(naviArguments -> {
-//                        String[] split = naviArguments.split(" ");
-//                        int x = parseInt(split[0]);
-//                        int y = parseInt(split[1]);
-//                        int z = parseInt(split[2]);
-//                        return new BlockPos(x, y, z);
-//                    })
-//                    .toList().getFirst();
-
-//            LOGGER.info("Found reinforcement buttons: {} | {}", senderName, blockPos.toShortString());
-
-//            storage.getReinforcements().stream()
-//                    .filter(reinforcement -> reinforcement.getSenderPlayerName().equals(senderName))
-//                    .max(comparing(Reinforcement::getCreatedAt))
-//                    .ifPresent(reinforcement -> {
-//                        reinforcement.setBlockPos(blockPos);
-//                        LOGGER.info("Updated reinforcement: {}", reinforcement);
-//                    });
-
             return true;
         }
 
@@ -155,49 +111,6 @@ public class FactionListener implements IMessageReceiveListener, IMessageSendLis
             String target = reinforcementOnTheWayMatcher.group("target");
             String distance = reinforcementOnTheWayMatcher.group("distance");
 
-            // mark all reinforcements of the sender (and not self) within the last 30 seconds as on-the-way
-            String playerName = player.getGameProfile().name();
-            storage.getReinforcements().stream()
-                    .filter(reinforcement -> {
-                        boolean equals = playerName.equals(senderPlayerName);
-                        LOGGER.debug("Comparing sender player names for reinforcement acceptance: {} == {} -> {}", playerName, senderPlayerName, equals);
-                        return equals;
-                    }) // the client is on the way
-                    .filter(reinforcement -> {
-                        boolean b = !playerName.equals(target);
-                        LOGGER.debug("Comparing own player names for reinforcement acceptance: {} != {} -> {}", playerName, target, b);
-                        return b;
-                    }) // don't accept your own reinforcement
-                    .filter(reinforcement -> {
-                        boolean equals = reinforcement.getSenderPlayerName().equals(target);
-                        LOGGER.debug("Comparing target player names for reinforcement acceptance: {} == {} -> {}", reinforcement.getSenderPlayerName(), target, equals);
-                        return equals;
-                    }) // find all reinforcements of the target
-                    .filter(reinforcement -> {
-                        boolean b = !reinforcement.getAcceptedPlayerNames().contains(senderPlayerName);
-                        LOGGER.debug("Checking if reinforcement was already accepted by the player: {} contains {} -> {}", reinforcement.getAcceptedPlayerNames(), senderPlayerName, !b);
-                        return b;
-                    }) // not already accepted by the player
-                    .filter(reinforcement -> {
-                        boolean after = reinforcement.getCreatedAt().isAfter(now().minusSeconds(30));
-                        LOGGER.debug("Checking if reinforcement was created within the last 30 seconds: {} after {} -> {}", reinforcement.getCreatedAt(), now().minusSeconds(30), after);
-                        return after;
-                    }) // only recent ones
-                    .filter(reinforcement -> {
-                        boolean b = switch (reinforcement.getType()) { // reinforcement types that should be accepted
-                            case "Medic benötigt" ->
-                                    storage.getFaction(senderPlayerName) == RETTUNGSDIENST; // only medics accept medic calls
-                            case "Drogenabnahme" -> storage.getFaction(senderPlayerName) == FBI; // only FBI accept drug bust calls
-                            default -> true; // all others accept all calls
-                        };
-                        LOGGER.debug("Checking if reinforcement type {} should be accepted by the player in faction {}: -> {}", reinforcement.getType(), storage.getFaction(senderPlayerName), b);
-                        return b;
-                    })
-                    .forEach(reinforcement -> {
-                        reinforcement.getAcceptedPlayerNames().add(senderPlayerName);
-                        LOGGER.info("Reinforcement accepted: {}", reinforcement);
-                    });
-
             boolean modernReinforcementStyle = configuration.getOptions().reinforcementType() == UNICACITYADDON;
             if (modernReinforcementStyle) {
                 Text reinforcementAnswer = REINFORCEMENT_ON_THE_WAY.create(senderRank + " " + senderPlayerName, target, distance);
@@ -207,11 +120,43 @@ public class FactionListener implements IMessageReceiveListener, IMessageSendLis
             return !modernReinforcementStyle;
         }
 
-        Matcher equipMatcher = EQUIP_PATTERN.matcher(message);
-        if (equipMatcher.find()) {
-            String type = equipMatcher.group("type");
-//            fromDisplayName(type).ifPresent(api::putFactionEquipAdd);
-            return true;
+        Matcher factionChatMatcher = FACTION_CHAT_PATTERN.matcher(message);
+        if (factionChatMatcher.find()) {
+            if (!configuration.getOptions().changeFactionChatColor()) {
+                return true;
+            }
+
+            Formatting primaryFormatting = configuration.getOptions().factionChatColorPrimary().getFormatting();
+            Formatting secondaryFormatting = configuration.getOptions().factionChatColorSecondary().getFormatting();
+
+            // check if color already matches formatting
+            List<Text> siblings = text.getSiblings();
+            if (siblings.size() != 3 || messageMatchesColor(siblings, primaryFormatting, secondaryFormatting)) {
+                return true;
+            }
+
+            String playerPrefix = factionChatMatcher.group("playerPrefix");
+            String senderPlayerName = factionChatMatcher.group("senderPlayerName");
+            String factionMessage = factionChatMatcher.group("message");
+
+            Optional<FactionMember> optionalFactionMember = storage.getFactionMember(senderPlayerName);
+            if (optionalFactionMember.isEmpty()) {
+                return true;
+            }
+
+            String rankName = optionalFactionMember.get().rankName();
+            if (!playerPrefix.equals(rankName)) {
+                return true;
+            }
+
+            player.sendMessage(empty()
+                    .append(literal(playerPrefix).formatted(primaryFormatting))
+                    .append(literal(" "))
+                    .append(literal(senderPlayerName).formatted(primaryFormatting))
+                    .append(literal(": ").formatted(DARK_GRAY))
+                    .append(literal(factionMessage).formatted(secondaryFormatting)), false);
+
+            return false;
         }
 
         return true;
@@ -230,39 +175,9 @@ public class FactionListener implements IMessageReceiveListener, IMessageSendLis
 
     @Override
     public void onMove(BlockPos blockPos) {
-        String playerName = player.getGameProfile().name();
-
-        // for all reinforcements within 60 blocks that were not from yourself and were accepted
-        storage.getReinforcements().stream()
-                .filter(reinforcement -> {
-                    boolean b = nonNull(reinforcement.getBlockPos());
-                    LOGGER.debug("Checking if reinforcement has a block position set: {} -> {}", reinforcement, b);
-                    return b;
-                }) // check if the block position was set
-                .filter(reinforcement -> {
-                    boolean withinDistance = reinforcement.getBlockPos().isWithinDistance(player.getBlockPos(), 60);
-                    LOGGER.debug("Checking if reinforcement is within 60 blocks: {} -> {}", reinforcement, withinDistance);
-                    return withinDistance;
-                })
-                .filter(reinforcement -> {
-                    boolean contains = reinforcement.getAcceptedPlayerNames().contains(playerName);
-                    LOGGER.debug("Checking if reinforcement was accepted by the player: {} contains {} -> {}", reinforcement.getAcceptedPlayerNames(), playerName, contains);
-                    return contains;
-                })
-                .filter(reinforcement -> {
-                    boolean b = !reinforcement.isAddedAsActivity();
-                    LOGGER.debug("Checking if reinforcement was already added as activity: {} -> {}", reinforcement, !b);
-                    return b;
-                })
-                .forEach(reinforcement -> {
-                    reinforcement.setAddedAsActivity(true);
-//                    api.putFactionActivityAdd(ActivityEntry.Type.REINFORCEMENT);
-                    LOGGER.info("Reinforcement reached, tracked activity");
-                });
-
         // mark the black market spot as visited if within 60 blocks
-        if (currentTimeMillis() - this.lastBlackMarketCheck >= 3000) { // every 3 seconds to reduce performance impact
-            this.lastBlackMarketCheck = currentTimeMillis();
+        if (currentTimeMillis() - this.lastBlackMarketAndDealerCheck >= 3000) { // every 3 seconds to reduce performance impact
+            this.lastBlackMarketAndDealerCheck = currentTimeMillis();
 
             stream(BlackMarket.Type.values())
                     .filter(type -> type.getBlockPos().isWithinDistance(blockPos, 60))
@@ -284,7 +199,34 @@ public class FactionListener implements IMessageReceiveListener, IMessageSendLis
                         storage.getBlackMarkets().add(blackMarket);
                         LOGGER.info("Marked black market spot as visited: {}", type);
                     });
+
+            stream(Dealer.Type.values())
+                    .filter(type -> type.getBlockPos().isWithinDistance(blockPos, 60))
+                    .forEach(type -> {
+                        // remove old type association if exists
+                        storage.getDealers().removeIf(dealer -> dealer.getType() == type);
+
+                        // check if black market was found there
+                        Box box = player.getBoundingBox().expand(60);
+                        Predicate<VillagerEntity> isBlackMarket = villagerEntity -> ofNullable(villagerEntity.getCustomName())
+                                .map(text -> text.getString().contains("Dealer"))
+                                .orElse(false);
+
+                        assert MinecraftClient.getInstance().world != null; // cannot be null at this point
+                        boolean found = !MinecraftClient.getInstance().world.getEntitiesByClass(VillagerEntity.class, box, isBlackMarket).isEmpty();
+
+                        // add new black market entry
+                        Dealer dealer = new Dealer(type, now(), found);
+                        storage.getDealers().add(dealer);
+                        LOGGER.info("Marked dealer spot as visited: {}", type);
+                    });
         }
+    }
+
+    private boolean messageMatchesColor(@NonNull List<Text> siblings, Formatting primaryFormatting, Formatting secondaryFormatting) {
+        TextColor primaryFormattingCurrent = siblings.get(0).getStyle().getColor();
+        TextColor secondaryFormattingCurrent = siblings.get(2).getStyle().getColor();
+        return primaryFormattingCurrent == null || secondaryFormattingCurrent == null || primaryFormattingCurrent.getRgb() == primaryFormatting.getColorValue() || secondaryFormattingCurrent.getRgb() == secondaryFormatting.getColorValue();
     }
 
     @FunctionalInterface

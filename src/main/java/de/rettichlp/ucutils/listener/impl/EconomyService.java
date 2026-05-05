@@ -13,6 +13,7 @@ import java.util.regex.Pattern;
 
 import static de.rettichlp.ucutils.UCUtils.commandService;
 import static de.rettichlp.ucutils.UCUtils.configuration;
+import static de.rettichlp.ucutils.UCUtils.messageService;
 import static de.rettichlp.ucutils.UCUtils.player;
 import static de.rettichlp.ucutils.UCUtils.storage;
 import static java.lang.Integer.parseInt;
@@ -20,6 +21,7 @@ import static java.lang.Math.max;
 import static java.util.Collections.emptyList;
 import static java.util.Optional.ofNullable;
 import static java.util.regex.Pattern.compile;
+import static net.minecraft.sound.SoundEvents.BLOCK_NOTE_BLOCK_BANJO;
 import static net.minecraft.text.Text.of;
 import static net.minecraft.util.Formatting.GRAY;
 import static net.minecraft.util.Formatting.UNDERLINE;
@@ -32,6 +34,8 @@ public class EconomyService implements IMessageReceiveListener {
     private static final Pattern BANK_NEW_BALANCE_PAYDAY_PATTERN = compile("^Neuer Betrag: (?<amount>\\d+)\\$ \\([+-]\\d+\\$\\)$");
     private static final Pattern BANK_TRANSFER_TO_PATTERN = compile("^Du hast (?:\\[UC])?(?<playerName>[a-zA-Z0-9_]+) (?<amount>\\d+)\\$ überwiesen!$");
     private static final Pattern BANK_TRANSFER_GET_PATTERN = compile("^(?:\\[UC])?(?<playerName>[a-zA-Z0-9_]+) hat dir (?<amount>\\d+)\\$ überwiesen!$");
+    private static final Pattern BANK_NEW_BALANCE_BANK_PATTERN = compile("^Neuer Bankkontostand: (?<amount>\\d+)\\$$");
+    private static final Pattern BANK_NEW_BALANCE_CASH_PATTERN = compile("^Neuer Bargeldbestand: (?<amount>\\d+)\\$$");
 
     // cash
     private static final Pattern CASH_GIVE_PATTERN = compile("^Du hast (?:\\[UC])?(?<playerName>[a-zA-Z0-9_]+) (?<amount>\\d+)\\$ gegeben!$");
@@ -49,6 +53,7 @@ public class EconomyService implements IMessageReceiveListener {
     private static final Pattern PAYDAY_TIME_PATTERN = compile("^- Zeit seit PayDay: (?<minutes>\\d+)/60 Minuten$");
     private static final Pattern PAYDAY_SALARY_PATTERN = compile("^\\[PayDay] Du bekommst dein Gehalt von (?<money>\\d+)\\$ am PayDay ausgezahlt\\.$");
     private static final Pattern PAYDAY_MINE_SALARY_PATTERN = compile("^\\[PayDay] Du bekommst deine Mine Einnahmen von (?<money>\\d+)\\$ am PayDay ausgezahlt\\.$");
+    private static final Pattern PAYDAY_COUNTDOWN_PATTERN = compile("^Info: Du hast in 3 Minuten deinen PayDay$");
 
     // other
     private static final Pattern ATM_MONEY_AMOUNT_PATTERN = compile("ATM \\d+: (?<moneyAtmAmount>\\d+)\\$/100000\\$");
@@ -98,6 +103,20 @@ public class EconomyService implements IMessageReceiveListener {
         if (bankTransferGetMatcher.find()) {
             int amount = parseInt(bankTransferGetMatcher.group("amount"));
             configuration.setMoneyBankAmount(configuration.getMoneyBankAmount() + amount);
+            return true;
+        }
+
+        Matcher bankNewBalanceBankMatcher = BANK_NEW_BALANCE_BANK_PATTERN.matcher(message);
+        if (bankNewBalanceBankMatcher.find()) {
+            int amount = parseInt(bankNewBalanceBankMatcher.group("amount"));
+            configuration.setMoneyBankAmount(amount);
+            return true;
+        }
+
+        Matcher bankNewBalanceCashMatcher = BANK_NEW_BALANCE_CASH_PATTERN.matcher(message);
+        if (bankNewBalanceCashMatcher.find()) {
+            int amount = parseInt(bankNewBalanceCashMatcher.group("amount"));
+            configuration.setMoneyCashAmount(amount);
             return true;
         }
 
@@ -202,6 +221,19 @@ public class EconomyService implements IMessageReceiveListener {
         if (paydayMineSalaryMatcher.find()) {
             int money = parseInt(paydayMineSalaryMatcher.group("money"));
             configuration.addPredictedPayDaySalary(money);
+            return true;
+        }
+
+        Matcher paydayCountdownMatcher = PAYDAY_COUNTDOWN_PATTERN.matcher(message);
+        if (paydayCountdownMatcher.find()) {
+            configuration.setMinutesSinceLastPayDay(57);
+
+            if (configuration.getMoneyBankAmount() >= 100000) {
+                messageService.sendModMessage("Du hast mehr als 100000$ auf der Bank!", false);
+                player.playSound(BLOCK_NOTE_BLOCK_BANJO.value(), 1, 0.1f);
+                player.playSound(BLOCK_NOTE_BLOCK_BANJO.value(), 1, 1);
+            }
+
             return true;
         }
 

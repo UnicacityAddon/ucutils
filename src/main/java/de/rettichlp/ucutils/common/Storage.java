@@ -5,8 +5,10 @@ import de.rettichlp.ucutils.common.models.BlacklistEntry;
 import de.rettichlp.ucutils.common.models.BlacklistReason;
 import de.rettichlp.ucutils.common.models.ContractEntry;
 import de.rettichlp.ucutils.common.models.Countdown;
+import de.rettichlp.ucutils.common.models.Dealer;
 import de.rettichlp.ucutils.common.models.Faction;
 import de.rettichlp.ucutils.common.models.FactionEntry;
+import de.rettichlp.ucutils.common.models.FactionMember;
 import de.rettichlp.ucutils.common.models.HousebanEntry;
 import de.rettichlp.ucutils.common.models.Job;
 import de.rettichlp.ucutils.common.models.PlantEntry;
@@ -20,28 +22,24 @@ import net.minecraft.entity.vehicle.MinecartEntity;
 import net.minecraft.text.Text;
 import org.jetbrains.annotations.Nullable;
 
-import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 
 import static de.rettichlp.ucutils.UCUtils.LOGGER;
 import static de.rettichlp.ucutils.UCUtils.storage;
 import static de.rettichlp.ucutils.common.Storage.ToggledChat.NONE;
 import static de.rettichlp.ucutils.common.models.Faction.NULL;
-import static java.time.Duration.ofMinutes;
 import static java.util.Arrays.stream;
 import static java.util.Optional.ofNullable;
 import static net.minecraft.text.Text.translatable;
 
 public class Storage {
-
-    public static final Duration MEDIC_BANDAGE_DURATION = ofMinutes(4);
-    public static final Duration MEDIC_PILL_DURATION = ofMinutes(4);
 
     @Getter
     private final List<ShutdownReason> activeShutdowns = new ArrayList<>();
@@ -60,6 +58,9 @@ public class Storage {
 
     @Getter
     private final List<Countdown> countdowns = new ArrayList<>();
+
+    @Getter
+    private final List<Dealer> dealers = new ArrayList<>();
 
     @Getter
     private final Set<FactionEntry> factionEntries = new HashSet<>();
@@ -129,6 +130,10 @@ public class Storage {
         this.blackMarkets.addAll(stream(BlackMarket.Type.values())
                 .map(type -> new BlackMarket(type, null, false))
                 .toList());
+
+        this.dealers.addAll(stream(Dealer.Type.values())
+                .map(type -> new Dealer(type, null, false))
+                .toList());
     }
 
     public void print() {
@@ -144,6 +149,8 @@ public class Storage {
         LOGGER.info("contractEntries[{}]: {}", this.contractEntries.size(), this.contractEntries);
         // countdowns
         LOGGER.info("countdowns[{}]: {}", this.countdowns.size(), this.countdowns);
+        // dealers
+        LOGGER.info("dealers[{}]: {}", this.dealers.size(), this.dealers);
         // factionEntries
         this.factionEntries.forEach(factionEntry -> LOGGER.info("factionEntries[{}:{}]: {}", factionEntry.faction(), factionEntry.members().size(), factionEntry.members()));
         // housebanEntries
@@ -194,6 +201,13 @@ public class Storage {
 
         this.playerFactionCache.put(playerName, faction);
         return faction;
+    }
+
+    public Optional<FactionMember> getFactionMember(String playerName) {
+        return this.factionEntries.stream()
+                .flatMap(factionEntry -> factionEntry.members().stream())
+                .filter(factionMember -> factionMember.username().equals(playerName))
+                .findFirst();
     }
 
     public void trackReinforcement(Reinforcement reinforcement) {
