@@ -223,6 +223,12 @@ public class FactionListener implements IMessageReceiveListener, IMessageSendLis
         }
     }
 
+    private boolean messageMatchesColor(@NonNull List<Text> siblings, Formatting primaryFormatting, Formatting secondaryFormatting) {
+        TextColor primaryFormattingCurrent = siblings.get(0).getStyle().getColor();
+        TextColor secondaryFormattingCurrent = siblings.get(2).getStyle().getColor();
+        return primaryFormattingCurrent == null || secondaryFormattingCurrent == null || primaryFormattingCurrent.getRgb() == primaryFormatting.getColorValue() || secondaryFormattingCurrent.getRgb() == secondaryFormatting.getColorValue();
+    }
+
     @FunctionalInterface
     public interface ReinforcementConsumer<Type, Sender, NaviPoint, Distance> {
 
@@ -233,11 +239,5 @@ public class FactionListener implements IMessageReceiveListener, IMessageSendLis
     public interface ReinforcementOnTheWayConsumer<Sender, Target, Distance> {
 
         Text create(String sender, String target, String distance);
-    }
-
-    private boolean messageMatchesColor(@NonNull List<Text> siblings, Formatting primaryFormatting, Formatting secondaryFormatting) {
-        TextColor primaryFormattingCurrent = siblings.get(0).getStyle().getColor();
-        TextColor secondaryFormattingCurrent = siblings.get(2).getStyle().getColor();
-        return primaryFormattingCurrent == null || secondaryFormattingCurrent == null || primaryFormattingCurrent.getRgb() == primaryFormatting.getColorValue() || secondaryFormattingCurrent.getRgb() == secondaryFormatting.getColorValue();
     }
 }
