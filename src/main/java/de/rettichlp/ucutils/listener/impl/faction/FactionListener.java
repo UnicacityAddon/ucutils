@@ -2,6 +2,7 @@ package de.rettichlp.ucutils.listener.impl.faction;
 
 import de.rettichlp.ucutils.common.Storage;
 import de.rettichlp.ucutils.common.models.BlackMarket;
+import de.rettichlp.ucutils.common.models.Dealer;
 import de.rettichlp.ucutils.common.models.FactionMember;
 import de.rettichlp.ucutils.common.registry.UCUtilsListener;
 import de.rettichlp.ucutils.listener.IMessageReceiveListener;
@@ -70,7 +71,7 @@ public class FactionListener implements IMessageReceiveListener, IMessageSendLis
             .append(of(distance + "m").copy().formatted(DARK_AQUA))
             .append(of(")").copy().formatted(GRAY));
 
-    private long lastBlackMarketCheck = 0;
+    private long lastBlackMarketAndDealerCheck = 0;
 
     @Override
     public boolean onMessageReceive(Text text, String message) {
@@ -175,8 +176,8 @@ public class FactionListener implements IMessageReceiveListener, IMessageSendLis
     @Override
     public void onMove(BlockPos blockPos) {
         // mark the black market spot as visited if within 60 blocks
-        if (currentTimeMillis() - this.lastBlackMarketCheck >= 3000) { // every 3 seconds to reduce performance impact
-            this.lastBlackMarketCheck = currentTimeMillis();
+        if (currentTimeMillis() - this.lastBlackMarketAndDealerCheck >= 3000) { // every 3 seconds to reduce performance impact
+            this.lastBlackMarketAndDealerCheck = currentTimeMillis();
 
             stream(BlackMarket.Type.values())
                     .filter(type -> type.getBlockPos().isWithinDistance(blockPos, 60))
@@ -197,6 +198,27 @@ public class FactionListener implements IMessageReceiveListener, IMessageSendLis
                         BlackMarket blackMarket = new BlackMarket(type, now(), found);
                         storage.getBlackMarkets().add(blackMarket);
                         LOGGER.info("Marked black market spot as visited: {}", type);
+                    });
+
+            stream(Dealer.Type.values())
+                    .filter(type -> type.getBlockPos().isWithinDistance(blockPos, 60))
+                    .forEach(type -> {
+                        // remove old type association if exists
+                        storage.getDealers().removeIf(dealer -> dealer.getType() == type);
+
+                        // check if black market was found there
+                        Box box = player.getBoundingBox().expand(60);
+                        Predicate<VillagerEntity> isBlackMarket = villagerEntity -> ofNullable(villagerEntity.getCustomName())
+                                .map(text -> text.getString().contains("Dealer"))
+                                .orElse(false);
+
+                        assert MinecraftClient.getInstance().world != null; // cannot be null at this point
+                        boolean found = !MinecraftClient.getInstance().world.getEntitiesByClass(VillagerEntity.class, box, isBlackMarket).isEmpty();
+
+                        // add new black market entry
+                        Dealer dealer = new Dealer(type, now(), found);
+                        storage.getDealers().add(dealer);
+                        LOGGER.info("Marked dealer spot as visited: {}", type);
                     });
         }
     }

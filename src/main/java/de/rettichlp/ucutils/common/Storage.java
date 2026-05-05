@@ -5,6 +5,7 @@ import de.rettichlp.ucutils.common.models.BlacklistEntry;
 import de.rettichlp.ucutils.common.models.BlacklistReason;
 import de.rettichlp.ucutils.common.models.ContractEntry;
 import de.rettichlp.ucutils.common.models.Countdown;
+import de.rettichlp.ucutils.common.models.Dealer;
 import de.rettichlp.ucutils.common.models.Faction;
 import de.rettichlp.ucutils.common.models.FactionEntry;
 import de.rettichlp.ucutils.common.models.FactionMember;
@@ -57,6 +58,9 @@ public class Storage {
 
     @Getter
     private final List<Countdown> countdowns = new ArrayList<>();
+
+    @Getter
+    private final List<Dealer> dealers = new ArrayList<>();
 
     @Getter
     private final Set<FactionEntry> factionEntries = new HashSet<>();
@@ -126,6 +130,10 @@ public class Storage {
         this.blackMarkets.addAll(stream(BlackMarket.Type.values())
                 .map(type -> new BlackMarket(type, null, false))
                 .toList());
+
+        this.dealers.addAll(stream(Dealer.Type.values())
+                .map(type -> new Dealer(type, null, false))
+                .toList());
     }
 
     public void print() {
@@ -141,6 +149,8 @@ public class Storage {
         LOGGER.info("contractEntries[{}]: {}", this.contractEntries.size(), this.contractEntries);
         // countdowns
         LOGGER.info("countdowns[{}]: {}", this.countdowns.size(), this.countdowns);
+        // dealers
+        LOGGER.info("dealers[{}]: {}", this.dealers.size(), this.dealers);
         // factionEntries
         this.factionEntries.forEach(factionEntry -> LOGGER.info("factionEntries[{}:{}]: {}", factionEntry.faction(), factionEntry.members().size(), factionEntry.members()));
         // housebanEntries

@@ -12,8 +12,8 @@ import static de.rettichlp.ucutils.UCUtils.storage;
 import static java.util.Comparator.comparingDouble;
 import static net.minecraft.text.Text.empty;
 
-@UCUtilsCommand(label = "blackmarket", aliases = "schwarzmarkt")
-public class BlackMarketCommand extends CommandBase {
+@UCUtilsCommand(label = "dealer")
+public class DealerCommand extends CommandBase {
 
     @Override
     public LiteralArgumentBuilder<FabricClientCommandSource> execute(@NotNull LiteralArgumentBuilder<FabricClientCommandSource> node) {
@@ -22,10 +22,10 @@ public class BlackMarketCommand extends CommandBase {
                 .executes(context -> {
                     player.sendMessage(empty(), false);
 
-                    messageService.sendModMessage("Schwarzmarkt Orte:", false);
-                    storage.getBlackMarkets().stream()
+                    messageService.sendModMessage("Dealer Orte:", false);
+                    storage.getDealers().stream()
                             .sorted(comparingDouble(value -> value.getType().getBlockPos().getSquaredDistance(player.getBlockPos())))
-                            .forEach(blackMarket -> messageService.sendModMessage(blackMarket.getText(), false));
+                            .forEach(dealer -> messageService.sendModMessage(dealer.getText(), false));
 
                     player.sendMessage(empty(), false);
 
