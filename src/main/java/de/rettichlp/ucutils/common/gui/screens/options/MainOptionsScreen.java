@@ -2,6 +2,8 @@ package de.rettichlp.ucutils.common.gui.screens.options;
 
 import de.rettichlp.ucutils.common.configuration.options.Options;
 import de.rettichlp.ucutils.common.gui.screens.OptionsScreen;
+import de.rettichlp.ucutils.common.gui.screens.components.CyclingButtonEntry;
+import de.rettichlp.ucutils.common.models.Color;
 import net.minecraft.client.gui.screen.GameMenuScreen;
 import net.minecraft.client.gui.widget.DirectionalLayoutWidget;
 import net.minecraft.text.Text;
@@ -24,6 +26,8 @@ public class MainOptionsScreen extends OptionsScreen {
     private static final Text HYDRATION_TOOLTIP = translatable("ucutils.options.hydration.tooltip");
     private static final Text CHECK_UNICACITY_SERVER_NAME = translatable("ucutils.options.check_unicacity_server.name");
     private static final Text CHECK_UNICACITY_SERVER_TOOLTIP = translatable("ucutils.options.check_unicacity_server.tooltip");
+    private static final Text FACTION_COLOR_PRIMARY = translatable("ucutils.options.faction_color_primary.name");
+    private static final Text FACTION_COLOR_SECONDARY = translatable("ucutils.options.faction_color_secondary.name");
 
     public MainOptionsScreen() {
         super(new GameMenuScreen(true));
@@ -50,6 +54,10 @@ public class MainOptionsScreen extends OptionsScreen {
         DirectionalLayoutWidget directionalLayoutWidget4 = directionalLayoutWidget.add(horizontal().spacing(8));
         renderService.addToggleButton(directionalLayoutWidget4, HYDRATION_NAME, HYDRATION_TOOLTIP, Options::showHydration, Options::showHydration, 150);
         renderService.addToggleButton(directionalLayoutWidget4, CHECK_UNICACITY_SERVER_NAME, CHECK_UNICACITY_SERVER_TOOLTIP, Options::checkUnicacityServer, Options::checkUnicacityServer, 150);
+
+        DirectionalLayoutWidget directionalLayoutWidget5 = directionalLayoutWidget.add(horizontal().spacing(8));
+        renderService.addCyclingButton(directionalLayoutWidget5, FACTION_COLOR_PRIMARY, Color.values(), CyclingButtonEntry::getDisplayName, Options::factionColorPrimary, Options::factionColorPrimary, 150);
+        renderService.addCyclingButton(directionalLayoutWidget5, FACTION_COLOR_SECONDARY, Color.values(), CyclingButtonEntry::getDisplayName, Options::factionColorSecondary, Options::factionColorSecondary, 150);
 
         directionalLayoutWidget.forEachChild(this::addDrawableChild);
     }

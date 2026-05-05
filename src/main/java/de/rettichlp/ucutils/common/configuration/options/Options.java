@@ -1,6 +1,7 @@
 package de.rettichlp.ucutils.common.configuration.options;
 
 import de.rettichlp.ucutils.common.gui.screens.components.CyclingButtonEntry;
+import de.rettichlp.ucutils.common.models.Color;
 import de.rettichlp.ucutils.common.models.PersonalUseEntry;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -38,6 +39,8 @@ public class Options {
     private AtmInformationType atmInformationType = NONE;
     private boolean showHydration = true;
     private boolean checkUnicacityServer = true;
+    private Color factionColorPrimary = Color.BLUE;
+    private Color factionColorSecondary = Color.DARK_AQUA;
 
     @Getter
     @AllArgsConstructor

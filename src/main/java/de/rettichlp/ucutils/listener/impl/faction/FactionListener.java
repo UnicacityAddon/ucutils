@@ -2,6 +2,7 @@ package de.rettichlp.ucutils.listener.impl.faction;
 
 import de.rettichlp.ucutils.common.Storage;
 import de.rettichlp.ucutils.common.models.BlackMarket;
+import de.rettichlp.ucutils.common.models.FactionMember;
 import de.rettichlp.ucutils.common.registry.UCUtilsListener;
 import de.rettichlp.ucutils.listener.IMessageReceiveListener;
 import de.rettichlp.ucutils.listener.IMessageSendListener;
@@ -12,6 +13,7 @@ import net.minecraft.text.Text;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 
+import java.util.Optional;
 import java.util.function.Predicate;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -29,10 +31,12 @@ import static java.util.Arrays.stream;
 import static java.util.Optional.ofNullable;
 import static java.util.regex.Pattern.compile;
 import static net.minecraft.text.Text.empty;
+import static net.minecraft.text.Text.literal;
 import static net.minecraft.text.Text.of;
 import static net.minecraft.util.Formatting.AQUA;
 import static net.minecraft.util.Formatting.BOLD;
 import static net.minecraft.util.Formatting.DARK_AQUA;
+import static net.minecraft.util.Formatting.DARK_GRAY;
 import static net.minecraft.util.Formatting.GRAY;
 import static net.minecraft.util.Formatting.RED;
 
@@ -43,7 +47,7 @@ public class FactionListener implements IMessageReceiveListener, IMessageSendLis
     private static final Pattern REINFORCEMENT_BUTTON_PATTERN = compile("^ §7» §cRoute anzeigen §7\\| §cUnterwegs$");
     private static final Pattern REINFORCMENT_ON_THE_WAY_PATTERN = compile("^(?<senderRank>.+) (?:\\[UC])?(?<senderPlayerName>[a-zA-Z0-9_]+) kommt zum Verstärkungsruf von (?:\\[UC])?(?<target>[a-zA-Z0-9_]+)! \\((?<distance>\\d+) Meter entfernt\\)$");
 
-    private static final Pattern EQUIP_PATTERN = compile("^\\[Equip] Du hast dich mit (?<type>.+) equipt!$");
+    private static final Pattern FACTION_CHAT_PATTERN = compile("^(?<playerPrefix>\\p{L}) (?:\\[UC])?(?<senderPlayerName>[a-zA-Z0-9_]+): (?<message>.+)$");
 
     private static final ReinforcementConsumer<String, String, String, String> REINFORCEMENT = (type, sender, naviPoint, distance) -> empty()
             .append(of(type).copy().formatted(RED, BOLD)).append(" ")
@@ -111,11 +115,30 @@ public class FactionListener implements IMessageReceiveListener, IMessageSendLis
             return !modernReinforcementStyle;
         }
 
-        Matcher equipMatcher = EQUIP_PATTERN.matcher(message);
-        if (equipMatcher.find()) {
-            String type = equipMatcher.group("type");
-//            fromDisplayName(type).ifPresent(api::putFactionEquipAdd);
-            return true;
+        Matcher factionChatMatcher = FACTION_CHAT_PATTERN.matcher(message);
+        if (factionChatMatcher.find()) {
+            String playerPrefix = factionChatMatcher.group("playerPrefix");
+            String senderPlayerName = factionChatMatcher.group("senderPlayerName");
+            String factionMessage = factionChatMatcher.group("message");
+
+            Optional<FactionMember> optionalFactionMember = storage.getFactionMember(senderPlayerName);
+            if (optionalFactionMember.isEmpty()) {
+                return true;
+            }
+
+            String rankName = optionalFactionMember.get().rankName();
+            if (!playerPrefix.equals(rankName)) {
+                return true;
+            }
+
+            player.sendMessage(empty()
+                    .append(literal(playerPrefix).formatted(AQUA))
+                    .append(literal(" "))
+                    .append(literal(senderPlayerName).formatted(AQUA))
+                    .append(literal(": ").formatted(DARK_GRAY))
+                    .append(literal(factionMessage).formatted(DARK_AQUA)), false);
+
+            return false;
         }
 
         return true;
