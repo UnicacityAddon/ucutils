@@ -144,10 +144,16 @@ public class FactionListener implements IMessageReceiveListener, IMessageSendLis
                 return true;
             }
 
+            System.out.println("FactionChatColor: " + optionalFactionMember.get());
+
+            System.out.println("FactionChatColor: " + optionalFactionMember.get().rankName() + " and playerPrefix " + playerPrefix);
+
             String rankName = optionalFactionMember.get().rankName();
             if (!playerPrefix.equals(rankName)) {
                 return true;
             }
+
+            System.out.println("FactionChatColor: playerPrefix matches rankName");
 
             player.sendMessage(empty()
                     .append(literal(playerPrefix).formatted(primaryFormatting))
@@ -155,6 +161,8 @@ public class FactionListener implements IMessageReceiveListener, IMessageSendLis
                     .append(literal(senderPlayerName).formatted(primaryFormatting))
                     .append(literal(": ").formatted(DARK_GRAY))
                     .append(literal(factionMessage).formatted(secondaryFormatting)), false);
+
+            System.out.println("FactionChatColor: message sent");
 
             return false;
         }
