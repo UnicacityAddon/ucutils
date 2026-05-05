@@ -20,6 +20,8 @@ import net.minecraft.client.network.ClientPlayerEntity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.concurrent.ScheduledFuture;
+
 import static java.lang.Boolean.getBoolean;
 import static java.util.Objects.isNull;
 
@@ -51,6 +53,8 @@ public class UCUtils implements ModInitializer {
 
     private final Registry registry = new Registry();
 
+    private ScheduledFuture<?> syncTask;
+
     @Override
     public void onInitialize() {
         // This entrypoint is suitable for setting up client-specific logic, such as rendering.
@@ -70,9 +74,15 @@ public class UCUtils implements ModInitializer {
                     this.registry.registerListeners();
                     renderService.initializeWidgets();
                     syncService.syncFactionSpecificData();
-                    syncService.startRepeatingSync();
+                    this.syncTask = syncService.startRepeatingSync();
                     syncService.checkForUpdates();
                 });
+            }
+        });
+
+        ClientPlayConnectionEvents.DISCONNECT.register((handler, client) -> {
+            if (this.syncTask != null) {
+                this.syncTask.cancel(true);
             }
         });
 
