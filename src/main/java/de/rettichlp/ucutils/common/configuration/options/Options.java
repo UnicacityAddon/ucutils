@@ -39,8 +39,9 @@ public class Options {
     private AtmInformationType atmInformationType = NONE;
     private boolean showHydration = true;
     private boolean checkUnicacityServer = true;
-    private Color factionColorPrimary = Color.BLUE;
-    private Color factionColorSecondary = Color.DARK_AQUA;
+    private boolean changeFactionChatColor = true;
+    private Color factionChatColorPrimary = Color.BLUE;
+    private Color factionChatColorSecondary = Color.DARK_AQUA;
 
     @Getter
     @AllArgsConstructor

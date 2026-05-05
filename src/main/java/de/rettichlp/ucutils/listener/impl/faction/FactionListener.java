@@ -121,6 +121,10 @@ public class FactionListener implements IMessageReceiveListener, IMessageSendLis
             String senderPlayerName = factionChatMatcher.group("senderPlayerName");
             String factionMessage = factionChatMatcher.group("message");
 
+            if (!configuration.getOptions().changeFactionChatColor()) {
+                return true;
+            }
+
             Optional<FactionMember> optionalFactionMember = storage.getFactionMember(senderPlayerName);
             if (optionalFactionMember.isEmpty()) {
                 return true;
@@ -132,11 +136,11 @@ public class FactionListener implements IMessageReceiveListener, IMessageSendLis
             }
 
             player.sendMessage(empty()
-                    .append(literal(playerPrefix).formatted(AQUA))
+                    .append(literal(playerPrefix).formatted(configuration.getOptions().factionChatColorPrimary().getFormatting()))
                     .append(literal(" "))
-                    .append(literal(senderPlayerName).formatted(AQUA))
+                    .append(literal(senderPlayerName).formatted(configuration.getOptions().factionChatColorPrimary().getFormatting()))
                     .append(literal(": ").formatted(DARK_GRAY))
-                    .append(literal(factionMessage).formatted(DARK_AQUA)), false);
+                    .append(literal(factionMessage).formatted(configuration.getOptions().factionChatColorSecondary().getFormatting())), false);
 
             return false;
         }
