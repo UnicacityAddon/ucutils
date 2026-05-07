@@ -59,6 +59,10 @@ public abstract class ClientPlayerEntityMixin {
 
     @Inject(method = "move", at = @At("HEAD"))
     private void ucutils$moveHead(MovementType type, Vec3d movement, CallbackInfo ci) {
+        if (!storage.isUnicaCity()) {
+            return;
+        }
+
         BlockPos playerPos = player.getBlockPos();
 
         // mark the black market and dealer spots as visited if within 60 blocks

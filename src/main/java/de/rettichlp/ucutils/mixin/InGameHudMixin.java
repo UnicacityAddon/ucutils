@@ -74,6 +74,10 @@ public abstract class InGameHudMixin {
 
     @Inject(method = "renderBossBarHud", at = @At("HEAD"))
     private void ucutils$renderBossBarHudHead(DrawContext context, RenderTickCounter tickCounter, CallbackInfo ci) {
+        if (!storage.isUnicaCity()) {
+            return;
+        }
+
         renderNotifications(context);
         renderWidgets(context);
 

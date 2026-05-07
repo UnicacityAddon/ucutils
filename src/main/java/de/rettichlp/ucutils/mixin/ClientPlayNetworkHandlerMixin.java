@@ -28,6 +28,10 @@ public abstract class ClientPlayNetworkHandlerMixin {
 
     @Inject(method = "sendChatMessage", at = @At("HEAD"), cancellable = true)
     private void ucutils$sendChatMessageHead(String content, CallbackInfo ci) {
+        if (!storage.isUnicaCity()) {
+            return;
+        }
+
         Storage.ToggledChat toggledChat = storage.getToggledChat();
         if (toggledChat != NONE) {
             commandService.sendCommand(toggledChat.getCommand() + " " + content);
