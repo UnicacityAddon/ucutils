@@ -32,7 +32,7 @@ public class SyncService {
 
     public ScheduledFuture<?> startRepeatingSync() {
         return newSingleThreadScheduledExecutor().scheduleAtFixedRate(() -> {
-            if (storage.isUnicaCity()) {
+            if (!storage.isUnicaCity()) {
                 return;
             }
 
