@@ -28,7 +28,7 @@ import static net.minecraft.util.Formatting.GRAY;
 import static net.minecraft.util.Formatting.UNDERLINE;
 
 @UCUtilsListener
-public class EconomyService implements IMessageReceiveListener {
+public class EconomyListener implements IMessageReceiveListener {
 
     // bank
     private static final Pattern BANK_STATEMENT_PATTERN = compile("^Ihr Bankguthaben beträgt: \\+(?<amount>\\d+)\\$$");
