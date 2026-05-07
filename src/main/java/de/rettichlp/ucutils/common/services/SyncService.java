@@ -4,7 +4,6 @@ import de.rettichlp.ucutils.common.models.Faction;
 import de.rettichlp.ucutils.common.models.FactionEntry;
 
 import java.util.Map;
-import java.util.concurrent.ScheduledFuture;
 
 import static de.rettichlp.ucutils.UCUtils.LOGGER;
 import static de.rettichlp.ucutils.UCUtils.api;
@@ -31,8 +30,8 @@ import static net.minecraft.util.Formatting.RED;
 
 public class SyncService {
 
-    public ScheduledFuture<?> startRepeatingSync() {
-        return newSingleThreadScheduledExecutor().scheduleAtFixedRate(() -> {
+    public void startRepeatingSync() {
+        newSingleThreadScheduledExecutor().scheduleAtFixedRate(() -> {
             if (!storage.isUnicaCity()) {
                 return;
             }
