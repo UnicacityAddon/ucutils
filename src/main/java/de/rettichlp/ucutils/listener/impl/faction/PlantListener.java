@@ -5,12 +5,8 @@ import de.rettichlp.ucutils.common.registry.UCUtilsListener;
 import de.rettichlp.ucutils.listener.IBlockRightClickListener;
 import de.rettichlp.ucutils.listener.IEntityRenderListener;
 import de.rettichlp.ucutils.listener.IMessageReceiveListener;
-import de.rettichlp.ucutils.listener.IScreenOpenListener;
 import net.fabricmc.fabric.api.client.rendering.v1.world.WorldRenderContext;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.gui.screen.ingame.GenericContainerScreen;
-import net.minecraft.client.network.ClientPlayerInteractionManager;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.client.world.ClientWorld;
@@ -41,11 +37,8 @@ import static java.util.regex.Pattern.compile;
 import static net.minecraft.block.Blocks.FERN;
 import static net.minecraft.block.Blocks.PODZOL;
 import static net.minecraft.entity.EquipmentSlot.MAINHAND;
-import static net.minecraft.item.Items.BONE_MEAL;
 import static net.minecraft.item.Items.PUMPKIN_SEEDS;
-import static net.minecraft.item.Items.WATER_BUCKET;
 import static net.minecraft.item.Items.WHEAT_SEEDS;
-import static net.minecraft.screen.slot.SlotActionType.PICKUP;
 import static net.minecraft.text.Text.empty;
 import static net.minecraft.text.Text.of;
 import static net.minecraft.util.Formatting.AQUA;
@@ -56,9 +49,8 @@ import static net.minecraft.util.Formatting.GREEN;
 import static net.minecraft.util.Formatting.RED;
 
 @UCUtilsListener
-public class PlantListener implements IBlockRightClickListener, IEntityRenderListener, IMessageReceiveListener, IScreenOpenListener {
+public class PlantListener implements IBlockRightClickListener, IEntityRenderListener, IMessageReceiveListener {
 
-    private static final String PLANT_TEXT = "Plantage";
     private static final Pattern PLANT_PLANT_PATTERN = compile("^\\[Plantage] (?:\\[UC])?(?<playerName>[a-zA-Z0-9_]+) hat eine (Kräuter|Pulver)-Plantage gelegt\\. \\[\\d+/10]$");
     private static final Pattern PLANT_WATER_PATTERN = compile("^\\[Plantage] Eine (Kräuter|Pulver)-Plantage wurde von (?:\\[UC])?(?<playerName>[a-zA-Z0-9_]+) gewässert\\.$");
     private static final Pattern PLANT_FERTILIZE_PATTERN = compile("^\\[Plantage] Eine (Kräuter|Pulver)-Plantage wurde von (?:\\[UC])?(?<playerName>[a-zA-Z0-9_]+) gedüngt\\.$");
@@ -138,8 +130,8 @@ public class PlantListener implements IBlockRightClickListener, IEntityRenderLis
                     fertilizeText = of("↓").copy().formatted(AQUA);
                 }
 
-                renderService.renderTextAt(matrices, vertexConsumers, x, y + 0.75, z, waterText, 0.015f);
-                renderService.renderTextAt(matrices, vertexConsumers, x, y + 0.6, z, fertilizeText, 0.015f);
+                renderService.renderTextAt(context, x, y + 0.75, z, waterText, 0.015f);
+                renderService.renderTextAt(context, x, y + 0.6, z, fertilizeText, 0.015f);
             });
         }
     }
@@ -179,22 +171,6 @@ public class PlantListener implements IBlockRightClickListener, IEntityRenderLis
         }
 
         return true;
-    }
-
-    @Override
-    public void onScreenOpen(Screen screen, int scaledWidth, int scaledHeight) {
-        ClientPlayerInteractionManager interactionManager = MinecraftClient.getInstance().interactionManager;
-
-        if (nonNull(interactionManager) && screen instanceof GenericContainerScreen genericContainerScreen && PLANT_TEXT.equals(genericContainerScreen.getTitle().getString())) {
-            ItemStack mainHandStack = player.getEquippedStack(MAINHAND);
-
-            int syncId = genericContainerScreen.getScreenHandler().syncId;
-            if (mainHandStack.isOf(WATER_BUCKET)) {
-                interactionManager.clickSlot(syncId, 1, 0, PICKUP, player);
-            } else if (mainHandStack.isOf(BONE_MEAL)) {
-                interactionManager.clickSlot(syncId, 7, 0, PICKUP, player);
-            }
-        }
     }
 
     private Formatting getTextColor(long millis) {

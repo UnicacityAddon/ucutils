@@ -7,14 +7,12 @@ import de.rettichlp.ucutils.listener.IBlockRightClickListener;
 import de.rettichlp.ucutils.listener.IEntityRenderListener;
 import de.rettichlp.ucutils.listener.IMessageReceiveListener;
 import de.rettichlp.ucutils.listener.INaviSpotReachedListener;
-import de.rettichlp.ucutils.listener.IScreenOpenListener;
 import de.rettichlp.ucutils.listener.ITickListener;
 import de.rettichlp.ucutils.listener.IUCUtilsListener;
 import net.fabricmc.fabric.api.client.command.v2.FabricClientCommandSource;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.message.v1.ClientReceiveMessageEvents;
 import net.fabricmc.fabric.api.client.rendering.v1.world.WorldRenderEvents;
-import net.fabricmc.fabric.api.client.screen.v1.ScreenEvents;
 import net.fabricmc.fabric.api.event.player.UseBlockCallback;
 import org.jetbrains.annotations.NotNull;
 
@@ -99,8 +97,6 @@ public class Registry {
             // handle tick
             getListenersImplementing(ITickListener.class).forEach(ITickListener::onTick);
         });
-
-        ScreenEvents.AFTER_INIT.register((client, screen, scaledWidth, scaledHeight) -> getListenersImplementing(IScreenOpenListener.class).forEach(iScreenOpenListener -> iScreenOpenListener.onScreenOpen(screen, scaledWidth, scaledHeight)));
 
         UseBlockCallback.EVENT.register((player, world, hand, hitResult) -> {
             if (hand != OFF_HAND && world.isClient()) {

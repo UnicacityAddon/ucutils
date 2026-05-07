@@ -20,6 +20,7 @@
     "ClientPlayerEntityMixin",
     "ClientPlayNetworkHandlerMixin",
     "GameMenuScreenMixin",
+    "HandledScreenMixin",
     "InGameHudMixin",
     "PlayerEntityRendererMixin",
     "PlayerListHudMixin"
