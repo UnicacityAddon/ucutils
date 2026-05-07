@@ -5,7 +5,6 @@ import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import de.rettichlp.ucutils.common.models.Sound;
 import de.rettichlp.ucutils.listener.IBlockRightClickListener;
 import de.rettichlp.ucutils.listener.IEntityRenderListener;
-import de.rettichlp.ucutils.listener.IHudRenderListener;
 import de.rettichlp.ucutils.listener.IMessageReceiveListener;
 import de.rettichlp.ucutils.listener.INaviSpotReachedListener;
 import de.rettichlp.ucutils.listener.IScreenOpenListener;
@@ -14,7 +13,6 @@ import de.rettichlp.ucutils.listener.IUCUtilsListener;
 import net.fabricmc.fabric.api.client.command.v2.FabricClientCommandSource;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.message.v1.ClientReceiveMessageEvents;
-import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
 import net.fabricmc.fabric.api.client.rendering.v1.world.WorldRenderEvents;
 import net.fabricmc.fabric.api.client.screen.v1.ScreenEvents;
 import net.fabricmc.fabric.api.event.player.UseBlockCallback;
@@ -101,8 +99,6 @@ public class Registry {
             // handle tick
             getListenersImplementing(ITickListener.class).forEach(ITickListener::onTick);
         });
-
-        HudRenderCallback.EVENT.register((drawContext, tickCounter) -> getListenersImplementing(IHudRenderListener.class).forEach(iHudRenderListener -> iHudRenderListener.onHudRender(drawContext, tickCounter)));
 
         ScreenEvents.AFTER_INIT.register((client, screen, scaledWidth, scaledHeight) -> getListenersImplementing(IScreenOpenListener.class).forEach(iScreenOpenListener -> iScreenOpenListener.onScreenOpen(screen, scaledWidth, scaledHeight)));
 

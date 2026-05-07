@@ -39,14 +39,12 @@ public class CarListener implements IEntityRenderListener, IMessageReceiveListen
 
     @Override
     public void onEntityRender(WorldRenderContext context) {
-        MatrixStack matrices = context.matrices();
-        VertexConsumerProvider vertexConsumers = context.consumers();
         ClientWorld world = MinecraftClient.getInstance().world;
 
         if (world != null && configuration.getOptions().car().highlight()) {
             ofNullable(storage.getMinecartEntityToHighlight())
                     .map(minecartEntity -> world.getEntityById(minecartEntity.getId()))
-                    .ifPresent(minecartEntity -> renderService.renderTextAboveEntity(matrices, vertexConsumers, minecartEntity, Text.of("🚗").copy().formatted(AQUA), 0.05F));
+                    .ifPresent(minecartEntity -> renderService.renderTextAboveEntity(context, minecartEntity, Text.of("🚗").copy().formatted(AQUA), 0.05F));
         }
     }
 
