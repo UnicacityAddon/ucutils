@@ -32,6 +32,10 @@ public class SyncService {
 
     public ScheduledFuture<?> startRepeatingSync() {
         return newSingleThreadScheduledExecutor().scheduleAtFixedRate(() -> {
+            if (storage.isUnicaCity()) {
+                return;
+            }
+
             // show health for hydration bar sync
             utilService.delayedAction(() -> commandService.sendCommandWithHiddenOutput("health"), COMMAND_COOLDOWN_MILLIS);
         }, 20, 180, SECONDS);
