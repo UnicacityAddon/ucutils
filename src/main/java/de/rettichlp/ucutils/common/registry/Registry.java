@@ -6,9 +6,7 @@ import de.rettichlp.ucutils.common.models.Sound;
 import de.rettichlp.ucutils.listener.IBlockRightClickListener;
 import de.rettichlp.ucutils.listener.ICommandSendListener;
 import de.rettichlp.ucutils.listener.IEntityRenderListener;
-import de.rettichlp.ucutils.listener.IEntityRightClickListener;
 import de.rettichlp.ucutils.listener.IHudRenderListener;
-import de.rettichlp.ucutils.listener.IKeyPressListener;
 import de.rettichlp.ucutils.listener.IMessageReceiveListener;
 import de.rettichlp.ucutils.listener.IMessageSendListener;
 import de.rettichlp.ucutils.listener.INaviSpotReachedListener;
@@ -23,20 +21,14 @@ import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
 import net.fabricmc.fabric.api.client.rendering.v1.world.WorldRenderEvents;
 import net.fabricmc.fabric.api.client.screen.v1.ScreenEvents;
 import net.fabricmc.fabric.api.event.player.UseBlockCallback;
-import net.fabricmc.fabric.api.event.player.UseEntityCallback;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.option.KeyBinding;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
 import java.util.Set;
 
 import static de.rettichlp.ucutils.UCUtils.LOGGER;
-import static de.rettichlp.ucutils.UCUtils.player;
 import static de.rettichlp.ucutils.UCUtils.storage;
 import static java.util.Collections.emptySet;
-import static java.util.Objects.isNull;
-import static java.util.Optional.ofNullable;
 import static java.util.stream.Collectors.toSet;
 import static java.util.stream.StreamSupport.stream;
 import static net.fabricmc.fabric.api.client.command.v2.ClientCommandManager.literal;
@@ -133,12 +125,6 @@ public class Registry {
         ClientTickEvents.END_CLIENT_TICK.register((server) -> {
             // handle tick
             getListenersImplementing(ITickListener.class).forEach(ITickListener::onTick);
-
-            // handle key press
-            KeyBinding swapHandsKey = MinecraftClient.getInstance().options.swapHandsKey;
-            if (swapHandsKey.isPressed()) {
-                getListenersImplementing(IKeyPressListener.class).forEach(IKeyPressListener::onSwapHandsKeyPress);
-            }
         });
 
         HudRenderCallback.EVENT.register((drawContext, tickCounter) -> getListenersImplementing(IHudRenderListener.class).forEach(iHudRenderListener -> iHudRenderListener.onHudRender(drawContext, tickCounter)));
@@ -148,14 +134,6 @@ public class Registry {
         UseBlockCallback.EVENT.register((player, world, hand, hitResult) -> {
             if (hand != OFF_HAND && world.isClient()) {
                 getListenersImplementing(IBlockRightClickListener.class).forEach(iBlockRightClickListener -> iBlockRightClickListener.onBlockRightClick(world, hand, hitResult));
-            }
-
-            return PASS;
-        });
-
-        UseEntityCallback.EVENT.register((player, world, hand, entity, hitResult) -> {
-            if (hand != OFF_HAND && world.isClient()) {
-                getListenersImplementing(IEntityRightClickListener.class).forEach(iEntityRightClickListener -> iEntityRightClickListener.onEntityRightClick(world, hand, entity, hitResult));
             }
 
             return PASS;

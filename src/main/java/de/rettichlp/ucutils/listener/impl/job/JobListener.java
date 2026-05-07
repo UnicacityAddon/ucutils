@@ -4,7 +4,6 @@ import de.rettichlp.ucutils.common.models.Countdown;
 import de.rettichlp.ucutils.common.models.Job;
 import de.rettichlp.ucutils.common.registry.UCUtilsListener;
 import de.rettichlp.ucutils.listener.IMessageReceiveListener;
-import de.rettichlp.ucutils.listener.IMoveListener;
 import de.rettichlp.ucutils.listener.INaviSpotReachedListener;
 import net.minecraft.text.Text;
 import net.minecraft.util.math.BlockPos;
@@ -20,7 +19,6 @@ import static de.rettichlp.ucutils.UCUtils.storage;
 import static de.rettichlp.ucutils.UCUtils.utilService;
 import static de.rettichlp.ucutils.common.models.Job.PIZZA_DELIVERY;
 import static de.rettichlp.ucutils.common.models.Job.TOBACCO_PLANTATION;
-import static de.rettichlp.ucutils.common.models.Job.URANIUM_TRANSPORT;
 import static java.lang.Integer.parseInt;
 import static java.time.Duration.between;
 import static java.time.LocalDateTime.now;
@@ -30,7 +28,7 @@ import static java.util.concurrent.TimeUnit.SECONDS;
 import static java.util.regex.Pattern.compile;
 
 @UCUtilsListener
-public class JobListener implements IMessageReceiveListener, IMoveListener, INaviSpotReachedListener {
+public class JobListener implements IMessageReceiveListener, INaviSpotReachedListener {
 
     private static final String MINING_BOOSTER_COUNTDOWN_TITLE = "Mining XP-Booster";
     private static final Pattern TRANSPORT_DELIVER_PATTERN = compile("^\\[Transport] Du hast (eine Holz Lieferung|eine Kiste|eine Waffenkiste|ein Weizen Paket|eine Schwarzpulverkiste) abgeliefert( bei .+)?\\.$");
@@ -87,17 +85,6 @@ public class JobListener implements IMessageReceiveListener, IMoveListener, INav
         }
 
         return true;
-    }
-
-    @Override
-    public void onMove(BlockPos blockPos) {
-        if (isNull(storage.getCurrentJob())) {
-            return;
-        }
-
-        if (storage.getCurrentJob() == URANIUM_TRANSPORT && player.getBlockPos().isWithinDistance(new BlockPos(1132, 68, 396), 2)) {
-            commandService.sendCommand("dropuran");
-        }
     }
 
     @Override
