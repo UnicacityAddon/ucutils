@@ -9,6 +9,7 @@ import java.util.concurrent.ScheduledFuture;
 import static de.rettichlp.ucutils.UCUtils.LOGGER;
 import static de.rettichlp.ucutils.UCUtils.api;
 import static de.rettichlp.ucutils.UCUtils.commandService;
+import static de.rettichlp.ucutils.UCUtils.configuration;
 import static de.rettichlp.ucutils.UCUtils.notificationService;
 import static de.rettichlp.ucutils.UCUtils.player;
 import static de.rettichlp.ucutils.UCUtils.storage;
@@ -37,7 +38,9 @@ public class SyncService {
             }
 
             // show health for hydration bar sync
-            utilService.delayedAction(() -> commandService.sendCommandWithHiddenOutput("health"), COMMAND_COOLDOWN_MILLIS);
+            if (configuration.getOptions().showHydration()) {
+                utilService.delayedAction(() -> commandService.sendCommandWithHiddenOutput("health"), COMMAND_COOLDOWN_MILLIS);
+            }
         }, 20, 180, SECONDS);
     }
 
