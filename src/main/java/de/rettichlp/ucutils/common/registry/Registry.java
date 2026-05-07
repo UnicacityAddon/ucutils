@@ -4,7 +4,6 @@ import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import de.rettichlp.ucutils.common.models.Sound;
 import de.rettichlp.ucutils.listener.IBlockRightClickListener;
-import de.rettichlp.ucutils.listener.ICommandSendListener;
 import de.rettichlp.ucutils.listener.IEntityRenderListener;
 import de.rettichlp.ucutils.listener.IHudRenderListener;
 import de.rettichlp.ucutils.listener.IMessageReceiveListener;
@@ -109,17 +108,6 @@ public class Registry {
             }
 
             return sendMessage;
-        });
-
-        ClientSendMessageEvents.ALLOW_COMMAND.register(commandWithoutPrefix -> {
-            boolean executeCommand = getListenersImplementing(ICommandSendListener.class).stream()
-                    .allMatch(iCommandSendListener -> iCommandSendListener.onCommandSend(commandWithoutPrefix));
-
-            if (!executeCommand) {
-                LOGGER.info("UCUtils blocked command execution: /{}", commandWithoutPrefix);
-            }
-
-            return executeCommand;
         });
 
         ClientTickEvents.END_CLIENT_TICK.register((server) -> {
