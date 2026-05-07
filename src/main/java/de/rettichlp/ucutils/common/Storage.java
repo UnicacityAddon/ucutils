@@ -95,12 +95,24 @@ public class Storage {
 
     @Getter
     @Setter
+    private String bombLocation;
+
+    @Getter
+    @Setter
+    private LocalDateTime bombPlantTimestamp;
+
+    @Getter
+    @Setter
     private boolean carLocked = true;
 
     @Getter
     @Setter
     @Nullable
     private Job currentJob;
+
+    @Getter
+    @Setter
+    private double hydration = -1.0;
 
     @Getter
     @Setter
@@ -113,10 +125,6 @@ public class Storage {
     @Getter
     @Setter
     private int moneyAtmAmount = 0;
-
-    @Getter
-    @Setter
-    private double hydration = -1.0;
 
     @Getter
     @Setter
@@ -169,6 +177,10 @@ public class Storage {
         LOGGER.info("wantedEntries[{}]: {}", this.wantedEntries.size(), this.wantedEntries);
         // activeServices
         LOGGER.info("activeServices: {}", this.activeServices);
+        // bombLocation
+        LOGGER.info("bombLocation: {}", this.bombLocation);
+        // bombPlantTime
+        LOGGER.info("bombPlantTime: {}", this.bombPlantTimestamp);
         // carLocked
         LOGGER.info("carLocked: {}", this.carLocked);
         // currentJob

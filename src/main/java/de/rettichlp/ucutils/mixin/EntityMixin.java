@@ -1,6 +1,5 @@
 package de.rettichlp.ucutils.mixin;
 
-import de.rettichlp.ucutils.listener.callback.PlayerEnterVehicleCallback;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.ItemEntity;
@@ -16,9 +15,12 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
+import static de.rettichlp.ucutils.UCUtils.commandService;
+import static de.rettichlp.ucutils.UCUtils.configuration;
 import static de.rettichlp.ucutils.UCUtils.nameTagService;
 import static de.rettichlp.ucutils.UCUtils.player;
 import static de.rettichlp.ucutils.UCUtils.storage;
+import static de.rettichlp.ucutils.UCUtils.utilService;
 import static net.minecraft.item.Items.SKELETON_SKULL;
 import static net.minecraft.item.Items.WITHER_SKELETON_SKULL;
 import static net.minecraft.text.Text.empty;
@@ -43,8 +45,18 @@ public abstract class EntityMixin {
         }
 
         UniquelyIdentifiable self = (Entity) (Object) this;
-        if (self.getUuid().equals(player.getUuid())) {
-            PlayerEnterVehicleCallback.EVENT.invoker().onEnter(vehicle);
+        if (self.getUuid().equals(player.getUuid()) && vehicle instanceof MinecartEntity) {
+            storage.setMinecartEntityToHighlight(null);
+
+            if (configuration.getOptions().car().automatedStart()) {
+                // start the car with a small delay to ensure the player is fully in the vehicle
+                utilService.delayedAction(() -> commandService.sendCommand("car start"), 500);
+            }
+
+            // lock the car after 1 second and the small delay if not already locked
+            if (!storage.isCarLocked() && configuration.getOptions().car().automatedLock()) {
+                utilService.delayedAction(() -> commandService.sendCommand("car lock"), 1500);
+            }
         }
     }
 

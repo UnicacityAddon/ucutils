@@ -5,6 +5,7 @@
   "mixins": [
     "EntityMixin",
     "ItemStackMixin",
+    "LivingEntityMixin",
     "MinecartEntityMixin",
     "PlayerEntityMixin"
   ],
@@ -17,7 +18,9 @@
   "client": [
     "ChatScreenMixin",
     "ClientPlayerEntityMixin",
+    "ClientPlayNetworkHandlerMixin",
     "GameMenuScreenMixin",
+    "HandledScreenMixin",
     "InGameHudMixin",
     "PlayerEntityRendererMixin",
     "PlayerListHudMixin"

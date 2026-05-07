@@ -3,49 +3,28 @@ package de.rettichlp.ucutils.common.registry;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import de.rettichlp.ucutils.common.models.Sound;
-import de.rettichlp.ucutils.listener.IAbsorptionGetListener;
 import de.rettichlp.ucutils.listener.IBlockRightClickListener;
-import de.rettichlp.ucutils.listener.ICommandSendListener;
-import de.rettichlp.ucutils.listener.IEnterVehicleListener;
 import de.rettichlp.ucutils.listener.IEntityRenderListener;
-import de.rettichlp.ucutils.listener.IEntityRightClickListener;
-import de.rettichlp.ucutils.listener.IHudRenderListener;
-import de.rettichlp.ucutils.listener.IKeyPressListener;
 import de.rettichlp.ucutils.listener.IMessageReceiveListener;
-import de.rettichlp.ucutils.listener.IMessageSendListener;
-import de.rettichlp.ucutils.listener.IMoveListener;
 import de.rettichlp.ucutils.listener.INaviSpotReachedListener;
-import de.rettichlp.ucutils.listener.IScreenOpenListener;
 import de.rettichlp.ucutils.listener.ITickListener;
 import de.rettichlp.ucutils.listener.IUCUtilsListener;
-import de.rettichlp.ucutils.listener.callback.PlayerEnterVehicleCallback;
 import net.fabricmc.fabric.api.client.command.v2.FabricClientCommandSource;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.message.v1.ClientReceiveMessageEvents;
-import net.fabricmc.fabric.api.client.message.v1.ClientSendMessageEvents;
-import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
 import net.fabricmc.fabric.api.client.rendering.v1.world.WorldRenderEvents;
-import net.fabricmc.fabric.api.client.screen.v1.ScreenEvents;
 import net.fabricmc.fabric.api.event.player.UseBlockCallback;
-import net.fabricmc.fabric.api.event.player.UseEntityCallback;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.option.KeyBinding;
-import net.minecraft.util.math.BlockPos;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
 import java.util.Set;
 
 import static de.rettichlp.ucutils.UCUtils.LOGGER;
-import static de.rettichlp.ucutils.UCUtils.player;
 import static de.rettichlp.ucutils.UCUtils.storage;
 import static java.util.Collections.emptySet;
-import static java.util.Objects.isNull;
-import static java.util.Optional.ofNullable;
 import static java.util.stream.Collectors.toSet;
 import static java.util.stream.StreamSupport.stream;
 import static net.fabricmc.fabric.api.client.command.v2.ClientCommandManager.literal;
-import static net.minecraft.entity.effect.StatusEffects.ABSORPTION;
 import static net.minecraft.registry.Registries.SOUND_EVENT;
 import static net.minecraft.registry.Registry.register;
 import static net.minecraft.util.ActionResult.PASS;
@@ -59,8 +38,6 @@ public class Registry {
     private final Set<IUCUtilsListener> listenerInstances = getListenerInstances();
 
     private boolean initialized = false;
-    private BlockPos lastPlayerPos = null;
-    private boolean lastAbsorptionState = false;
 
     public void registerSounds() {
         for (Sound value : Sound.values()) {
@@ -116,74 +93,14 @@ public class Registry {
             return showMessage;
         });
 
-        ClientSendMessageEvents.ALLOW_CHAT.register(s -> {
-            boolean sendMessage = getListenersImplementing(IMessageSendListener.class).stream()
-                    .allMatch(iMessageSendListener -> iMessageSendListener.onMessageSend(s));
-
-            if (!sendMessage) {
-                LOGGER.info("UCUtils blocked message sending: {}", s);
-            }
-
-            return sendMessage;
-        });
-
-        ClientSendMessageEvents.ALLOW_COMMAND.register(commandWithoutPrefix -> {
-            boolean executeCommand = getListenersImplementing(ICommandSendListener.class).stream()
-                    .allMatch(iCommandSendListener -> iCommandSendListener.onCommandSend(commandWithoutPrefix));
-
-            if (!executeCommand) {
-                LOGGER.info("UCUtils blocked command execution: /{}", commandWithoutPrefix);
-            }
-
-            return executeCommand;
-        });
-
         ClientTickEvents.END_CLIENT_TICK.register((server) -> {
             // handle tick
             getListenersImplementing(ITickListener.class).forEach(ITickListener::onTick);
-
-            // handle on move
-            BlockPos blockPos = player.getBlockPos();
-            if (isNull(this.lastPlayerPos) || !this.lastPlayerPos.equals(blockPos)) {
-                this.lastPlayerPos = blockPos;
-                getListenersImplementing(IMoveListener.class).forEach(iMoveListener -> iMoveListener.onMove(blockPos));
-            }
-
-            // handle absorption
-            boolean hasAbsorption = ofNullable(player)
-                    .map(clientPlayerEntity -> clientPlayerEntity.hasStatusEffect(ABSORPTION))
-                    .orElse(false);
-
-            if (!this.lastAbsorptionState && hasAbsorption) {
-                getListenersImplementing(IAbsorptionGetListener.class).forEach(IAbsorptionGetListener::onAbsorptionGet);
-            }
-
-            this.lastAbsorptionState = hasAbsorption;
-
-            // handle key press
-            KeyBinding swapHandsKey = MinecraftClient.getInstance().options.swapHandsKey;
-            if (swapHandsKey.isPressed()) {
-                getListenersImplementing(IKeyPressListener.class).forEach(IKeyPressListener::onSwapHandsKeyPress);
-            }
         });
-
-        HudRenderCallback.EVENT.register((drawContext, tickCounter) -> getListenersImplementing(IHudRenderListener.class).forEach(iHudRenderListener -> iHudRenderListener.onHudRender(drawContext, tickCounter)));
-
-        PlayerEnterVehicleCallback.EVENT.register(vehicle -> getListenersImplementing(IEnterVehicleListener.class).forEach(iEnterVehicleListener -> iEnterVehicleListener.onEnterVehicle(vehicle)));
-
-        ScreenEvents.AFTER_INIT.register((client, screen, scaledWidth, scaledHeight) -> getListenersImplementing(IScreenOpenListener.class).forEach(iScreenOpenListener -> iScreenOpenListener.onScreenOpen(screen, scaledWidth, scaledHeight)));
 
         UseBlockCallback.EVENT.register((player, world, hand, hitResult) -> {
             if (hand != OFF_HAND && world.isClient()) {
                 getListenersImplementing(IBlockRightClickListener.class).forEach(iBlockRightClickListener -> iBlockRightClickListener.onBlockRightClick(world, hand, hitResult));
-            }
-
-            return PASS;
-        });
-
-        UseEntityCallback.EVENT.register((player, world, hand, entity, hitResult) -> {
-            if (hand != OFF_HAND && world.isClient()) {
-                getListenersImplementing(IEntityRightClickListener.class).forEach(iEntityRightClickListener -> iEntityRightClickListener.onEntityRightClick(world, hand, entity, hitResult));
             }
 
             return PASS;
