@@ -1,7 +1,6 @@
 package de.rettichlp.ucutils.listener.impl;
 
 import de.rettichlp.ucutils.common.registry.UCUtilsListener;
-import de.rettichlp.ucutils.listener.IEnterVehicleListener;
 import de.rettichlp.ucutils.listener.IEntityRenderListener;
 import de.rettichlp.ucutils.listener.IMessageReceiveListener;
 import de.rettichlp.ucutils.listener.IScreenOpenListener;
@@ -13,8 +12,6 @@ import net.minecraft.client.network.ClientPlayerInteractionManager;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.client.world.ClientWorld;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.vehicle.MinecartEntity;
 import net.minecraft.text.Text;
 
 import java.util.regex.Matcher;
@@ -25,7 +22,6 @@ import static de.rettichlp.ucutils.UCUtils.configuration;
 import static de.rettichlp.ucutils.UCUtils.player;
 import static de.rettichlp.ucutils.UCUtils.renderService;
 import static de.rettichlp.ucutils.UCUtils.storage;
-import static de.rettichlp.ucutils.UCUtils.utilService;
 import static java.lang.Integer.parseInt;
 import static java.util.Objects.nonNull;
 import static java.util.Optional.ofNullable;
@@ -34,33 +30,12 @@ import static net.minecraft.screen.slot.SlotActionType.PICKUP;
 import static net.minecraft.util.Formatting.AQUA;
 
 @UCUtilsListener
-public class CarListener
-        implements IEnterVehicleListener, IEntityRenderListener, IMessageReceiveListener, IScreenOpenListener {
+public class CarListener implements IEntityRenderListener, IMessageReceiveListener, IScreenOpenListener {
 
     private static final Pattern CAR_UNLOCK_PATTERN = compile("^\\[Car] Du hast deinen .+ aufgeschlossen\\.$");
     private static final Pattern CAR_LOCK_PATTERN = compile("^\\[Car] Du hast deinen .+ abgeschlossen\\.$");
     private static final Pattern CAR_LOCKED_OWN_PATTERN = compile("^\\[Car] Dein Fahrzeug ist abgeschlossen\\.$");
     private static final Pattern CAR_FIND_PATTERN = compile("^\\[Car] Das Fahrzeug befindet sich bei » X: (?<x>-?\\d+) \\| Y: (?<y>-?\\d+) \\| Z: (?<z>-?\\d+)$");
-
-    @Override
-    public void onEnterVehicle(Entity vehicle) {
-        // the entity is a car
-        if (!(vehicle instanceof MinecartEntity)) {
-            return;
-        }
-
-        storage.setMinecartEntityToHighlight(null);
-
-        if (configuration.getOptions().car().automatedStart()) {
-            // start the car with a small delay to ensure the player is fully in the vehicle
-            utilService.delayedAction(() -> commandService.sendCommand("car start"), 500);
-        }
-
-        // lock the car after 1 second and the small delay if not already locked
-        if (!storage.isCarLocked() && configuration.getOptions().car().automatedLock()) {
-            utilService.delayedAction(() -> commandService.sendCommand("car lock"), 1500);
-        }
-    }
 
     @Override
     public void onEntityRender(WorldRenderContext context) {
