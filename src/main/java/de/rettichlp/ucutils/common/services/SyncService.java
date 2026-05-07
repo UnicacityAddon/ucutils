@@ -19,6 +19,7 @@ import static java.awt.Color.MAGENTA;
 import static java.util.Objects.nonNull;
 import static java.util.concurrent.Executors.newSingleThreadScheduledExecutor;
 import static java.util.concurrent.TimeUnit.MINUTES;
+import static java.util.concurrent.TimeUnit.SECONDS;
 import static net.minecraft.text.Text.empty;
 import static net.minecraft.text.Text.literal;
 import static net.minecraft.text.Text.translatable;
@@ -33,7 +34,7 @@ public class SyncService {
         return newSingleThreadScheduledExecutor().scheduleAtFixedRate(() -> {
             // show health for hydration bar sync
             utilService.delayedAction(() -> commandService.sendCommandWithHiddenOutput("health"), COMMAND_COOLDOWN_MILLIS);
-        }, 0, 3, MINUTES);
+        }, 20, 180, SECONDS);
     }
 
     public void syncFactionMembers() {
