@@ -41,7 +41,7 @@ public class EconomyService implements IMessageReceiveListener {
     // cash
     private static final Pattern CASH_GIVE_PATTERN = compile("^Du hast (?:\\[UC])?(?<playerName>[a-zA-Z0-9_]+) (?<amount>\\d+)\\$ gegeben!$");
     private static final Pattern CASH_TAKE_PATTERN = compile("^(?:\\[UC])?(?<playerName>[a-zA-Z0-9_]+) hat dir (?<amount>\\d+)\\$ gegeben!$");
-    private static final Pattern CASH_TO_FBANK_PATTERN = compile("^\\[F-Bank] (?:\\[UC])?(?<playerName>[a-zA-Z0-9_]+) hat (?<amount>\\d+)\\$ in die Fraktionsbank eingezahlt\\.$");
+    private static final Pattern CASH_TO_FBANK_PATTERN = compile("^\\[F-Bank] (?:\\[UC])?(?<playerName>[a-zA-Z0-9_]+) hat (?<amount>\\d+)\\$ in die Fraktionsbank eingezahlt\\. Grund: (?<reason>.+)$");
     private static final Pattern CASH_FROM_FBANK_PATTERN = compile("^\\[F-Bank] (?:\\[UC])?(?<playerName>[a-zA-Z0-9_]+) hat (?<amount>\\d+)\\$ aus der Fraktionsbank ausgezahlt\\.$");
     private static final Pattern CASH_TO_BANK_PATTERN = compile("^Eingezahlt: \\+(?<amount>\\d+)\\$$");
     private static final Pattern CASH_FROM_BANK_PATTERN = compile("^Auszahlung: -(?<amount>\\d+)\\$$");
