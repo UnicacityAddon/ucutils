@@ -1,5 +1,6 @@
 package de.rettichlp.ucutils.mixin;
 
+import de.rettichlp.ucutils.common.Storage;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
 import org.jetbrains.annotations.NotNull;
 import org.spongepowered.asm.mixin.Mixin;
@@ -15,6 +16,7 @@ import java.util.regex.Pattern;
 import static de.rettichlp.ucutils.UCUtils.LOGGER;
 import static de.rettichlp.ucutils.UCUtils.commandService;
 import static de.rettichlp.ucutils.UCUtils.storage;
+import static de.rettichlp.ucutils.common.Storage.ToggledChat.NONE;
 import static java.lang.Character.isUpperCase;
 import static java.util.regex.Pattern.compile;
 
@@ -23,6 +25,16 @@ public abstract class ClientPlayNetworkHandlerMixin {
 
     @Unique
     private static final Pattern COMMAND_NAVI_HOUSE_NUMBER_PATTERN = compile("^navi (?<number>\\d+)$");
+
+    @Inject(method = "sendChatMessage", at = @At("HEAD"), cancellable = true)
+    private void ucutils$sendChatMessageHead(String content, CallbackInfo ci) {
+        Storage.ToggledChat toggledChat = storage.getToggledChat();
+        if (toggledChat != NONE) {
+            commandService.sendCommand(toggledChat.getCommand() + " " + content);
+            LOGGER.info("UCUtils blocked message sending: {}", content);
+            ci.cancel();
+        }
+    }
 
     @Inject(method = "sendChatCommand", at = @At("HEAD"), cancellable = true)
     private void ucutils$sendChatCommandHead(String command, CallbackInfo ci) {

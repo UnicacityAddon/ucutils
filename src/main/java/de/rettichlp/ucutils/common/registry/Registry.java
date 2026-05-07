@@ -7,7 +7,6 @@ import de.rettichlp.ucutils.listener.IBlockRightClickListener;
 import de.rettichlp.ucutils.listener.IEntityRenderListener;
 import de.rettichlp.ucutils.listener.IHudRenderListener;
 import de.rettichlp.ucutils.listener.IMessageReceiveListener;
-import de.rettichlp.ucutils.listener.IMessageSendListener;
 import de.rettichlp.ucutils.listener.INaviSpotReachedListener;
 import de.rettichlp.ucutils.listener.IScreenOpenListener;
 import de.rettichlp.ucutils.listener.ITickListener;
@@ -15,7 +14,6 @@ import de.rettichlp.ucutils.listener.IUCUtilsListener;
 import net.fabricmc.fabric.api.client.command.v2.FabricClientCommandSource;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.message.v1.ClientReceiveMessageEvents;
-import net.fabricmc.fabric.api.client.message.v1.ClientSendMessageEvents;
 import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
 import net.fabricmc.fabric.api.client.rendering.v1.world.WorldRenderEvents;
 import net.fabricmc.fabric.api.client.screen.v1.ScreenEvents;
@@ -97,17 +95,6 @@ public class Registry {
             }
 
             return showMessage;
-        });
-
-        ClientSendMessageEvents.ALLOW_CHAT.register(s -> {
-            boolean sendMessage = getListenersImplementing(IMessageSendListener.class).stream()
-                    .allMatch(iMessageSendListener -> iMessageSendListener.onMessageSend(s));
-
-            if (!sendMessage) {
-                LOGGER.info("UCUtils blocked message sending: {}", s);
-            }
-
-            return sendMessage;
         });
 
         ClientTickEvents.END_CLIENT_TICK.register((server) -> {

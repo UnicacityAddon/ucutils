@@ -1,10 +1,8 @@
 package de.rettichlp.ucutils.listener.impl.faction;
 
-import de.rettichlp.ucutils.common.Storage;
 import de.rettichlp.ucutils.common.models.FactionMember;
 import de.rettichlp.ucutils.common.registry.UCUtilsListener;
 import de.rettichlp.ucutils.listener.IMessageReceiveListener;
-import de.rettichlp.ucutils.listener.IMessageSendListener;
 import lombok.NonNull;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.text.Text;
@@ -16,11 +14,9 @@ import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static de.rettichlp.ucutils.UCUtils.commandService;
 import static de.rettichlp.ucutils.UCUtils.configuration;
 import static de.rettichlp.ucutils.UCUtils.player;
 import static de.rettichlp.ucutils.UCUtils.storage;
-import static de.rettichlp.ucutils.common.Storage.ToggledChat.NONE;
 import static de.rettichlp.ucutils.common.configuration.options.Options.ReinforcementType.UNICACITYADDON;
 import static java.util.Optional.ofNullable;
 import static java.util.regex.Pattern.compile;
@@ -35,7 +31,7 @@ import static net.minecraft.util.Formatting.GRAY;
 import static net.minecraft.util.Formatting.RED;
 
 @UCUtilsListener
-public class FactionListener implements IMessageReceiveListener, IMessageSendListener {
+public class FactionListener implements IMessageReceiveListener {
 
     private static final Pattern REINFORCEMENT_PATTERN = compile("^(?:(?<type>.+)! )?(?<senderRank>.+) (?:\\[UC])?(?<senderPlayerName>[a-zA-Z0-9_]+) benötigt Unterstützung in der Nähe von (?<naviPoint>.+)! \\((?<distance>\\d+) Meter entfernt\\)$");
     private static final Pattern REINFORCEMENT_BUTTON_PATTERN = compile("^ §7» §cRoute anzeigen §7\\| §cUnterwegs$");
@@ -143,17 +139,6 @@ public class FactionListener implements IMessageReceiveListener, IMessageSendLis
                     .append(literal(": ").formatted(DARK_GRAY))
                     .append(literal(factionMessage).formatted(secondaryFormatting)), false);
 
-            return false;
-        }
-
-        return true;
-    }
-
-    @Override
-    public boolean onMessageSend(String message) {
-        Storage.ToggledChat toggledChat = storage.getToggledChat();
-        if (toggledChat != NONE) {
-            commandService.sendCommand(toggledChat.getCommand() + " " + message);
             return false;
         }
 
