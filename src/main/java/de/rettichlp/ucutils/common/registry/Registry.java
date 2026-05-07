@@ -3,7 +3,6 @@ package de.rettichlp.ucutils.common.registry;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import de.rettichlp.ucutils.common.models.Sound;
-import de.rettichlp.ucutils.listener.IAbsorptionGetListener;
 import de.rettichlp.ucutils.listener.IBlockRightClickListener;
 import de.rettichlp.ucutils.listener.ICommandSendListener;
 import de.rettichlp.ucutils.listener.IEnterVehicleListener;
@@ -45,7 +44,6 @@ import static java.util.Optional.ofNullable;
 import static java.util.stream.Collectors.toSet;
 import static java.util.stream.StreamSupport.stream;
 import static net.fabricmc.fabric.api.client.command.v2.ClientCommandManager.literal;
-import static net.minecraft.entity.effect.StatusEffects.ABSORPTION;
 import static net.minecraft.registry.Registries.SOUND_EVENT;
 import static net.minecraft.registry.Registry.register;
 import static net.minecraft.util.ActionResult.PASS;
@@ -60,7 +58,6 @@ public class Registry {
 
     private boolean initialized = false;
     private BlockPos lastPlayerPos = null;
-    private boolean lastAbsorptionState = false;
 
     public void registerSounds() {
         for (Sound value : Sound.values()) {
@@ -148,17 +145,6 @@ public class Registry {
                 this.lastPlayerPos = blockPos;
                 getListenersImplementing(IMoveListener.class).forEach(iMoveListener -> iMoveListener.onMove(blockPos));
             }
-
-            // handle absorption
-            boolean hasAbsorption = ofNullable(player)
-                    .map(clientPlayerEntity -> clientPlayerEntity.hasStatusEffect(ABSORPTION))
-                    .orElse(false);
-
-            if (!this.lastAbsorptionState && hasAbsorption) {
-                getListenersImplementing(IAbsorptionGetListener.class).forEach(IAbsorptionGetListener::onAbsorptionGet);
-            }
-
-            this.lastAbsorptionState = hasAbsorption;
 
             // handle key press
             KeyBinding swapHandsKey = MinecraftClient.getInstance().options.swapHandsKey;
