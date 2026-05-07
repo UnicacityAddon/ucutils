@@ -34,6 +34,7 @@ public class EconomyService implements IMessageReceiveListener {
     private static final Pattern BANK_NEW_BALANCE_PAYDAY_PATTERN = compile("^Neuer Betrag: (?<amount>\\d+)\\$ \\([+-]\\d+\\$\\)$");
     private static final Pattern BANK_TRANSFER_TO_PATTERN = compile("^Du hast (?:\\[UC])?(?<playerName>[a-zA-Z0-9_]+) (?<amount>\\d+)\\$ überwiesen!$");
     private static final Pattern BANK_TRANSFER_GET_PATTERN = compile("^(?:\\[UC])?(?<playerName>[a-zA-Z0-9_]+) hat dir (?<amount>\\d+)\\$ überwiesen!$");
+    private static final Pattern BANK_TRANSFER_FBANK_PATTERN = compile("^Du hast der Fraktion (?<faction>.+) (?<amount>\\d+)\\$ überwiesen!$");
     private static final Pattern BANK_NEW_BALANCE_BANK_PATTERN = compile("^Neuer Bankkontostand: (?<amount>\\d+)\\$$");
     private static final Pattern BANK_NEW_BALANCE_CASH_PATTERN = compile("^Neuer Bargeldbestand: (?<amount>\\d+)\\$$");
 
@@ -103,6 +104,13 @@ public class EconomyService implements IMessageReceiveListener {
         if (bankTransferGetMatcher.find()) {
             int amount = parseInt(bankTransferGetMatcher.group("amount"));
             configuration.setMoneyBankAmount(configuration.getMoneyBankAmount() + amount);
+            return true;
+        }
+
+        Matcher bankTransferFbankMatcher = BANK_TRANSFER_FBANK_PATTERN.matcher(message);
+        if (bankTransferFbankMatcher.find()) {
+            int amount = parseInt(bankTransferFbankMatcher.group("amount"));
+            configuration.setMoneyBankAmount(configuration.getMoneyBankAmount() - amount);
             return true;
         }
 
