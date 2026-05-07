@@ -11,7 +11,6 @@ import de.rettichlp.ucutils.listener.IHudRenderListener;
 import de.rettichlp.ucutils.listener.IKeyPressListener;
 import de.rettichlp.ucutils.listener.IMessageReceiveListener;
 import de.rettichlp.ucutils.listener.IMessageSendListener;
-import de.rettichlp.ucutils.listener.IMoveListener;
 import de.rettichlp.ucutils.listener.INaviSpotReachedListener;
 import de.rettichlp.ucutils.listener.IScreenOpenListener;
 import de.rettichlp.ucutils.listener.ITickListener;
@@ -27,7 +26,6 @@ import net.fabricmc.fabric.api.event.player.UseBlockCallback;
 import net.fabricmc.fabric.api.event.player.UseEntityCallback;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.option.KeyBinding;
-import net.minecraft.util.math.BlockPos;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
@@ -55,7 +53,6 @@ public class Registry {
     private final Set<IUCUtilsListener> listenerInstances = getListenerInstances();
 
     private boolean initialized = false;
-    private BlockPos lastPlayerPos = null;
 
     public void registerSounds() {
         for (Sound value : Sound.values()) {
@@ -136,13 +133,6 @@ public class Registry {
         ClientTickEvents.END_CLIENT_TICK.register((server) -> {
             // handle tick
             getListenersImplementing(ITickListener.class).forEach(ITickListener::onTick);
-
-            // handle on move
-            BlockPos blockPos = player.getBlockPos();
-            if (isNull(this.lastPlayerPos) || !this.lastPlayerPos.equals(blockPos)) {
-                this.lastPlayerPos = blockPos;
-                getListenersImplementing(IMoveListener.class).forEach(iMoveListener -> iMoveListener.onMove(blockPos));
-            }
 
             // handle key press
             KeyBinding swapHandsKey = MinecraftClient.getInstance().options.swapHandsKey;
