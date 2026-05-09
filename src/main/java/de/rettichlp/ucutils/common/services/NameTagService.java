@@ -121,6 +121,15 @@ public class NameTagService {
                 });
     }
 
+    public boolean isADuty(String targetName) {
+        return networkHandler.getPlayerList().stream()
+                .filter(entry -> entry.getProfile().name().equals(targetName))
+                .anyMatch(entry -> {
+                    Team team = entry.getScoreboardTeam();
+                    return team != null && team.getName().endsWith("_uc_aduty");
+                });
+    }
+
     public @NotNull Formatting getWantedPointColor(int wantedPointAmount) {
         Formatting color;
 

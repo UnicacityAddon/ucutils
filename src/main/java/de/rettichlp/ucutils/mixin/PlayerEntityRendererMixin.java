@@ -16,8 +16,12 @@ import static de.rettichlp.ucutils.UCUtils.configuration;
 import static de.rettichlp.ucutils.UCUtils.nameTagService;
 import static de.rettichlp.ucutils.UCUtils.storage;
 import static java.util.Optional.ofNullable;
+import static net.minecraft.text.Text.empty;
 import static net.minecraft.text.Text.literal;
+import static net.minecraft.util.Formatting.BLUE;
+import static net.minecraft.util.Formatting.BOLD;
 import static net.minecraft.util.Formatting.GOLD;
+import static net.minecraft.util.Formatting.RED;
 
 @Mixin(PlayerEntityRenderer.class)
 public abstract class PlayerEntityRendererMixin {
@@ -49,7 +53,14 @@ public abstract class PlayerEntityRendererMixin {
 
                     if (nameTagService.isAfk(playerName)) {
                         matrixStack.translate(0.0F, medicInformationPresent ? 0.8F : 2.6, 0.0F);
-                        orderedRenderCommandQueue.submitLabel(matrixStack, playerEntityRenderState.nameLabelPos, 0, literal("ᴀꜰᴋ").formatted(GOLD), !playerEntityRenderState.sneaking, playerEntityRenderState.light, playerEntityRenderState.squaredDistanceToCamera, cameraRenderState);
+                        orderedRenderCommandQueue.submitLabel(matrixStack, playerEntityRenderState.nameLabelPos, 0, literal("ᴀꜰᴋ").formatted(GOLD, BOLD), !playerEntityRenderState.sneaking, playerEntityRenderState.light, playerEntityRenderState.squaredDistanceToCamera, cameraRenderState);
+                    } else if (nameTagService.isADuty(playerName)) {
+                        MutableText text = empty()
+                                .append(literal("ᴀ").formatted(BLUE, BOLD))
+                                .append(literal("ᴅᴜᴛʏ").formatted(RED, BOLD));
+
+                        matrixStack.translate(0.0F, medicInformationPresent ? 0.8F : 2.6, 0.0F);
+                        orderedRenderCommandQueue.submitLabel(matrixStack, playerEntityRenderState.nameLabelPos, 0, text, !playerEntityRenderState.sneaking, playerEntityRenderState.light, playerEntityRenderState.squaredDistanceToCamera, cameraRenderState);
                     }
                 });
     }
