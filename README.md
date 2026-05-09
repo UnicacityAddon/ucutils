@@ -17,6 +17,7 @@ reibungsloser und angenehmer gestalten.
 - Es werden Sounds abgespielt für Notrufe, Bomben, Feuer, Staatsbankraub und weitere Situationen
 - Über der Hungerleiste wird der Durst angezeigt
 - Mit einem Rechtsklick, während man schleicht, kann man bewusstlosen Personen Erste-Hilfe geben
+- Über dem Spielernamen wird eine Information antgezeigt wenn ein Spieler AFK oder im A-Duty ist
 
 ### Auto
 
