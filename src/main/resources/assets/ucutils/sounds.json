@@ -39,6 +39,14 @@
       }
     ]
   },
+  "notification": {
+    "sounds": [
+      {
+        "name": "ucutils:notification_sound",
+        "stream": true
+      }
+    ]
+  },
   "report": {
     "sounds": [
       {
