@@ -23,7 +23,7 @@ import static net.minecraft.entity.projectile.ProjectileUtil.raycast;
 public abstract class MinecraftClientMixin {
 
     @Unique
-    private static final int DISTANCE = 2;
+    private static final int DISTANCE = 3;
 
     @Inject(method = "handleInputEvents", at = @At("HEAD"))
     private void ucutils$handleInputEventsHead(CallbackInfo ci) {
@@ -57,7 +57,7 @@ public abstract class MinecraftClientMixin {
 
             if (player.isSneaking()) {
                 commandService.sendCommand("erstehilfe " + playerName);
-            } else if (storage.getCachedFaction(player.getStringifiedName()) == RETTUNGSDIENST) {
+            } else if (storage.getFaction(player.getStringifiedName()) == RETTUNGSDIENST) {
                 commandService.sendCommand("revive " + playerName);
             }
         }
