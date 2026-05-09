@@ -38,8 +38,8 @@ import static java.util.stream.Collectors.toCollection;
 import static java.util.stream.StreamSupport.stream;
 import static net.minecraft.client.font.TextRenderer.TextLayerType.SEE_THROUGH;
 import static net.minecraft.client.gui.widget.DirectionalLayoutWidget.horizontal;
-import static net.minecraft.client.render.RenderLayer.getDebugQuads;
-import static net.minecraft.client.render.RenderLayer.getLines;
+import static net.minecraft.client.render.RenderLayers.debugQuads;
+import static net.minecraft.client.render.RenderLayers.lines;
 import static net.minecraft.item.Items.COMPARATOR;
 import static net.minecraft.util.math.RotationAxis.POSITIVE_Y;
 import static org.atteo.classindex.ClassIndex.getAnnotated;
@@ -73,9 +73,9 @@ public class RenderService {
                             double z2,
                             Color color) {
         Camera camera = MinecraftClient.getInstance().gameRenderer.getCamera();
-        double camX = camera.getPos().x;
-        double camY = camera.getPos().y;
-        double camZ = camera.getPos().z;
+        double camX = camera.getCameraPos().x;
+        double camY = camera.getCameraPos().y;
+        double camZ = camera.getCameraPos().z;
 
         float minX = (float) (x1 - camX);
         float minY = (float) (y1 - camY);
@@ -84,7 +84,7 @@ public class RenderService {
         float maxY = (float) (y2 - camY);
         float maxZ = (float) (z2 - camZ);
 
-        VertexConsumer consumer = vertexConsumers.getBuffer(getLines());
+        VertexConsumer consumer = vertexConsumers.getBuffer(lines());
         Matrix4f matrix = matrices.peek().getPositionMatrix();
 
         drawLine(consumer, matrix, minX, minY, minZ, maxX, minY, minZ, color);
@@ -111,15 +111,15 @@ public class RenderService {
                          float z,
                          @NotNull Color color) {
         Camera camera = MinecraftClient.getInstance().gameRenderer.getCamera();
-        double camX = camera.getPos().x;
-        double camY = camera.getPos().y;
-        double camZ = camera.getPos().z;
+        double camX = camera.getCameraPos().x;
+        double camY = camera.getCameraPos().y;
+        double camZ = camera.getCameraPos().z;
 
         float modifiedX = (float) (x - camX);
         float modifiedY = (float) (y - camY);
         float modifiedZ = (float) (z - camZ);
 
-        VertexConsumer consumer = vertexConsumers.getBuffer(getDebugQuads());
+        VertexConsumer consumer = vertexConsumers.getBuffer(debugQuads());
         Matrix4f matrix = matrices.peek().getPositionMatrix();
 
         Color alphaColor = new Color(color.getRed(), color.getGreen(), color.getBlue(), 50);
@@ -215,9 +215,9 @@ public class RenderService {
         matrices.push();
 
         Camera camera = MinecraftClient.getInstance().gameRenderer.getCamera();
-        double camX = camera.getPos().x;
-        double camY = camera.getPos().y;
-        double camZ = camera.getPos().z;
+        double camX = camera.getCameraPos().x;
+        double camY = camera.getCameraPos().y;
+        double camZ = camera.getCameraPos().z;
 
         matrices.translate(x - camX, y - camY, z - camZ);
 
@@ -278,9 +278,9 @@ public class RenderService {
                                                                 BiConsumer<Options, E> onValueChange,
                                                                 @NotNull Function<Options, E> currentValue,
                                                                 int width) {
-        CyclingButtonWidget<E> cyclingButton = CyclingButtonWidget.builder(displayNameFunction)
+        E initialValue = currentValue.apply(configuration.getOptions());
+        CyclingButtonWidget<E> cyclingButton = CyclingButtonWidget.builder(displayNameFunction, initialValue)
                 .values(values)
-                .initially(currentValue.apply(configuration.getOptions()))
                 .tooltip(CyclingButtonEntry::getTooltip)
                 .build(name, (button, value) -> onValueChange.accept(configuration.getOptions(), value));
 
