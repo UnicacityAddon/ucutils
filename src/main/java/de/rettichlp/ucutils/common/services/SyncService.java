@@ -4,11 +4,11 @@ import de.rettichlp.ucutils.common.models.Faction;
 import de.rettichlp.ucutils.common.models.FactionEntry;
 
 import java.util.Map;
-import java.util.concurrent.ScheduledFuture;
 
 import static de.rettichlp.ucutils.UCUtils.LOGGER;
 import static de.rettichlp.ucutils.UCUtils.api;
 import static de.rettichlp.ucutils.UCUtils.commandService;
+import static de.rettichlp.ucutils.UCUtils.configuration;
 import static de.rettichlp.ucutils.UCUtils.notificationService;
 import static de.rettichlp.ucutils.UCUtils.player;
 import static de.rettichlp.ucutils.UCUtils.storage;
@@ -19,6 +19,7 @@ import static java.awt.Color.MAGENTA;
 import static java.util.Objects.nonNull;
 import static java.util.concurrent.Executors.newSingleThreadScheduledExecutor;
 import static java.util.concurrent.TimeUnit.MINUTES;
+import static java.util.concurrent.TimeUnit.SECONDS;
 import static net.minecraft.text.Text.empty;
 import static net.minecraft.text.Text.literal;
 import static net.minecraft.text.Text.translatable;
@@ -29,11 +30,17 @@ import static net.minecraft.util.Formatting.RED;
 
 public class SyncService {
 
-    public ScheduledFuture<?> startRepeatingSync() {
-        return newSingleThreadScheduledExecutor().scheduleAtFixedRate(() -> {
+    public void startRepeatingSync() {
+        newSingleThreadScheduledExecutor().scheduleAtFixedRate(() -> {
+            if (!storage.isUnicaCity()) {
+                return;
+            }
+
             // show health for hydration bar sync
-            utilService.delayedAction(() -> commandService.sendCommandWithHiddenOutput("health"), COMMAND_COOLDOWN_MILLIS);
-        }, 0, 3, MINUTES);
+            if (configuration.getOptions().showHydration()) {
+                utilService.delayedAction(() -> commandService.sendCommandWithHiddenOutput("health"), COMMAND_COOLDOWN_MILLIS);
+            }
+        }, 20, 180, SECONDS);
     }
 
     public void syncFactionMembers() {
@@ -56,19 +63,17 @@ public class SyncService {
 
     public void syncFactionSpecificData() {
         // parse from faction-related init commands after all faction members are synced
-        utilService.delayedAction(() -> {
-            Faction faction = storage.getFaction(player.getStringifiedName());
-            switch (faction) {
-                case FBI, POLIZEI -> commandService.sendCommandWithHiddenOutput("wanteds");
-                case MERCENARY -> commandService.sendCommandWithHiddenOutput("contractlist");
-                case RETTUNGSDIENST -> commandService.sendCommandWithHiddenOutput("hausverbot");
-                default -> {
-                    if (faction.isBadFaction()) {
-                        commandService.sendCommandWithHiddenOutput("blacklist");
-                    }
+        Faction faction = storage.getFaction(player.getStringifiedName());
+        switch (faction) {
+            case FBI, POLIZEI -> commandService.sendCommandWithHiddenOutput("wanteds");
+            case MERCENARY -> commandService.sendCommandWithHiddenOutput("contractlist");
+            case RETTUNGSDIENST -> commandService.sendCommandWithHiddenOutput("hausverbot");
+            default -> {
+                if (faction.isBadFaction()) {
+                    commandService.sendCommandWithHiddenOutput("blacklist");
                 }
             }
-        }, COMMAND_COOLDOWN_MILLIS);
+        }
     }
 
     public void checkForUpdates() {

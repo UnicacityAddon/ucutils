@@ -11,9 +11,13 @@ import net.minecraft.client.gui.widget.Widget;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 
+import java.awt.Color;
+
 import static de.rettichlp.ucutils.UCUtils.configuration;
 import static de.rettichlp.ucutils.UCUtils.renderService;
+import static java.awt.Color.RED;
 import static java.lang.String.valueOf;
+import static java.lang.System.currentTimeMillis;
 import static net.minecraft.client.gui.widget.DirectionalLayoutWidget.horizontal;
 import static net.minecraft.text.Text.empty;
 import static net.minecraft.text.Text.of;
@@ -46,6 +50,14 @@ public class PayDayWidget extends AbstractUCUtilsTextWidget<PayDayWidget.Configu
         }
 
         return payDayInfoText;
+    }
+
+    @Override
+    public Color getBackgroundColor() {
+        // with over 100.000$ on bank and PayDay within next 5 minutes, animate background
+        return configuration.getMinutesSinceLastPayDay() >= 55 && configuration.getMoneyBankAmount() > 100000 && (currentTimeMillis() / 500 % 2 == 0)
+                ? RED
+                : super.getBackgroundColor();
     }
 
     @Override

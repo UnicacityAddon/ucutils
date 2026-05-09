@@ -108,10 +108,8 @@ public class NameTagService {
         String string = text.getString();
         String[] strings = string.split(" ");
 
-        // if faction information enabled, the last index is faction information
-        return configuration.getOptions().nameTag().factionInformation()
-                ? strings[strings.length - 2]
-                : strings[strings.length - 1];
+        // if name contains faction information, the last index is faction information
+        return string.contains("⌜") ? strings[strings.length - 2] : strings[strings.length - 1];
     }
 
     public boolean isAfk(String targetName) {
@@ -120,6 +118,15 @@ public class NameTagService {
                 .anyMatch(entry -> {
                     Team team = entry.getScoreboardTeam();
                     return team != null && team.getName().endsWith("_afk");
+                });
+    }
+
+    public boolean isADuty(String targetName) {
+        return networkHandler.getPlayerList().stream()
+                .filter(entry -> entry.getProfile().name().equals(targetName))
+                .anyMatch(entry -> {
+                    Team team = entry.getScoreboardTeam();
+                    return team != null && team.getName().endsWith("_uc_aduty");
                 });
     }
 

@@ -14,33 +14,35 @@ import java.util.regex.Pattern;
 import static de.rettichlp.ucutils.UCUtils.commandService;
 import static de.rettichlp.ucutils.UCUtils.configuration;
 import static de.rettichlp.ucutils.UCUtils.messageService;
+import static de.rettichlp.ucutils.UCUtils.notificationService;
 import static de.rettichlp.ucutils.UCUtils.player;
 import static de.rettichlp.ucutils.UCUtils.storage;
 import static java.lang.Integer.parseInt;
 import static java.lang.Math.max;
+import static java.lang.System.currentTimeMillis;
 import static java.util.Collections.emptyList;
 import static java.util.Optional.ofNullable;
 import static java.util.regex.Pattern.compile;
-import static net.minecraft.sound.SoundEvents.BLOCK_NOTE_BLOCK_BANJO;
 import static net.minecraft.text.Text.of;
 import static net.minecraft.util.Formatting.GRAY;
 import static net.minecraft.util.Formatting.UNDERLINE;
 
 @UCUtilsListener
-public class EconomyService implements IMessageReceiveListener {
+public class EconomyListener implements IMessageReceiveListener {
 
     // bank
     private static final Pattern BANK_STATEMENT_PATTERN = compile("^Ihr Bankguthaben beträgt: \\+(?<amount>\\d+)\\$$");
     private static final Pattern BANK_NEW_BALANCE_PAYDAY_PATTERN = compile("^Neuer Betrag: (?<amount>\\d+)\\$ \\([+-]\\d+\\$\\)$");
     private static final Pattern BANK_TRANSFER_TO_PATTERN = compile("^Du hast (?:\\[UC])?(?<playerName>[a-zA-Z0-9_]+) (?<amount>\\d+)\\$ überwiesen!$");
     private static final Pattern BANK_TRANSFER_GET_PATTERN = compile("^(?:\\[UC])?(?<playerName>[a-zA-Z0-9_]+) hat dir (?<amount>\\d+)\\$ überwiesen!$");
+    private static final Pattern BANK_TRANSFER_FBANK_PATTERN = compile("^Du hast der Fraktion (?<faction>.+) (?<amount>\\d+)\\$ überwiesen!$");
     private static final Pattern BANK_NEW_BALANCE_BANK_PATTERN = compile("^Neuer Bankkontostand: (?<amount>\\d+)\\$$");
     private static final Pattern BANK_NEW_BALANCE_CASH_PATTERN = compile("^Neuer Bargeldbestand: (?<amount>\\d+)\\$$");
 
     // cash
     private static final Pattern CASH_GIVE_PATTERN = compile("^Du hast (?:\\[UC])?(?<playerName>[a-zA-Z0-9_]+) (?<amount>\\d+)\\$ gegeben!$");
     private static final Pattern CASH_TAKE_PATTERN = compile("^(?:\\[UC])?(?<playerName>[a-zA-Z0-9_]+) hat dir (?<amount>\\d+)\\$ gegeben!$");
-    private static final Pattern CASH_TO_FBANK_PATTERN = compile("^\\[F-Bank] (?:\\[UC])?(?<playerName>[a-zA-Z0-9_]+) hat (?<amount>\\d+)\\$ in die Fraktionsbank eingezahlt\\.$");
+    private static final Pattern CASH_TO_FBANK_PATTERN = compile("^\\[F-Bank] (?:\\[UC])?(?<playerName>[a-zA-Z0-9_]+) hat (?<amount>\\d+)\\$ in die Fraktionsbank eingezahlt\\. Grund: (?<reason>.+)$");
     private static final Pattern CASH_FROM_FBANK_PATTERN = compile("^\\[F-Bank] (?:\\[UC])?(?<playerName>[a-zA-Z0-9_]+) hat (?<amount>\\d+)\\$ aus der Fraktionsbank ausgezahlt\\.$");
     private static final Pattern CASH_TO_BANK_PATTERN = compile("^Eingezahlt: \\+(?<amount>\\d+)\\$$");
     private static final Pattern CASH_FROM_BANK_PATTERN = compile("^Auszahlung: -(?<amount>\\d+)\\$$");
@@ -62,6 +64,10 @@ public class EconomyService implements IMessageReceiveListener {
     private static final Pattern LOTTO_WIN_PATTERN = compile("^\\[Lotto] Du hast im Lotto gewonnen! \\((?<amount>\\d+)\\$\\)$");
     private static final Pattern MEDIC_DESPAWNED_PATTERN = compile("^Verdammt\\.\\.\\. mein Kopf dröhnt so\\.\\.\\.$");
     private static final Pattern MEDIC_REVIVE_PATTERN = compile("^Du wirst von (?:\\[UC])?(?<playerName>[a-zA-Z0-9_]+) wiederbelebt\\.$");
+    private static final Pattern REVIVE_ADMIN_PATTERN = compile("^Du wurdest von \\[UC](?<playerName>[a-zA-Z0-9_]+) wiederbelebt\\.$");
+    private static final Pattern BACK_IN_LIFE_PATTERN = compile("^\\[Friedhof] Du lebst nun wieder\\.$");
+
+    private long lastMedicReviveAction = 0;
 
     @Override
     public boolean onMessageReceive(Text text, String message) {
@@ -72,9 +78,9 @@ public class EconomyService implements IMessageReceiveListener {
 
             List<String> commands = switch (configuration.getOptions().atmInformationType()) {
                 case NONE -> emptyList();
-                case F_BANK -> List.of("fbank info");
+                case F_BANK -> List.of("fbank");
                 case G_BANK -> List.of("gruppierungkasse");
-                case BOTH -> List.of("fbank info", "gruppierungkasse");
+                case BOTH -> List.of("fbank", "gruppierungkasse");
             };
 
             commandService.sendCommands(commands);
@@ -103,6 +109,13 @@ public class EconomyService implements IMessageReceiveListener {
         if (bankTransferGetMatcher.find()) {
             int amount = parseInt(bankTransferGetMatcher.group("amount"));
             configuration.setMoneyBankAmount(configuration.getMoneyBankAmount() + amount);
+            return true;
+        }
+
+        Matcher bankTransferFbankMatcher = BANK_TRANSFER_FBANK_PATTERN.matcher(message);
+        if (bankTransferFbankMatcher.find()) {
+            int amount = parseInt(bankTransferFbankMatcher.group("amount"));
+            configuration.setMoneyBankAmount(configuration.getMoneyBankAmount() - amount);
             return true;
         }
 
@@ -228,10 +241,9 @@ public class EconomyService implements IMessageReceiveListener {
         if (paydayCountdownMatcher.find()) {
             configuration.setMinutesSinceLastPayDay(57);
 
-            if (configuration.getMoneyBankAmount() >= 100000) {
-                messageService.sendModMessage("Du hast mehr als 100000$ auf der Bank!", false);
-                player.playSound(BLOCK_NOTE_BLOCK_BANJO.value(), 1, 0.1f);
-                player.playSound(BLOCK_NOTE_BLOCK_BANJO.value(), 1, 1);
+            if (configuration.getMoneyBankAmount() > 100000) {
+                messageService.sendModMessage("Du hast über 100000$ auf der Bank!", false);
+                notificationService.notificationSound(3);
             }
 
             return true;
@@ -284,8 +296,16 @@ public class EconomyService implements IMessageReceiveListener {
 
         Matcher medicReviveMatcher = MEDIC_REVIVE_PATTERN.matcher(message);
         if (medicReviveMatcher.find()) {
-            configuration.setMoneyBankAmount(max(0, configuration.getMoneyBankAmount() - 50));
+            this.lastMedicReviveAction = currentTimeMillis();
             return true;
+        }
+
+        Matcher backInLifeMatcher = BACK_IN_LIFE_PATTERN.matcher(message);
+        if (backInLifeMatcher.find()) {
+            long timeSingeLastMedicReviveAction = currentTimeMillis() - this.lastMedicReviveAction;
+            if (timeSingeLastMedicReviveAction > 6000 && timeSingeLastMedicReviveAction < 10000) {
+                configuration.setMoneyBankAmount(max(0, configuration.getMoneyBankAmount() - 50));
+            }
         }
 
         return true;

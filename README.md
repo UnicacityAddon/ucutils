@@ -16,6 +16,9 @@ reibungsloser und angenehmer gestalten.
 - Es wird angezeigt wie lang der Cooldown für Bandagen, Schmerzpillen und Absorption ist
 - Es werden Sounds abgespielt für Notrufe, Bomben, Feuer, Staatsbankraub und weitere Situationen
 - Über der Hungerleiste wird der Durst angezeigt
+- Mit einem Rechtsklick, während man schleicht, kann man bewusstlosen Personen Erste-Hilfe geben
+- Über dem Spielernamen wird eine Information angezeigt, wenn ein Spieler AFK oder im A-Duty ist
+- Für Teammitglieder wird eine Warnung angezeigt, wenn sie sich im Admindienst befinden und eine Waffe in der Hand haben
 
 ### Auto
 
@@ -39,6 +42,7 @@ reibungsloser und angenehmer gestalten.
 - Der Fraktionschat kann individuell eingefärbt werden
 - Eine Plantage kann direkt durch gleichzeitiges Schleichen und Klicken mit einem Samen in der Hand gelegt werden
 - Eine Plantage kann durch einen Rechtsklick mit einem Wassereimer oder Dünger direkt gewässert beziehungsweise gedüngt werden
+- Der Rettungsdienst kann durch einen Rechtsklick auf eine bewusstlose Person diese wiederbeleben
 
 ### Jobs
 
@@ -54,7 +58,7 @@ reibungsloser und angenehmer gestalten.
 ### Widgets
 
 - Aktuelles Datum und Uhrzeit
-- Informationen über den PayDay (Dauer bis zum nächsten PayDay, Gehalt und Erfahrung)
+- Informationen über den PayDay (Dauer bis zum nächsten PayDay, Gehalt und Erfahrung) einschließlich Reichensteuer-Warnung
 - Status des Autos (offen/abgeschlossen)
 - Geld auf der Hand und auf der Bank
 
@@ -64,7 +68,7 @@ reibungsloser und angenehmer gestalten.
 
 | Befehl                            | Beschreibung                                                                                                    |
 |-----------------------------------|-----------------------------------------------------------------------------------------------------------------|
-| `/ucutils` (`/ucutils sync`)      | Zeigt nützliche Status-Informationen über das Projekt an oder startet eine Synchronisierung                     |
+| `/ucutils (<sync>)`               | Zeigt nützliche Status-Informationen über das Projekt an oder startet eine Synchronisierung                     |
 | `/mi`                             | Alias für `/memberinfo`                                                                                         |
 | `/mia`                            | Alias für `/memberinfoall`                                                                                      |
 | `/screenshot`                     | Erstellt einen Screenshot in einer bestimmten Kategorie                                                         |
@@ -88,10 +92,10 @@ reibungsloser und angenehmer gestalten.
 
 **Geld**
 
-| Befehl        | Beschreibung                                                                                                                                                                         |
-|---------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `/einzahlen`  | Zahlt das gesamte Bargeld in den ATM in der Nähe ein                                                                                                                                 |
-| `/adropmoney` | Bucht für den Geldtransport-Job 16000\$ vom Konto ab, sodass das Geld vom Geldtransport-Job in den ATM eingezahlt werden kann und bucht die 16000$ anschließend zurück auf das Konto |
+| Befehl                 | Beschreibung                                                                                                                                                                         |
+|------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `/einzahlen (<force>)` | Zahlt das gesamte Bargeld in den ATM in der Nähe ein                                                                                                                                 |
+| `/adropmoney`          | Bucht für den Geldtransport-Job 16000\$ vom Konto ab, sodass das Geld vom Geldtransport-Job in den ATM eingezahlt werden kann und bucht die 16000$ anschließend zurück auf das Konto |
 
 **Handy**
 

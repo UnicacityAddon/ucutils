@@ -19,6 +19,9 @@ import java.util.Set;
 
 import static de.rettichlp.ucutils.UCUtils.LOGGER;
 import static de.rettichlp.ucutils.UCUtils.api;
+import static de.rettichlp.ucutils.UCUtils.configuration;
+import static de.rettichlp.ucutils.UCUtils.messageService;
+import static de.rettichlp.ucutils.UCUtils.notificationService;
 import static java.nio.file.Files.newBufferedReader;
 import static java.nio.file.Files.newBufferedWriter;
 
@@ -43,6 +46,19 @@ public class Configuration {
 
         if (this.minutesSinceLastPayDay % 10 == 0) {
             new Thread(this::saveToFile).start(); // asynchronously save every active 10 minutes
+        }
+
+        if (configuration.getMoneyBankAmount() > 100000) {
+            switch (this.minutesSinceLastPayDay) {
+                case 50 -> {
+                    messageService.sendModMessage("Du hast in 10 Minuten PayDay und über 100000$ auf der Bank!", false);
+                    notificationService.notificationSound(1);
+                }
+                case 55 -> {
+                    messageService.sendModMessage("Du hast in 5 Minuten PayDay und über 100000$ auf der Bank!", false);
+                    notificationService.notificationSound(2);
+                }
+            }
         }
     }
 

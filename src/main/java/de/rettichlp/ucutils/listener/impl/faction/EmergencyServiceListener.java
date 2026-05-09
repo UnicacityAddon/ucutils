@@ -28,6 +28,7 @@ public class EmergencyServiceListener implements IMessageReceiveListener, INaviS
     private static final Pattern SERVICE_DELETED_PATTERN = compile("^Der Notruf von (?:\\[UC])?(?<senderName>[a-zA-Z0-9_]+) wurde von (?:\\[UC])?(?<playerName>[a-zA-Z0-9_]+) gelöscht\\.$");
     private static final Pattern SERVICE_COUNT_PATTERN = compile("^Offene Notrufe \\((?<count>\\d+)\\):");
     private static final Pattern SERVICE_NONE_PATTERN = compile("^Fehler: Es ist kein Service offen\\.$");
+    private static final Pattern SERVICE_NONE_FOR_PLAYER_PATTERN = compile("^Fehler: Es wurde kein Service von dir akzeptiert\\.$");
 
     private boolean activeService = false;
 
@@ -96,6 +97,12 @@ public class EmergencyServiceListener implements IMessageReceiveListener, INaviS
         Matcher serviceNoneMatcher = SERVICE_NONE_PATTERN.matcher(message);
         if (serviceNoneMatcher.find()) {
             storage.setActiveServices(0);
+            return true;
+        }
+
+        Matcher serviceNoneForPlayerMatcher = SERVICE_NONE_FOR_PLAYER_PATTERN.matcher(message);
+        if (serviceNoneForPlayerMatcher.find()) {
+            this.activeService = false;
             return true;
         }
 

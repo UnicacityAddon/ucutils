@@ -147,5 +147,7 @@
   "ucutils.sound.service.tooltip": "Spielt einen Sound ab, wenn ein Notruf eingegangen ist",
   "ucutils.sound.fire.name": "Feuer",
   "ucutils.sound.report.name": "Report",
-  "ucutils.sound.report.tooltip": "Spielt einen Sound ab, wenn ein Report eingegangen ist"
+  "ucutils.sound.report.tooltip": "Spielt einen Sound ab, wenn ein Report eingegangen ist",
+  "ucutils.sound.notification.name": "Benachrichtigung",
+  "ucutils.sound.notification.tooltip": "Spielt einen Sound ab, wenn eine UCUtils Benachrichtigung eingegangen ist"
 }

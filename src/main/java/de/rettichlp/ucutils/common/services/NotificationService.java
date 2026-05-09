@@ -12,6 +12,9 @@ import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
+import static de.rettichlp.ucutils.UCUtils.configuration;
+import static de.rettichlp.ucutils.UCUtils.utilService;
+import static de.rettichlp.ucutils.common.models.Sound.NOTIFICATION;
 import static java.awt.Color.CYAN;
 import static java.awt.Color.GREEN;
 import static java.awt.Color.ORANGE;
@@ -56,6 +59,16 @@ public class NotificationService {
                 .filter(notification -> now().isBefore(notification.getTimestamp().plus(notification.getDurationInMillis(), MILLISECONDS.toChronoUnit())))
                 .sorted(comparing(Notification::getTimestamp))
                 .toList();
+    }
+
+    public void notificationSound(int repeating) {
+        if (!configuration.getOptions().sound().notification()) {
+            return;
+        }
+
+        for (int i = 0; i < repeating; i++) {
+            utilService.delayedAction(() -> NOTIFICATION.play(1, 2), i * 150L);
+        }
     }
 
     @Data

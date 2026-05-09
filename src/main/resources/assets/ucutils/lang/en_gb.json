@@ -147,5 +147,7 @@
   "ucutils.sound.service.tooltip": "Plays a sound when a service comes in",
   "ucutils.sound.fire.name": "Fire",
   "ucutils.sound.report.name": "Report",
-  "ucutils.sound.report.tooltip": "Plays a sound when a report comes in"
+  "ucutils.sound.report.tooltip": "Plays a sound when a report comes in",
+  "ucutils.sound.notification.name": "Notification",
+  "ucutils.sound.notification.tooltip": "Plays a sound when a UCUtils notification comes in"
 }

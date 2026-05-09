@@ -9,7 +9,7 @@ import de.rettichlp.ucutils.listener.IScreenOpenListener;
 import net.fabricmc.fabric.api.client.rendering.v1.world.WorldRenderContext;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.gui.screen.ingame.GenericContainerScreen;
+import net.minecraft.client.gui.screen.ingame.HopperScreen;
 import net.minecraft.client.network.ClientPlayerInteractionManager;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.util.math.MatrixStack;
@@ -41,10 +41,9 @@ import static java.util.regex.Pattern.compile;
 import static net.minecraft.block.Blocks.FERN;
 import static net.minecraft.block.Blocks.PODZOL;
 import static net.minecraft.entity.EquipmentSlot.MAINHAND;
+import static net.minecraft.item.Items.BEETROOT_SEEDS;
 import static net.minecraft.item.Items.BONE_MEAL;
-import static net.minecraft.item.Items.PUMPKIN_SEEDS;
 import static net.minecraft.item.Items.WATER_BUCKET;
-import static net.minecraft.item.Items.WHEAT_SEEDS;
 import static net.minecraft.screen.slot.SlotActionType.PICKUP;
 import static net.minecraft.text.Text.empty;
 import static net.minecraft.text.Text.of;
@@ -75,7 +74,7 @@ public class PlantListener implements IBlockRightClickListener, IEntityRenderLis
             // check for plant placing
             ItemStack mainHandStack = player.getEquippedStack(MAINHAND);
 
-            if (player.isSneaking() && (mainHandStack.isOf(PUMPKIN_SEEDS) || mainHandStack.isOf(WHEAT_SEEDS))) {
+            if (player.isSneaking() && (mainHandStack.isOf(BEETROOT_SEEDS))) {
                 commandService.sendCommand("plant plant");
             }
 
@@ -185,14 +184,15 @@ public class PlantListener implements IBlockRightClickListener, IEntityRenderLis
     public void onScreenOpen(Screen screen, int scaledWidth, int scaledHeight) {
         ClientPlayerInteractionManager interactionManager = MinecraftClient.getInstance().interactionManager;
 
-        if (nonNull(interactionManager) && screen instanceof GenericContainerScreen genericContainerScreen && PLANT_TEXT.equals(genericContainerScreen.getTitle().getString())) {
+        if (interactionManager != null && screen instanceof HopperScreen hopperScreen && PLANT_TEXT.equals(hopperScreen.getTitle().getString())) {
             ItemStack mainHandStack = player.getEquippedStack(MAINHAND);
 
-            int syncId = genericContainerScreen.getScreenHandler().syncId;
+            int syncId = hopperScreen.getScreenHandler().syncId;
+            // // https://i.imgur.com/b8INthP.png
             if (mainHandStack.isOf(WATER_BUCKET)) {
-                interactionManager.clickSlot(syncId, 1, 0, PICKUP, player);
+                interactionManager.clickSlot(syncId, 4, 0, PICKUP, player);
             } else if (mainHandStack.isOf(BONE_MEAL)) {
-                interactionManager.clickSlot(syncId, 7, 0, PICKUP, player);
+                interactionManager.clickSlot(syncId, 3, 0, PICKUP, player);
             }
         }
     }
