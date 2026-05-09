@@ -78,9 +78,9 @@ public class EconomyListener implements IMessageReceiveListener {
 
             List<String> commands = switch (configuration.getOptions().atmInformationType()) {
                 case NONE -> emptyList();
-                case F_BANK -> List.of("fbank info");
+                case F_BANK -> List.of("fbank");
                 case G_BANK -> List.of("gruppierungkasse");
-                case BOTH -> List.of("fbank info", "gruppierungkasse");
+                case BOTH -> List.of("fbank", "gruppierungkasse");
             };
 
             commandService.sendCommands(commands);
