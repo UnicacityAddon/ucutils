@@ -2,7 +2,7 @@
   "bank_robbery": {
     "sounds": [
       {
-        "name": "ucutils:bank_robbery_sound",
+        "name": "ucutils:bank_robbery",
         "stream": true
       }
     ]
@@ -10,7 +10,7 @@
   "bomb": {
     "sounds": [
       {
-        "name": "ucutils:bomb_sound",
+        "name": "ucutils:bomb",
         "stream": true
       }
     ]
@@ -18,7 +18,7 @@
   "contract.fulfilled": {
     "sounds": [
       {
-        "name": "ucutils:contract_fulfilled_sound",
+        "name": "ucutils:contract_fulfilled",
         "stream": true
       }
     ]
@@ -26,7 +26,7 @@
   "contract.set": {
     "sounds": [
       {
-        "name": "ucutils:contract_set_sound",
+        "name": "ucutils:contract_set",
         "stream": true
       }
     ]
@@ -34,7 +34,15 @@
   "fire": {
     "sounds": [
       {
-        "name": "ucutils:fire_sound",
+        "name": "ucutils:fire",
+        "stream": true
+      }
+    ]
+  },
+  "notification": {
+    "sounds": [
+      {
+        "name": "ucutils:notification",
         "stream": true
       }
     ]
@@ -42,7 +50,7 @@
   "report": {
     "sounds": [
       {
-        "name": "ucutils:report_sound",
+        "name": "ucutils:report",
         "stream": true
       }
     ]
@@ -50,7 +58,7 @@
   "service": {
     "sounds": [
       {
-        "name": "ucutils:service_sound",
+        "name": "ucutils:service",
         "stream": true
       }
     ]

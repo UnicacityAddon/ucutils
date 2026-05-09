@@ -14,6 +14,7 @@ import java.util.regex.Pattern;
 import static de.rettichlp.ucutils.UCUtils.commandService;
 import static de.rettichlp.ucutils.UCUtils.configuration;
 import static de.rettichlp.ucutils.UCUtils.messageService;
+import static de.rettichlp.ucutils.UCUtils.notificationService;
 import static de.rettichlp.ucutils.UCUtils.player;
 import static de.rettichlp.ucutils.UCUtils.storage;
 import static java.lang.Integer.parseInt;
@@ -22,7 +23,6 @@ import static java.lang.System.currentTimeMillis;
 import static java.util.Collections.emptyList;
 import static java.util.Optional.ofNullable;
 import static java.util.regex.Pattern.compile;
-import static net.minecraft.sound.SoundEvents.BLOCK_NOTE_BLOCK_BANJO;
 import static net.minecraft.text.Text.of;
 import static net.minecraft.util.Formatting.GRAY;
 import static net.minecraft.util.Formatting.UNDERLINE;
@@ -219,6 +219,18 @@ public class EconomyListener implements IMessageReceiveListener {
         if (paydayTimeMatcher.find()) {
             int minutesSinceLastPayDay = parseInt(paydayTimeMatcher.group("minutes"));
             configuration.setMinutesSinceLastPayDay(minutesSinceLastPayDay);
+
+            switch (minutesSinceLastPayDay) {
+                case 50 -> {
+                    messageService.sendModMessage("Du hast in 10 Minuten PayDay und mehr als 100000$ auf der Bank!", false);
+                    notificationService.notificationSound(1);
+                }
+                case 55 -> {
+                    messageService.sendModMessage("Du hast in 5 Minuten PayDay und mehr als 100000$ auf der Bank!", false);
+                    notificationService.notificationSound(2);
+                }
+            }
+
             return true;
         }
 
@@ -241,10 +253,9 @@ public class EconomyListener implements IMessageReceiveListener {
         if (paydayCountdownMatcher.find()) {
             configuration.setMinutesSinceLastPayDay(57);
 
-            if (configuration.getMoneyBankAmount() >= 100000) {
+            if (configuration.getMoneyBankAmount() > 100000) {
                 messageService.sendModMessage("Du hast mehr als 100000$ auf der Bank!", false);
-                player.playSound(BLOCK_NOTE_BLOCK_BANJO.value(), 1, 0.1f);
-                player.playSound(BLOCK_NOTE_BLOCK_BANJO.value(), 1, 1);
+                notificationService.notificationSound(3);
             }
 
             return true;

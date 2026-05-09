@@ -27,6 +27,7 @@ public class SoundOptions {
     private boolean contractFulfilled = true;
     private boolean contractSet = true;
     private MedicSelect fire = MEDIC;
+    private boolean notification = true;
     private boolean report = false;
     private boolean service = true;
 

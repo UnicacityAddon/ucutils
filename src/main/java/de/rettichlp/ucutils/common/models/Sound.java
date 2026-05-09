@@ -20,6 +20,7 @@ public enum Sound {
     CONTRACT_FULFILLED("contract.fulfilled"),
     CONTRACT_SET("contract.set"),
     FIRE("fire"),
+    NOTIFICATION("notification"),
     REPORT("report"), // TODO use sound
     SERVICE("service");
 

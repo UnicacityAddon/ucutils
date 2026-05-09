@@ -23,8 +23,10 @@ public class SoundOptionsScreen extends OptionsScreen {
     private static final Text SOUND_SERVICE_NAME = translatable("ucutils.sound.service.name");
     private static final Text SOUND_SERVICE_TOOLTIP = translatable("ucutils.sound.service.tooltip");
     private static final Text SOUND_FIRE_NAME = translatable("ucutils.sound.fire.name");
-    private static final Text TEXT_REPORT_NAME = translatable("ucutils.sound.report.name");
-    private static final Text TEXT_REPORT_TOOLTIP = translatable("ucutils.sound.report.tooltip");
+    private static final Text SOUND_REPORT_NAME = translatable("ucutils.sound.report.name");
+    private static final Text SOUND_REPORT_TOOLTIP = translatable("ucutils.sound.report.tooltip");
+    private static final Text SOUND_NOTIFICATION_NAME = translatable("ucutils.sound.notification.name");
+    private static final Text SOUND_NOTIFICATION_TOOLTIP = translatable("ucutils.sound.notification.tooltip");
 
     public SoundOptionsScreen(Screen parent) {
         super(parent, TEXT_SOUND);
@@ -47,7 +49,8 @@ public class SoundOptionsScreen extends OptionsScreen {
         renderService.addCyclingButton(directionalLayoutWidget3, SOUND_FIRE_NAME, SoundOptions.MedicSelect.values(), SoundOptions.MedicSelect::getDisplayName, (options, e) -> options.sound().fire(e), options -> options.sound().fire(), 150);
 
         DirectionalLayoutWidget directionalLayoutWidget4 = directionalLayoutWidget.add(horizontal().spacing(8));
-        renderService.addToggleButton(directionalLayoutWidget4, TEXT_REPORT_NAME, TEXT_REPORT_TOOLTIP, (options, value) -> options.sound().report(value), options -> options.sound().report(), 150);
+        renderService.addToggleButton(directionalLayoutWidget4, SOUND_REPORT_NAME, SOUND_REPORT_TOOLTIP, (options, value) -> options.sound().report(value), options -> options.sound().report(), 150);
+        renderService.addToggleButton(directionalLayoutWidget4, SOUND_NOTIFICATION_NAME, SOUND_NOTIFICATION_TOOLTIP, (options, value) -> options.sound().notification(value), options -> options.sound().notification(), 150);
 
         directionalLayoutWidget.forEachChild(this::addDrawableChild);
     }
