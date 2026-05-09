@@ -19,6 +19,7 @@
     "ClientPlayerEntityMixin",
     "GameMenuScreenMixin",
     "InGameHudMixin",
+    "MinecraftClientMixin",
     "PlayerEntityRendererMixin",
     "PlayerListHudMixin"
   ]
