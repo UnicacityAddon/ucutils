@@ -253,7 +253,7 @@ public class EconomyListener implements IMessageReceiveListener {
         if (paydayCountdownMatcher.find()) {
             configuration.setMinutesSinceLastPayDay(57);
 
-            if (configuration.getMoneyBankAmount() >= 100000) {
+            if (configuration.getMoneyBankAmount() > 100000) {
                 messageService.sendModMessage("Du hast mehr als 100000$ auf der Bank!", false);
                 notificationService.notificationSound(3);
             }
