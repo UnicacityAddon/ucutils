@@ -17,7 +17,8 @@ reibungsloser und angenehmer gestalten.
 - Es werden Sounds abgespielt für Notrufe, Bomben, Feuer, Staatsbankraub und weitere Situationen
 - Über der Hungerleiste wird der Durst angezeigt
 - Mit einem Rechtsklick, während man schleicht, kann man bewusstlosen Personen Erste-Hilfe geben
-- Über dem Spielernamen wird eine Information antgezeigt wenn ein Spieler AFK oder im A-Duty ist
+- Über dem Spielernamen wird eine Information angezeigt, wenn ein Spieler AFK oder im A-Duty ist
+- Für Teammitglieder wird eine Warnung angezeigt, wenn sie sich im Admindienst befinden und eine Waffe in der Hand haben
 
 ### Auto
 
@@ -57,7 +58,7 @@ reibungsloser und angenehmer gestalten.
 ### Widgets
 
 - Aktuelles Datum und Uhrzeit
-- Informationen über den PayDay (Dauer bis zum nächsten PayDay, Gehalt und Erfahrung)
+- Informationen über den PayDay (Dauer bis zum nächsten PayDay, Gehalt und Erfahrung) einschließlich Reichensteuer-Warnung
 - Status des Autos (offen/abgeschlossen)
 - Geld auf der Hand und auf der Bank
 
