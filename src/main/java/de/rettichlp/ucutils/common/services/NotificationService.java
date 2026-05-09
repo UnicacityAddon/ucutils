@@ -67,7 +67,7 @@ public class NotificationService {
         }
 
         for (int i = 0; i < repeating; i++) {
-            utilService.delayedAction(NOTIFICATION::play, i * 150L);
+            utilService.delayedAction(() -> NOTIFICATION.play(1, 2), i * 150L);
         }
     }
 
