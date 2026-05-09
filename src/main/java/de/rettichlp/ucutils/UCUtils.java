@@ -71,8 +71,8 @@ public class UCUtils implements ModInitializer {
                 client.execute(() -> {
                     this.registry.registerListeners();
                     renderService.initializeWidgets();
-                    syncService.syncFactionSpecificData();
-                    syncService.checkForUpdates();
+                    utilService.delayedAction(syncService::syncFactionSpecificData, 10000);
+                    utilService.delayedAction(syncService::checkForUpdates, 15000);
                 });
             }
         });

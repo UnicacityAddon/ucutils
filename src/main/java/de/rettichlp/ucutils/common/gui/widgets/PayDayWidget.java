@@ -53,6 +53,14 @@ public class PayDayWidget extends AbstractUCUtilsTextWidget<PayDayWidget.Configu
     }
 
     @Override
+    public Color getBackgroundColor() {
+        // with over 100.000$ on bank and PayDay within next 5 minutes, animate background
+        return configuration.getMinutesSinceLastPayDay() >= 55 && configuration.getMoneyBankAmount() > 100000 && (currentTimeMillis() / 500 % 2 == 0)
+                ? RED
+                : super.getBackgroundColor();
+    }
+
+    @Override
     public Text getDisplayName() {
         return WIDGETS_PAYDAY_OPTIONS_NAME;
     }
@@ -60,14 +68,6 @@ public class PayDayWidget extends AbstractUCUtilsTextWidget<PayDayWidget.Configu
     @Override
     public Text getTooltip() {
         return WIDGETS_PAYDAY_OPTIONS_TOOLTIP;
-    }
-
-    @Override
-    public Color getBackgroundColor() {
-        // with over 100.000$ on bank and PayDay within next 5 minutes, animate background
-        return configuration.getMinutesSinceLastPayDay() >= 55 && configuration.getMoneyBankAmount() > 100000 && (currentTimeMillis() / 500 % 2 == 0)
-                ? RED
-                : super.getBackgroundColor();
     }
 
     @Data

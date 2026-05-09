@@ -63,19 +63,17 @@ public class SyncService {
 
     public void syncFactionSpecificData() {
         // parse from faction-related init commands after all faction members are synced
-        utilService.delayedAction(() -> {
-            Faction faction = storage.getFaction(player.getStringifiedName());
-            switch (faction) {
-                case FBI, POLIZEI -> commandService.sendCommandWithHiddenOutput("wanteds");
-                case MERCENARY -> commandService.sendCommandWithHiddenOutput("contractlist");
-                case RETTUNGSDIENST -> commandService.sendCommandWithHiddenOutput("hausverbot");
-                default -> {
-                    if (faction.isBadFaction()) {
-                        commandService.sendCommandWithHiddenOutput("blacklist");
-                    }
+        Faction faction = storage.getFaction(player.getStringifiedName());
+        switch (faction) {
+            case FBI, POLIZEI -> commandService.sendCommandWithHiddenOutput("wanteds");
+            case MERCENARY -> commandService.sendCommandWithHiddenOutput("contractlist");
+            case RETTUNGSDIENST -> commandService.sendCommandWithHiddenOutput("hausverbot");
+            default -> {
+                if (faction.isBadFaction()) {
+                    commandService.sendCommandWithHiddenOutput("blacklist");
                 }
             }
-        }, COMMAND_COOLDOWN_MILLIS);
+        }
     }
 
     public void checkForUpdates() {

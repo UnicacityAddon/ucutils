@@ -68,7 +68,7 @@ reibungsloser und angenehmer gestalten.
 
 | Befehl                            | Beschreibung                                                                                                    |
 |-----------------------------------|-----------------------------------------------------------------------------------------------------------------|
-| `/ucutils` (`/ucutils sync`)      | Zeigt nützliche Status-Informationen über das Projekt an oder startet eine Synchronisierung                     |
+| `/ucutils (<sync>)`               | Zeigt nützliche Status-Informationen über das Projekt an oder startet eine Synchronisierung                     |
 | `/mi`                             | Alias für `/memberinfo`                                                                                         |
 | `/mia`                            | Alias für `/memberinfoall`                                                                                      |
 | `/screenshot`                     | Erstellt einen Screenshot in einer bestimmten Kategorie                                                         |
@@ -92,10 +92,10 @@ reibungsloser und angenehmer gestalten.
 
 **Geld**
 
-| Befehl        | Beschreibung                                                                                                                                                                         |
-|---------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `/einzahlen`  | Zahlt das gesamte Bargeld in den ATM in der Nähe ein                                                                                                                                 |
-| `/adropmoney` | Bucht für den Geldtransport-Job 16000\$ vom Konto ab, sodass das Geld vom Geldtransport-Job in den ATM eingezahlt werden kann und bucht die 16000$ anschließend zurück auf das Konto |
+| Befehl                 | Beschreibung                                                                                                                                                                         |
+|------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `/einzahlen (<force>)` | Zahlt das gesamte Bargeld in den ATM in der Nähe ein                                                                                                                                 |
+| `/adropmoney`          | Bucht für den Geldtransport-Job 16000\$ vom Konto ab, sodass das Geld vom Geldtransport-Job in den ATM eingezahlt werden kann und bucht die 16000$ anschließend zurück auf das Konto |
 
 **Handy**
 
