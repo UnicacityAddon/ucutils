@@ -17,7 +17,6 @@ import static de.rettichlp.ucutils.UCUtils.messageService;
 import static de.rettichlp.ucutils.UCUtils.utilService;
 import static de.rettichlp.ucutils.common.services.CommandService.COMMAND_COOLDOWN_MILLIS;
 import static java.lang.Integer.parseInt;
-import static java.lang.Math.min;
 import static java.util.regex.Pattern.compile;
 import static net.fabricmc.fabric.api.client.command.v2.ClientCommandManager.literal;
 
@@ -62,13 +61,14 @@ public class DepositCommand extends CommandBase implements IMessageReceiveListen
                         }
 
                         if (atmMoneyAvailable == 0) {
-                            messageService.sendModMessage("Der Bankautomat ist voll.", false);
+                            messageService.sendModMessage("Der ATM ist voll.", false);
                             messageService.sendModMessage("Nutze einen anderen ATM oder '/einzahlen force' um dennoch Geld in diesen ATM zu legen.", false);
-                        } else if (atmMoneyAvailable == -1) {
-                            // in case atm info is not available
-                            commandService.sendCommand("bank einzahlen " + money);
+                        } else if (atmMoneyAvailable > 0 && money > atmMoneyAvailable) {
+                            commandService.sendCommand("bank einzahlen " + atmMoneyAvailable);
+                            messageService.sendModMessage("Der ATM ist voll. Es wurden nur " + atmMoneyAvailable + "$ eingezahlt.", false);
+                            messageService.sendModMessage("Nutze einen anderen ATM oder '/einzahlen force' um dennoch Geld in diesen ATM zu legen.", false);
                         } else {
-                            commandService.sendCommand("bank einzahlen " + min(atmMoneyAvailable, money));
+                            commandService.sendCommand("bank einzahlen " + money);
                         }
                     }, COMMAND_COOLDOWN_MILLIS * 2);
 
