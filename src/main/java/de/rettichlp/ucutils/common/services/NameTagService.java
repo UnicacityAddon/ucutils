@@ -24,6 +24,7 @@ import static de.rettichlp.ucutils.UCUtils.storage;
 import static de.rettichlp.ucutils.common.models.Color.WHITE;
 import static java.time.Duration.between;
 import static java.time.LocalDateTime.now;
+import static net.minecraft.scoreboard.AbstractTeam.CollisionRule.NEVER;
 import static net.minecraft.text.Text.empty;
 import static net.minecraft.text.Text.literal;
 import static net.minecraft.text.Text.of;
@@ -123,7 +124,7 @@ public class NameTagService {
                 .filter(entry -> entry.getProfile().name().equals(targetName))
                 .anyMatch(entry -> {
                     Team team = entry.getScoreboardTeam();
-                    return team != null && team.getName().endsWith("_afk");
+                    return team != null && !isADuty(targetName) && team.getCollisionRule() == NEVER;
                 });
     }
 
