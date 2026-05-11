@@ -38,13 +38,14 @@ public class CommandService {
 
     public boolean sendCommandWithAfkCheck(String command) {
         boolean isAfk = nameTagService.isAfk(player.getStringifiedName());
-        LOGGER.info("UCUtils executing command with AFK check (is AFK: {}): {}", isAfk, command);
+        boolean isDead = storage.isDead();
+        LOGGER.info("UCUtils executing command with AFK check (is AFK: {}, is dead: {}): {}", isAfk, isDead, command);
 
-        if (!isAfk) {
+        if (!isAfk && !isDead) {
             networkHandler.sendChatCommand(command);
         }
 
-        return !isAfk;
+        return !isAfk && !isDead;
     }
 
     public void sendCommands(List<String> commandStrings) {
