@@ -37,8 +37,6 @@ public class NameTagService {
 
     public static final MutableText HOUSE_BAN_TAG = literal("Hᴀᴜѕᴠᴇʀʙᴏᴛ").formatted(RED, BOLD);
 
-    public static final MutableText OUTLAW_TAG = literal("Vᴏɢᴇʟꜰʀᴇɪ").formatted(RED, BOLD);
-
     private static final MutableText A_DUTY_PREFIX = empty()
             .append(literal("[").formatted(DARK_GRAY))
             .append(literal("UC").formatted(BLUE))
