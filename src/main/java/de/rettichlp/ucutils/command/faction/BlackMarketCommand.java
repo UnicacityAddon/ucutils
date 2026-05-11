@@ -6,6 +6,7 @@ import de.rettichlp.ucutils.common.registry.UCUtilsCommand;
 import net.fabricmc.fabric.api.client.command.v2.FabricClientCommandSource;
 import org.jetbrains.annotations.NotNull;
 
+import static de.rettichlp.ucutils.UCUtils.commandService;
 import static de.rettichlp.ucutils.UCUtils.messageService;
 import static de.rettichlp.ucutils.UCUtils.player;
 import static de.rettichlp.ucutils.UCUtils.storage;
@@ -18,7 +19,7 @@ public class BlackMarketCommand extends CommandBase {
     @Override
     public LiteralArgumentBuilder<FabricClientCommandSource> execute(@NotNull LiteralArgumentBuilder<FabricClientCommandSource> node) {
         return node
-                .requires(fabricClientCommandSource -> storage.getFaction(player.getStringifiedName()).isBadFaction())
+                .requires(fabricClientCommandSource -> storage.getFaction(player.getStringifiedName()).isBadFaction() || commandService.isSuperUser())
                 .executes(context -> {
                     player.sendMessage(empty(), false);
 
