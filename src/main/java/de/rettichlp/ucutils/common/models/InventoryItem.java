@@ -2,11 +2,6 @@ package de.rettichlp.ucutils.common.models;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import org.jetbrains.annotations.NotNull;
-
-import java.util.Optional;
-
-import static java.util.Arrays.stream;
 
 @Getter
 @AllArgsConstructor

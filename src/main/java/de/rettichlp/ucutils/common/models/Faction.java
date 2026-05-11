@@ -6,11 +6,8 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 
-import static de.rettichlp.ucutils.UCUtils.storage;
 import static java.util.Arrays.stream;
 import static net.minecraft.text.Text.empty;
 import static net.minecraft.text.Text.literal;

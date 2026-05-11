@@ -30,7 +30,7 @@ reibungsloser und angenehmer gestalten.
 
 ### Fraktionen
 
-- Hinter dem Spielernamen befindet sich ein Symbol, um die dazugehörige Fraktion zu erkennen (auch für bewusstlose Personen)
+- Für bewusstlose Spieler wird hinter dem Spielernamen ein Symbol angezeigt, um die dazugehörige Fraktion zu erkennen
 - Sollte ein Spieler Contract, auf der Blacklist stehen, Hausverbot oder Wanted-Punkte haben, wird der Name dementsprechend eingefärbt
   und in der Spielerliste angezeigt
 - Das Design der Reinforcements ist so überarbeitet, dass diese besser auffallen

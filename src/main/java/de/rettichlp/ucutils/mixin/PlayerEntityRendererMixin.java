@@ -73,7 +73,6 @@ public abstract class PlayerEntityRendererMixin {
         if (configuration.getOptions().nameTag().houseBan() && hasHouseBan) {
             matrixStack.translate(0.0F, medicInformationPresent ? 0.8F : 2.6, 0.0F);
             orderedRenderCommandQueue.submitLabel(matrixStack, playerEntityRenderState.nameLabelPos, 0, HOUSE_BAN_TAG, !playerEntityRenderState.sneaking, playerEntityRenderState.light, playerEntityRenderState.squaredDistanceToCamera, cameraRenderState);
-            return;
         }
     }
 }
