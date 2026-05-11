@@ -92,10 +92,10 @@ reibungsloser und angenehmer gestalten.
 
 **Geld**
 
-| Befehl                 | Beschreibung                                                                                                                                                                         |
-|------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `/einzahlen (<force>)` | Zahlt das gesamte Bargeld in den ATM in der Nähe ein                                                                                                                                 |
-| `/adropmoney`          | Bucht für den Geldtransport-Job 16000\$ vom Konto ab, sodass das Geld vom Geldtransport-Job in den ATM eingezahlt werden kann und bucht die 16000$ anschließend zurück auf das Konto |
+| Befehl                 | Beschreibung                                                                                                                                                                            |
+|------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `/einzahlen (<force>)` | Zahlt das gesamte Bargeld in den ATM in der Nähe ein                                                                                                                                    |
+| `/adropmoney`          | Bucht für den Geldtransport-Job so viel Geld vom Konto ab, sodass das Geld vom Geldtransport-Job in den ATM eingezahlt werden kann und bucht das Geld anschließend zurück auf das Konto |
 
 **Handy**
 

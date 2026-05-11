@@ -27,6 +27,7 @@ import static java.time.LocalDateTime.now;
 import static net.minecraft.text.Text.empty;
 import static net.minecraft.text.Text.literal;
 import static net.minecraft.text.Text.of;
+import static net.minecraft.util.Formatting.BLUE;
 import static net.minecraft.util.Formatting.DARK_GRAY;
 import static net.minecraft.util.Formatting.DARK_GREEN;
 import static net.minecraft.util.Formatting.DARK_RED;
@@ -37,6 +38,11 @@ import static net.minecraft.util.Formatting.RED;
 import static net.minecraft.util.Formatting.YELLOW;
 
 public class NameTagService {
+
+    private static final MutableText A_DUTY_PREFIX = empty()
+            .append(literal("[").formatted(DARK_GRAY))
+            .append(literal("UC").formatted(BLUE))
+            .append(literal("]").formatted(DARK_GRAY));
 
     public MutableText getEnrichedDisplayName(String targetName) {
         NameTagOptions nameTagOptions = configuration.getOptions().nameTag();
@@ -125,8 +131,8 @@ public class NameTagService {
         return networkHandler.getPlayerList().stream()
                 .filter(entry -> entry.getProfile().name().equals(targetName))
                 .anyMatch(entry -> {
-                    Team team = entry.getScoreboardTeam();
-                    return team != null && team.getName().endsWith("_uc_aduty");
+                    Text displayName = entry.getDisplayName();
+                    return displayName != null && displayName.contains(A_DUTY_PREFIX);
                 });
     }
 
