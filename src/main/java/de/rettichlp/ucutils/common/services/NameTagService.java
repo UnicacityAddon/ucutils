@@ -1,13 +1,5 @@
 package de.rettichlp.ucutils.common.services;
 
-import com.mojang.brigadier.Message;
-import de.rettichlp.ucutils.common.configuration.options.NameTagOptions;
-import de.rettichlp.ucutils.common.models.BlacklistEntry;
-import de.rettichlp.ucutils.common.models.ContractEntry;
-import de.rettichlp.ucutils.common.models.Faction;
-import de.rettichlp.ucutils.common.models.HousebanEntry;
-import de.rettichlp.ucutils.common.models.WantedEntry;
-import lombok.NonNull;
 import net.minecraft.scoreboard.Team;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
@@ -16,17 +8,16 @@ import org.jetbrains.annotations.NotNull;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
-import java.util.Optional;
 
-import static de.rettichlp.ucutils.UCUtils.configuration;
 import static de.rettichlp.ucutils.UCUtils.networkHandler;
 import static de.rettichlp.ucutils.UCUtils.storage;
-import static de.rettichlp.ucutils.common.models.Color.WHITE;
 import static java.time.Duration.between;
 import static java.time.LocalDateTime.now;
+import static net.minecraft.scoreboard.AbstractTeam.CollisionRule.NEVER;
 import static net.minecraft.text.Text.empty;
 import static net.minecraft.text.Text.literal;
-import static net.minecraft.text.Text.of;
+import static net.minecraft.util.Formatting.BLUE;
+import static net.minecraft.util.Formatting.BOLD;
 import static net.minecraft.util.Formatting.DARK_GRAY;
 import static net.minecraft.util.Formatting.DARK_GREEN;
 import static net.minecraft.util.Formatting.DARK_RED;
@@ -38,86 +29,25 @@ import static net.minecraft.util.Formatting.YELLOW;
 
 public class NameTagService {
 
-    public MutableText getEnrichedDisplayName(String targetName) {
-        NameTagOptions nameTagOptions = configuration.getOptions().nameTag();
-        Faction targetFaction = storage.getCachedFaction(targetName);
+    public static final MutableText A_DUTY_TAG = empty()
+            .append(literal("ᴀ").formatted(BLUE, BOLD))
+            .append(literal("ᴅᴜᴛʏ").formatted(RED, BOLD));
 
-        Text newTargetDisplayNamePrefix = empty();
-        Text newTargetDisplayName = literal(targetName);
-        Text newTargetDisplayNameSuffix = nameTagOptions.factionInformation() ? targetFaction.getNameTagSuffix() : empty();
-        Formatting newTargetDisplayNameColor;
+    public static final MutableText AFK_TAG = literal("ᴀꜰᴋ").formatted(GOLD, BOLD);
 
-        // highlight factions
-        newTargetDisplayNameColor = nameTagOptions.highlightFactions().getOrDefault(targetFaction, WHITE).getFormatting();
+    public static final MutableText HOUSE_BAN_TAG = literal("Hᴀᴜѕᴠᴇʀʙᴏᴛ").formatted(RED, BOLD);
 
-        // blacklist
-        Optional<BlacklistEntry> optionalTargetBlacklistEntry = storage.getBlacklistEntries().stream()
-                .filter(blacklistEntry -> blacklistEntry.getPlayerName().equals(targetName))
-                .findAny();
-
-        if (optionalTargetBlacklistEntry.isPresent() && nameTagOptions.additionalBlacklist()) {
-            newTargetDisplayNameColor = RED;
-            newTargetDisplayNamePrefix = optionalTargetBlacklistEntry.get().isOutlaw()
-                    ? empty()
-                      .append(of("[").copy().formatted(DARK_GRAY))
-                      .append(of("V").copy().formatted(DARK_RED))
-                      .append(of("]").copy().formatted(DARK_GRAY))
-                    : empty();
-        }
-
-        // contract
-        Optional<ContractEntry> optionalTargetContractEntry = storage.getContractEntries().stream()
-                .filter(contractEntry -> contractEntry.getPlayerName().equals(targetName))
-                .findAny();
-
-        if (optionalTargetContractEntry.isPresent() && nameTagOptions.additionalContract()) {
-            newTargetDisplayNameColor = RED;
-        }
-
-        // houseban
-        Optional<HousebanEntry> optionalTargetHousebanEntry = storage.getHousebanEntries().stream()
-                .filter(housebanEntry -> housebanEntry.getPlayerName().equals(targetName))
-                .filter(housebanEntry -> housebanEntry.getUnbanDateTime().isAfter(now()))
-                .findAny();
-
-        if (optionalTargetHousebanEntry.isPresent() && nameTagOptions.additionalHouseban()) {
-            newTargetDisplayNamePrefix = empty()
-                    .append(of("[").copy().formatted(DARK_GRAY))
-                    .append(of("HV").copy().formatted(DARK_RED))
-                    .append(of("]").copy().formatted(DARK_GRAY));
-        }
-
-        // wanted
-        Optional<WantedEntry> optionalTargetWantedEntry = storage.getWantedEntries().stream()
-                .filter(wantedEntry -> wantedEntry.getPlayerName().equals(targetName))
-                .findAny();
-
-        if (optionalTargetWantedEntry.isPresent() && nameTagOptions.additionalWanted()) {
-            newTargetDisplayNameColor = getWantedPointColor(optionalTargetWantedEntry.get().getWantedPointAmount());
-        }
-
-        return empty()
-                .append(newTargetDisplayNamePrefix)
-                .append(" ")
-                .append(newTargetDisplayName.copy().formatted(newTargetDisplayNameColor))
-                .append(" ")
-                .append(newTargetDisplayNameSuffix);
-    }
-
-    public String revertEnrichment(@NonNull Message text) {
-        String string = text.getString();
-        String[] strings = string.split(" ");
-
-        // if name contains faction information, the last index is faction information
-        return string.contains("⌜") ? strings[strings.length - 2] : strings[strings.length - 1];
-    }
+    private static final MutableText A_DUTY_PREFIX = empty()
+            .append(literal("[").formatted(DARK_GRAY))
+            .append(literal("UC").formatted(BLUE))
+            .append(literal("]").formatted(DARK_GRAY));
 
     public boolean isAfk(String targetName) {
         return networkHandler.getPlayerList().stream()
                 .filter(entry -> entry.getProfile().name().equals(targetName))
                 .anyMatch(entry -> {
                     Team team = entry.getScoreboardTeam();
-                    return team != null && team.getName().endsWith("_afk");
+                    return team != null && !isADuty(targetName) && team.getCollisionRule() == NEVER;
                 });
     }
 
@@ -125,8 +55,8 @@ public class NameTagService {
         return networkHandler.getPlayerList().stream()
                 .filter(entry -> entry.getProfile().name().equals(targetName))
                 .anyMatch(entry -> {
-                    Team team = entry.getScoreboardTeam();
-                    return team != null && team.getName().endsWith("_uc_aduty");
+                    Text displayName = entry.getDisplayName();
+                    return displayName != null && displayName.contains(A_DUTY_PREFIX);
                 });
     }
 

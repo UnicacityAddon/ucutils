@@ -24,7 +24,7 @@ import static java.util.Optional.ofNullable;
 
 public class CommandService {
 
-    public static long COMMAND_COOLDOWN_MILLIS = 500;
+    public static final long COMMAND_COOLDOWN_MILLIS = 500;
 
     private static final String UUID_RETTICHLP = "25855f4d-3874-4a7f-a6ad-e9e4f3042e19";
 
@@ -36,15 +36,14 @@ public class CommandService {
         networkHandler.sendChatCommand(command);
     }
 
-    public boolean sendCommandWithAfkCheck(String command) {
+    public void sendCommandWithAfkCheck(String command) {
         boolean isAfk = nameTagService.isAfk(player.getStringifiedName());
-        LOGGER.info("UCUtils executing command with AFK check (is AFK: {}): {}", isAfk, command);
+        boolean isDead = storage.isDead();
+        LOGGER.info("UCUtils executing command with AFK check (is AFK: {}, is dead: {}): {}", isAfk, isDead, command);
 
-        if (!isAfk) {
+        if (!isAfk && !isDead) {
             networkHandler.sendChatCommand(command);
         }
-
-        return !isAfk;
     }
 
     public void sendCommands(List<String> commandStrings) {

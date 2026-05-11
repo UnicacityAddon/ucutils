@@ -54,8 +54,6 @@ public class WantedListener implements IMessageReceiveListener {
 
     @Override
     public boolean onMessageReceive(Text text, String message) {
-        String clientPlayerName = player.getGameProfile().name();
-
         Matcher wantedGivenPointsMatcher = WANTED_GIVEN_POINTS_PATTERN.matcher(message);
         if (wantedGivenPointsMatcher.find()) {
             String playerName = wantedGivenPointsMatcher.group(1);

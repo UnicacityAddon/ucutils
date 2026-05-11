@@ -104,6 +104,10 @@ public class Storage {
 
     @Getter
     @Setter
+    private boolean dead = false;
+
+    @Getter
+    @Setter
     private int lastReceivedSmsNumber = -1;
 
     @Getter
@@ -173,6 +177,8 @@ public class Storage {
         LOGGER.info("carLocked: {}", this.carLocked);
         // currentJob
         LOGGER.info("currentJob: {}", this.currentJob);
+        // dead
+        LOGGER.info("dead: {}", this.dead);
         // hydration
         LOGGER.info("hydration: {}", this.hydration);
         // lastReceivedSmsNumber
