@@ -19,7 +19,6 @@ import static de.rettichlp.ucutils.UCUtils.storage;
 import static de.rettichlp.ucutils.common.services.NameTagService.AFK_TAG;
 import static de.rettichlp.ucutils.common.services.NameTagService.A_DUTY_TAG;
 import static de.rettichlp.ucutils.common.services.NameTagService.HOUSE_BAN_TAG;
-import static de.rettichlp.ucutils.common.services.NameTagService.OUTLAW_TAG;
 
 @Mixin(PlayerEntityRenderer.class)
 public abstract class PlayerEntityRendererMixin {
@@ -74,15 +73,6 @@ public abstract class PlayerEntityRendererMixin {
         if (configuration.getOptions().nameTag().houseBan() && hasHouseBan) {
             matrixStack.translate(0.0F, medicInformationPresent ? 0.8F : 2.6, 0.0F);
             orderedRenderCommandQueue.submitLabel(matrixStack, playerEntityRenderState.nameLabelPos, 0, HOUSE_BAN_TAG, !playerEntityRenderState.sneaking, playerEntityRenderState.light, playerEntityRenderState.squaredDistanceToCamera, cameraRenderState);
-            return;
-        }
-
-        // handle outlaw tag
-        boolean isOutlaw = storage.getBlacklistEntries().stream()
-                .anyMatch(blacklistEntry -> blacklistEntry.getPlayerName().equals(playerName) && blacklistEntry.isOutlaw());
-        if (configuration.getOptions().nameTag().outlaw() && isOutlaw) {
-            matrixStack.translate(0.0F, medicInformationPresent ? 0.8F : 2.6, 0.0F);
-            orderedRenderCommandQueue.submitLabel(matrixStack, playerEntityRenderState.nameLabelPos, 0, OUTLAW_TAG, !playerEntityRenderState.sneaking, playerEntityRenderState.light, playerEntityRenderState.squaredDistanceToCamera, cameraRenderState);
             return;
         }
     }
