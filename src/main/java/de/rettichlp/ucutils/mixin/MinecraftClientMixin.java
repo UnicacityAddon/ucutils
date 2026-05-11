@@ -1,5 +1,7 @@
 package de.rettichlp.ucutils.mixin;
 
+import com.mojang.brigadier.Message;
+import lombok.NonNull;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.ItemEntity;
 import net.minecraft.text.Text;
@@ -13,7 +15,6 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import static de.rettichlp.ucutils.UCUtils.commandService;
-import static de.rettichlp.ucutils.UCUtils.nameTagService;
 import static de.rettichlp.ucutils.UCUtils.player;
 import static de.rettichlp.ucutils.UCUtils.storage;
 import static de.rettichlp.ucutils.common.models.Faction.RETTUNGSDIENST;
@@ -53,7 +54,7 @@ public abstract class MinecraftClientMixin {
 
             Text customName = itemEntity.getCustomName();
             assert customName != null;
-            String playerName = nameTagService.revertEnrichment(customName);
+            String playerName = revertEnrichment(customName);
 
             if (player.isSneaking()) {
                 commandService.sendCommand("erstehilfe " + playerName);
@@ -61,5 +62,14 @@ public abstract class MinecraftClientMixin {
                 commandService.sendCommand("revive " + playerName);
             }
         }
+    }
+
+    @Unique
+    private String revertEnrichment(@NonNull Message text) {
+        String string = text.getString();
+        String[] strings = string.split(" ");
+
+        // if name contains faction information, the last index is faction information
+        return string.contains("⌜") ? strings[strings.length - 2] : strings[strings.length - 1];
     }
 }
