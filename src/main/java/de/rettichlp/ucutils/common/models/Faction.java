@@ -6,11 +6,8 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 
-import static de.rettichlp.ucutils.UCUtils.storage;
 import static java.util.Arrays.stream;
 import static net.minecraft.text.Text.empty;
 import static net.minecraft.text.Text.literal;
@@ -59,14 +56,6 @@ public enum Faction {
                   .append(literal(this.icon).copy().formatted(this.color))
                   .append(literal("⌟").copy().formatted(DARK_GRAY))
                 : empty();
-    }
-
-    public List<FactionMember> getMembers() {
-        return storage.getFactionEntries().stream()
-                .filter(factionEntry -> factionEntry.faction() == this)
-                .findFirst()
-                .map(FactionEntry::members)
-                .orElse(new ArrayList<>());
     }
 
     public static @NotNull Optional<Faction> fromDisplayName(String displayName) {

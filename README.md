@@ -10,7 +10,6 @@ reibungsloser und angenehmer gestalten.
 
 - Sollte ein Command mit einem Großbuchstaben eingegeben werden (z. B. `/Afk` statt `/afk`) wird dieser Command automatisch zu einem
   gültigen Command umgewandelt
-- Die Tabliste wird nach Teammitgliedern und Fraktionen (FBI, Polizei, Rettungsdienst, News) sortiert
 - Als Business-Besitzer wird in der Business-Info ein Button angezeigt, um die Einnahmen direkt abzubuchen
 - Wirft man eine Glasflasche in der Nähe eines Shops weg, wird diese als Pfand abgegeben
 - Es wird angezeigt wie lang der Cooldown für Bandagen, Schmerzpillen und Absorption ist
@@ -31,7 +30,7 @@ reibungsloser und angenehmer gestalten.
 
 ### Fraktionen
 
-- Hinter dem Spielernamen befindet sich ein Symbol, um die dazugehörige Fraktion zu erkennen (auch für bewusstlose Personen)
+- Für bewusstlose Spieler wird hinter dem Spielernamen ein Symbol angezeigt, um die dazugehörige Fraktion zu erkennen
 - Sollte ein Spieler Contract, auf der Blacklist stehen, Hausverbot oder Wanted-Punkte haben, wird der Name dementsprechend eingefärbt
   und in der Spielerliste angezeigt
 - Das Design der Reinforcements ist so überarbeitet, dass diese besser auffallen
@@ -92,10 +91,10 @@ reibungsloser und angenehmer gestalten.
 
 **Geld**
 
-| Befehl                 | Beschreibung                                                                                                                                                                         |
-|------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `/einzahlen (<force>)` | Zahlt das gesamte Bargeld in den ATM in der Nähe ein                                                                                                                                 |
-| `/adropmoney`          | Bucht für den Geldtransport-Job 16000\$ vom Konto ab, sodass das Geld vom Geldtransport-Job in den ATM eingezahlt werden kann und bucht die 16000$ anschließend zurück auf das Konto |
+| Befehl                 | Beschreibung                                                                                                                                                                            |
+|------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `/einzahlen (<force>)` | Zahlt das gesamte Bargeld in den ATM in der Nähe ein                                                                                                                                    |
+| `/adropmoney`          | Bucht für den Geldtransport-Job so viel Geld vom Konto ab, sodass das Geld vom Geldtransport-Job in den ATM eingezahlt werden kann und bucht das Geld anschließend zurück auf das Konto |
 
 **Handy**
 

@@ -306,6 +306,8 @@ public class EconomyListener implements IMessageReceiveListener {
             if (timeSingeLastMedicReviveAction > 6000 && timeSingeLastMedicReviveAction < 10000) {
                 configuration.setMoneyBankAmount(max(0, configuration.getMoneyBankAmount() - 50));
             }
+
+            storage.setDead(false);
         }
 
         return true;

@@ -1,25 +1,17 @@
 package de.rettichlp.ucutils.common.configuration.options;
 
-import de.rettichlp.ucutils.common.models.Color;
-import de.rettichlp.ucutils.common.models.Faction;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
-
-import java.util.HashMap;
-import java.util.Map;
 
 @Getter
 @Setter
 @Accessors(fluent = true)
 public class NameTagOptions {
 
-    private boolean factionInformation = true;
-    private Map<Faction, Color> highlightFactions = new HashMap<>();
-    private boolean additionalBlacklist = true;
-    private boolean additionalContract = true;
-    private boolean additionalHouseban = true;
-    private boolean additionalWanted = true;
-    private boolean additionalAfk = true;
-    private boolean additionalMedicalInformation = true;
+    private boolean aDuty = true;
+    private boolean afk = true;
+    private boolean houseBan = true;
+    private boolean outlaw = true;
+    private boolean medicalInformation = true;
 }

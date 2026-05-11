@@ -2,11 +2,6 @@ package de.rettichlp.ucutils.common.models;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import org.jetbrains.annotations.NotNull;
-
-import java.util.Optional;
-
-import static java.util.Arrays.stream;
 
 @Getter
 @AllArgsConstructor
@@ -30,10 +25,4 @@ public enum InventoryItem {
 
     private final String displayName;
     private final boolean drugBankItem;
-
-    public static @NotNull Optional<InventoryItem> fromDisplayName(String displayName) {
-        return stream(values())
-                .filter(inventoryItem -> inventoryItem.getDisplayName().equals(displayName))
-                .findFirst();
-    }
 }
