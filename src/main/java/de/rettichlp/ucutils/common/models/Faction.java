@@ -61,14 +61,6 @@ public enum Faction {
                 : empty();
     }
 
-    public List<FactionMember> getMembers() {
-        return storage.getFactionEntries().stream()
-                .filter(factionEntry -> factionEntry.faction() == this)
-                .findFirst()
-                .map(FactionEntry::members)
-                .orElse(new ArrayList<>());
-    }
-
     public static @NotNull Optional<Faction> fromDisplayName(String displayName) {
         return stream(values())
                 .filter(faction -> faction.getDisplayName().equals(displayName))

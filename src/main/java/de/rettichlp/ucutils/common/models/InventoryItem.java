@@ -30,10 +30,4 @@ public enum InventoryItem {
 
     private final String displayName;
     private final boolean drugBankItem;
-
-    public static @NotNull Optional<InventoryItem> fromDisplayName(String displayName) {
-        return stream(values())
-                .filter(inventoryItem -> inventoryItem.getDisplayName().equals(displayName))
-                .findFirst();
-    }
 }
