@@ -75,6 +75,7 @@ public class PlayerListener implements IAbsorptionGetListener, IMessageReceiveLi
         if (deadMatcher.find()) {
             int minutes = parseInt(deadMatcher.group("minutes"));
             storage.getCountdowns().add(new Countdown("Friedhof", ofMinutes(minutes)));
+            storage.setDead(true);
             return true;
         }
 
