@@ -27,9 +27,7 @@ public abstract class GameMenuScreenMixin extends Screen {
             at = @At(
                     value = "INVOKE",
                     target = "Lnet/minecraft/client/gui/widget/GridWidget$Adder;add(Lnet/minecraft/client/gui/widget/Widget;ILnet/minecraft/client/gui/widget/Positioner;)Lnet/minecraft/client/gui/widget/Widget;",
-                    ordinal = 0
-            )
-    )
+                    ordinal = 0))
     private void ucutils$initWidgetsInvoke(CallbackInfo ci,
                                            @Local @NotNull GridWidget gridWidget,
                                            @Local GridWidget.@NotNull Adder adder) {
