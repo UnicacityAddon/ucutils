@@ -9,9 +9,9 @@ import lombok.experimental.Accessors;
 @Accessors(fluent = true)
 public class NameTagOptions {
 
-    private boolean additionalBlacklist = true;
-    private boolean additionalContract = true;
-    private boolean additionalHouseban = true;
-    private boolean additionalAfk = true;
-    private boolean additionalMedicalInformation = true;
+    private boolean aDuty = true;
+    private boolean afk = true;
+    private boolean houseBan = true;
+    private boolean outlaw = true;
+    private boolean medicalInformation = true;
 }
