@@ -6,7 +6,6 @@ import net.minecraft.client.render.entity.PlayerEntityRenderer;
 import net.minecraft.client.render.entity.state.PlayerEntityRenderState;
 import net.minecraft.client.render.state.CameraRenderState;
 import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.text.ClickEvent;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 import org.spongepowered.asm.mixin.Mixin;
@@ -54,19 +53,14 @@ public abstract class PlayerEntityRendererMixin {
             return;
         }
 
-        // extract player name from click event with tell command
+        // extract player name
         // empty[style={color=red,clickEvent=class_10610[command=/tell Maagma46 ],hoverEvent=class_10611[entity=net.minecraft.class_2568$class_5248@a9702189],insertion=Maagma46}, siblings=[literal{[}[style={color=dark_gray}, siblings=[literal{UC}[style={color=blue}], literal{]}[style={color=dark_gray}]]], literal{Maagma46}, empty]]
         Text displayName = playerEntityRenderState.displayName;
-
         if (displayName == null) {
             return;
         }
 
-        if (!(displayName.getStyle().getClickEvent() instanceof ClickEvent.SuggestCommand(String command))) {
-            return;
-        }
-
-        String playerName = command.replace("/tell ", "").trim();
+        String playerName = displayName.getStyle().getInsertion();
 
         matrixStack.scale(0.5F, 0.5F, 0.5F);
 
