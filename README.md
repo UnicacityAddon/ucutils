@@ -10,7 +10,6 @@ reibungsloser und angenehmer gestalten.
 
 - Sollte ein Command mit einem Großbuchstaben eingegeben werden (z. B. `/Afk` statt `/afk`) wird dieser Command automatisch zu einem
   gültigen Command umgewandelt
-- Die Tabliste wird nach Teammitgliedern und Fraktionen (FBI, Polizei, Rettungsdienst, News) sortiert
 - Als Business-Besitzer wird in der Business-Info ein Button angezeigt, um die Einnahmen direkt abzubuchen
 - Wirft man eine Glasflasche in der Nähe eines Shops weg, wird diese als Pfand abgegeben
 - Es wird angezeigt wie lang der Cooldown für Bandagen, Schmerzpillen und Absorption ist
