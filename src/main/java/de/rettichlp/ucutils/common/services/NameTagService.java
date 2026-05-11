@@ -17,6 +17,7 @@ import static net.minecraft.scoreboard.AbstractTeam.CollisionRule.NEVER;
 import static net.minecraft.text.Text.empty;
 import static net.minecraft.text.Text.literal;
 import static net.minecraft.util.Formatting.BLUE;
+import static net.minecraft.util.Formatting.BOLD;
 import static net.minecraft.util.Formatting.DARK_GRAY;
 import static net.minecraft.util.Formatting.DARK_GREEN;
 import static net.minecraft.util.Formatting.DARK_RED;
@@ -27,6 +28,16 @@ import static net.minecraft.util.Formatting.RED;
 import static net.minecraft.util.Formatting.YELLOW;
 
 public class NameTagService {
+
+    public static final MutableText A_DUTY_TAG = empty()
+            .append(literal("ᴀ").formatted(BLUE, BOLD))
+            .append(literal("ᴅᴜᴛʏ").formatted(RED, BOLD));
+
+    public static final MutableText AFK_TAG = literal("ᴀꜰᴋ").formatted(GOLD, BOLD);
+
+    public static final MutableText HOUSE_BAN_TAG = literal("Hᴀᴜѕᴠᴇʀʙᴏᴛ").formatted(RED, BOLD);
+
+    public static final MutableText OUTLAW_TAG = literal("Vᴏɢᴇʟꜰʀᴇɪ").formatted(RED, BOLD);
 
     private static final MutableText A_DUTY_PREFIX = empty()
             .append(literal("[").formatted(DARK_GRAY))

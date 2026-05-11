@@ -9,7 +9,6 @@ import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -17,29 +16,13 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import static de.rettichlp.ucutils.UCUtils.configuration;
 import static de.rettichlp.ucutils.UCUtils.nameTagService;
 import static de.rettichlp.ucutils.UCUtils.storage;
-import static net.minecraft.text.Text.empty;
-import static net.minecraft.text.Text.literal;
-import static net.minecraft.util.Formatting.BLUE;
-import static net.minecraft.util.Formatting.BOLD;
-import static net.minecraft.util.Formatting.GOLD;
-import static net.minecraft.util.Formatting.RED;
+import static de.rettichlp.ucutils.common.services.NameTagService.AFK_TAG;
+import static de.rettichlp.ucutils.common.services.NameTagService.A_DUTY_TAG;
+import static de.rettichlp.ucutils.common.services.NameTagService.HOUSE_BAN_TAG;
+import static de.rettichlp.ucutils.common.services.NameTagService.OUTLAW_TAG;
 
 @Mixin(PlayerEntityRenderer.class)
 public abstract class PlayerEntityRendererMixin {
-
-    @Unique
-    private static final MutableText A_DUTY_TEXT = empty()
-            .append(literal("ᴀ").formatted(BLUE, BOLD))
-            .append(literal("ᴅᴜᴛʏ").formatted(RED, BOLD));
-
-    @Unique
-    private static final MutableText AFK_TEXT = literal("ᴀꜰᴋ").formatted(GOLD, BOLD);
-
-    @Unique
-    private static final MutableText HOUSE_BAN_TEXT = literal("Hᴀᴜѕᴠᴇʀʙᴏᴛ").formatted(RED, BOLD);
-
-    @Unique
-    private static final MutableText OUTLAW_TEXT = literal("Vᴏɢᴇʟꜰʀᴇɪ").formatted(RED, BOLD);
 
     @Inject(method = "renderLabelIfPresent(Lnet/minecraft/client/render/entity/state/PlayerEntityRenderState;Lnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/command/OrderedRenderCommandQueue;Lnet/minecraft/client/render/state/CameraRenderState;)V",
             at = @At(value = "INVOKE",
@@ -75,14 +58,14 @@ public abstract class PlayerEntityRendererMixin {
         // handle admin duty tag
         if (configuration.getOptions().nameTag().aDuty() && nameTagService.isADuty(playerName)) {
             matrixStack.translate(0.0F, medicInformationPresent ? 0.8F : 2.6, 0.0F);
-            orderedRenderCommandQueue.submitLabel(matrixStack, playerEntityRenderState.nameLabelPos, 0, A_DUTY_TEXT, !playerEntityRenderState.sneaking, playerEntityRenderState.light, playerEntityRenderState.squaredDistanceToCamera, cameraRenderState);
+            orderedRenderCommandQueue.submitLabel(matrixStack, playerEntityRenderState.nameLabelPos, 0, A_DUTY_TAG, !playerEntityRenderState.sneaking, playerEntityRenderState.light, playerEntityRenderState.squaredDistanceToCamera, cameraRenderState);
             return;
         }
 
         // handle afk tag
         if (configuration.getOptions().nameTag().afk() && nameTagService.isAfk(playerName)) {
             matrixStack.translate(0.0F, medicInformationPresent ? 0.8F : 2.6, 0.0F);
-            orderedRenderCommandQueue.submitLabel(matrixStack, playerEntityRenderState.nameLabelPos, 0, AFK_TEXT, !playerEntityRenderState.sneaking, playerEntityRenderState.light, playerEntityRenderState.squaredDistanceToCamera, cameraRenderState);
+            orderedRenderCommandQueue.submitLabel(matrixStack, playerEntityRenderState.nameLabelPos, 0, AFK_TAG, !playerEntityRenderState.sneaking, playerEntityRenderState.light, playerEntityRenderState.squaredDistanceToCamera, cameraRenderState);
             return;
         }
 
@@ -90,7 +73,7 @@ public abstract class PlayerEntityRendererMixin {
         boolean hasHouseBan = storage.getHousebanEntries().stream().anyMatch(housebanEntry -> housebanEntry.getPlayerName().equals(playerName));
         if (configuration.getOptions().nameTag().houseBan() && hasHouseBan) {
             matrixStack.translate(0.0F, medicInformationPresent ? 0.8F : 2.6, 0.0F);
-            orderedRenderCommandQueue.submitLabel(matrixStack, playerEntityRenderState.nameLabelPos, 0, HOUSE_BAN_TEXT, !playerEntityRenderState.sneaking, playerEntityRenderState.light, playerEntityRenderState.squaredDistanceToCamera, cameraRenderState);
+            orderedRenderCommandQueue.submitLabel(matrixStack, playerEntityRenderState.nameLabelPos, 0, HOUSE_BAN_TAG, !playerEntityRenderState.sneaking, playerEntityRenderState.light, playerEntityRenderState.squaredDistanceToCamera, cameraRenderState);
             return;
         }
 
@@ -99,7 +82,7 @@ public abstract class PlayerEntityRendererMixin {
                 .anyMatch(blacklistEntry -> blacklistEntry.getPlayerName().equals(playerName) && blacklistEntry.isOutlaw());
         if (configuration.getOptions().nameTag().outlaw() && isOutlaw) {
             matrixStack.translate(0.0F, medicInformationPresent ? 0.8F : 2.6, 0.0F);
-            orderedRenderCommandQueue.submitLabel(matrixStack, playerEntityRenderState.nameLabelPos, 0, OUTLAW_TEXT, !playerEntityRenderState.sneaking, playerEntityRenderState.light, playerEntityRenderState.squaredDistanceToCamera, cameraRenderState);
+            orderedRenderCommandQueue.submitLabel(matrixStack, playerEntityRenderState.nameLabelPos, 0, OUTLAW_TAG, !playerEntityRenderState.sneaking, playerEntityRenderState.light, playerEntityRenderState.squaredDistanceToCamera, cameraRenderState);
             return;
         }
     }
