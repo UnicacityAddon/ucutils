@@ -55,7 +55,7 @@ public class NameTagService {
         Formatting newTargetDisplayNameColor;
 
         // highlight factions
-        newTargetDisplayNameColor = nameTagOptions.highlightFactions().getOrDefault(targetFaction, WHITE).getFormatting();
+        newTargetDisplayNameColor = WHITE.getFormatting();
 
         // blacklist
         Optional<BlacklistEntry> optionalTargetBlacklistEntry = storage.getBlacklistEntries().stream()
