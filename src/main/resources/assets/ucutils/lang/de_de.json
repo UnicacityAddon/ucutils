@@ -29,6 +29,8 @@
   "ucutils.notification.toggled_chat.f": "Dauerhafter F-Chat aktiviert",
   "ucutils.notification.toggled_chat.d": "Dauerhafter D-Chat aktiviert",
   "ucutils.notification.toggled_chat.w": "Dauerhaftes Flüstern aktiviert",
+  "ucutils.notification.player_join": "%s hat das Spiel betreten",
+  "ucutils.notification.player_quit": "%s hat das Spiel verlassen",
 
   "ucutils.options.text.amount": "Menge",
   "ucutils.options.text.automation": "Automatisierung",
