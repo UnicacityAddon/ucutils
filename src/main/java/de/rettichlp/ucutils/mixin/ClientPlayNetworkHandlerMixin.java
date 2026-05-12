@@ -82,10 +82,6 @@ public abstract class ClientPlayNetworkHandlerMixin {
 
     @Unique
     private void sendChangeNotification(EnrichedGameProfile enrichedGameProfile, String translationKey) {
-        if (enrichedGameProfile.isTeamMember()) {
-            notificationService.notificationSound(1);
-        }
-
         MutableText text = translatable(translationKey, Optional.ofNullable(enrichedGameProfile.displayName()).orElse(literal(enrichedGameProfile.profile().name())));
         notificationService.sendNotification(text, WHITE, 5000);
     }
