@@ -31,6 +31,12 @@
   "ucutils.notification.toggled_chat.w": "Dauerhaftes Flüstern aktiviert",
   "ucutils.notification.player_join": "%s hat das Spiel betreten",
   "ucutils.notification.player_quit": "%s hat das Spiel verlassen",
+  "ucutils.notification.player_enter_a_duty": "%s ist jetzt im Admindienst",
+  "ucutils.notification.player_leave_a_duty": "%s ist nicht mehr im Admindienst",
+  "ucutils.notification.player_enter_buildmode": "%s ist jetzt im Baumodus",
+  "ucutils.notification.player_leave_buildmode": "%s ist nicht mehr im Baumodus",
+  "ucutils.notification.player_enter_report": "%s ist jetzt im Report",
+  "ucutils.notification.player_leave_report": "%s ist nicht mehr im Report",
 
   "ucutils.options.text.amount": "Menge",
   "ucutils.options.text.automation": "Automatisierung",

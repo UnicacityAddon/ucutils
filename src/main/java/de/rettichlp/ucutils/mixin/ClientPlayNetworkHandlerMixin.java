@@ -7,6 +7,7 @@ import net.minecraft.network.packet.s2c.play.PlayerListS2CPacket;
 import net.minecraft.network.packet.s2c.play.PlayerRemoveS2CPacket;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
+import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
@@ -14,7 +15,9 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -30,6 +33,9 @@ public abstract class ClientPlayNetworkHandlerMixin {
 
     @Unique
     private static final Collection<EnrichedGameProfile> PLAYER_PROFILES = new HashSet<>();
+
+    @Unique
+    private final Map<UUID, Text> playerDisplayNames = new HashMap<>();
 
     @Inject(method = "onPlayerRemove",
             at = @At(value = "INVOKE",
@@ -67,16 +73,75 @@ public abstract class ClientPlayNetworkHandlerMixin {
         GameProfile profile = receivedEntry.profile();
         Text newDisplayName = receivedEntry.displayName();
 
-        if (profile == null || profile.name() == null || profile.name().startsWith("CIT-")) {
-            return;
-        }
-
-        EnrichedGameProfile enrichedGameProfile = new EnrichedGameProfile(profile, newDisplayName);
-        PLAYER_PROFILES.removeIf(egp -> egp.profile().id().equals(profile.id()));
-        PLAYER_PROFILES.add(enrichedGameProfile);
-
         switch (action) {
-            case ADD_PLAYER -> sendChangeNotification(enrichedGameProfile, "ucutils.notification.player_join"); // handle join
+            case ADD_PLAYER -> {
+                if (profile == null || profile.name() == null || profile.name().startsWith("CIT-")) {
+                    return;
+                }
+
+                EnrichedGameProfile enrichedGameProfile = new EnrichedGameProfile(profile, newDisplayName);
+                PLAYER_PROFILES.removeIf(egp -> egp.profile().id().equals(profile.id()));
+                PLAYER_PROFILES.add(enrichedGameProfile);
+
+                sendChangeNotification(enrichedGameProfile, "ucutils.notification.player_join");
+            }
+            case UPDATE_DISPLAY_NAME -> {
+                UUID profileId = receivedEntry.profileId();
+
+                Optional<EnrichedGameProfile> optionalEnrichedGameProfile = PLAYER_PROFILES.stream()
+                        .filter(enrichedGameProfile -> enrichedGameProfile.profile().id().equals(profileId))
+                        .filter(enrichedGameProfile -> !enrichedGameProfile.profile().name().startsWith("CIT-"))
+                        .findFirst();
+
+                Text previousDisplayName = this.playerDisplayNames.get(profileId);
+                Text currentDisplayName = receivedEntry.displayName();
+                if (optionalEnrichedGameProfile.isEmpty() || previousDisplayName == null || currentDisplayName == null) {
+                    return;
+                }
+
+                EnrichedGameProfile enrichedGameProfile = optionalEnrichedGameProfile.get();
+
+                String previousDisplayNameString = previousDisplayName.getString();
+                String currentDisplayNameString = currentDisplayName.getString();
+
+                // handle admin-duty change
+
+                if (!previousDisplayNameString.startsWith("[UC]") && currentDisplayNameString.startsWith("[UC]")) {
+                    sendChangeNotification(enrichedGameProfile, "ucutils.notification.player_enter_a_duty");
+                    return;
+                }
+
+                if (previousDisplayNameString.startsWith("[UC]") && !currentDisplayNameString.startsWith("[UC]")) {
+                    sendChangeNotification(enrichedGameProfile, "ucutils.notification.player_leave_a_duty");
+                    return;
+                }
+
+                // handle build mode change
+
+                if (!previousDisplayNameString.startsWith("[B]") && currentDisplayNameString.startsWith("[B]")) {
+                    sendChangeNotification(enrichedGameProfile, "ucutils.notification.player_enter_buildmode");
+                    return;
+                }
+
+                if (previousDisplayNameString.startsWith("[B]") && !currentDisplayNameString.startsWith("[B]")) {
+                    sendChangeNotification(enrichedGameProfile, "ucutils.notification.player_leave_buildmode");
+                    return;
+                }
+
+                // handle report change
+
+                if (!previousDisplayNameString.startsWith("[R]") && currentDisplayNameString.startsWith("[R]")) {
+                    sendChangeNotification(enrichedGameProfile, "ucutils.notification.player_enter_report");
+                    return;
+                }
+
+                if (previousDisplayNameString.startsWith("[R]") && !currentDisplayNameString.startsWith("[R]")) {
+                    sendChangeNotification(enrichedGameProfile, "ucutils.notification.player_leave_report");
+                    return;
+                }
+
+                this.playerDisplayNames.put(profileId, newDisplayName);
+            }
         }
     }
 
@@ -86,7 +151,7 @@ public abstract class ClientPlayNetworkHandlerMixin {
         notificationService.sendNotification(text, WHITE, 5000);
     }
 
-    public record EnrichedGameProfile(GameProfile profile, Text displayName) {
+    public record EnrichedGameProfile(GameProfile profile, @Nullable Text displayName) {
 
         public boolean isTeamMember() {
             return storage.getTeam().ucTeam().stream().anyMatch(teamMember -> teamMember.uuid().equals(this.profile.id()));

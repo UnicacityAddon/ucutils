@@ -31,6 +31,12 @@
   "ucutils.notification.toggled_chat.w": "Persistent whispering enabled",
   "ucutils.notification.player_join": "%s joined the game",
   "ucutils.notification.player_quit": "%s left the game",
+  "ucutils.notification.player_enter_a_duty": "%s is now in admin duty",
+  "ucutils.notification.player_leave_a_duty": "%s is no longer in admin duty",
+  "ucutils.notification.player_enter_buildmode": "%s is now in build mode",
+  "ucutils.notification.player_leave_buildmode": "%s is no longer in build mode",
+  "ucutils.notification.player_enter_report": "%s is now in a report",
+  "ucutils.notification.player_leave_report": "%s is no longer in a report",
 
   "ucutils.options.text.amount": "Amount",
   "ucutils.options.text.automation": "Automation",
