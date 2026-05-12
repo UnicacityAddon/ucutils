@@ -35,6 +35,7 @@ public class ModCommand extends CommandBase {
                 .then(literal("sync")
                         .executes(context -> {
                             syncService.syncFactionMembers();
+                            syncService.syncTeamMembers();
                             syncService.checkForUpdates();
 
                             utilService.delayedAction(() -> {

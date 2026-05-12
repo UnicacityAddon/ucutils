@@ -14,6 +14,7 @@ import de.rettichlp.ucutils.common.models.Job;
 import de.rettichlp.ucutils.common.models.PlantEntry;
 import de.rettichlp.ucutils.common.models.Reinforcement;
 import de.rettichlp.ucutils.common.models.ShutdownReason;
+import de.rettichlp.ucutils.common.models.TeamResponse;
 import de.rettichlp.ucutils.common.models.WantedEntry;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -124,6 +125,10 @@ public class Storage {
 
     @Getter
     @Setter
+    private TeamResponse team;
+
+    @Getter
+    @Setter
     private ToggledChat toggledChat = NONE;
 
     @Getter
@@ -187,6 +192,8 @@ public class Storage {
         LOGGER.info("minecartEntityToHighlight: {}", this.minecartEntityToHighlight);
         // moneyAtmAmount
         LOGGER.info("moneyAtmAmount: {}", this.moneyAtmAmount);
+        // team
+        LOGGER.info("team: {}", this.team);
         // toggledChat
         LOGGER.info("toggledChat: {}", this.toggledChat);
         // unicaCity
