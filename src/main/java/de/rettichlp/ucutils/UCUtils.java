@@ -56,6 +56,7 @@ public class UCUtils implements ModInitializer {
         // This entrypoint is suitable for setting up client-specific logic, such as rendering.
 
         syncService.syncFactionMembers();
+        syncService.syncTeamMembers();
 
         this.registry.registerSounds();
 

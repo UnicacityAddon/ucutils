@@ -61,6 +61,13 @@ public class SyncService {
         }
     }
 
+    public void syncTeamMembers() {
+        api.getTeamMembers(teamResponse -> {
+            storage.setTeam(teamResponse);
+            LOGGER.info("Team members synced ({})", teamResponse.ucTeam().size());
+        });
+    }
+
     public void syncFactionSpecificData() {
         // parse from faction-related init commands after all faction members are synced
         Faction faction = storage.getFaction(player.getStringifiedName());
