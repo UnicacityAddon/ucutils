@@ -16,6 +16,7 @@
   "client": [
     "ChatScreenMixin",
     "ClientPlayerEntityMixin",
+    "ClientPlayNetworkHandlerMixin",
     "GameMenuScreenMixin",
     "InGameHudMixin",
     "MinecraftClientMixin",
