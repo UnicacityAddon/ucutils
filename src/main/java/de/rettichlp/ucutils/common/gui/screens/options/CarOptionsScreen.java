@@ -27,6 +27,8 @@ public class CarOptionsScreen extends OptionsScreen {
     private static final Text CAR_AUTOMATION_LOCK_TOOLTIP = translatable("ucutils.options.car.automation.lock.tooltip");
     private static final Text CAR_AUTOMATION_START_NAME = translatable("ucutils.options.car.automation.start.name");
     private static final Text CAR_AUTOMATION_START_TOOLTIP = translatable("ucutils.options.car.automation.start.tooltip");
+    private static final Text CAR_AUTOMATION_CHECK_KFZ_NAME = translatable("ucutils.options.car.automation.check_kfz.name");
+    private static final Text CAR_AUTOMATION_CHECK_KFZ_TOOLTIP = translatable("ucutils.options.car.automation.check_kfz.tooltip");
 
     public CarOptionsScreen(Screen parent) {
         super(parent, TEXT_CAR);
@@ -49,6 +51,9 @@ public class CarOptionsScreen extends OptionsScreen {
         DirectionalLayoutWidget directionalLayoutWidget2 = directionalLayoutWidget.add(horizontal().spacing(8));
         renderService.addToggleButton(directionalLayoutWidget2, CAR_AUTOMATION_LOCK_NAME, CAR_AUTOMATION_LOCK_TOOLTIP, (options, value) -> options.car().automatedLock(value), options -> options.car().automatedLock(), 150);
         renderService.addToggleButton(directionalLayoutWidget2, CAR_AUTOMATION_START_NAME, CAR_AUTOMATION_START_TOOLTIP, (options, value) -> options.car().automatedStart(value), options -> options.car().automatedStart(), 150);
+
+        DirectionalLayoutWidget directionalLayoutWidget4 = directionalLayoutWidget.add(horizontal().spacing(8));
+        renderService.addToggleButton(directionalLayoutWidget4, CAR_AUTOMATION_CHECK_KFZ_NAME, CAR_AUTOMATION_CHECK_KFZ_TOOLTIP, (options, value) -> options.car().automatedCheckKfz(value), options -> options.car().automatedCheckKfz(), 150);
 
         directionalLayoutWidget.forEachChild(this::addDrawableChild);
     }

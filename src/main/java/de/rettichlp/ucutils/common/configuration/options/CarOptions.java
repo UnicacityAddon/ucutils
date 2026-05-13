@@ -14,4 +14,5 @@ public class CarOptions {
     private boolean highlight = true;
     private boolean automatedLock = true;
     private boolean automatedStart = true;
+    private boolean automatedCheckKfz = true;
 }

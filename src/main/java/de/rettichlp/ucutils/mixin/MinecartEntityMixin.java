@@ -12,6 +12,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import static de.rettichlp.ucutils.UCUtils.commandService;
+import static de.rettichlp.ucutils.UCUtils.configuration;
 import static de.rettichlp.ucutils.UCUtils.storage;
 import static java.lang.System.currentTimeMillis;
 
@@ -28,7 +29,7 @@ public abstract class MinecartEntityMixin {
         }
 
         Entity entity = (Entity) (Object) this;
-        if (entity instanceof MinecartEntity && player.isSneaking() && currentTimeMillis() - this.lastClick > 1000) {
+        if (configuration.getOptions().car().automatedCheckKfz() && entity instanceof MinecartEntity && player.isSneaking() && currentTimeMillis() - this.lastClick > 1000) {
             commandService.sendCommand("checkkfz");
             this.lastClick = currentTimeMillis();
         }

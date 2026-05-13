@@ -61,6 +61,8 @@
   "ucutils.options.car.automation.lock.tooltip": "Locks the car automatically when you start the engine",
   "ucutils.options.car.automation.start.name": "Automated starting",
   "ucutils.options.car.automation.start.tooltip": "Starts the car automatically when you enter it",
+  "ucutils.options.car.automation.check_kfz.name": "Automated /checkkfz",
+  "ucutils.options.car.automation.check_kfz.tooltip": "Automatically executes /checkkfz when you right click your car while sneaking",
   "ucutils.options.nametag.a_duty.name": "Admin duty",
   "ucutils.options.nametag.a_duty.tooltip": "Shows an information above the players name of players in admin duty",
   "ucutils.options.nametag.afk.name": "AFK",
