@@ -44,13 +44,14 @@ public class CarOptionsScreen extends OptionsScreen {
         renderService.addToggleButton(directionalLayoutWidget1, CAR_GENERAL_FAST_FIND_NAME, CAR_GENERAL_FAST_FIND_TOOLTIP, (options, value) -> options.car().fastFind(value), options -> options.car().fastFind(), 150);
         renderService.addToggleButton(directionalLayoutWidget1, CAR_GENERAL_FAST_LOCK_NAME, CAR_GENERAL_FAST_LOCK_TOOLTIP, (options, value) -> options.car().fastLock(value), options -> options.car().fastLock(), 150);
 
-        renderService.addToggleButton(directionalLayoutWidget, CAR_GENERAL_HIGHLIGHT_NAME, CAR_GENERAL_HIGHLIGHT_TOOLTIP, (options, value) -> options.car().highlight(value), options -> options.car().highlight(), 308);
+        DirectionalLayoutWidget directionalLayoutWidget2 = directionalLayoutWidget.add(horizontal().spacing(8));
+        renderService.addToggleButton(directionalLayoutWidget2, CAR_GENERAL_HIGHLIGHT_NAME, CAR_GENERAL_HIGHLIGHT_TOOLTIP, (options, value) -> options.car().highlight(value), options -> options.car().highlight(), 150);
 
         directionalLayoutWidget.add(new TextWidget(TEXT_AUTOMATION, this.textRenderer), positioner -> positioner.alignHorizontalCenter().marginTop(16));
 
-        DirectionalLayoutWidget directionalLayoutWidget2 = directionalLayoutWidget.add(horizontal().spacing(8));
-        renderService.addToggleButton(directionalLayoutWidget2, CAR_AUTOMATION_LOCK_NAME, CAR_AUTOMATION_LOCK_TOOLTIP, (options, value) -> options.car().automatedLock(value), options -> options.car().automatedLock(), 150);
-        renderService.addToggleButton(directionalLayoutWidget2, CAR_AUTOMATION_START_NAME, CAR_AUTOMATION_START_TOOLTIP, (options, value) -> options.car().automatedStart(value), options -> options.car().automatedStart(), 150);
+        DirectionalLayoutWidget directionalLayoutWidget3 = directionalLayoutWidget.add(horizontal().spacing(8));
+        renderService.addToggleButton(directionalLayoutWidget3, CAR_AUTOMATION_LOCK_NAME, CAR_AUTOMATION_LOCK_TOOLTIP, (options, value) -> options.car().automatedLock(value), options -> options.car().automatedLock(), 150);
+        renderService.addToggleButton(directionalLayoutWidget3, CAR_AUTOMATION_START_NAME, CAR_AUTOMATION_START_TOOLTIP, (options, value) -> options.car().automatedStart(value), options -> options.car().automatedStart(), 150);
 
         DirectionalLayoutWidget directionalLayoutWidget4 = directionalLayoutWidget.add(horizontal().spacing(8));
         renderService.addToggleButton(directionalLayoutWidget4, CAR_AUTOMATION_CHECK_KFZ_NAME, CAR_AUTOMATION_CHECK_KFZ_TOOLTIP, (options, value) -> options.car().automatedCheckKfz(value), options -> options.car().automatedCheckKfz(), 150);
