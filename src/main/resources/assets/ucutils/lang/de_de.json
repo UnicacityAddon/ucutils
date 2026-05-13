@@ -61,6 +61,8 @@
   "ucutils.options.car.automation.lock.tooltip": "Schließt das Auto automatisch ab, wenn du den Motor startest",
   "ucutils.options.car.automation.start.name": "Automatisches Starten",
   "ucutils.options.car.automation.start.tooltip": "Startet das Auto automatisch, wenn du einsteigst",
+  "ucutils.options.car.automation.check_kfz.name": "Automatisches /checkkfz",
+  "ucutils.options.car.automation.check_kfz.tooltip": "Führt /checkkfz aus wenn du ein Auto rechtsklickst während du schleichst",
   "ucutils.options.nametag.a_duty.name": "Admin-Dienst",
   "ucutils.options.nametag.a_duty.tooltip": "Zeigt eine Information an über dem Namen von Spielern, die im Admin-Dienst sind",
   "ucutils.options.nametag.afk.name": "AFK",
