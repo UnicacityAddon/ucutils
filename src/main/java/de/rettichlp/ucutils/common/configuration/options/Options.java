@@ -34,6 +34,7 @@ public class Options {
     private final List<PersonalUseEntry> personalUse = new ArrayList<>();
     private final CarOptions car = new CarOptions();
     private final SoundOptions sound = new SoundOptions();
+    private final NotificationOptions notification = new NotificationOptions();
 
     private ReinforcementType reinforcementType = UNICACITYADDON;
     private AtmInformationType atmInformationType = NONE;
