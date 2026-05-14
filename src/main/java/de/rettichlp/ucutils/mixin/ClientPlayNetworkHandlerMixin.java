@@ -20,6 +20,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.UUID;
 
+import static de.rettichlp.ucutils.UCUtils.configuration;
 import static de.rettichlp.ucutils.UCUtils.notificationService;
 import static de.rettichlp.ucutils.UCUtils.storage;
 import static java.awt.Color.WHITE;
@@ -65,6 +66,10 @@ public abstract class ClientPlayNetworkHandlerMixin {
             return;
         }
 
+        if (!configuration.getOptions().notification().joinQuit()) {
+            return;
+        }
+
         for (UUID uuid : packet.profileIds()) {
             this.enrichedGameProfiles.stream()
                     .filter(egp -> egp.getProfile().id().equals(uuid))
@@ -92,6 +97,10 @@ public abstract class ClientPlayNetworkHandlerMixin {
 
         switch (action) {
             case ADD_PLAYER -> {
+                if (!configuration.getOptions().notification().joinQuit()) {
+                    return;
+                }
+
                 EnrichedGameProfile enrichedGameProfile = new EnrichedGameProfile(profile, currentDisplayName, currentDisplayName);
                 this.enrichedGameProfiles.removeIf(egp -> egp.getProfile().id().equals(profileId));
                 this.enrichedGameProfiles.add(enrichedGameProfile);
@@ -110,41 +119,44 @@ public abstract class ClientPlayNetworkHandlerMixin {
                 Text previousDisplayName = enrichedGameProfile.getPreviousDisplayName();
 
                 // handle report change
+                if (configuration.getOptions().notification().report()) {
+                    if (!previousDisplayName.contains(REPORT_PREFIX) && currentDisplayName.contains(REPORT_PREFIX)) {
+                        sendChangeNotification(enrichedGameProfile, "ucutils.notification.player_enter_report");
+                        enrichedGameProfile.setPreviousDisplayName(currentDisplayName);
+                        return;
+                    }
 
-                if (!previousDisplayName.contains(REPORT_PREFIX) && currentDisplayName.contains(REPORT_PREFIX)) {
-                    sendChangeNotification(enrichedGameProfile, "ucutils.notification.player_enter_report");
-                    enrichedGameProfile.setPreviousDisplayName(currentDisplayName);
-                    return;
-                }
-
-                if (previousDisplayName.contains(REPORT_PREFIX) && !currentDisplayName.contains(REPORT_PREFIX)) {
-                    sendChangeNotification(enrichedGameProfile, "ucutils.notification.player_leave_report");
-                    enrichedGameProfile.setPreviousDisplayName(currentDisplayName);
-                    return;
+                    if (previousDisplayName.contains(REPORT_PREFIX) && !currentDisplayName.contains(REPORT_PREFIX)) {
+                        sendChangeNotification(enrichedGameProfile, "ucutils.notification.player_leave_report");
+                        enrichedGameProfile.setPreviousDisplayName(currentDisplayName);
+                        return;
+                    }
                 }
 
                 // handle build mode change
+                if (configuration.getOptions().notification().buildMode()) {
+                    if (!previousDisplayName.contains(BUILD_MODE_PREFIX) && currentDisplayName.contains(BUILD_MODE_PREFIX)) {
+                        sendChangeNotification(enrichedGameProfile, "ucutils.notification.player_enter_buildmode");
+                        enrichedGameProfile.setPreviousDisplayName(currentDisplayName);
+                        return;
+                    }
 
-                if (!previousDisplayName.contains(BUILD_MODE_PREFIX) && currentDisplayName.contains(BUILD_MODE_PREFIX)) {
-                    sendChangeNotification(enrichedGameProfile, "ucutils.notification.player_enter_buildmode");
-                    enrichedGameProfile.setPreviousDisplayName(currentDisplayName);
-                    return;
-                }
-
-                if (previousDisplayName.contains(BUILD_MODE_PREFIX) && !currentDisplayName.contains(BUILD_MODE_PREFIX)) {
-                    sendChangeNotification(enrichedGameProfile, "ucutils.notification.player_leave_buildmode");
-                    enrichedGameProfile.setPreviousDisplayName(currentDisplayName);
-                    return;
+                    if (previousDisplayName.contains(BUILD_MODE_PREFIX) && !currentDisplayName.contains(BUILD_MODE_PREFIX)) {
+                        sendChangeNotification(enrichedGameProfile, "ucutils.notification.player_leave_buildmode");
+                        enrichedGameProfile.setPreviousDisplayName(currentDisplayName);
+                        return;
+                    }
                 }
 
                 // handle admin-duty change
+                if (configuration.getOptions().notification().aDuty()) {
+                    if (!previousDisplayName.contains(A_DUTY_PREFIX) && currentDisplayName.contains(A_DUTY_PREFIX)) {
+                        sendChangeNotification(enrichedGameProfile, "ucutils.notification.player_enter_a_duty");
+                    }
 
-                if (!previousDisplayName.contains(A_DUTY_PREFIX) && currentDisplayName.contains(A_DUTY_PREFIX)) {
-                    sendChangeNotification(enrichedGameProfile, "ucutils.notification.player_enter_a_duty");
-                }
-
-                if (previousDisplayName.contains(A_DUTY_PREFIX) && !currentDisplayName.contains(A_DUTY_PREFIX)) {
-                    sendChangeNotification(enrichedGameProfile, "ucutils.notification.player_leave_a_duty");
+                    if (previousDisplayName.contains(A_DUTY_PREFIX) && !currentDisplayName.contains(A_DUTY_PREFIX)) {
+                        sendChangeNotification(enrichedGameProfile, "ucutils.notification.player_leave_a_duty");
+                    }
                 }
 
                 enrichedGameProfile.setPreviousDisplayName(currentDisplayName);
