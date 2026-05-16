@@ -59,7 +59,7 @@ public class KarmaMessageListener implements IMessageReceiveListener {
                     .append(literal("[").formatted(DARK_GRAY))
                     .append(literal("Karma").formatted(BLUE))
                     .append(literal("] ").formatted(DARK_GRAY))
-                    .append(literal("+" + this.lastKarmaChange + " ").formatted(AQUA))
+                    .append(literal((this.lastKarmaChange > 0 ? "+" : "") + this.lastKarmaChange + " ").formatted(AQUA))
                     .append(literal("Karma ").formatted(AQUA))
                     .append(literal("(").formatted(DARK_GRAY))
                     .append(literal(valueOf(currentKarma)).formatted(AQUA))
@@ -78,7 +78,7 @@ public class KarmaMessageListener implements IMessageReceiveListener {
 
             player.sendMessage(enrichedKarmaMessage, false);
             this.lastKarmaChange = 0;
-            return true;
+            return false;
         }
 
         return true;
