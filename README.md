@@ -18,6 +18,7 @@ reibungsloser und angenehmer gestalten.
 - Mit einem Rechtsklick, während man schleicht, kann man bewusstlosen Personen Erste-Hilfe geben
 - Über dem Spielernamen wird eine Information angezeigt, wenn ein Spieler AFK oder im A-Duty ist
 - Für Teammitglieder wird eine Warnung angezeigt, wenn sie sich im Admindienst befinden und eine Waffe in der Hand haben
+- Hinter der Nachricht, dass sich das Karma geändert hat, wird angezeigt, wie viel Karma man insgesamt besitzt und wann ein Spieler despawnen sollte (falls das Karma durch einen Kill geändert wurde)
 
 ### Auto
 

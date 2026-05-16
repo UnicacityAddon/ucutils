@@ -40,6 +40,7 @@ public class Options {
     private AtmInformationType atmInformationType = NONE;
     private boolean showHydration = true;
     private boolean checkUnicacityServer = true;
+    private boolean showEnrichedKarma = true;
     private boolean changeFactionChatColor = false;
     private Color factionChatColorPrimary = Color.BLUE;
     private Color factionChatColorSecondary = Color.DARK_AQUA;
