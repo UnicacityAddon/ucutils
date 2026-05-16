@@ -26,6 +26,8 @@ public class MainOptionsScreen extends OptionsScreen {
     private static final Text HYDRATION_NAME = translatable("ucutils.options.hydration.name");
     private static final Text HYDRATION_TOOLTIP = translatable("ucutils.options.hydration.tooltip");
     private static final Text BANK_INFORMATION_NAME = translatable("ucutils.options.atm_information.name");
+    private static final Text ENRICHED_KARMA_NAME = translatable("ucutils.options.enriched_karma.name");
+    private static final Text ENRICHED_KARMA_TOOLTIP  = translatable("ucutils.options.enriched_karma.tooltip");
 
     public MainOptionsScreen() {
         super(new GameMenuScreen(true));
@@ -56,6 +58,7 @@ public class MainOptionsScreen extends OptionsScreen {
 
         DirectionalLayoutWidget directionalLayoutWidget5 = directionalLayoutWidget.add(horizontal().spacing(8));
         renderService.addButton(directionalLayoutWidget5, TEXT_PERSONAL_USE, button -> this.client.setScreen(new PersonalUseOptionsScreen(this)), 150);
+        renderService.addToggleButton(directionalLayoutWidget5, ENRICHED_KARMA_NAME, ENRICHED_KARMA_TOOLTIP, Options::showEnrichedKarma, Options::showEnrichedKarma, 150);
 
         directionalLayoutWidget.forEachChild(this::addDrawableChild);
     }

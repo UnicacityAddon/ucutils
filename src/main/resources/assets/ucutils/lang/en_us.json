@@ -96,6 +96,8 @@
   "ucutils.options.hydration.tooltip": "Displays your hydration above your hunger bar",
   "ucutils.options.check_unicacity_server.name": "Check for UnicaCity",
   "ucutils.options.check_unicacity_server.tooltip": "Checks if you are playing on the UnicaCity server. If enabled, certain features will only be available on the UnicaCity server to prevent issues on other servers.",
+  "ucutils.options.enriched_karma.name": "Enriched karma message",
+  "ucutils.options.enriched_karma.tooltip": "Populates the karma message with additional information such as the current overall karma amount and the time until a player despawns in case of a kill",
   "ucutils.options.faction_chat_color.name": "Faction chat color",
   "ucutils.options.faction_chat_color.tooltip": "Changes the color of the faction chat",
   "ucutils.options.faction_chat_color_primary.name": "Faction chat primary color",

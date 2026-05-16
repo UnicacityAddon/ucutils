@@ -96,6 +96,8 @@
   "ucutils.options.hydration.tooltip": "Zeigt deinen Durst über der Hungeranzeige an",
   "ucutils.options.check_unicacity_server.name": "UnicaCity Check",
   "ucutils.options.check_unicacity_server.tooltip": "Überprüft ob du auf UnicaCity spielst. Wenn aktiviert sind bestimmte Funktionen nur auf UnicaCity aktiviert um Probleme mit anderen Servern zu vermeiden.",
+  "ucutils.options.enriched_karma.name": "Erweiterte Karma Nachricht",
+  "ucutils.options.enriched_karma.tooltip": "Zeigt zusätzliche Informationen in der Karma Nachricht an, wie die Gesamt-Karma-Menge oder die Zeit wenn ein Spieler despawnen sollte bei einem Kill",
   "ucutils.options.faction_chat_color.name": "Farbe des Fraktionschats",
   "ucutils.options.faction_chat_color.tooltip": "Ändert die Farbe des Fraktionschats",
   "ucutils.options.faction_chat_color_primary.name": "Primäre Farbe des Fraktionschats",
