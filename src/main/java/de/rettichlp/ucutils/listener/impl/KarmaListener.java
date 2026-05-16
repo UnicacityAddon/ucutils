@@ -24,7 +24,7 @@ import static net.minecraft.util.Formatting.BLUE;
 import static net.minecraft.util.Formatting.DARK_GRAY;
 
 @UCUtilsListener
-public class KarmaMessageListener implements IMessageReceiveListener {
+public class KarmaListener implements IMessageReceiveListener {
 
     private static final Pattern KARMA_CHANGED_PATTERN = compile("^\\[Karma] (?<amount>[+-]\\d+) Karma\\.$");
     private static final Pattern KARMA_PATTERN = compile("^\\[Karma] Du hast ein Karma von (?<amount>[+-]\\d+)\\.$");
