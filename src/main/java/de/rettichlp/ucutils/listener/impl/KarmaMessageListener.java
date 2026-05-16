@@ -5,17 +5,17 @@ import de.rettichlp.ucutils.listener.IMessageReceiveListener;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 
-import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import static de.rettichlp.ucutils.UCUtils.commandService;
 import static de.rettichlp.ucutils.UCUtils.configuration;
 import static de.rettichlp.ucutils.UCUtils.player;
+import static de.rettichlp.ucutils.common.services.MessageService.TIME_FORMAT;
 import static java.lang.Integer.parseInt;
 import static java.lang.String.valueOf;
-import static java.time.LocalDateTime.now;
+import static java.time.LocalTime.now;
 import static java.util.regex.Pattern.compile;
 import static net.minecraft.text.Text.empty;
 import static net.minecraft.text.Text.literal;
@@ -69,12 +69,10 @@ public class KarmaMessageListener implements IMessageReceiveListener {
 
             // add despawn time if available
             if (this.lastKarmaChange < 0) {
-                LocalDateTime despawnTime = now().plusMinutes(5);
-                SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm:ss");
-
+                LocalTime despawnTime = now().plusMinutes(5);
                 enrichedKarmaMessage
                         .append(literal(" (").formatted(DARK_GRAY))
-                        .append(literal(timeFormat.format(despawnTime)).formatted(AQUA))
+                        .append(literal(TIME_FORMAT.format(despawnTime)).formatted(AQUA))
                         .append(literal(")").formatted(DARK_GRAY));
             }
 

@@ -20,6 +20,9 @@ import static net.minecraft.util.Formatting.WHITE;
 
 public class MessageService {
 
+    public static final DateTimeFormatter DATE_TIME_FORMAT = ofPattern("dd.MM.yyyy HH:mm:ss");
+    public static final DateTimeFormatter TIME_FORMAT = ofPattern("HH:mm:ss");
+
     protected static final Text modMessagePrefix = Text.empty()
             .append(of("✦").copy().formatted(DARK_PURPLE))
             .append(of(" "))
@@ -38,8 +41,7 @@ public class MessageService {
     }
 
     public String dateTimeToFriendlyString(@NotNull ChronoLocalDateTime<LocalDate> dateTime) {
-        DateTimeFormatter formatter = ofPattern("dd.MM.yyyy HH:mm:ss");
-        return dateTime.format(formatter);
+        return dateTime.format(DATE_TIME_FORMAT);
     }
 
     public String millisToFriendlyString(long millis) {
