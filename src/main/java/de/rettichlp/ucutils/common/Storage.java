@@ -10,8 +10,10 @@ import de.rettichlp.ucutils.common.models.Faction;
 import de.rettichlp.ucutils.common.models.FactionEntry;
 import de.rettichlp.ucutils.common.models.FactionMember;
 import de.rettichlp.ucutils.common.models.HousebanEntry;
+import de.rettichlp.ucutils.common.models.Ingredient;
 import de.rettichlp.ucutils.common.models.Job;
 import de.rettichlp.ucutils.common.models.PlantEntry;
+import de.rettichlp.ucutils.common.models.Purity;
 import de.rettichlp.ucutils.common.models.Reinforcement;
 import de.rettichlp.ucutils.common.models.ShutdownReason;
 import de.rettichlp.ucutils.common.models.TeamResponse;
@@ -68,6 +70,9 @@ public class Storage {
 
     @Getter
     private final List<HousebanEntry> housebanEntries = new ArrayList<>();
+
+    @Getter
+    private final Map<Ingredient, Map<Purity, Integer>> inventory = new HashMap<>();
 
     @Getter
     private final Map<String, LocalDateTime> medicBandageCooldowns = new HashMap<>();
@@ -168,6 +173,8 @@ public class Storage {
         this.factionEntries.forEach(factionEntry -> LOGGER.info("factionEntries[{}:{}]: {}", factionEntry.faction(), factionEntry.members().size(), factionEntry.members()));
         // housebanEntries
         LOGGER.info("housebanEntries[{}]: {}", this.housebanEntries.size(), this.housebanEntries);
+        // inventory
+        this.inventory.forEach((ingredient, ingredientMap) -> LOGGER.info("inventory[{}:{}]: {}", ingredient, ingredientMap.size(), ingredientMap));
         // medicBandageCooldowns
         LOGGER.info("medicBandageCooldowns[{}]: {}", this.medicBandageCooldowns.size(), this.medicBandageCooldowns);
         // medicPillCooldowns
