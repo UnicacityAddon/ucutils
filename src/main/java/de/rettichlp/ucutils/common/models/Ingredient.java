@@ -2,9 +2,8 @@ package de.rettichlp.ucutils.common.models;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import org.jspecify.annotations.NonNull;
+import lombok.NonNull;
 
-import java.util.Arrays;
 import java.util.Optional;
 
 import static java.util.Arrays.stream;
