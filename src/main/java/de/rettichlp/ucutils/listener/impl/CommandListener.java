@@ -9,6 +9,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import static de.rettichlp.ucutils.UCUtils.commandService;
+import static de.rettichlp.ucutils.UCUtils.storage;
 import static java.lang.Character.isUpperCase;
 import static java.util.regex.Pattern.compile;
 
@@ -16,6 +17,7 @@ import static java.util.regex.Pattern.compile;
 public class CommandListener implements ICommandSendListener {
 
     private static final Pattern COMMAND_NAVI_HOUSE_NUMBER_PATTERN = compile("^navi (?<number>\\d+)$");
+    private static final Pattern FACTION_BANK_DEPOSIT_WITH_REASON_PATTERN = compile("^fbank einzahlen (?<amount>\\d+) (?<reason>.+)$");
 
     @Override
     public boolean onCommandSend(@NotNull String command) {
@@ -40,6 +42,15 @@ public class CommandListener implements ICommandSendListener {
         if (commandNaviHouseNumberMatcher.find()) {
             String number = commandNaviHouseNumberMatcher.group("number");
             commandService.sendCommand("navi Haus:" + number);
+            return false;
+        }
+
+        Matcher factionBankDepositWithReasonMatcher = FACTION_BANK_DEPOSIT_WITH_REASON_PATTERN.matcher(command);
+        if (factionBankDepositWithReasonMatcher.find()) {
+            String amount = factionBankDepositWithReasonMatcher.group("amount");
+            String reason = factionBankDepositWithReasonMatcher.group("reason");
+            storage.setFBankDepositReason(reason);
+            commandService.sendCommand("fbank einzahlen " + amount);
             return false;
         }
 

@@ -109,6 +109,14 @@ public class Storage {
 
     @Getter
     @Setter
+    private String fBankDepositReason = "";
+
+    @Getter
+    @Setter
+    private double hydration = -1.0;
+
+    @Getter
+    @Setter
     private int lastReceivedSmsNumber = -1;
 
     @Getter
@@ -118,10 +126,6 @@ public class Storage {
     @Getter
     @Setter
     private int moneyAtmAmount = 0;
-
-    @Getter
-    @Setter
-    private double hydration = -1.0;
 
     @Getter
     @Setter
@@ -184,6 +188,8 @@ public class Storage {
         LOGGER.info("currentJob: {}", this.currentJob);
         // dead
         LOGGER.info("dead: {}", this.dead);
+        // fBankDepositReason
+        LOGGER.info("fBankDepositReason: {}", this.fBankDepositReason);
         // hydration
         LOGGER.info("hydration: {}", this.hydration);
         // lastReceivedSmsNumber
