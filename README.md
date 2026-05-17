@@ -89,6 +89,7 @@ reibungsloser und angenehmer gestalten.
 | `/eigenbedarf`  | Nimmt eine eingestellte Menge an Drogen aus der Drogenbank einer Fraktion oder gibt diese an einen Spieler                                        |
 | `/schwarzmarkt` | Zeigt alle Schwarzmärkte an einschließlich des Zeitpunkts des letzten Besuchs des Ortes und einer Markierung ob sich der Schwarzmarkt dort befand |
 | `/dealer`       | Zeigt alle Dealer an einschließlich des Zeitpunkts des letzten Besuchs des Ortes und einer Markierung ob sich der Dealer dort befand              |
+| `/dbankdropall` | Legt alle Drogen in die Drogenbank der Fraktion (Pulver, Kräuter, Kristalle und Wundertüten)                                                      |
 
 **Geld**
 
