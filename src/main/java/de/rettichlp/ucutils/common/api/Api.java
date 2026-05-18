@@ -9,6 +9,7 @@ import com.google.gson.reflect.TypeToken;
 import de.rettichlp.ucutils.common.api.response.ErrorResponse;
 import de.rettichlp.ucutils.common.models.Faction;
 import de.rettichlp.ucutils.common.models.FactionMember;
+import de.rettichlp.ucutils.common.models.TeamResponse;
 import lombok.Getter;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
@@ -53,6 +54,10 @@ public class Api {
 
     public void getFactionMembers(@NotNull Faction faction, Consumer<List<FactionMember>> callback) {
         get("https://api.unicacity.eu/api/factions/" + faction.getApiKey() + "/members", new TypeToken<>() {}, callback);
+    }
+
+    public void getTeamMembers(Consumer<TeamResponse> callback) {
+        get("https://api.unicacity.eu/api/team", new TypeToken<>() {}, callback);
     }
 
     private <T> void get(@NotNull String uri, TypeToken<T> typeToken, Consumer<T> callback) {

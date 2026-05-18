@@ -18,6 +18,10 @@ reibungsloser und angenehmer gestalten.
 - Mit einem Rechtsklick, während man schleicht, kann man bewusstlosen Personen Erste-Hilfe geben
 - Über dem Spielernamen wird eine Information angezeigt, wenn ein Spieler AFK oder im A-Duty ist
 - Für Teammitglieder wird eine Warnung angezeigt, wenn sie sich im Admindienst befinden und eine Waffe in der Hand haben
+- Hinter der Nachricht, dass sich das Karma geändert hat, wird angezeigt, wie viel Karma man insgesamt besitzt und wann ein Spieler despawnen sollte (falls das Karma durch einen Kill geändert wurde)
+- Bei der Mieterübersicht wird angezeigt wie lang ein Mieter offline ist und ein Button um diesen zu kündigen
+- Beim Beten wird nach 15 Sekunden automatisch der zweite Befehl ausgeführt
+- Es gibt Benachrichtigungen, wenn ein Spieler den Server betritt oder verlässt, einen Report betritt oder verlässt, den Baumodus betritt oder verlässt und den Admindienst betritt oder verlässt
 
 ### Auto
 
@@ -42,6 +46,7 @@ reibungsloser und angenehmer gestalten.
 - Eine Plantage kann direkt durch gleichzeitiges Schleichen und Klicken mit einem Samen in der Hand gelegt werden
 - Eine Plantage kann durch einen Rechtsklick mit einem Wassereimer oder Dünger direkt gewässert beziehungsweise gedüngt werden
 - Der Rettungsdienst kann durch einen Rechtsklick auf eine bewusstlose Person diese wiederbeleben
+- Mit `/fbank einzahlen <Betrag> <Grund>` kann das Eingabe GUI des Servers übersprungen werden
 
 ### Jobs
 
@@ -72,6 +77,7 @@ reibungsloser und angenehmer gestalten.
 | `/mia`                            | Alias für `/memberinfoall`                                                                                      |
 | `/screenshot`                     | Erstellt einen Screenshot in einer bestimmten Kategorie                                                         |
 | `/shutdown <friedhof\|gefängnis>` | Aktiviert das automatische Herunterfahren des PCs nachdem man nicht mehr auf dem Friedhof oder im Gefängnis ist |
+| `/selldrugall` `/sda`             | Verkauft alle illegalen Drogen für 0$ an den angegebenen Spieler (Pulver, Kräuter, Kristalle und Wundertüten)   |
 
 **Chat**
 
@@ -83,11 +89,12 @@ reibungsloser und angenehmer gestalten.
 
 **Fraktionen**
 
-| Befehl          | Beschreibung                                                                                                                                      |
-|-----------------|---------------------------------------------------------------------------------------------------------------------------------------------------|
-| `/eigenbedarf`  | Nimmt eine eingestellte Menge an Drogen aus der Drogenbank einer Fraktion oder gibt diese an einen Spieler                                        |
-| `/schwarzmarkt` | Zeigt alle Schwarzmärkte an einschließlich des Zeitpunkts des letzten Besuchs des Ortes und einer Markierung ob sich der Schwarzmarkt dort befand |
-| `/dealer`       | Zeigt alle Dealer an einschließlich des Zeitpunkts des letzten Besuchs des Ortes und einer Markierung ob sich der Dealer dort befand              |
+| Befehl                 | Beschreibung                                                                                                                                      |
+|------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------|
+| `/eigenbedarf`         | Nimmt eine eingestellte Menge an Drogen aus der Drogenbank einer Fraktion oder gibt diese an einen Spieler                                        |
+| `/schwarzmarkt`        | Zeigt alle Schwarzmärkte an einschließlich des Zeitpunkts des letzten Besuchs des Ortes und einer Markierung ob sich der Schwarzmarkt dort befand |
+| `/dealer`              | Zeigt alle Dealer an einschließlich des Zeitpunkts des letzten Besuchs des Ortes und einer Markierung ob sich der Dealer dort befand              |
+| `/dbankdropall` `/dda` | Legt alle Drogen in die Drogenbank der Fraktion (Pulver, Kräuter, Kristalle und Wundertüten)                                                      |
 
 **Geld**
 

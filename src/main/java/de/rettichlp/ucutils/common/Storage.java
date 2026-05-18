@@ -10,10 +10,13 @@ import de.rettichlp.ucutils.common.models.Faction;
 import de.rettichlp.ucutils.common.models.FactionEntry;
 import de.rettichlp.ucutils.common.models.FactionMember;
 import de.rettichlp.ucutils.common.models.HousebanEntry;
+import de.rettichlp.ucutils.common.models.Ingredient;
 import de.rettichlp.ucutils.common.models.Job;
 import de.rettichlp.ucutils.common.models.PlantEntry;
+import de.rettichlp.ucutils.common.models.Purity;
 import de.rettichlp.ucutils.common.models.Reinforcement;
 import de.rettichlp.ucutils.common.models.ShutdownReason;
+import de.rettichlp.ucutils.common.models.TeamResponse;
 import de.rettichlp.ucutils.common.models.WantedEntry;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -69,6 +72,9 @@ public class Storage {
     private final List<HousebanEntry> housebanEntries = new ArrayList<>();
 
     @Getter
+    private final Map<Ingredient, Map<Purity, Integer>> inventory = new HashMap<>();
+
+    @Getter
     private final Map<String, LocalDateTime> medicBandageCooldowns = new HashMap<>();
 
     @Getter
@@ -108,6 +114,14 @@ public class Storage {
 
     @Getter
     @Setter
+    private String fBankDepositReason = "";
+
+    @Getter
+    @Setter
+    private double hydration = -1.0;
+
+    @Getter
+    @Setter
     private int lastReceivedSmsNumber = -1;
 
     @Getter
@@ -120,7 +134,7 @@ public class Storage {
 
     @Getter
     @Setter
-    private double hydration = -1.0;
+    private TeamResponse team;
 
     @Getter
     @Setter
@@ -159,6 +173,8 @@ public class Storage {
         this.factionEntries.forEach(factionEntry -> LOGGER.info("factionEntries[{}:{}]: {}", factionEntry.faction(), factionEntry.members().size(), factionEntry.members()));
         // housebanEntries
         LOGGER.info("housebanEntries[{}]: {}", this.housebanEntries.size(), this.housebanEntries);
+        // inventory
+        this.inventory.forEach((ingredient, ingredientMap) -> LOGGER.info("inventory[{}:{}]: {}", ingredient, ingredientMap.size(), ingredientMap));
         // medicBandageCooldowns
         LOGGER.info("medicBandageCooldowns[{}]: {}", this.medicBandageCooldowns.size(), this.medicBandageCooldowns);
         // medicPillCooldowns
@@ -179,6 +195,8 @@ public class Storage {
         LOGGER.info("currentJob: {}", this.currentJob);
         // dead
         LOGGER.info("dead: {}", this.dead);
+        // fBankDepositReason
+        LOGGER.info("fBankDepositReason: {}", this.fBankDepositReason);
         // hydration
         LOGGER.info("hydration: {}", this.hydration);
         // lastReceivedSmsNumber
@@ -187,6 +205,8 @@ public class Storage {
         LOGGER.info("minecartEntityToHighlight: {}", this.minecartEntityToHighlight);
         // moneyAtmAmount
         LOGGER.info("moneyAtmAmount: {}", this.moneyAtmAmount);
+        // team
+        LOGGER.info("team: {}", this.team);
         // toggledChat
         LOGGER.info("toggledChat: {}", this.toggledChat);
         // unicaCity

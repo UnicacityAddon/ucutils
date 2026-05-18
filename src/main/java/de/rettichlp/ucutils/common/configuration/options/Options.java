@@ -34,11 +34,13 @@ public class Options {
     private final List<PersonalUseEntry> personalUse = new ArrayList<>();
     private final CarOptions car = new CarOptions();
     private final SoundOptions sound = new SoundOptions();
+    private final NotificationOptions notification = new NotificationOptions();
 
     private ReinforcementType reinforcementType = UNICACITYADDON;
     private AtmInformationType atmInformationType = NONE;
     private boolean showHydration = true;
     private boolean checkUnicacityServer = true;
+    private boolean showEnrichedKarma = true;
     private boolean changeFactionChatColor = false;
     private Color factionChatColorPrimary = Color.BLUE;
     private Color factionChatColorSecondary = Color.DARK_AQUA;

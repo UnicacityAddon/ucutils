@@ -10,6 +10,7 @@ import net.minecraft.text.HoverEvent;
 import net.minecraft.text.Text;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -57,6 +58,10 @@ public class PlayerListener implements IAbsorptionGetListener, IMessageReceiveLi
 
     // pray
     private static final Pattern PRAY_START_PATTERN = compile("^\\[Kirche] Du fängst an für (?:\\[UC])?(?<playerName>[a-zA-Z0-9_]+) zu beten\\.$");
+
+    // requests
+    private static final Pattern ACCEPT_PATTERN = compile("^\\[Deal] (?:\\[UC])?(?<playerName>[a-zA-Z0-9_]+) hat den Deal angenommen\\.$");
+    private static final Pattern DECLINE_PATTERN = compile("^\\[Deal] (?:\\[UC])?(?<playerName>[a-zA-Z0-9_]+) hat das Angebot abgelehnt\\.$");
 
     @Override
     public void onAbsorptionGet() {
@@ -141,6 +146,16 @@ public class PlayerListener implements IAbsorptionGetListener, IMessageReceiveLi
         Matcher prayStartMatcher = PRAY_START_PATTERN.matcher(message);
         if (prayStartMatcher.find()) {
             utilService.delayedAction(() -> commandService.sendCommand("beten"), PRAY_DELAY_IN_SECONDS * 1000L);
+            return true;
+        }
+
+        Matcher acceptMatcher = ACCEPT_PATTERN.matcher(message);
+        Matcher declineMatcher = DECLINE_PATTERN.matcher(message);
+        if (acceptMatcher.find() || declineMatcher.find()) {
+            List<String> requestCommands = commandService.getRequestCommands();
+            if (!requestCommands.isEmpty()) {
+                commandService.sendCommand(requestCommands.removeFirst());
+            }
             return true;
         }
 
