@@ -20,6 +20,7 @@ import net.minecraft.text.Text;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import static de.rettichlp.ucutils.UCUtils.LOGGER;
 import static de.rettichlp.ucutils.UCUtils.commandService;
 import static de.rettichlp.ucutils.UCUtils.configuration;
 import static de.rettichlp.ucutils.UCUtils.player;
@@ -123,6 +124,11 @@ public class CarListener
                 case "Fahrzeuge" -> {
                     if (configuration.getOptions().car().fastFind()) {
                         interactionManager.clickSlot(genericContainerScreen.getScreenHandler().syncId, 0, 0, PICKUP, player);
+                    }
+                }
+                default -> {
+                    if (commandService.isSuperUser()) {
+                        LOGGER.info("Screen opened: {}", titleString);
                     }
                 }
             }
