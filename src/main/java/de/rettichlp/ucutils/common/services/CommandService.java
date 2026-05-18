@@ -1,6 +1,7 @@
 package de.rettichlp.ucutils.common.services;
 
 import lombok.Getter;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -30,6 +31,9 @@ public class CommandService {
 
     @Getter
     private final Map<String, Long> hideCommandOutputCommands = new HashMap<>();
+
+    @Getter
+    private final List<String> requestCommands = new ArrayList<>();
 
     public void sendCommand(String command) {
         LOGGER.info("UCUtils executing command: {}", command);
@@ -65,6 +69,12 @@ public class CommandService {
                 sendCommand(commands.removeFirst());
             }
         }, 0, cooldownMillis);
+    }
+
+    public void sendCommandsWithAwaitingResponse(@NotNull List<String> commands) {
+        String firstCommand = commands.removeFirst();
+        sendCommand(firstCommand);
+        this.requestCommands.addAll(commands);
     }
 
     public void sendCommandWithHiddenOutput(String command) {
