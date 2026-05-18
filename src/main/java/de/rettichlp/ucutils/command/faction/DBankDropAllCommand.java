@@ -45,7 +45,7 @@ public class DBankDropAllCommand extends CommandBase {
                                             });
                                 });
 
-                        commandService.sendCommands(commandQueue);
+                        commandService.sendCommands(commandQueue, 1000);
                     }, 2500);
 
                     return 1;
