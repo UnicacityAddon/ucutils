@@ -48,7 +48,9 @@ public abstract class DialogScreenMixin<T extends Dialog> {
         }
 
         DialogActionButtonData dialogActionButtonData = actions.getFirst();
-        if (dialogActionButtonData.action().isEmpty() || !(dialogActionButtonData.action().get() instanceof DynamicCustomDialogAction(Identifier id, Optional<NbtCompound> additions))) {
+        if (dialogActionButtonData.action().isEmpty() || !(dialogActionButtonData.action().get() instanceof DynamicCustomDialogAction(
+                Identifier id, Optional<NbtCompound> additions
+        ))) {
             return;
         }
 

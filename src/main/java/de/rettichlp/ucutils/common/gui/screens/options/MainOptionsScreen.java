@@ -27,7 +27,7 @@ public class MainOptionsScreen extends OptionsScreen {
     private static final Text HYDRATION_TOOLTIP = translatable("ucutils.options.hydration.tooltip");
     private static final Text BANK_INFORMATION_NAME = translatable("ucutils.options.atm_information.name");
     private static final Text ENRICHED_KARMA_NAME = translatable("ucutils.options.enriched_karma.name");
-    private static final Text ENRICHED_KARMA_TOOLTIP  = translatable("ucutils.options.enriched_karma.tooltip");
+    private static final Text ENRICHED_KARMA_TOOLTIP = translatable("ucutils.options.enriched_karma.tooltip");
 
     public MainOptionsScreen() {
         super(new GameMenuScreen(true));
