@@ -115,7 +115,7 @@ public class CarListener
             String titleString = genericContainerScreen.getTitle().getString();
 
             switch (titleString) {
-                case "CarControl" -> {
+                case "ᴄᴀʀᴄᴏɴᴛʀᴏʟ" -> {
                     if (configuration.getOptions().car().fastLock()) {
                         interactionManager.clickSlot(genericContainerScreen.getScreenHandler().syncId, 0, 0, PICKUP, player);
                     }
