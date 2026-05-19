@@ -1,8 +1,6 @@
 package de.rettichlp.ucutils.common;
 
 import de.rettichlp.ucutils.common.models.BlackMarket;
-import de.rettichlp.ucutils.common.models.BlacklistEntry;
-import de.rettichlp.ucutils.common.models.BlacklistReason;
 import de.rettichlp.ucutils.common.models.ContractEntry;
 import de.rettichlp.ucutils.common.models.Countdown;
 import de.rettichlp.ucutils.common.models.Dealer;
@@ -45,12 +43,6 @@ public class Storage {
 
     @Getter
     private final List<ShutdownReason> activeShutdowns = new ArrayList<>();
-
-    @Getter
-    private final List<BlacklistEntry> blacklistEntries = new ArrayList<>();
-
-    @Getter
-    private final Map<Faction, List<BlacklistReason>> blacklistReasons = new HashMap<>();
 
     @Getter
     private final List<BlackMarket> blackMarkets = new ArrayList<>();
@@ -153,10 +145,6 @@ public class Storage {
     public void print() {
         //activeShutdowns
         LOGGER.info("activeShutdowns[{}]: {}", this.activeShutdowns.size(), this.activeShutdowns);
-        // blacklistEntries
-        LOGGER.info("blacklistEntries[{}]: {}", this.blacklistEntries.size(), this.blacklistEntries);
-        // blacklistReasons
-        this.blacklistReasons.forEach((faction, blacklistReasons) -> LOGGER.info("blacklistReasons[{}:{}]: {}", faction, blacklistReasons.size(), blacklistReasons));
         // blackMarkets
         LOGGER.info("blackMarkets[{}]: {}", this.blackMarkets.size(), this.blackMarkets);
         // contractEntries
