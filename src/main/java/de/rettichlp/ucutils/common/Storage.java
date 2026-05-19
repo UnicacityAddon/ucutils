@@ -1,7 +1,6 @@
 package de.rettichlp.ucutils.common;
 
 import de.rettichlp.ucutils.common.models.BlackMarket;
-import de.rettichlp.ucutils.common.models.ContractEntry;
 import de.rettichlp.ucutils.common.models.Countdown;
 import de.rettichlp.ucutils.common.models.Dealer;
 import de.rettichlp.ucutils.common.models.Faction;
@@ -46,9 +45,6 @@ public class Storage {
 
     @Getter
     private final List<BlackMarket> blackMarkets = new ArrayList<>();
-
-    @Getter
-    private final List<ContractEntry> contractEntries = new ArrayList<>();
 
     @Getter
     private final List<Countdown> countdowns = new ArrayList<>();
@@ -147,8 +143,6 @@ public class Storage {
         LOGGER.info("activeShutdowns[{}]: {}", this.activeShutdowns.size(), this.activeShutdowns);
         // blackMarkets
         LOGGER.info("blackMarkets[{}]: {}", this.blackMarkets.size(), this.blackMarkets);
-        // contractEntries
-        LOGGER.info("contractEntries[{}]: {}", this.contractEntries.size(), this.contractEntries);
         // countdowns
         LOGGER.info("countdowns[{}]: {}", this.countdowns.size(), this.countdowns);
         // dealers

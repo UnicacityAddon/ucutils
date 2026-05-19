@@ -1,7 +1,6 @@
 package de.rettichlp.ucutils.mixin;
 
 import de.rettichlp.ucutils.common.configuration.options.NameTagOptions;
-import de.rettichlp.ucutils.common.models.ContractEntry;
 import de.rettichlp.ucutils.common.models.Faction;
 import de.rettichlp.ucutils.common.models.WantedEntry;
 import de.rettichlp.ucutils.listener.callback.PlayerEnterVehicleCallback;
@@ -113,15 +112,6 @@ public abstract class EntityMixin {
 
         // highlight factions
         newTargetDisplayNameColor = WHITE.getFormatting();
-
-        // contract
-        Optional<ContractEntry> optionalTargetContractEntry = storage.getContractEntries().stream()
-                .filter(contractEntry -> contractEntry.getPlayerName().equals(targetName))
-                .findAny();
-
-        if (optionalTargetContractEntry.isPresent()) {
-            newTargetDisplayNameColor = RED;
-        }
 
         // wanted
         Optional<WantedEntry> optionalTargetWantedEntry = storage.getWantedEntries().stream()
