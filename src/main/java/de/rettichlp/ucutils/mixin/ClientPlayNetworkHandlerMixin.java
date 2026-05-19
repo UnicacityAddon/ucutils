@@ -24,6 +24,7 @@ import static de.rettichlp.ucutils.UCUtils.configuration;
 import static de.rettichlp.ucutils.UCUtils.notificationService;
 import static de.rettichlp.ucutils.UCUtils.storage;
 import static java.awt.Color.WHITE;
+import static java.lang.System.currentTimeMillis;
 import static net.minecraft.text.Text.empty;
 import static net.minecraft.text.Text.literal;
 import static net.minecraft.text.Text.translatable;
@@ -104,6 +105,12 @@ public abstract class ClientPlayNetworkHandlerMixin {
                 EnrichedGameProfile enrichedGameProfile = new EnrichedGameProfile(profile, currentDisplayName, currentDisplayName);
                 this.enrichedGameProfiles.removeIf(egp -> egp.getProfile().id().equals(profileId));
                 this.enrichedGameProfiles.add(enrichedGameProfile);
+
+                // if the client joined the server few moments ago, hide notifications due to initial sync of player list
+                if (currentTimeMillis() - storage.getJoinTimestamp() < 1000) {
+                    return;
+                }
+
                 sendChangeNotification(enrichedGameProfile, "ucutils.notification.player_join");
             }
             case UPDATE_DISPLAY_NAME -> {
