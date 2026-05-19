@@ -9,7 +9,6 @@ import de.rettichlp.ucutils.common.models.Dealer;
 import de.rettichlp.ucutils.common.models.Faction;
 import de.rettichlp.ucutils.common.models.FactionEntry;
 import de.rettichlp.ucutils.common.models.FactionMember;
-import de.rettichlp.ucutils.common.models.HousebanEntry;
 import de.rettichlp.ucutils.common.models.Ingredient;
 import de.rettichlp.ucutils.common.models.Job;
 import de.rettichlp.ucutils.common.models.PlantEntry;
@@ -67,9 +66,6 @@ public class Storage {
 
     @Getter
     private final Set<FactionEntry> factionEntries = new HashSet<>();
-
-    @Getter
-    private final List<HousebanEntry> housebanEntries = new ArrayList<>();
 
     @Getter
     private final Map<Ingredient, Map<Purity, Integer>> inventory = new HashMap<>();
@@ -171,8 +167,6 @@ public class Storage {
         LOGGER.info("dealers[{}]: {}", this.dealers.size(), this.dealers);
         // factionEntries
         this.factionEntries.forEach(factionEntry -> LOGGER.info("factionEntries[{}:{}]: {}", factionEntry.faction(), factionEntry.members().size(), factionEntry.members()));
-        // housebanEntries
-        LOGGER.info("housebanEntries[{}]: {}", this.housebanEntries.size(), this.housebanEntries);
         // inventory
         this.inventory.forEach((ingredient, ingredientMap) -> LOGGER.info("inventory[{}:{}]: {}", ingredient, ingredientMap.size(), ingredientMap));
         // medicBandageCooldowns

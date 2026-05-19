@@ -18,8 +18,6 @@ public class NameTagOptionsScreen extends OptionsScreen {
     private static final Text NAMETAG_A_DUTY_TOOLTIP = translatable("ucutils.options.nametag.a_duty.tooltip");
     private static final Text NAMETAG_AFK_NAME = translatable("ucutils.options.nametag.afk.name");
     private static final Text NAMETAG_AFK_TOOLTIP = translatable("ucutils.options.nametag.afk.tooltip");
-    private static final Text NAMETAG_HOUSE_BAN_NAME = translatable("ucutils.options.nametag.house_ban.name");
-    private static final Text NAMETAG_HOUSE_BAN_TOOLTIP = translatable("ucutils.options.nametag.house_ban.tooltip");
     private static final Text NAMETAG_OUTLAW_NAME = translatable("ucutils.options.nametag.outlaw.name");
     private static final Text NAMETAG_OUTLAW_TOOLTIP = translatable("ucutils.options.nametag.outlaw.tooltip");
     private static final Text NAMETAG_MEDICAL_INFORMATION_NAME = translatable("ucutils.options.nametag.medical_information.name");
@@ -46,11 +44,6 @@ public class NameTagOptionsScreen extends OptionsScreen {
         toggleButton2.setWidth(150);
         toggleButton2.setTooltip(Tooltip.of(NAMETAG_AFK_TOOLTIP));
         gridWidgetAdder.add(toggleButton2);
-
-        ToggleButtonWidget toggleButton3 = new ToggleButtonWidget(NAMETAG_HOUSE_BAN_NAME, nameTagOptions::houseBan, nameTagOptions.houseBan());
-        toggleButton3.setWidth(150);
-        toggleButton3.setTooltip(Tooltip.of(NAMETAG_HOUSE_BAN_TOOLTIP));
-        gridWidgetAdder.add(toggleButton3);
 
         ToggleButtonWidget toggleButton4 = new ToggleButtonWidget(NAMETAG_OUTLAW_NAME, nameTagOptions::outlaw, nameTagOptions.outlaw());
         toggleButton4.setWidth(150);

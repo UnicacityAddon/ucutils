@@ -68,8 +68,6 @@
   "ucutils.options.nametag.a_duty.tooltip": "Zeigt eine Information an über dem Namen von Spielern, die im Admin-Dienst sind",
   "ucutils.options.nametag.afk.name": "AFK",
   "ucutils.options.nametag.afk.tooltip": "Zeigt eine Information an über dem Namen von Spielern, die AFK sind",
-  "ucutils.options.nametag.house_ban.name": "Hausverbot",
-  "ucutils.options.nametag.house_ban.tooltip": "Zeigt eine Information über dem Namen von Spielern an, die ein Hausverbot haben",
   "ucutils.options.nametag.outlaw.name": "Vogelfrei",
   "ucutils.options.nametag.outlaw.tooltip": "Zeigt eine Information über dem Namen von Spielern an, die Vogelfrei sind",
   "ucutils.options.nametag.medical_information.name": "Information für Ärzte",

@@ -4,7 +4,6 @@ import de.rettichlp.ucutils.common.configuration.options.NameTagOptions;
 import de.rettichlp.ucutils.common.models.BlacklistEntry;
 import de.rettichlp.ucutils.common.models.ContractEntry;
 import de.rettichlp.ucutils.common.models.Faction;
-import de.rettichlp.ucutils.common.models.HousebanEntry;
 import de.rettichlp.ucutils.common.models.WantedEntry;
 import de.rettichlp.ucutils.listener.callback.PlayerEnterVehicleCallback;
 import net.minecraft.client.network.ClientPlayerEntity;
@@ -142,19 +141,6 @@ public abstract class EntityMixin {
 
         if (optionalTargetContractEntry.isPresent()) {
             newTargetDisplayNameColor = RED;
-        }
-
-        // houseban
-        Optional<HousebanEntry> optionalTargetHousebanEntry = storage.getHousebanEntries().stream()
-                .filter(housebanEntry -> housebanEntry.getPlayerName().equals(targetName))
-                .filter(housebanEntry -> housebanEntry.getUnbanDateTime().isAfter(now()))
-                .findAny();
-
-        if (optionalTargetHousebanEntry.isPresent() && nameTagOptions.houseBan()) {
-            newTargetDisplayNamePrefix = empty()
-                    .append(of("[").copy().formatted(DARK_GRAY))
-                    .append(of("HV").copy().formatted(DARK_RED))
-                    .append(of("]").copy().formatted(DARK_GRAY));
         }
 
         // wanted

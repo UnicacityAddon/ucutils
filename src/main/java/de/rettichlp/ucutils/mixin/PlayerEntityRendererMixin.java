@@ -18,7 +18,6 @@ import static de.rettichlp.ucutils.UCUtils.nameTagService;
 import static de.rettichlp.ucutils.UCUtils.storage;
 import static de.rettichlp.ucutils.common.services.NameTagService.AFK_TAG;
 import static de.rettichlp.ucutils.common.services.NameTagService.A_DUTY_TAG;
-import static de.rettichlp.ucutils.common.services.NameTagService.HOUSE_BAN_TAG;
 
 @Mixin(PlayerEntityRenderer.class)
 public abstract class PlayerEntityRendererMixin {
@@ -66,13 +65,6 @@ public abstract class PlayerEntityRendererMixin {
             matrixStack.translate(0.0F, medicInformationPresent ? 0.8F : 2.6, 0.0F);
             orderedRenderCommandQueue.submitLabel(matrixStack, playerEntityRenderState.nameLabelPos, 0, AFK_TAG, !playerEntityRenderState.sneaking, playerEntityRenderState.light, playerEntityRenderState.squaredDistanceToCamera, cameraRenderState);
             return;
-        }
-
-        // handle houseban tag
-        boolean hasHouseBan = storage.getHousebanEntries().stream().anyMatch(housebanEntry -> housebanEntry.getPlayerName().equals(playerName));
-        if (configuration.getOptions().nameTag().houseBan() && hasHouseBan) {
-            matrixStack.translate(0.0F, medicInformationPresent ? 0.8F : 2.6, 0.0F);
-            orderedRenderCommandQueue.submitLabel(matrixStack, playerEntityRenderState.nameLabelPos, 0, HOUSE_BAN_TAG, !playerEntityRenderState.sneaking, playerEntityRenderState.light, playerEntityRenderState.squaredDistanceToCamera, cameraRenderState);
         }
     }
 }
