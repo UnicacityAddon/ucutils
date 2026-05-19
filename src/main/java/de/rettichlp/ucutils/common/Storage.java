@@ -102,6 +102,10 @@ public class Storage {
 
     @Getter
     @Setter
+    private long joinTimestamp = 0;
+
+    @Getter
+    @Setter
     private int lastReceivedSmsNumber = -1;
 
     @Getter
@@ -169,6 +173,8 @@ public class Storage {
         LOGGER.info("fBankDepositReason: {}", this.fBankDepositReason);
         // hydration
         LOGGER.info("hydration: {}", this.hydration);
+        // joinTimestamp
+        LOGGER.info("joinTimestamp: {}", this.joinTimestamp);
         // lastReceivedSmsNumber
         LOGGER.info("lastReceivedSmsNumber: {}", this.lastReceivedSmsNumber);
         // minecartEntityToHighlight

@@ -21,6 +21,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import static java.lang.Boolean.getBoolean;
+import static java.lang.System.currentTimeMillis;
 import static java.util.Objects.isNull;
 
 public class UCUtils implements ModInitializer {
@@ -68,6 +69,7 @@ public class UCUtils implements ModInitializer {
 
             boolean isUnicaCity = isUnicaCity(handler);
             storage.setUnicaCity(isUnicaCity);
+            storage.setJoinTimestamp(currentTimeMillis());
             if (isUnicaCity) {
                 client.execute(() -> {
                     this.registry.registerListeners();
