@@ -11,7 +11,6 @@ public class NameTagOptions {
 
     private boolean aDuty = true;
     private boolean afk = true;
-    private boolean houseBan = true;
     private boolean outlaw = true;
     private boolean medicalInformation = true;
 }

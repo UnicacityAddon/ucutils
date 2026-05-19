@@ -68,8 +68,6 @@
   "ucutils.options.nametag.a_duty.tooltip": "Shows an information above the players name of players in admin duty",
   "ucutils.options.nametag.afk.name": "AFK",
   "ucutils.options.nametag.afk.tooltip": "Shows an information above the players name of afk players",
-  "ucutils.options.nametag.house_ban.name": "House ban",
-  "ucutils.options.nametag.house_ban.tooltip": "Shows an information above the players name of players with a house ban",
   "ucutils.options.nametag.outlaw.name": "Outlaw",
   "ucutils.options.nametag.outlaw.tooltip": "Shows an information above the players name of outlaw players",
   "ucutils.options.nametag.medical_information.name": "Medical information",
