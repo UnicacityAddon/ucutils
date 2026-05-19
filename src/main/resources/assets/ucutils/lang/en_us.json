@@ -68,8 +68,6 @@
   "ucutils.options.nametag.a_duty.tooltip": "Shows an information above the players name of players in admin duty",
   "ucutils.options.nametag.afk.name": "AFK",
   "ucutils.options.nametag.afk.tooltip": "Shows an information above the players name of afk players",
-  "ucutils.options.nametag.outlaw.name": "Outlaw",
-  "ucutils.options.nametag.outlaw.tooltip": "Shows an information above the players name of outlaw players",
   "ucutils.options.nametag.medical_information.name": "Medical information",
   "ucutils.options.nametag.medical_information.tooltip": "Shows the cooldown of bandages and pills below the players name",
   "ucutils.options.notifications.join_quit.name": "Join and Quit",

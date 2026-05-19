@@ -1,7 +1,6 @@
 package de.rettichlp.ucutils.mixin;
 
 import de.rettichlp.ucutils.common.configuration.options.NameTagOptions;
-import de.rettichlp.ucutils.common.models.BlacklistEntry;
 import de.rettichlp.ucutils.common.models.ContractEntry;
 import de.rettichlp.ucutils.common.models.Faction;
 import de.rettichlp.ucutils.common.models.WantedEntry;
@@ -30,14 +29,10 @@ import static de.rettichlp.ucutils.UCUtils.nameTagService;
 import static de.rettichlp.ucutils.UCUtils.player;
 import static de.rettichlp.ucutils.UCUtils.storage;
 import static de.rettichlp.ucutils.common.models.Color.WHITE;
-import static java.time.LocalDateTime.now;
 import static net.minecraft.item.Items.SKELETON_SKULL;
 import static net.minecraft.item.Items.WITHER_SKELETON_SKULL;
 import static net.minecraft.text.Text.empty;
 import static net.minecraft.text.Text.literal;
-import static net.minecraft.text.Text.of;
-import static net.minecraft.util.Formatting.DARK_GRAY;
-import static net.minecraft.util.Formatting.DARK_RED;
 import static net.minecraft.util.Formatting.GRAY;
 import static net.minecraft.util.Formatting.RED;
 
@@ -118,21 +113,6 @@ public abstract class EntityMixin {
 
         // highlight factions
         newTargetDisplayNameColor = WHITE.getFormatting();
-
-        // blacklist
-        Optional<BlacklistEntry> optionalTargetBlacklistEntry = storage.getBlacklistEntries().stream()
-                .filter(blacklistEntry -> blacklistEntry.getPlayerName().equals(targetName))
-                .findAny();
-
-        if (optionalTargetBlacklistEntry.isPresent() && nameTagOptions.outlaw()) {
-            newTargetDisplayNameColor = RED;
-            newTargetDisplayNamePrefix = optionalTargetBlacklistEntry.get().isOutlaw()
-                    ? empty()
-                      .append(of("[").copy().formatted(DARK_GRAY))
-                      .append(of("V").copy().formatted(DARK_RED))
-                      .append(of("]").copy().formatted(DARK_GRAY))
-                    : empty();
-        }
 
         // contract
         Optional<ContractEntry> optionalTargetContractEntry = storage.getContractEntries().stream()
