@@ -10,7 +10,6 @@ import de.rettichlp.ucutils.common.models.Ingredient;
 import de.rettichlp.ucutils.common.models.Job;
 import de.rettichlp.ucutils.common.models.PlantEntry;
 import de.rettichlp.ucutils.common.models.Purity;
-import de.rettichlp.ucutils.common.models.Reinforcement;
 import de.rettichlp.ucutils.common.models.ShutdownReason;
 import de.rettichlp.ucutils.common.models.TeamResponse;
 import de.rettichlp.ucutils.common.models.WantedEntry;
@@ -69,9 +68,6 @@ public class Storage {
 
     @Getter
     private final Map<String, Faction> playerFactionCache = new HashMap<>();
-
-    @Getter
-    private final List<Reinforcement> reinforcements = new ArrayList<>();
 
     @Getter
     private final Map<String, Integer> retrievedNumbers = new HashMap<>();
@@ -157,8 +153,6 @@ public class Storage {
         LOGGER.info("medicPillCooldowns[{}]: {}", this.medicPillCooldowns.size(), this.medicPillCooldowns);
         // playerFactionCache
         LOGGER.info("playerFactionCache[{}]: {}", this.playerFactionCache.size(), this.playerFactionCache);
-        // reinforcements
-        LOGGER.info("reinforcements[{}]: {}", this.reinforcements.size(), this.reinforcements);
         // retrievedNumbers
         LOGGER.info("retrievedNumbers[{}]: {}", this.retrievedNumbers.size(), this.retrievedNumbers);
         // wantedEntries
@@ -210,13 +204,6 @@ public class Storage {
                 .flatMap(factionEntry -> factionEntry.members().stream())
                 .filter(factionMember -> factionMember.username().equals(playerName))
                 .findFirst();
-    }
-
-    public void trackReinforcement(Reinforcement reinforcement) {
-        // remove all previous reinforcements of the same sender
-        this.reinforcements.removeIf(r -> r.getSenderPlayerName().equals(reinforcement.getSenderPlayerName()));
-        // add new reinforcement
-        this.reinforcements.add(reinforcement);
     }
 
     @Getter

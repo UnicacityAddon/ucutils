@@ -102,7 +102,6 @@ public abstract class EntityMixin {
 
     @Unique
     private MutableText getEnrichedDisplayName(String targetName) {
-        NameTagOptions nameTagOptions = configuration.getOptions().nameTag();
         Faction targetFaction = storage.getCachedFaction(targetName);
 
         Text newTargetDisplayNamePrefix = empty();

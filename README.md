@@ -35,8 +35,7 @@ reibungsloser und angenehmer gestalten.
 ### Fraktionen
 
 - Für bewusstlose Spieler wird hinter dem Spielernamen ein Symbol angezeigt, um die dazugehörige Fraktion zu erkennen
-- Sollte ein Spieler Contract, auf der Blacklist stehen, Hausverbot oder Wanted-Punkte haben, wird der Name dementsprechend eingefärbt
-  und in der Spielerliste angezeigt
+- Sollte ein Spieler Wanted-Punkte haben, wird der Name der Leiche dementsprechend eingefärbt
 - Das Design der Reinforcements ist so überarbeitet, dass diese besser auffallen
 - Für das FBI, die Polizei und den Rettungsdienst gibt es einen Timer, der die Dauer der Bombe anzeigt
 - Mit einem Rechtsklick auf ein Fraktionstor (nicht Fraktionstür) wird dieses automatisch geöffnet oder geschlossen
