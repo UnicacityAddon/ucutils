@@ -12,21 +12,25 @@ reibungsloser und angenehmer gestalten.
   gültigen Command umgewandelt
 - Als Business-Besitzer wird in der Business-Info ein Button angezeigt, um die Einnahmen direkt abzubuchen
 - Wirft man eine Glasflasche in der Nähe eines Shops weg, wird diese als Pfand abgegeben
-- Es wird angezeigt wie lang der Cooldown für Bandagen und Schmerzpillen ist
+- Es wird angezeigt, wie lang der Cooldown für Bandagen und Schmerzpillen ist
 - Es werden Sounds abgespielt für Notrufe, Bomben, Feuer, Staatsbankraub und weitere Situationen
 - Über der Hungerleiste wird der Durst angezeigt
 - Mit einem Rechtsklick, während man schleicht, kann man bewusstlosen Personen Erste-Hilfe geben
-- Über dem Spielernamen wird eine Information angezeigt, wenn ein Spieler AFK oder im A-Duty ist
+- Über den Spielernamen wird AFK angezeigt, wenn der Spieler AFK ist
 - Für Teammitglieder wird eine Warnung angezeigt, wenn sie sich im Admindienst befinden und eine Waffe in der Hand haben
-- Hinter der Nachricht, dass sich das Karma geändert hat, wird angezeigt, wie viel Karma man insgesamt besitzt und wann ein Spieler despawnen sollte (falls das Karma durch einen Kill geändert wurde)
+- Hinter der Nachricht, dass sich das Karma geändert hat, wird angezeigt, wie viel Karma man insgesamt besitzt und wann ein Spieler
+  despawnen sollte (falls das Karma durch einen Kill geändert wurde)
 - Bei der Mieterübersicht wird angezeigt wie lang ein Mieter offline ist und ein Button um diesen zu kündigen
 - Beim Beten wird nach 15 Sekunden automatisch der zweite Befehl ausgeführt
-- Es gibt Benachrichtigungen, wenn ein Spieler den Server betritt oder verlässt, einen Report betritt oder verlässt, den Baumodus betritt oder verlässt und den Admindienst betritt oder verlässt
+- Es gibt Benachrichtigungen, wenn ein Spieler den Server betritt oder verlässt, einen Report betritt oder verlässt, den Baumodus
+  betritt oder verlässt und den Admindienst betritt oder verlässt
 
 ### Auto
 
 - Beim Suchen seines Fahrzeugs (`/car find`) wird automatisch das erste Fahrzeug ausgewählt
 - Werden die Koordinaten eines Autos angezeigt, wird automatisch eine Navigation zu diesen gestartet
+
+Folgende Funktionen sind nur für Spieler ohne Premium-Rang verfügbar, da Spieler mit Premium diese Funktion vom Server aus können:
 - Das Auf-/Abschließen eines Fahrzeuges wurde teilweise automatisiert (automatisches Klicken des Items im Inventar)
 - Beim Rechtsklick auf das eigene Fahrzeug wird automatisch `/car lock` ausgeführt
 - Steigt man in ein Fahrzeug ein, wird dieses automatisch gestartet und abgeschlossen
@@ -46,7 +50,8 @@ reibungsloser und angenehmer gestalten.
 - Eine Plantage kann durch einen Rechtsklick mit einem Wassereimer oder Dünger direkt gewässert beziehungsweise gedüngt werden
 - Der Rettungsdienst kann durch einen Rechtsklick auf eine bewusstlose Person diese wiederbeleben
 - Mit `/fbank einzahlen <Betrag> <Grund>` kann das Eingabe GUI des Servers übersprungen werden
-- Für den Rettungsdienst gibt es im Herstellungs-Inventar für Medikamente einen Button, um die benötigte Anzahl an Stoffen in den Fraktionschat zu senden
+- Für den Rettungsdienst gibt es im Herstellungs-Inventar für Medikamente einen Button, um die benötigte Anzahl an Stoffen in den
+  Fraktionschat zu senden
 
 ### Jobs
 
@@ -102,11 +107,3 @@ reibungsloser und angenehmer gestalten.
 |------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `/einzahlen (<force>)` | Zahlt das gesamte Bargeld in den ATM in der Nähe ein                                                                                                                                    |
 | `/adropmoney`          | Bucht für den Geldtransport-Job so viel Geld vom Konto ab, sodass das Geld vom Geldtransport-Job in den ATM eingezahlt werden kann und bucht das Geld anschließend zurück auf das Konto |
-
-**Handy**
-
-| Befehl                            | Beschreibung                                                             |
-|-----------------------------------|--------------------------------------------------------------------------|
-| `/acall <Spielername>`            | Ermöglicht das Anrufen mittels Spielername statt der Nummer              |
-| `/asms <Spielername> <Nachricht>` | Ermöglicht das Schreiben einer SMS mittels Spielername statt der Nummer  |
-| `/reply <Nachricht>`              | Antwortet direkt auf eine SMS                                            |
