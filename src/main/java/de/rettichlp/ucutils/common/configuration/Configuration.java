@@ -4,14 +4,12 @@ import de.rettichlp.ucutils.common.configuration.options.Options;
 import de.rettichlp.ucutils.listener.impl.EventListener;
 import lombok.Data;
 import net.fabricmc.loader.api.FabricLoader;
-import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.Writer;
 import java.nio.file.Path;
-import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -37,8 +35,6 @@ public class Configuration {
     private int minutesSinceLastPayDay = 0;
     private int predictedPayDaySalary = 0;
     private int predictedPayDayExp = 0;
-    @Nullable
-    private LocalDateTime firstAidLicenseExpireDateTime = null;
     private Set<EventListener.HalloweenDoor> halloweenClickedDoors = new HashSet<>();
 
     public void addMinutesSinceLastPayDay(int minutes) {

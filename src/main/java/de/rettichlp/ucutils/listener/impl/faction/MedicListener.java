@@ -4,7 +4,6 @@ import de.rettichlp.ucutils.common.models.Countdown;
 import de.rettichlp.ucutils.common.models.Faction;
 import de.rettichlp.ucutils.common.registry.UCUtilsListener;
 import de.rettichlp.ucutils.listener.IMessageReceiveListener;
-import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 
 import java.time.Duration;
@@ -13,7 +12,6 @@ import java.util.regex.Pattern;
 
 import static de.rettichlp.ucutils.UCUtils.commandService;
 import static de.rettichlp.ucutils.UCUtils.configuration;
-import static de.rettichlp.ucutils.UCUtils.messageService;
 import static de.rettichlp.ucutils.UCUtils.player;
 import static de.rettichlp.ucutils.UCUtils.storage;
 import static de.rettichlp.ucutils.UCUtils.utilService;
@@ -21,10 +19,7 @@ import static de.rettichlp.ucutils.common.models.Sound.FIRE;
 import static de.rettichlp.ucutils.common.services.CommandService.COMMAND_COOLDOWN_MILLIS;
 import static java.time.Duration.ofMinutes;
 import static java.time.LocalDateTime.now;
-import static java.util.Optional.ofNullable;
 import static java.util.regex.Pattern.compile;
-import static net.minecraft.text.Text.of;
-import static net.minecraft.util.Formatting.AQUA;
 
 @UCUtilsListener
 public class MedicListener implements IMessageReceiveListener {
@@ -37,8 +32,6 @@ public class MedicListener implements IMessageReceiveListener {
     private static final Pattern MEDIC_PILL_PATTERN = compile("^\\[Medic] Doktor (?:\\[UC])?(?<playerName>[a-zA-Z0-9_]+) hat dir Schmerzpillen verabreicht\\.$");
     private static final Pattern MEDIC_PILL_GIVE_PATTERN = compile("^\\[Medic] Du hast (?:\\[UC])?(?<playerName>[a-zA-Z0-9_]+) Schmerzpillen verabreicht\\.$");
     private static final Pattern MEDIC_REVIVE_START_PATTERN = compile("^Du beginnst mit der Wiederbelebung von (?:\\[UC])?(?<playerName>[a-zA-Z0-9_]+)\\.\\.\\.$");
-    private static final Pattern FIRST_AID_PATTERN = compile("^\\[Erste-Hilfe] (?:\\[UC])?(?<playerName>[a-zA-Z0-9_]+) hat dir ein Erste-Hilfe-Schein für 14 Tage ausgestellt\\.$");
-    private static final Pattern FIRST_AID_LICENCES_PATTERN = compile("^- Erste-Hilfe-Schein: Vorhanden$");
     private static final Pattern LABOR_TRANSPORT_STARTED_PATTERN = compile("^\\[ʟᴀʙᴏʀ] Transport gestartet: (?<chestAmount>\\d+) ᴋɪsᴛᴇɴ mit (?<ingredientAmount>\\d+) (?<ingredient>.+)$");
     private static final Pattern FIRE_START_PATTERN = compile("^News: Es wurde ein Feuer bei .+ gemeldet!$");
 
@@ -74,23 +67,6 @@ public class MedicListener implements IMessageReceiveListener {
         if (medicReviveStartMatcher.find()) {
             utilService.delayedAction(() -> commandService.sendCommand("dinfo"), COMMAND_COOLDOWN_MILLIS);
             return true;
-        }
-
-        Matcher firstAidMatcher = FIRST_AID_PATTERN.matcher(message);
-        if (firstAidMatcher.find()) {
-            configuration.setFirstAidLicenseExpireDateTime(now().plusDays(14));
-            return true;
-        }
-
-        Matcher firstAidLicencesMatcher = FIRST_AID_LICENCES_PATTERN.matcher(message);
-        if (firstAidLicencesMatcher.find()) {
-            MutableText overwriteText = text.copy().append(" ")
-                    .append(of("bis " + ofNullable(configuration.getFirstAidLicenseExpireDateTime())
-                            .map(messageService::dateTimeToFriendlyString)
-                            .orElse("Unbekannt")).copy().formatted(AQUA));
-
-            player.sendMessage(overwriteText, false);
-            return false; // hide message
         }
 
         Matcher laborTransportStartedMatcher = LABOR_TRANSPORT_STARTED_PATTERN.matcher(message);
