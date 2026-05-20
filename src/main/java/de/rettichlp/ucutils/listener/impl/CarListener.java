@@ -52,13 +52,13 @@ public class CarListener
 
         storage.setMinecartEntityToHighlight(null);
 
-        if (configuration.getOptions().car().automatedStart()) {
+        if (configuration.getOptions().car().automatedStart() && !storage.isPremium()) {
             // start the car with a small delay to ensure the player is fully in the vehicle
             utilService.delayedAction(() -> commandService.sendCommand("car start"), 500);
         }
 
         // lock the car after 1 second and the small delay if not already locked
-        if (!storage.isCarLocked() && configuration.getOptions().car().automatedLock()) {
+        if (!storage.isCarLocked() && configuration.getOptions().car().automatedLock() && !storage.isPremium()) {
             utilService.delayedAction(() -> commandService.sendCommand("car lock"), 1500);
         }
     }
@@ -69,7 +69,7 @@ public class CarListener
         VertexConsumerProvider vertexConsumers = context.consumers();
         ClientWorld world = MinecraftClient.getInstance().world;
 
-        if (world != null && configuration.getOptions().car().highlight()) {
+        if (world != null && configuration.getOptions().car().highlight() && !storage.isPremium()) {
             ofNullable(storage.getMinecartEntityToHighlight())
                     .map(minecartEntity -> world.getEntityById(minecartEntity.getId()))
                     .ifPresent(minecartEntity -> renderService.renderTextAboveEntity(matrices, vertexConsumers, minecartEntity, Text.of("🚗").copy().formatted(AQUA), 0.05F));
@@ -117,7 +117,7 @@ public class CarListener
 
             switch (titleString) {
                 case "ᴄᴀʀᴄᴏɴᴛʀᴏʟ" -> {
-                    if (configuration.getOptions().car().fastLock()) {
+                    if (configuration.getOptions().car().fastLock() && !storage.isPremium()) {
                         interactionManager.clickSlot(genericContainerScreen.getScreenHandler().syncId, 0, 0, PICKUP, player);
                     }
                 }

@@ -118,6 +118,10 @@ public class Storage {
 
     @Getter
     @Setter
+    private boolean premium = false;
+
+    @Getter
+    @Setter
     private TeamResponse team;
 
     @Getter
@@ -181,6 +185,8 @@ public class Storage {
         LOGGER.info("minecartEntityToHighlight: {}", this.minecartEntityToHighlight);
         // moneyAtmAmount
         LOGGER.info("moneyAtmAmount: {}", this.moneyAtmAmount);
+        // premium
+        LOGGER.info("premium: {}", this.premium);
         // team
         LOGGER.info("team: {}", this.team);
         // toggledChat
