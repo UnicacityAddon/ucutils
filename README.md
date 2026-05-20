@@ -78,8 +78,6 @@ Folgende Funktionen sind nur für Spieler ohne Premium-Rang verfügbar, da Spiel
 | Befehl                            | Beschreibung                                                                                                    |
 |-----------------------------------|-----------------------------------------------------------------------------------------------------------------|
 | `/ucutils (<sync>)`               | Zeigt nützliche Status-Informationen über das Projekt an oder startet eine Synchronisierung                     |
-| `/mi`                             | Alias für `/memberinfo`                                                                                         |
-| `/mia`                            | Alias für `/memberinfoall`                                                                                      |
 | `/screenshot`                     | Erstellt einen Screenshot in einer bestimmten Kategorie                                                         |
 | `/shutdown <friedhof\|gefängnis>` | Aktiviert das automatische Herunterfahren des PCs nachdem man nicht mehr auf dem Friedhof oder im Gefängnis ist |
 | `/selldrugall` `/sda`             | Verkauft alle illegalen Drogen für 0$ an den angegebenen Spieler (Pulver, Kräuter, Kristalle und Wundertüten)   |
