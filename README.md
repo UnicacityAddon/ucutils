@@ -78,8 +78,6 @@ Folgende Funktionen sind nur für Spieler ohne Premium-Rang verfügbar, da Spiel
 | Befehl                            | Beschreibung                                                                                                    |
 |-----------------------------------|-----------------------------------------------------------------------------------------------------------------|
 | `/ucutils (<sync>)`               | Zeigt nützliche Status-Informationen über das Projekt an oder startet eine Synchronisierung                     |
-| `/mi`                             | Alias für `/memberinfo`                                                                                         |
-| `/mia`                            | Alias für `/memberinfoall`                                                                                      |
 | `/screenshot`                     | Erstellt einen Screenshot in einer bestimmten Kategorie                                                         |
 | `/shutdown <friedhof\|gefängnis>` | Aktiviert das automatische Herunterfahren des PCs nachdem man nicht mehr auf dem Friedhof oder im Gefängnis ist |
 | `/selldrugall` `/sda`             | Verkauft alle illegalen Drogen für 0$ an den angegebenen Spieler (Pulver, Kräuter, Kristalle und Wundertüten)   |
@@ -96,10 +94,8 @@ Folgende Funktionen sind nur für Spieler ohne Premium-Rang verfügbar, da Spiel
 
 | Befehl                 | Beschreibung                                                                                                                                      |
 |------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------|
-| `/eigenbedarf`         | Nimmt eine eingestellte Menge an Drogen aus der Drogenbank einer Fraktion oder gibt diese an einen Spieler                                        |
 | `/schwarzmarkt`        | Zeigt alle Schwarzmärkte an einschließlich des Zeitpunkts des letzten Besuchs des Ortes und einer Markierung ob sich der Schwarzmarkt dort befand |
 | `/dealer`              | Zeigt alle Dealer an einschließlich des Zeitpunkts des letzten Besuchs des Ortes und einer Markierung ob sich der Dealer dort befand              |
-| `/dbankdropall` `/dda` | Legt alle Drogen in die Drogenbank der Fraktion (Pulver, Kräuter, Kristalle und Wundertüten)                                                      |
 
 **Geld**
 
