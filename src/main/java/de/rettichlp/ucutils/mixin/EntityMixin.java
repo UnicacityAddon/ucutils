@@ -1,6 +1,5 @@
 package de.rettichlp.ucutils.mixin;
 
-import de.rettichlp.ucutils.common.configuration.options.NameTagOptions;
 import de.rettichlp.ucutils.common.models.Faction;
 import de.rettichlp.ucutils.common.models.WantedEntry;
 import de.rettichlp.ucutils.listener.callback.PlayerEnterVehicleCallback;
@@ -23,7 +22,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.util.Optional;
 
-import static de.rettichlp.ucutils.UCUtils.configuration;
 import static de.rettichlp.ucutils.UCUtils.nameTagService;
 import static de.rettichlp.ucutils.UCUtils.player;
 import static de.rettichlp.ucutils.UCUtils.storage;
@@ -33,7 +31,6 @@ import static net.minecraft.item.Items.WITHER_SKELETON_SKULL;
 import static net.minecraft.text.Text.empty;
 import static net.minecraft.text.Text.literal;
 import static net.minecraft.util.Formatting.GRAY;
-import static net.minecraft.util.Formatting.RED;
 
 @Mixin(Entity.class)
 public abstract class EntityMixin {
