@@ -12,7 +12,7 @@ reibungsloser und angenehmer gestalten.
   gültigen Command umgewandelt
 - Als Business-Besitzer wird in der Business-Info ein Button angezeigt, um die Einnahmen direkt abzubuchen
 - Wirft man eine Glasflasche in der Nähe eines Shops weg, wird diese als Pfand abgegeben
-- Es wird angezeigt wie lang der Cooldown für Bandagen, Schmerzpillen und Absorption ist
+- Es wird angezeigt wie lang der Cooldown für Bandagen und Schmerzpillen ist
 - Es werden Sounds abgespielt für Notrufe, Bomben, Feuer, Staatsbankraub und weitere Situationen
 - Über der Hungerleiste wird der Durst angezeigt
 - Mit einem Rechtsklick, während man schleicht, kann man bewusstlosen Personen Erste-Hilfe geben
