@@ -2,7 +2,6 @@ package de.rettichlp.ucutils.listener.impl;
 
 import de.rettichlp.ucutils.common.models.Countdown;
 import de.rettichlp.ucutils.common.registry.UCUtilsListener;
-import de.rettichlp.ucutils.listener.IAbsorptionGetListener;
 import de.rettichlp.ucutils.listener.IMessageReceiveListener;
 import de.rettichlp.ucutils.listener.ITickListener;
 import net.minecraft.network.ClientConnection;
@@ -36,7 +35,7 @@ import static net.minecraft.util.Formatting.GRAY;
 import static net.minecraft.util.Formatting.RED;
 
 @UCUtilsListener
-public class PlayerListener implements IAbsorptionGetListener, IMessageReceiveListener, ITickListener {
+public class PlayerListener implements IMessageReceiveListener, ITickListener {
 
     private static final String SHUTDOWN_TIMEOUT = "5";
     private static final int PRAY_DELAY_IN_SECONDS = 30;
@@ -65,11 +64,6 @@ public class PlayerListener implements IAbsorptionGetListener, IMessageReceiveLi
     // requests
     private static final Pattern ACCEPT_PATTERN = compile("^\\[Deal] (?:\\[UC])?(?<playerName>[a-zA-Z0-9_]+) hat den Deal angenommen\\.$");
     private static final Pattern DECLINE_PATTERN = compile("^\\[Deal] (?:\\[UC])?(?<playerName>[a-zA-Z0-9_]+) hat das Angebot abgelehnt\\.$");
-
-    @Override
-    public void onAbsorptionGet() {
-        storage.getCountdowns().add(new Countdown("Absorption", ofMinutes(3)));
-    }
 
     @Override
     public boolean onMessageReceive(Text text, String message) {
