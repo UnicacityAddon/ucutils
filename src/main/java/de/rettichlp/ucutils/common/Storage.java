@@ -8,7 +8,6 @@ import de.rettichlp.ucutils.common.models.FactionEntry;
 import de.rettichlp.ucutils.common.models.FactionMember;
 import de.rettichlp.ucutils.common.models.Ingredient;
 import de.rettichlp.ucutils.common.models.Job;
-import de.rettichlp.ucutils.common.models.PlantEntry;
 import de.rettichlp.ucutils.common.models.Purity;
 import de.rettichlp.ucutils.common.models.ShutdownReason;
 import de.rettichlp.ucutils.common.models.TeamResponse;
@@ -62,9 +61,6 @@ public class Storage {
 
     @Getter
     private final Map<String, LocalDateTime> medicPillCooldowns = new HashMap<>();
-
-    @Getter
-    private final List<PlantEntry> plantEntries = new ArrayList<>();
 
     @Getter
     private final Map<String, Faction> playerFactionCache = new HashMap<>();
