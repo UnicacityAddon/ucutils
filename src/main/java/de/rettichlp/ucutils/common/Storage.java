@@ -66,9 +66,6 @@ public class Storage {
     private final Map<String, Faction> playerFactionCache = new HashMap<>();
 
     @Getter
-    private final Map<String, Integer> retrievedNumbers = new HashMap<>();
-
-    @Getter
     private final List<WantedEntry> wantedEntries = new ArrayList<>();
 
     @Getter
@@ -99,10 +96,6 @@ public class Storage {
     @Getter
     @Setter
     private long joinTimestamp = 0;
-
-    @Getter
-    @Setter
-    private int lastReceivedSmsNumber = -1;
 
     @Getter
     @Setter
@@ -157,8 +150,6 @@ public class Storage {
         LOGGER.info("medicPillCooldowns[{}]: {}", this.medicPillCooldowns.size(), this.medicPillCooldowns);
         // playerFactionCache
         LOGGER.info("playerFactionCache[{}]: {}", this.playerFactionCache.size(), this.playerFactionCache);
-        // retrievedNumbers
-        LOGGER.info("retrievedNumbers[{}]: {}", this.retrievedNumbers.size(), this.retrievedNumbers);
         // wantedEntries
         LOGGER.info("wantedEntries[{}]: {}", this.wantedEntries.size(), this.wantedEntries);
         // activeServices
@@ -175,8 +166,6 @@ public class Storage {
         LOGGER.info("hydration: {}", this.hydration);
         // joinTimestamp
         LOGGER.info("joinTimestamp: {}", this.joinTimestamp);
-        // lastReceivedSmsNumber
-        LOGGER.info("lastReceivedSmsNumber: {}", this.lastReceivedSmsNumber);
         // minecartEntityToHighlight
         LOGGER.info("minecartEntityToHighlight: {}", this.minecartEntityToHighlight);
         // moneyAtmAmount
