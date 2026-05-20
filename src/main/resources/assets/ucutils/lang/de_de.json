@@ -16,11 +16,6 @@
   "ucutils.color.yellow": "Gelb",
   "ucutils.color.white": "Weiß",
 
-  "ucutils.inventory.powder": "Pulver",
-  "ucutils.inventory.herbs": "Kräuter",
-  "ucutils.inventory.crystals": "Kristalle",
-  "ucutils.inventory.grab_bag": "Wundertüte",
-
   "ucutils.notification.error.api": "Fehler bei der API Abfrage (%s)",
   "ucutils.notification.error.configuration": "Konfiguration konnte nicht geladen werden",
   "ucutils.notification.info.new_version": "Neue UCUtils Version verfügbar",

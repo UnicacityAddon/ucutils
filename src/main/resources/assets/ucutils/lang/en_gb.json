@@ -16,11 +16,6 @@
   "ucutils.color.yellow": "Yellow",
   "ucutils.color.white": "White",
 
-  "ucutils.inventory.powder": "Powder",
-  "ucutils.inventory.herbs": "Herbs",
-  "ucutils.inventory.crystals": "Crystals",
-  "ucutils.inventory.grab_bag": "Grab bag",
-
   "ucutils.notification.error.api": "API request error (%s)",
   "ucutils.notification.error.configuration": "Configuration could not be loaded",
   "ucutils.notification.info.new_version": "New UCUtils version available",
