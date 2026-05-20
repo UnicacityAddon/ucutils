@@ -15,6 +15,7 @@ import static de.rettichlp.ucutils.UCUtils.commandService;
 import static de.rettichlp.ucutils.UCUtils.configuration;
 import static de.rettichlp.ucutils.UCUtils.storage;
 import static java.lang.System.currentTimeMillis;
+import static net.minecraft.util.ActionResult.CONSUME;
 
 @Mixin(MinecartEntity.class)
 public abstract class MinecartEntityMixin {
@@ -22,7 +23,7 @@ public abstract class MinecartEntityMixin {
     @Unique
     private long lastClick = 0;
 
-    @Inject(method = "interact", at = @At("HEAD"))
+    @Inject(method = "interact", at = @At("HEAD"), cancellable = true)
     private void ucutils$interactHead(PlayerEntity player, Hand hand, CallbackInfoReturnable<ActionResult> cir) {
         if (!storage.isUnicaCity()) {
             return;
@@ -32,6 +33,7 @@ public abstract class MinecartEntityMixin {
         if (configuration.getOptions().car().automatedCheckKfz() && entity instanceof MinecartEntity && player.isSneaking() && currentTimeMillis() - this.lastClick > 1000) {
             commandService.sendCommand("checkkfz");
             this.lastClick = currentTimeMillis();
+            cir.setReturnValue(CONSUME);
         }
     }
 }

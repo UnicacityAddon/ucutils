@@ -59,6 +59,9 @@ public class PlayerListener implements IAbsorptionGetListener, IMessageReceiveLi
     // pray
     private static final Pattern PRAY_START_PATTERN = compile("^\\[Kirche] Du fängst an für (?:\\[UC])?(?<playerName>[a-zA-Z0-9_]+) zu beten\\.$");
 
+    // premium
+    private static final Pattern PREMIUM_PATTERN = compile("^\\[Premium] Dein Premium Account ist noch .+ aktiv\\.$");
+
     // requests
     private static final Pattern ACCEPT_PATTERN = compile("^\\[Deal] (?:\\[UC])?(?<playerName>[a-zA-Z0-9_]+) hat den Deal angenommen\\.$");
     private static final Pattern DECLINE_PATTERN = compile("^\\[Deal] (?:\\[UC])?(?<playerName>[a-zA-Z0-9_]+) hat das Angebot abgelehnt\\.$");
@@ -146,6 +149,12 @@ public class PlayerListener implements IAbsorptionGetListener, IMessageReceiveLi
         Matcher prayStartMatcher = PRAY_START_PATTERN.matcher(message);
         if (prayStartMatcher.find()) {
             utilService.delayedAction(() -> commandService.sendCommand("beten"), PRAY_DELAY_IN_SECONDS * 1000L);
+            return true;
+        }
+
+        Matcher premiumMatcher = PREMIUM_PATTERN.matcher(message);
+        if (premiumMatcher.find()) {
+            storage.setPremium(true);
             return true;
         }
 
