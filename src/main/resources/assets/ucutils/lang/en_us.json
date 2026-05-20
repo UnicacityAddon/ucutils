@@ -52,6 +52,7 @@
   "ucutils.options.text.sounds": "Sounds",
   "ucutils.options.text.notifications": "Notifications",
 
+  "ucutils.options.car.premium_info": "These settings are only relevant if you do not have Premium. For Premium players, these settings can be configured on UnicaCity using '/settings'.",
   "ucutils.options.car.general.fast_find.name": "Fast find",
   "ucutils.options.car.general.fast_find.tooltip": "Finds your car immediately when execution '/car find'",
   "ucutils.options.car.general.fast_lock.name": "Fast lock",
