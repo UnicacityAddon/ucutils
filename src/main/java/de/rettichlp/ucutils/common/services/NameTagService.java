@@ -29,13 +29,7 @@ import static net.minecraft.util.Formatting.YELLOW;
 
 public class NameTagService {
 
-    public static final MutableText A_DUTY_TAG = empty()
-            .append(literal("ᴀ").formatted(BLUE, BOLD))
-            .append(literal("ᴅᴜᴛʏ").formatted(RED, BOLD));
-
     public static final MutableText AFK_TAG = literal("ᴀꜰᴋ").formatted(GOLD, BOLD);
-
-    public static final MutableText HOUSE_BAN_TAG = literal("Hᴀᴜѕᴠᴇʀʙᴏᴛ").formatted(RED, BOLD);
 
     private static final MutableText A_DUTY_PREFIX = empty()
             .append(literal("[").formatted(DARK_GRAY))

@@ -17,7 +17,6 @@ import static de.rettichlp.ucutils.UCUtils.configuration;
 import static de.rettichlp.ucutils.UCUtils.nameTagService;
 import static de.rettichlp.ucutils.UCUtils.storage;
 import static de.rettichlp.ucutils.common.services.NameTagService.AFK_TAG;
-import static de.rettichlp.ucutils.common.services.NameTagService.A_DUTY_TAG;
 
 @Mixin(PlayerEntityRenderer.class)
 public abstract class PlayerEntityRendererMixin {
@@ -51,13 +50,6 @@ public abstract class PlayerEntityRendererMixin {
         if (configuration.getOptions().nameTag().medicalInformation() && medicInformationPresent) {
             matrixStack.translate(0.0F, 1.8F, 0.0F);
             orderedRenderCommandQueue.submitLabel(matrixStack, playerEntityRenderState.nameLabelPos, 0, medicInformation, !playerEntityRenderState.sneaking, playerEntityRenderState.light, playerEntityRenderState.squaredDistanceToCamera, cameraRenderState);
-        }
-
-        // handle admin duty tag
-        if (configuration.getOptions().nameTag().aDuty() && nameTagService.isADuty(playerName)) {
-            matrixStack.translate(0.0F, medicInformationPresent ? 0.8F : 2.6, 0.0F);
-            orderedRenderCommandQueue.submitLabel(matrixStack, playerEntityRenderState.nameLabelPos, 0, A_DUTY_TAG, !playerEntityRenderState.sneaking, playerEntityRenderState.light, playerEntityRenderState.squaredDistanceToCamera, cameraRenderState);
-            return;
         }
 
         // handle afk tag
