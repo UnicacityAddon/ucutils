@@ -59,6 +59,7 @@ public abstract class DialogScreenMixin<T extends Dialog> {
 
         MinecraftClient client = MinecraftClient.getInstance();
         client.getNetworkHandler().sendPacket(customClickActionC2SPacket);
+        storage.setFBankDepositReason("");
         client.setScreen(null);
     }
 }
