@@ -2,7 +2,6 @@ package de.rettichlp.ucutils.common.configuration.options;
 
 import de.rettichlp.ucutils.common.gui.screens.components.CyclingButtonEntry;
 import de.rettichlp.ucutils.common.models.Color;
-import de.rettichlp.ucutils.common.models.PersonalUseEntry;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -11,9 +10,6 @@ import net.minecraft.client.gui.tooltip.Tooltip;
 import net.minecraft.text.Text;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import static de.rettichlp.ucutils.common.configuration.options.Options.AtmInformationType.NONE;
 import static de.rettichlp.ucutils.common.configuration.options.Options.ReinforcementType.UNICACITYADDON;
@@ -31,7 +27,6 @@ import static net.minecraft.util.Formatting.RED;
 public class Options {
 
     private final NameTagOptions nameTag = new NameTagOptions();
-    private final List<PersonalUseEntry> personalUse = new ArrayList<>();
     private final CarOptions car = new CarOptions();
     private final SoundOptions sound = new SoundOptions();
     private final NotificationOptions notification = new NotificationOptions();

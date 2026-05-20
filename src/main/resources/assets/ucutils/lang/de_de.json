@@ -16,11 +16,6 @@
   "ucutils.color.yellow": "Gelb",
   "ucutils.color.white": "Weiß",
 
-  "ucutils.inventory.powder": "Pulver",
-  "ucutils.inventory.herbs": "Kräuter",
-  "ucutils.inventory.crystals": "Kristalle",
-  "ucutils.inventory.grab_bag": "Wundertüte",
-
   "ucutils.notification.error.api": "Fehler bei der API Abfrage (%s)",
   "ucutils.notification.error.configuration": "Konfiguration konnte nicht geladen werden",
   "ucutils.notification.info.new_version": "Neue UCUtils Version verfügbar",
@@ -38,16 +33,13 @@
   "ucutils.notification.player_enter_report": "%s ist jetzt im Report",
   "ucutils.notification.player_leave_report": "%s ist nicht mehr im Report",
 
-  "ucutils.options.text.amount": "Menge",
   "ucutils.options.text.automation": "Automatisierung",
   "ucutils.options.text.chat": "Chat",
   "ucutils.options.text.car": "Auto",
   "ucutils.options.text.faction": "Fraktion",
   "ucutils.options.text.general": "Allgemein",
   "ucutils.options.text.nametag": "Nametag",
-  "ucutils.options.text.personal_use": "Eigenbedarf",
   "ucutils.options.text.position": "Position",
-  "ucutils.options.text.purity": "Reinheit",
   "ucutils.options.text.widgets": "Widgets",
   "ucutils.options.text.sounds": "Sounds",
   "ucutils.options.text.notifications": "Benachrichtigungen",

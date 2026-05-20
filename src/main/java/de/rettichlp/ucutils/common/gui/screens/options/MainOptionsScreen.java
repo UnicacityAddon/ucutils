@@ -22,7 +22,6 @@ public class MainOptionsScreen extends OptionsScreen {
     private static final Text TEXT_SOUNDS = translatable("ucutils.options.text.sounds");
     private static final Text TEXT_WIDGETS = translatable("ucutils.options.text.widgets");
     private static final Text TEXT_NOTIFICATIONS = translatable("ucutils.options.text.notifications");
-    private static final Text TEXT_PERSONAL_USE = translatable("ucutils.options.text.personal_use");
     private static final Text HYDRATION_NAME = translatable("ucutils.options.hydration.name");
     private static final Text HYDRATION_TOOLTIP = translatable("ucutils.options.hydration.tooltip");
     private static final Text BANK_INFORMATION_NAME = translatable("ucutils.options.atm_information.name");
@@ -57,7 +56,6 @@ public class MainOptionsScreen extends OptionsScreen {
         renderService.addCyclingButton(directionalLayoutWidget4, BANK_INFORMATION_NAME, Options.AtmInformationType.values(), Options.AtmInformationType::getDisplayName, Options::atmInformationType, Options::atmInformationType, 150);
 
         DirectionalLayoutWidget directionalLayoutWidget5 = directionalLayoutWidget.add(horizontal().spacing(8));
-        renderService.addButton(directionalLayoutWidget5, TEXT_PERSONAL_USE, button -> this.client.setScreen(new PersonalUseOptionsScreen(this)), 150);
         renderService.addToggleButton(directionalLayoutWidget5, ENRICHED_KARMA_NAME, ENRICHED_KARMA_TOOLTIP, Options::showEnrichedKarma, Options::showEnrichedKarma, 150);
 
         directionalLayoutWidget.forEachChild(this::addDrawableChild);
