@@ -1,6 +1,6 @@
 package de.rettichlp.ucutils.listener.impl;
 
-import de.rettichlp.ucutils.common.models.Ingredient;
+import de.rettichlp.ucutils.common.models.InventoryItem;
 import de.rettichlp.ucutils.common.models.Purity;
 import de.rettichlp.ucutils.common.registry.UCUtilsListener;
 import de.rettichlp.ucutils.listener.IScreenOpenListener;
@@ -24,18 +24,18 @@ import java.util.regex.Matcher;
 import static de.rettichlp.ucutils.UCUtils.player;
 import static de.rettichlp.ucutils.UCUtils.storage;
 import static de.rettichlp.ucutils.UCUtils.utilService;
-import static de.rettichlp.ucutils.common.models.Ingredient.ANTIBIOTICS;
-import static de.rettichlp.ucutils.common.models.Ingredient.COUGH_SYRUP;
-import static de.rettichlp.ucutils.common.models.Ingredient.CRYSTALS;
-import static de.rettichlp.ucutils.common.models.Ingredient.GUNPOWDER;
-import static de.rettichlp.ucutils.common.models.Ingredient.HERBS;
-import static de.rettichlp.ucutils.common.models.Ingredient.IRON;
-import static de.rettichlp.ucutils.common.models.Ingredient.KEVLAR_FIBERS;
-import static de.rettichlp.ucutils.common.models.Ingredient.MASK;
-import static de.rettichlp.ucutils.common.models.Ingredient.MEDICINAL_HERBS;
-import static de.rettichlp.ucutils.common.models.Ingredient.PAINKILLERS;
-import static de.rettichlp.ucutils.common.models.Ingredient.SURPRISE_BAG;
-import static de.rettichlp.ucutils.common.models.Ingredient.fromDisplayName;
+import static de.rettichlp.ucutils.common.models.InventoryItem.ANTIBIOTICS;
+import static de.rettichlp.ucutils.common.models.InventoryItem.COUGH_SYRUP;
+import static de.rettichlp.ucutils.common.models.InventoryItem.CRYSTALS;
+import static de.rettichlp.ucutils.common.models.InventoryItem.GRAB_BAG;
+import static de.rettichlp.ucutils.common.models.InventoryItem.GUN_POWDER;
+import static de.rettichlp.ucutils.common.models.InventoryItem.HERBS;
+import static de.rettichlp.ucutils.common.models.InventoryItem.IRON;
+import static de.rettichlp.ucutils.common.models.InventoryItem.KEVLAR_FIBERS;
+import static de.rettichlp.ucutils.common.models.InventoryItem.MASK;
+import static de.rettichlp.ucutils.common.models.InventoryItem.MEDICINAL_HERBS;
+import static de.rettichlp.ucutils.common.models.InventoryItem.PAINKILLERS;
+import static de.rettichlp.ucutils.common.models.InventoryItem.fromDisplayName;
 import static de.rettichlp.ucutils.common.models.Purity.BEST;
 import static java.lang.Integer.parseInt;
 import static java.util.regex.Pattern.compile;
@@ -45,7 +45,7 @@ import static net.minecraft.screen.slot.SlotActionType.PICKUP;
 @UCUtilsListener
 public class InventoryListener implements IScreenOpenListener {
 
-    public static Ingredient inventorySyncStep = null;
+    public static InventoryItem inventorySyncStep = null;
 
     @Override
     public void onScreenOpen(Screen screen, int scaledWidth, int scaledHeight) {
@@ -91,7 +91,7 @@ public class InventoryListener implements IScreenOpenListener {
 
                 ItemStack surpriseBagItemStack = genericContainerScreenHandler.slots.get(4).getStack();
                 int surpriseBagAmount = getAmount(surpriseBagItemStack, 0);
-                storage.getInventory().put(SURPRISE_BAG, Map.of(BEST, surpriseBagAmount));
+                storage.getInventory().put(GRAB_BAG, Map.of(BEST, surpriseBagAmount));
 
                 ItemStack coughSyrupItemStack = genericContainerScreenHandler.slots.get(9).getStack();
                 int coughSyrupAmount = getAmount(coughSyrupItemStack, 0);
@@ -115,7 +115,7 @@ public class InventoryListener implements IScreenOpenListener {
 
                 ItemStack gunpowderItemStack = genericContainerScreenHandler.slots.get(20).getStack();
                 int gunpowderAmount = getAmount(gunpowderItemStack, 0);
-                storage.getInventory().put(GUNPOWDER, Map.of(BEST, gunpowderAmount));
+                storage.getInventory().put(GUN_POWDER, Map.of(BEST, gunpowderAmount));
 
                 ItemStack kevlarFibersItemStack = genericContainerScreenHandler.slots.get(21).getStack();
                 int kevlarFibersAmount = getAmount(kevlarFibersItemStack, 0);
@@ -129,7 +129,7 @@ public class InventoryListener implements IScreenOpenListener {
         }
 
         if (screenHandler instanceof HopperScreenHandler hopperScreenHandler) {
-            utilService.delayedAction(() -> fromDisplayName(title).ifPresent(ingredient -> {
+            utilService.delayedAction(() -> fromDisplayName(title).ifPresent(inventoryItem -> {
                 Map<Purity, Integer> purityAmounts = new HashMap<>();
 
                 DefaultedList<Slot> slots = hopperScreenHandler.slots;
@@ -139,7 +139,7 @@ public class InventoryListener implements IScreenOpenListener {
                     purityAmounts.put(Purity.values()[i], amount);
                 }
 
-                storage.getInventory().put(ingredient, purityAmounts);
+                storage.getInventory().put(inventoryItem, purityAmounts);
                 switch (inventorySyncStep) {
                     case POWDER -> {
                         inventorySyncStep = HERBS;

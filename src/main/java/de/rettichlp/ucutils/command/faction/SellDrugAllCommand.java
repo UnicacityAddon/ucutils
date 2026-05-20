@@ -2,7 +2,7 @@ package de.rettichlp.ucutils.command.faction;
 
 import com.mojang.authlib.GameProfile;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
-import de.rettichlp.ucutils.common.models.Ingredient;
+import de.rettichlp.ucutils.common.models.InventoryItem;
 import de.rettichlp.ucutils.common.registry.CommandBase;
 import de.rettichlp.ucutils.common.registry.UCUtilsCommand;
 import de.rettichlp.ucutils.listener.impl.InventoryListener;
@@ -19,7 +19,7 @@ import static de.rettichlp.ucutils.UCUtils.commandService;
 import static de.rettichlp.ucutils.UCUtils.networkHandler;
 import static de.rettichlp.ucutils.UCUtils.storage;
 import static de.rettichlp.ucutils.UCUtils.utilService;
-import static de.rettichlp.ucutils.common.models.Ingredient.POWDER;
+import static de.rettichlp.ucutils.common.models.InventoryItem.POWDER;
 import static net.fabricmc.fabric.api.client.command.v2.ClientCommandManager.argument;
 import static net.minecraft.command.CommandSource.suggestMatching;
 
@@ -49,16 +49,16 @@ public class SellDrugAllCommand extends CommandBase {
                                 List<String> commandQueue = new ArrayList<>();
 
                                 storage.getInventory().entrySet().stream()
-                                        .filter(ingredientMapEntry -> ingredientMapEntry.getKey().isDrugBankDropable())
-                                        .forEach(ingredientMapEntry -> {
-                                            Ingredient ingredient = ingredientMapEntry.getKey();
+                                        .filter(inventoryItemMapEntry -> inventoryItemMapEntry.getKey().isDrugBankItem())
+                                        .forEach(inventoryItemMapEntry -> {
+                                            InventoryItem inventoryItem = inventoryItemMapEntry.getKey();
 
-                                            ingredientMapEntry.getValue().entrySet().stream()
+                                            inventoryItemMapEntry.getValue().entrySet().stream()
                                                     .filter(purityIntegerEntry -> purityIntegerEntry.getValue() > 0)
                                                     .forEach(purityIntegerEntry -> {
                                                         int purityNumber = purityIntegerEntry.getKey().ordinal();
                                                         Integer amount = purityIntegerEntry.getValue();
-                                                        commandQueue.add("selldrug " + targetName + " " + ingredient.getDisplayName() + " " + purityNumber + " " + amount + " " + 0);
+                                                        commandQueue.add("selldrug " + targetName + " " + inventoryItem.getDisplayName() + " " + purityNumber + " " + amount + " " + 0);
                                                     });
                                         });
 

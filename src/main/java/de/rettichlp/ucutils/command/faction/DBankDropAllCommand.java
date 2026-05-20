@@ -1,7 +1,7 @@
 package de.rettichlp.ucutils.command.faction;
 
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
-import de.rettichlp.ucutils.common.models.Ingredient;
+import de.rettichlp.ucutils.common.models.InventoryItem;
 import de.rettichlp.ucutils.common.registry.CommandBase;
 import de.rettichlp.ucutils.common.registry.UCUtilsCommand;
 import de.rettichlp.ucutils.listener.impl.InventoryListener;
@@ -14,7 +14,7 @@ import java.util.List;
 import static de.rettichlp.ucutils.UCUtils.commandService;
 import static de.rettichlp.ucutils.UCUtils.storage;
 import static de.rettichlp.ucutils.UCUtils.utilService;
-import static de.rettichlp.ucutils.common.models.Ingredient.POWDER;
+import static de.rettichlp.ucutils.common.models.InventoryItem.POWDER;
 
 @UCUtilsCommand(label = "dbankdropall", aliases = "dda")
 public class DBankDropAllCommand extends CommandBase {
@@ -32,16 +32,16 @@ public class DBankDropAllCommand extends CommandBase {
                         List<String> commandQueue = new ArrayList<>();
 
                         storage.getInventory().entrySet().stream()
-                                .filter(ingredientMapEntry -> ingredientMapEntry.getKey().isDrugBankDropable())
-                                .forEach(ingredientMapEntry -> {
-                                    Ingredient ingredient = ingredientMapEntry.getKey();
+                                .filter(ingredientMapEntry -> ingredientMapEntry.getKey().isDrugBankItem())
+                                .forEach(inventoryItemMapEntry -> {
+                                    InventoryItem inventoryItem = inventoryItemMapEntry.getKey();
 
-                                    ingredientMapEntry.getValue().entrySet().stream()
+                                    inventoryItemMapEntry.getValue().entrySet().stream()
                                             .filter(purityIntegerEntry -> purityIntegerEntry.getValue() > 0)
                                             .forEach(purityIntegerEntry -> {
                                                 int purityNumber = purityIntegerEntry.getKey().ordinal();
                                                 Integer amount = purityIntegerEntry.getValue();
-                                                commandQueue.add("dbank drop " + ingredient.getDisplayName() + " " + amount + " " + purityNumber);
+                                                commandQueue.add("dbank drop " + inventoryItem.getDisplayName() + " " + amount + " " + purityNumber);
                                             });
                                 });
 
