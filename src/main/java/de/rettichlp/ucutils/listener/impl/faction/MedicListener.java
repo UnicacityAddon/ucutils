@@ -24,7 +24,6 @@ import static java.lang.String.valueOf;
 import static java.time.Duration.ofMinutes;
 import static java.time.LocalDateTime.now;
 import static java.util.regex.Pattern.compile;
-import static net.minecraft.screen.ScreenTexts.LINE_BREAK;
 import static net.minecraft.text.Text.empty;
 import static net.minecraft.text.Text.literal;
 import static net.minecraft.util.Formatting.BOLD;
@@ -107,22 +106,22 @@ public class MedicListener implements IMessageReceiveListener {
             int ingredient2 = parseInt(storageIngredientShareMatcher.group("ingredient2"));
             int ingredient3 = parseInt(storageIngredientShareMatcher.group("ingredient3"));
 
+            player.sendMessage(empty(), false);
+
             MutableText storageText = empty()
-                    .append(LINE_BREAK)
                     .append(literal("[").formatted(DARK_GRAY))
                     .append(STORAGE_TEXT)
                     .append(literal("] ").formatted(DARK_GRAY))
                     .append(literal("Aktueller Bestand (geteilt von " + playerName + ")").formatted(GRAY))
-                    .append(literal(":").formatted(DARK_GRAY))
-                    .append(LINE_BREAK)
-                    .append(getIngredientText("Wirkstoff", ingredient1))
-                    .append(LINE_BREAK)
-                    .append(getIngredientText("Trägerstoff", ingredient2))
-                    .append(LINE_BREAK)
-                    .append(getIngredientText("Zusatzstoff", ingredient3))
-                    .append(LINE_BREAK);
+                    .append(literal(":").formatted(DARK_GRAY));
 
             player.sendMessage(storageText, false);
+
+            player.sendMessage(getIngredientText("Wirkstoff", ingredient1), false);
+            player.sendMessage(getIngredientText("Trägerstoff", ingredient2), false);
+            player.sendMessage(getIngredientText("Zusatzstoff", ingredient3), false);
+
+            player.sendMessage(empty(), false);
             return false;
         }
 
@@ -133,22 +132,21 @@ public class MedicListener implements IMessageReceiveListener {
             int amountBefore = parseInt(storageIngredientAcceptMatcher.group("amountBefore"));
             int amountAfter = parseInt(storageIngredientAcceptMatcher.group("amountAfter"));
 
-            MutableText storageText = empty()
+            player.sendMessage(empty()
                     .append(literal("[").formatted(DARK_GRAY))
                     .append(STORAGE_TEXT)
                     .append(literal("] ").formatted(DARK_GRAY))
                     .append(literal(playerName).formatted(RED))
                     .append(literal(" übernimmt ").formatted(GRAY))
                     .append(literal(ingredient).formatted(RED))
-                    .append(literal(":").formatted(DARK_GRAY))
-                    .append(LINE_BREAK)
+                    .append(literal(":").formatted(DARK_GRAY)), false);
+
+            player.sendMessage(empty()
                     .append(literal("  > ").formatted(DARK_GRAY))
-                    .append(literal("Erwartete Menge nach Transport").formatted(GRAY))
+                    .append(literal("Geschätzte Menge nach Transport").formatted(GRAY))
                     .append(literal(": ").formatted(DARK_GRAY))
                     .append(literal(amountBefore + " → ").formatted(GRAY))
-                    .append(literal(valueOf(amountAfter)).formatted(getColor(amountAfter), BOLD));
-
-            player.sendMessage(storageText, false);
+                    .append(literal(valueOf(amountAfter)).formatted(getColor(amountAfter), BOLD)), false);
             return false;
         }
 
