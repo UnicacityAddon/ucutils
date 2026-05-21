@@ -55,7 +55,7 @@ public abstract class HandledScreenMixin extends Screen {
 
                         int x = (this.width - this.backgroundWidth) / 2;
                         int y = (this.height - this.backgroundHeight) / 2;
-                        int buttonX = x + this.backgroundWidth + 4;
+                        int buttonX = x + this.backgroundWidth + 2;
 
                         // render button right to the inventory
                         ButtonWidget buttonWidget = new ButtonWidget.Builder(literal("➤"), button -> commandService.sendCommand("f Lager: " + ingredient1StoredAmount + "x Wirkstoff " + ingredient2StoredAmount + "x Trägerstoff " + ingredient3StoredAmount + "x Zusatzstoff"))
