@@ -55,16 +55,17 @@ public abstract class HandledScreenMixin extends Screen {
 
                         int x = (this.width - this.backgroundWidth) / 2;
                         int y = (this.height - this.backgroundHeight) / 2;
-                        int buttonX = x + this.backgroundWidth + 4;
+                        int buttonX = x + this.backgroundWidth + 2;
 
                         // render button right to the inventory
-                        ButtonWidget buttonWidget = new ButtonWidget.Builder(literal("➤"), button -> commandService.sendCommand("f Lager: " + ingredient1StoredAmount + "x Wirkstoff " + ingredient2StoredAmount + "x Trägerstoff " + ingredient3StoredAmount + "x Zusatzstoff"))
+                        ButtonWidget buttonWidget = new ButtonWidget.Builder(literal("➤"), button -> commandService.sendCommand("f " + ingredient1StoredAmount + "x Wirkstoff | " + ingredient2StoredAmount + "x Trägerstoff | " + ingredient3StoredAmount + "x Zusatzstoff"))
                                 .dimensions(buttonX, y, 20, 20)
                                 .build();
 
-                        buttonWidget.render(context, mouseX, mouseY, deltaTicks);
-
-                        addDrawableChild(buttonWidget);
+                        if (ingredient1StoredAmount != 0 && ingredient2StoredAmount != 0 && ingredient3StoredAmount != 0) {
+                            buttonWidget.render(context, mouseX, mouseY, deltaTicks);
+                            addDrawableChild(buttonWidget);
+                        }
                     }
                 }
             }
