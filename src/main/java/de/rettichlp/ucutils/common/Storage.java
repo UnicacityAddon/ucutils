@@ -6,9 +6,7 @@ import de.rettichlp.ucutils.common.models.Dealer;
 import de.rettichlp.ucutils.common.models.Faction;
 import de.rettichlp.ucutils.common.models.FactionEntry;
 import de.rettichlp.ucutils.common.models.FactionMember;
-import de.rettichlp.ucutils.common.models.InventoryItem;
 import de.rettichlp.ucutils.common.models.Job;
-import de.rettichlp.ucutils.common.models.Purity;
 import de.rettichlp.ucutils.common.models.ShutdownReason;
 import de.rettichlp.ucutils.common.models.TeamResponse;
 import de.rettichlp.ucutils.common.models.WantedEntry;
@@ -52,9 +50,6 @@ public class Storage {
 
     @Getter
     private final Set<FactionEntry> factionEntries = new HashSet<>();
-
-    @Getter
-    private final Map<InventoryItem, Map<Purity, Integer>> inventory = new HashMap<>();
 
     @Getter
     private final Map<String, LocalDateTime> medicBandageCooldowns = new HashMap<>();
@@ -142,8 +137,6 @@ public class Storage {
         LOGGER.info("dealers[{}]: {}", this.dealers.size(), this.dealers);
         // factionEntries
         this.factionEntries.forEach(factionEntry -> LOGGER.info("factionEntries[{}:{}]: {}", factionEntry.faction(), factionEntry.members().size(), factionEntry.members()));
-        // inventory
-        this.inventory.forEach((inventoryItem, inventoryItemMap) -> LOGGER.info("inventory[{}:{}]: {}", inventoryItem, inventoryItemMap.size(), inventoryItemMap));
         // medicBandageCooldowns
         LOGGER.info("medicBandageCooldowns[{}]: {}", this.medicBandageCooldowns.size(), this.medicBandageCooldowns);
         // medicPillCooldowns
