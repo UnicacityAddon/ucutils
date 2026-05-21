@@ -62,9 +62,10 @@ public abstract class HandledScreenMixin extends Screen {
                                 .dimensions(buttonX, y, 20, 20)
                                 .build();
 
-                        buttonWidget.render(context, mouseX, mouseY, deltaTicks);
-
-                        addDrawableChild(buttonWidget);
+                        if (ingredient1StoredAmount != 0 && ingredient2StoredAmount != 0 && ingredient3StoredAmount != 0) {
+                            buttonWidget.render(context, mouseX, mouseY, deltaTicks);
+                            addDrawableChild(buttonWidget);
+                        }
                     }
                 }
             }
