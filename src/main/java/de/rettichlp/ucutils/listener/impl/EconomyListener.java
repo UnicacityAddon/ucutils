@@ -7,6 +7,7 @@ import net.minecraft.text.HoverEvent;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -20,7 +21,6 @@ import static de.rettichlp.ucutils.UCUtils.storage;
 import static java.lang.Integer.parseInt;
 import static java.lang.Math.max;
 import static java.lang.System.currentTimeMillis;
-import static java.util.Collections.emptyList;
 import static java.util.Optional.ofNullable;
 import static java.util.regex.Pattern.compile;
 import static net.minecraft.text.Text.of;
@@ -80,7 +80,8 @@ public class EconomyListener implements IMessageReceiveListener {
             commands.add("atminfo");
 
             switch (configuration.getOptions().atmInformationType()) {
-                case NONE -> {}
+                case NONE -> {
+                }
                 case F_BANK -> commands.add("fbank");
                 case G_BANK -> commands.add("gruppierungkasse");
                 case BOTH -> commands.addAll(List.of("fbank", "gruppierungkasse"));
