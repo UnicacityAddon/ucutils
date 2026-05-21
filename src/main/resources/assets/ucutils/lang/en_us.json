@@ -113,18 +113,6 @@
   "ucutils.options.widgets.service_count.options.name": "Service Count",
   "ucutils.options.widgets.service_count.options.tooltip": "Shows the number of active services",
 
-  "ucutils.purity.best": "Best",
-  "ucutils.purity.good": "Good",
-  "ucutils.purity.medium": "Medium",
-  "ucutils.purity.bad": "Bad",
-
-  "ucutils.screen.data_usage_confirmation.message": "UCUtils sends and receives data from an external server. This is required for certain features to function properly. By clicking Agree, you agree to this data usage.",
-  "ucutils.screen.faction.button.activity.name": "Activities",
-  "ucutils.screen.faction.button.equip.name": "Equip",
-  "ucutils.screen.faction.button.blacklist.name": "Blacklist reasons",
-  "ucutils.screen.faction.blacklist.header.reason": "Reason",
-  "ucutils.screen.faction.blacklist.header.price": "Price",
-  "ucutils.screen.faction.blacklist.header.kills": "Kills",
   "ucutils.screen.shutdown_abort.button.name": "Abort shutdown",
 
   "ucutils.select_state.always.name": "Always",

@@ -113,18 +113,6 @@
   "ucutils.options.widgets.service_count.options.name": "Notrufe",
   "ucutils.options.widgets.service_count.options.tooltip": "Zeigt an wie viele Notrufe gerade offen sind",
 
-  "ucutils.purity.best": "Höchste",
-  "ucutils.purity.good": "Gute",
-  "ucutils.purity.medium": "Mittlere",
-  "ucutils.purity.bad": "Schlechte",
-
-  "ucutils.screen.data_usage_confirmation.message": "UCUtils kommuniziert mit einem externen Server. Dies ist notwendig, damit einige Funktionen richtig arbeiten. Mit dem Klick auf Zustimmen stimmst du der Datennutzung zu.",
-  "ucutils.screen.faction.button.activity.name": "Aktivitäten",
-  "ucutils.screen.faction.button.equip.name": "Equip",
-  "ucutils.screen.faction.button.blacklist.name": "Blacklist Gründe",
-  "ucutils.screen.faction.blacklist.header.reason": "Grund",
-  "ucutils.screen.faction.blacklist.header.price": "Preis",
-  "ucutils.screen.faction.blacklist.header.kills": "Tode",
   "ucutils.screen.shutdown_abort.button.name": "Herunterfahren abbrechen",
 
   "ucutils.select_state.always.name": "Immer",
