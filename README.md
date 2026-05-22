@@ -97,5 +97,4 @@ Folgende Funktionen sind nur für Spieler ohne Premium-Rang verfügbar, da Spiel
 
 | Befehl                 | Beschreibung                                                                                                                                                                            |
 |------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `/einzahlen (<force>)` | Zahlt das gesamte Bargeld in den ATM in der Nähe ein                                                                                                                                    |
 | `/adropmoney`          | Bucht für den Geldtransport-Job so viel Geld vom Konto ab, sodass das Geld vom Geldtransport-Job in den ATM eingezahlt werden kann und bucht das Geld anschließend zurück auf das Konto |
