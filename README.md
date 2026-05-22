@@ -46,8 +46,6 @@ Folgende Funktionen sind nur für Spieler ohne Premium-Rang verfügbar, da Spiel
 - Für den Rettungsdienst wird der Cooldown von Bandagen und Schmerzpillen unter dem Spielernamen angezeigt
 - Wenn man den Navi-Punkt eines Notrufs erreicht, wird der Notruf automatisch als erledigt markiert
 - Der Fraktionschat kann individuell eingefärbt werden
-- Eine Plantage kann direkt durch gleichzeitiges Schleichen und Klicken mit einem Samen in der Hand gelegt werden
-- Eine Plantage kann durch einen Rechtsklick mit einem Wassereimer oder Dünger direkt gewässert beziehungsweise gedüngt werden
 - Der Rettungsdienst kann durch einen Rechtsklick auf eine bewusstlose Person diese wiederbeleben
 - Mit `/fbank einzahlen <Betrag> <Grund>` kann das Eingabe GUI des Servers übersprungen werden
 - Für den Rettungsdienst gibt es im Herstellungs-Inventar für Medikamente einen Button, um die benötigte Anzahl an Stoffen in den
