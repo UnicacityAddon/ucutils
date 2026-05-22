@@ -3,7 +3,6 @@ package de.rettichlp.ucutils.common.registry;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import de.rettichlp.ucutils.common.models.Sound;
-import de.rettichlp.ucutils.listener.IBlockRightClickListener;
 import de.rettichlp.ucutils.listener.ICommandSendListener;
 import de.rettichlp.ucutils.listener.IEnterVehicleListener;
 import de.rettichlp.ucutils.listener.IEntityRenderListener;
@@ -23,7 +22,6 @@ import net.fabricmc.fabric.api.client.message.v1.ClientSendMessageEvents;
 import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
 import net.fabricmc.fabric.api.client.rendering.v1.world.WorldRenderEvents;
 import net.fabricmc.fabric.api.client.screen.v1.ScreenEvents;
-import net.fabricmc.fabric.api.event.player.UseBlockCallback;
 import net.minecraft.util.math.BlockPos;
 import org.jetbrains.annotations.NotNull;
 
@@ -40,8 +38,6 @@ import static java.util.stream.StreamSupport.stream;
 import static net.fabricmc.fabric.api.client.command.v2.ClientCommandManager.literal;
 import static net.minecraft.registry.Registries.SOUND_EVENT;
 import static net.minecraft.registry.Registry.register;
-import static net.minecraft.util.ActionResult.PASS;
-import static net.minecraft.util.Hand.OFF_HAND;
 import static org.atteo.classindex.ClassIndex.getAnnotated;
 
 public class Registry {
@@ -146,14 +142,6 @@ public class Registry {
         PlayerEnterVehicleCallback.EVENT.register(vehicle -> getListenersImplementing(IEnterVehicleListener.class).forEach(iEnterVehicleListener -> iEnterVehicleListener.onEnterVehicle(vehicle)));
 
         ScreenEvents.AFTER_INIT.register((client, screen, scaledWidth, scaledHeight) -> getListenersImplementing(IScreenOpenListener.class).forEach(iScreenOpenListener -> iScreenOpenListener.onScreenOpen(screen, scaledWidth, scaledHeight)));
-
-        UseBlockCallback.EVENT.register((player, world, hand, hitResult) -> {
-            if (hand != OFF_HAND && world.isClient()) {
-                getListenersImplementing(IBlockRightClickListener.class).forEach(iBlockRightClickListener -> iBlockRightClickListener.onBlockRightClick(world, hand, hitResult));
-            }
-
-            return PASS;
-        });
 
         WorldRenderEvents.AFTER_ENTITIES.register(context -> getListenersImplementing(IEntityRenderListener.class).forEach(iEntityRenderListener -> iEntityRenderListener.onEntityRender(context)));
 
