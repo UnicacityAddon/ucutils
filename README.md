@@ -15,7 +15,6 @@ reibungsloser und angenehmer gestalten.
 - Es wird angezeigt, wie lang der Cooldown für Bandagen und Schmerzpillen ist
 - Es werden Sounds abgespielt für Notrufe, Bomben, Feuer, Staatsbankraub und weitere Situationen
 - Über der Hungerleiste wird der Durst angezeigt
-- Mit einem Rechtsklick, während man schleicht, kann man bewusstlosen Personen Erste-Hilfe geben
 - Über den Spielernamen wird AFK angezeigt, wenn der Spieler AFK ist
 - Für Teammitglieder wird eine Warnung angezeigt, wenn sie sich im Admindienst befinden und eine Waffe in der Hand haben
 - Hinter der Nachricht, dass sich das Karma geändert hat, wird angezeigt, wie viel Karma man insgesamt besitzt und wann ein Spieler
@@ -44,7 +43,6 @@ Folgende Funktionen sind nur für Spieler ohne Premium-Rang verfügbar, da Spiel
 - Für das FBI, die Polizei und den Rettungsdienst gibt es einen Timer, der die Dauer der Bombe anzeigt
 - Für den Rettungsdienst wird der Cooldown von Bandagen und Schmerzpillen unter dem Spielernamen angezeigt
 - Der Fraktionschat kann individuell eingefärbt werden
-- Der Rettungsdienst kann durch einen Rechtsklick auf eine bewusstlose Person diese wiederbeleben
 - Mit `/fbank einzahlen <Betrag> <Grund>` kann das Eingabe GUI des Servers übersprungen werden
 - Für den Rettungsdienst gibt es im Herstellungs-Inventar für Medikamente einen Button, um die benötigte Anzahl an Stoffen in den
   Fraktionschat zu senden
