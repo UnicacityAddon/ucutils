@@ -19,7 +19,6 @@ import static de.rettichlp.ucutils.UCUtils.configuration;
 import static de.rettichlp.ucutils.UCUtils.nameTagService;
 import static de.rettichlp.ucutils.UCUtils.player;
 import static de.rettichlp.ucutils.UCUtils.storage;
-import static de.rettichlp.ucutils.UCUtils.utilService;
 import static de.rettichlp.ucutils.common.models.ShutdownReason.CEMETERY;
 import static de.rettichlp.ucutils.common.models.ShutdownReason.JAIL;
 import static java.lang.Double.parseDouble;
@@ -38,7 +37,6 @@ import static net.minecraft.util.Formatting.RED;
 public class PlayerListener implements IMessageReceiveListener, ITickListener {
 
     private static final String SHUTDOWN_TIMEOUT = "5";
-    private static final int PRAY_DELAY_IN_SECONDS = 30;
 
     // dead
     private static final Pattern DEAD_PATTERN = compile("^Du bist nun für (?<minutes>\\d+) Minuten auf dem Friedhof\\.$");
@@ -54,9 +52,6 @@ public class PlayerListener implements IMessageReceiveListener, ITickListener {
     // jail
     private static final Pattern JAIL_PATTERN = compile("^\\[Gefängnis] Du bist nun für (?<minutes>\\d+) Minuten im Gefängnis\\.$");
     private static final Pattern JAIL_UNJAIL_PATTERN = compile("^\\[Gefängnis] Du bist nun wieder frei!$");
-
-    // pray
-    private static final Pattern PRAY_START_PATTERN = compile("^\\[Kirche] Du fängst an für (?:\\[UC])?(?<playerName>[a-zA-Z0-9_]+) zu beten\\.$");
 
     // premium
     private static final Pattern PREMIUM_PATTERN = compile("^\\[Premium] Dein Premium Account ist noch .+ aktiv\\.$");
@@ -137,12 +132,6 @@ public class PlayerListener implements IMessageReceiveListener, ITickListener {
                 shutdownPC();
             }
 
-            return true;
-        }
-
-        Matcher prayStartMatcher = PRAY_START_PATTERN.matcher(message);
-        if (prayStartMatcher.find()) {
-            utilService.delayedAction(() -> commandService.sendCommand("beten"), PRAY_DELAY_IN_SECONDS * 1000L);
             return true;
         }
 
