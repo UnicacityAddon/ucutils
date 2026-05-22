@@ -1,8 +1,6 @@
 package de.rettichlp.ucutils.common;
 
-import de.rettichlp.ucutils.common.models.BlackMarket;
 import de.rettichlp.ucutils.common.models.Countdown;
-import de.rettichlp.ucutils.common.models.Dealer;
 import de.rettichlp.ucutils.common.models.Faction;
 import de.rettichlp.ucutils.common.models.FactionEntry;
 import de.rettichlp.ucutils.common.models.FactionMember;
@@ -15,6 +13,7 @@ import lombok.Getter;
 import lombok.Setter;
 import net.minecraft.entity.vehicle.MinecartEntity;
 import net.minecraft.text.Text;
+import net.minecraft.util.math.Vec3d;
 import org.jetbrains.annotations.Nullable;
 
 import java.time.LocalDateTime;
@@ -30,7 +29,6 @@ import static de.rettichlp.ucutils.UCUtils.LOGGER;
 import static de.rettichlp.ucutils.UCUtils.storage;
 import static de.rettichlp.ucutils.common.Storage.ToggledChat.NONE;
 import static de.rettichlp.ucutils.common.models.Faction.NULL;
-import static java.util.Arrays.stream;
 import static java.util.Optional.ofNullable;
 import static net.minecraft.text.Text.translatable;
 
@@ -40,13 +38,7 @@ public class Storage {
     private final List<ShutdownReason> activeShutdowns = new ArrayList<>();
 
     @Getter
-    private final List<BlackMarket> blackMarkets = new ArrayList<>();
-
-    @Getter
     private final List<Countdown> countdowns = new ArrayList<>();
-
-    @Getter
-    private final List<Dealer> dealers = new ArrayList<>();
 
     @Getter
     private final Set<FactionEntry> factionEntries = new HashSet<>();
@@ -69,6 +61,11 @@ public class Storage {
 
     @Getter
     @Setter
+    @Nullable
+    private Vec3d blackMarketPosition;
+
+    @Getter
+    @Setter
     private boolean carLocked = true;
 
     @Getter
@@ -79,6 +76,11 @@ public class Storage {
     @Getter
     @Setter
     private boolean dead = false;
+
+    @Getter
+    @Setter
+    @Nullable
+    private Vec3d dealerPosition;
 
     @Getter
     @Setter
@@ -112,25 +114,15 @@ public class Storage {
     @Setter
     private boolean unicaCity = false;
 
-    {
-        this.blackMarkets.addAll(stream(BlackMarket.Type.values())
-                .map(type -> new BlackMarket(type, null, false))
-                .toList());
-
-        this.dealers.addAll(stream(Dealer.Type.values())
-                .map(type -> new Dealer(type, null, false))
-                .toList());
-    }
-
     public void print() {
         //activeShutdowns
         LOGGER.info("activeShutdowns[{}]: {}", this.activeShutdowns.size(), this.activeShutdowns);
-        // blackMarkets
-        LOGGER.info("blackMarkets[{}]: {}", this.blackMarkets.size(), this.blackMarkets);
+        // blackMarketPosition
+        LOGGER.info("blackMarketPosition: {}", this.blackMarketPosition);
         // countdowns
         LOGGER.info("countdowns[{}]: {}", this.countdowns.size(), this.countdowns);
-        // dealers
-        LOGGER.info("dealers[{}]: {}", this.dealers.size(), this.dealers);
+        // dealerPosition
+        LOGGER.info("dealerPosition: {}", this.dealerPosition);
         // factionEntries
         this.factionEntries.forEach(factionEntry -> LOGGER.info("factionEntries[{}:{}]: {}", factionEntry.faction(), factionEntry.members().size(), factionEntry.members()));
         // medicBandageCooldowns

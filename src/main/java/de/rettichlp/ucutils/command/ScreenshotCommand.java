@@ -1,4 +1,4 @@
-package de.rettichlp.ucutils.command.faction;
+package de.rettichlp.ucutils.command;
 
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import de.rettichlp.ucutils.common.models.ScreenshotType;

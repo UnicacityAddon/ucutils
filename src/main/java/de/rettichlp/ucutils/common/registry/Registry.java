@@ -8,7 +8,6 @@ import de.rettichlp.ucutils.listener.IEntityRenderListener;
 import de.rettichlp.ucutils.listener.IHudRenderListener;
 import de.rettichlp.ucutils.listener.IMessageReceiveListener;
 import de.rettichlp.ucutils.listener.IMessageSendListener;
-import de.rettichlp.ucutils.listener.IMoveListener;
 import de.rettichlp.ucutils.listener.INaviSpotReachedListener;
 import de.rettichlp.ucutils.listener.IScreenOpenListener;
 import de.rettichlp.ucutils.listener.ITickListener;
@@ -20,17 +19,14 @@ import net.fabricmc.fabric.api.client.message.v1.ClientSendMessageEvents;
 import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
 import net.fabricmc.fabric.api.client.rendering.v1.world.WorldRenderEvents;
 import net.fabricmc.fabric.api.client.screen.v1.ScreenEvents;
-import net.minecraft.util.math.BlockPos;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
 import java.util.Set;
 
 import static de.rettichlp.ucutils.UCUtils.LOGGER;
-import static de.rettichlp.ucutils.UCUtils.player;
 import static de.rettichlp.ucutils.UCUtils.storage;
 import static java.util.Collections.emptySet;
-import static java.util.Objects.isNull;
 import static java.util.stream.Collectors.toSet;
 import static java.util.stream.StreamSupport.stream;
 import static net.fabricmc.fabric.api.client.command.v2.ClientCommandManager.literal;
@@ -45,7 +41,6 @@ public class Registry {
     private final Set<IUCUtilsListener> listenerInstances = getListenerInstances();
 
     private boolean initialized = false;
-    private BlockPos lastPlayerPos = null;
 
     public void registerSounds() {
         for (Sound value : Sound.values()) {
@@ -123,17 +118,7 @@ public class Registry {
             return executeCommand;
         });
 
-        ClientTickEvents.END_CLIENT_TICK.register((server) -> {
-            // handle tick
-            getListenersImplementing(ITickListener.class).forEach(ITickListener::onTick);
-
-            // handle on move
-            BlockPos blockPos = player.getBlockPos();
-            if (isNull(this.lastPlayerPos) || !this.lastPlayerPos.equals(blockPos)) {
-                this.lastPlayerPos = blockPos;
-                getListenersImplementing(IMoveListener.class).forEach(iMoveListener -> iMoveListener.onMove(blockPos));
-            }
-        });
+        ClientTickEvents.END_CLIENT_TICK.register((server) -> getListenersImplementing(ITickListener.class).forEach(ITickListener::onTick));
 
         HudRenderCallback.EVENT.register((drawContext, tickCounter) -> getListenersImplementing(IHudRenderListener.class).forEach(iHudRenderListener -> iHudRenderListener.onHudRender(drawContext, tickCounter)));
 
