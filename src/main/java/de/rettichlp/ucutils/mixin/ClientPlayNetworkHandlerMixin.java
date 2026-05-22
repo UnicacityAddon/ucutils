@@ -37,9 +37,7 @@ import static net.minecraft.text.Text.empty;
 import static net.minecraft.text.Text.literal;
 import static net.minecraft.text.Text.translatable;
 import static net.minecraft.util.Formatting.BLUE;
-import static net.minecraft.util.Formatting.BOLD;
 import static net.minecraft.util.Formatting.DARK_GRAY;
-import static net.minecraft.util.Formatting.DARK_RED;
 import static net.minecraft.util.Formatting.GOLD;
 import static net.minecraft.util.Formatting.GRAY;
 import static net.minecraft.util.Formatting.RED;
@@ -95,8 +93,7 @@ public abstract class ClientPlayNetworkHandlerMixin {
                         .append(literal("[").formatted(DARK_GRAY))
                         .append(literal("Dealer").formatted(RED))
                         .append(literal("] ").formatted(DARK_GRAY))
-                        .append(literal("Der Dealer ist in der Nähe ").formatted(GRAY))
-                        .append(literal("⯐").formatted(DARK_RED, BOLD)), false);
+                        .append(literal("Der Dealer ist in der Nähe!").formatted(GRAY)), false);
             }
             case "Schwarzmarkt" -> {
                 storage.setDealerPosition(entityPos);
@@ -104,8 +101,7 @@ public abstract class ClientPlayNetworkHandlerMixin {
                         .append(literal("[").formatted(DARK_GRAY))
                         .append(literal("Schwarzmarkt").formatted(RED))
                         .append(literal("] ").formatted(DARK_GRAY))
-                        .append(literal("Der Schwarzmarkt ist in der Nähe ").formatted(GRAY))
-                        .append(literal("⯐").formatted(DARK_RED, BOLD)), false);
+                        .append(literal("Der Schwarzmarkt ist in der Nähe!").formatted(GRAY)), false);
             }
         }
     }
