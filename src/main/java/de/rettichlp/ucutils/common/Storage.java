@@ -98,10 +98,6 @@ public class Storage {
 
     @Getter
     @Setter
-    private int moneyAtmAmount = 0;
-
-    @Getter
-    @Setter
     private boolean premium = false;
 
     @Getter
@@ -161,8 +157,6 @@ public class Storage {
         LOGGER.info("joinTimestamp: {}", this.joinTimestamp);
         // minecartEntityToHighlight
         LOGGER.info("minecartEntityToHighlight: {}", this.minecartEntityToHighlight);
-        // moneyAtmAmount
-        LOGGER.info("moneyAtmAmount: {}", this.moneyAtmAmount);
         // premium
         LOGGER.info("premium: {}", this.premium);
         // team
