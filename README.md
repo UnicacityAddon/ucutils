@@ -17,8 +17,6 @@ reibungsloser und angenehmer gestalten.
 - Über der Hungerleiste wird der Durst angezeigt
 - Über den Spielernamen wird AFK angezeigt, wenn der Spieler AFK ist
 - Für Teammitglieder wird eine Warnung angezeigt, wenn sie sich im Admindienst befinden und eine Waffe in der Hand haben
-- Hinter der Nachricht, dass sich das Karma geändert hat, wird angezeigt, wie viel Karma man insgesamt besitzt und wann ein Spieler
-  despawnen sollte (falls das Karma durch einen Kill geändert wurde)
 - Bei der Mieterübersicht wird angezeigt wie lang ein Mieter offline ist und ein Button um diesen zu kündigen
 - Beim Beten wird nach 15 Sekunden automatisch der zweite Befehl ausgeführt
 - Es gibt Benachrichtigungen, wenn ein Spieler den Server betritt oder verlässt, einen Report betritt oder verlässt, den Baumodus
@@ -74,7 +72,6 @@ Folgende Funktionen sind nur für Spieler ohne Premium-Rang verfügbar, da Spiel
 | `/ucutils (<sync>)`               | Zeigt nützliche Status-Informationen über das Projekt an oder startet eine Synchronisierung                     |
 | `/screenshot`                     | Erstellt einen Screenshot in einer bestimmten Kategorie                                                         |
 | `/shutdown <friedhof\|gefängnis>` | Aktiviert das automatische Herunterfahren des PCs nachdem man nicht mehr auf dem Friedhof oder im Gefängnis ist |
-| `/selldrugall` `/sda`             | Verkauft alle illegalen Drogen für 0$ an den angegebenen Spieler (Pulver, Kräuter, Kristalle und Wundertüten)   |
 
 **Chat**
 
