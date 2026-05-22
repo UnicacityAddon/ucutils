@@ -21,7 +21,6 @@
     "GameMenuScreenMixin",
     "HandledScreenMixin",
     "InGameHudMixin",
-    "MinecraftClientMixin",
     "PlayerEntityRendererMixin",
     "PlayerListHudMixin"
   ]
