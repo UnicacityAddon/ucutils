@@ -58,7 +58,6 @@ public class EconomyListener implements IMessageReceiveListener {
     private static final Pattern PAYDAY_COUNTDOWN_PATTERN = compile("^Info: Du hast in 3 Minuten deinen PayDay$");
 
     // other
-    private static final Pattern ATM_MONEY_AMOUNT_PATTERN = compile("ATM \\d+: (?<moneyAtmAmount>\\d+)\\$/100000\\$");
     private static final Pattern BUSINESS_CASH_PATTERN = compile("^Kasse: (\\d+)\\$$");
     private static final Pattern EXP_PATTERN = compile("(?<amount>[+-]\\d+) Exp!( \\(x(?<multiplier>\\d)\\))?");
     private static final Pattern LOTTO_WIN_PATTERN = compile("^\\[Lotto] Du hast im Lotto gewonnen! \\((?<amount>\\d+)\\$\\)$");
@@ -250,13 +249,6 @@ public class EconomyListener implements IMessageReceiveListener {
                 notificationService.notificationSound(3);
             }
 
-            return true;
-        }
-
-        Matcher moneyAtmAmountMatcher = ATM_MONEY_AMOUNT_PATTERN.matcher(message);
-        if (moneyAtmAmountMatcher.find()) {
-            int moneyAtmAmount = parseInt(moneyAtmAmountMatcher.group("moneyAtmAmount"));
-            storage.setMoneyAtmAmount(moneyAtmAmount);
             return true;
         }
 
