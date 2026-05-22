@@ -42,9 +42,7 @@ Folgende Funktionen sind nur für Spieler ohne Premium-Rang verfügbar, da Spiel
 - Sollte ein Spieler Wanted-Punkte haben, wird der Name der Leiche dementsprechend eingefärbt
 - Das Design der Reinforcements ist so überarbeitet, dass diese besser auffallen
 - Für das FBI, die Polizei und den Rettungsdienst gibt es einen Timer, der die Dauer der Bombe anzeigt
-- Mit einem Rechtsklick auf ein Fraktionstor (nicht Fraktionstür) wird dieses automatisch geöffnet oder geschlossen
 - Für den Rettungsdienst wird der Cooldown von Bandagen und Schmerzpillen unter dem Spielernamen angezeigt
-- Wenn man den Navi-Punkt eines Notrufs erreicht, wird der Notruf automatisch als erledigt markiert
 - Der Fraktionschat kann individuell eingefärbt werden
 - Der Rettungsdienst kann durch einen Rechtsklick auf eine bewusstlose Person diese wiederbeleben
 - Mit `/fbank einzahlen <Betrag> <Grund>` kann das Eingabe GUI des Servers übersprungen werden
