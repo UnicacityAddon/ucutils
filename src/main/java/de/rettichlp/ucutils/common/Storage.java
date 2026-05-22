@@ -15,6 +15,7 @@ import lombok.Getter;
 import lombok.Setter;
 import net.minecraft.entity.vehicle.MinecartEntity;
 import net.minecraft.text.Text;
+import net.minecraft.util.math.Vec3d;
 import org.jetbrains.annotations.Nullable;
 
 import java.time.LocalDateTime;
@@ -69,6 +70,10 @@ public class Storage {
 
     @Getter
     @Setter
+    private Vec3d blackMarketPosition;
+
+    @Getter
+    @Setter
     private boolean carLocked = true;
 
     @Getter
@@ -79,6 +84,10 @@ public class Storage {
     @Getter
     @Setter
     private boolean dead = false;
+
+    @Getter
+    @Setter
+    private Vec3d dealerPosition;
 
     @Getter
     @Setter
