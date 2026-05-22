@@ -2,15 +2,12 @@ package de.rettichlp.ucutils.listener.impl.faction;
 
 import de.rettichlp.ucutils.common.registry.UCUtilsListener;
 import de.rettichlp.ucutils.listener.IMessageReceiveListener;
-import de.rettichlp.ucutils.listener.INaviSpotReachedListener;
 import net.minecraft.text.Text;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static de.rettichlp.ucutils.UCUtils.commandService;
 import static de.rettichlp.ucutils.UCUtils.configuration;
-import static de.rettichlp.ucutils.UCUtils.player;
 import static de.rettichlp.ucutils.UCUtils.storage;
 import static de.rettichlp.ucutils.common.models.Sound.SERVICE;
 import static java.lang.Integer.parseInt;
@@ -18,19 +15,15 @@ import static java.lang.Math.max;
 import static java.util.regex.Pattern.compile;
 
 @UCUtilsListener
-public class EmergencyServiceListener implements IMessageReceiveListener, INaviSpotReachedListener {
+public class EmergencyServiceListener implements IMessageReceiveListener {
 
     private static final Pattern SERVICE_PATTERN = compile("Ein Notruf von (?:\\[UC])?(?<playerName>[a-zA-Z0-9_]+) \\((?<mobileNumber>\\d+)\\): \"(?<message>.+)\"");
     private static final Pattern SERVICE_ACCEPTED_PATTERN = compile("^(?:HQ: )?(?:\\[UC])?(?<playerName>[a-zA-Z0-9_]+) hat den Notruf von (?:\\[UC])?(?<senderName>[a-zA-Z0-9_]+) angenommen\\. \\((?<distance>\\d+)m entfernt\\)$");
     private static final Pattern SERVICE_REQUEUED_PATTERN = compile("^(?:\\[UC])?(?<playerName>[a-zA-Z0-9_]+) hat den Notruf von (?:\\[UC])?(?<senderName>[a-zA-Z0-9_]+) \\((?<mobileNumber>\\d+)\\) wieder geöffnet\\.$");
-    private static final Pattern SERVICE_DONE_PATTERN = compile("^Du hast den Service von (?:\\[UC])?(?<playerName>[a-zA-Z0-9_]+) als 'Erledigt' markiert!$");
     private static final Pattern SERVICE_ABORTED_PATTERN = compile("^Der Service von (?:\\[UC])?(?<playerName>[a-zA-Z0-9_]+) wurde abgebrochen\\.$");
     private static final Pattern SERVICE_DELETED_PATTERN = compile("^Der Notruf von (?:\\[UC])?(?<senderName>[a-zA-Z0-9_]+) wurde von (?:\\[UC])?(?<playerName>[a-zA-Z0-9_]+) gelöscht\\.$");
     private static final Pattern SERVICE_COUNT_PATTERN = compile("^Offene Notrufe \\((?<count>\\d+)\\):");
     private static final Pattern SERVICE_NONE_PATTERN = compile("^Fehler: Es ist kein Service offen\\.$");
-    private static final Pattern SERVICE_NONE_FOR_PLAYER_PATTERN = compile("^Fehler: Es wurde kein Service von dir akzeptiert\\.$");
-
-    private boolean activeService = false;
 
     @Override
     public boolean onMessageReceive(Text text, String message) {
@@ -48,30 +41,12 @@ public class EmergencyServiceListener implements IMessageReceiveListener, INaviS
         Matcher serviceAcceptedMatcher = SERVICE_ACCEPTED_PATTERN.matcher(message);
         if (serviceAcceptedMatcher.find()) {
             storage.setActiveServices(max(0, storage.getActiveServices() - 1));
-
-            String playerName = serviceAcceptedMatcher.group("playerName");
-            if (playerName.equals(player.getGameProfile().name())) {
-                this.activeService = true;
-            }
-
             return true;
         }
 
         Matcher serviceRequeuedMatcher = SERVICE_REQUEUED_PATTERN.matcher(message);
         if (serviceRequeuedMatcher.find()) {
             storage.setActiveServices(storage.getActiveServices() + 1);
-
-            String playerName = serviceRequeuedMatcher.group("playerName");
-            if (playerName.equals(player.getGameProfile().name())) {
-                this.activeService = false;
-            }
-
-            return true;
-        }
-
-        Matcher serviceDoneMatcher = SERVICE_DONE_PATTERN.matcher(message);
-        if (serviceDoneMatcher.find()) {
-            this.activeService = false;
             return true;
         }
 
@@ -100,19 +75,6 @@ public class EmergencyServiceListener implements IMessageReceiveListener, INaviS
             return true;
         }
 
-        Matcher serviceNoneForPlayerMatcher = SERVICE_NONE_FOR_PLAYER_PATTERN.matcher(message);
-        if (serviceNoneForPlayerMatcher.find()) {
-            this.activeService = false;
-            return true;
-        }
-
         return true;
-    }
-
-    @Override
-    public void onNaviSpotReached() {
-        if (this.activeService) {
-            commandService.sendCommand("doneservice");
-        }
     }
 }
