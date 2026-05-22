@@ -48,6 +48,7 @@ Folgende Funktionen sind nur für Spieler ohne Premium-Rang verfügbar, da Spiel
 - Mit `/fbank einzahlen <Betrag> <Grund>` kann das Eingabe GUI des Servers übersprungen werden
 - Für den Rettungsdienst gibt es im Herstellungs-Inventar für Medikamente einen Button, um die benötigte Anzahl an Stoffen in den
   Fraktionschat zu senden
+- Für den Dealer und Schwarzmarkt wird (in der Übersicht) angezeigt, an welchem Ort der Händler gefunden wurde
 
 ### Jobs
 
