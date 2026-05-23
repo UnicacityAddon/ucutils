@@ -1,9 +1,11 @@
 package de.rettichlp.ucutils.mixin;
 
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
 import net.minecraft.client.gui.widget.ButtonWidget;
+import net.minecraft.client.network.ClientPlayerInteractionManager;
 import net.minecraft.component.type.LoreComponent;
 import net.minecraft.screen.GenericContainerScreenHandler;
 import net.minecraft.screen.ScreenHandler;
@@ -19,10 +21,15 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.util.regex.Matcher;
 
+import static de.rettichlp.ucutils.UCUtils.LOGGER;
 import static de.rettichlp.ucutils.UCUtils.commandService;
+import static de.rettichlp.ucutils.UCUtils.configuration;
+import static de.rettichlp.ucutils.UCUtils.player;
+import static de.rettichlp.ucutils.UCUtils.storage;
 import static java.lang.Integer.parseInt;
 import static java.util.regex.Pattern.compile;
 import static net.minecraft.component.DataComponentTypes.LORE;
+import static net.minecraft.screen.slot.SlotActionType.PICKUP;
 import static net.minecraft.text.Text.literal;
 
 @Mixin(HandledScreen.class)
@@ -42,6 +49,11 @@ public abstract class HandledScreenMixin extends Screen {
     private void ucutils$renderTail(DrawContext context, int mouseX, int mouseY, float deltaTicks, CallbackInfo ci) {
         HandledScreen<?> self = (HandledScreen<?>) (Object) this;
         ScreenHandler screenHandler = self.getScreenHandler();
+        ClientPlayerInteractionManager interactionManager = MinecraftClient.getInstance().interactionManager;
+
+        if (interactionManager == null) {
+            return;
+        }
 
         String title = self.getTitle().getString();
 
@@ -65,6 +77,21 @@ public abstract class HandledScreenMixin extends Screen {
                         if (ingredient1StoredAmount != 0 && ingredient2StoredAmount != 0 && ingredient3StoredAmount != 0) {
                             buttonWidget.render(context, mouseX, mouseY, deltaTicks);
                             addDrawableChild(buttonWidget);
+                        }
+                    }
+                    case "ᴄᴀʀᴄᴏɴᴛʀᴏʟ" -> {
+                        if (configuration.getOptions().car().fastLock() && !storage.isPremium()) {
+                            interactionManager.clickSlot(genericContainerScreenHandler.syncId, 0, 0, PICKUP, player);
+                        }
+                    }
+                    case "Fahrzeuge" -> {
+                        if (configuration.getOptions().car().fastFind()) {
+                            interactionManager.clickSlot(genericContainerScreenHandler.syncId, 0, 0, PICKUP, player);
+                        }
+                    }
+                    default -> {
+                        if (commandService.isSuperUser()) {
+                            LOGGER.info("Screen opened: {}", title);
                         }
                     }
                 }
