@@ -10,6 +10,7 @@ reibungsloser und angenehmer gestalten.
 
 - Sollte ein Command mit einem Großbuchstaben eingegeben werden (z. B. `/Afk` statt `/afk`) wird dieser Command automatisch zu einem
   gültigen Command umgewandelt
+- Statt `/navi Haus:<Hausnummer>` kann `/navi <Hausnummer>` genutzt werden
 - Als Business-Besitzer wird in der Business-Info ein Button angezeigt, um die Einnahmen direkt abzubuchen
 - Wirft man eine Glasflasche in der Nähe eines Shops weg, wird diese als Pfand abgegeben
 - Es wird angezeigt, wie lang der Cooldown für Bandagen und Schmerzpillen ist
@@ -54,7 +55,6 @@ Folgende Funktionen sind nur für Spieler ohne Premium-Rang verfügbar, da Spiel
 - Der Müllmann-Job gibt am Ende den gesammelten Müll automatisch ab, ohne dass der `/dropwaste` Command ausgeführt werden muss
 - Für den Pizzalieferanten-Job wird `/getpizza` automatisch ausgeführt, bis 10 Pizzen gesammelt wurden
 - Es werden Countdowns angezeigt, bis ein Job wieder ausgeführt werden kann
-- Bei der Abgabe von Uran am Atomkraftwerk muss man nicht mehr aus dem Auto aussteigen
 - Aktive Mining XP-Booster werden angezeigt
 
 ### Widgets
