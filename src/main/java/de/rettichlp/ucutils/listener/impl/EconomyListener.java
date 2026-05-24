@@ -18,6 +18,7 @@ import static de.rettichlp.ucutils.UCUtils.messageService;
 import static de.rettichlp.ucutils.UCUtils.notificationService;
 import static de.rettichlp.ucutils.UCUtils.player;
 import static de.rettichlp.ucutils.UCUtils.storage;
+import static de.rettichlp.ucutils.UCUtils.utilService;
 import static java.lang.Integer.parseInt;
 import static java.lang.Math.max;
 import static java.lang.System.currentTimeMillis;
@@ -55,7 +56,7 @@ public class EconomyListener implements IMessageReceiveListener {
     private static final Pattern PAYDAY_TIME_PATTERN = compile("^- Zeit seit PayDay: (?<minutes>\\d+)/60 Minuten$");
     private static final Pattern PAYDAY_SALARY_PATTERN = compile("^\\[PayDay] Du bekommst dein Gehalt von (?<money>\\d+)\\$ am PayDay ausgezahlt\\.$");
     private static final Pattern PAYDAY_MINE_SALARY_PATTERN = compile("^\\[PayDay] Du bekommst deine Mine Einnahmen von (?<money>\\d+)\\$ am PayDay ausgezahlt\\.$");
-    private static final Pattern PAYDAY_COUNTDOWN_PATTERN = compile("^Info: Du hast in 3 Minuten deinen PayDay$");
+    private static final Pattern PAYDAY_COUNTDOWN_PATTERN = compile("^Info: Du hast in (?<minutes>\\d+) Minuten? deinen PayDay$");
 
     // other
     private static final Pattern BUSINESS_CASH_PATTERN = compile("^Kasse: (\\d+)\\$$");
@@ -242,12 +243,21 @@ public class EconomyListener implements IMessageReceiveListener {
 
         Matcher paydayCountdownMatcher = PAYDAY_COUNTDOWN_PATTERN.matcher(message);
         if (paydayCountdownMatcher.find()) {
-            configuration.setMinutesSinceLastPayDay(57);
+            int minutes = parseInt(paydayCountdownMatcher.group("minutes"));
+            int minutesSinceLastPayDay = 60 - minutes;
+            configuration.setMinutesSinceLastPayDay(minutesSinceLastPayDay);
 
-            if (configuration.getMoneyBankAmount() > 100000) {
-                messageService.sendModMessage("Du hast über 100000$ auf der Bank!", false);
-                notificationService.notificationSound(3);
-            }
+            utilService.delayedAction(() -> {
+                if (configuration.getMoneyBankAmount() > 100000) {
+                    messageService.sendModMessage("Du hast über 100000$ auf der Bank!", false);
+
+                    switch (minutes) {
+                        case 10 -> notificationService.notificationSound(1);
+                        case 5 -> notificationService.notificationSound(2);
+                        case 3, 2, 1 -> notificationService.notificationSound(3);
+                    }
+                }
+            }, 50);
 
             return true;
         }
