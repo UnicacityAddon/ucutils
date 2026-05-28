@@ -23,6 +23,7 @@ import static net.minecraft.block.MapColor.getRenderColor;
 import static net.minecraft.component.DataComponentTypes.MAP_ID;
 import static net.minecraft.item.FilledMapItem.getMapState;
 import static net.minecraft.item.Items.FILLED_MAP;
+import static net.minecraft.item.Items.FISHING_ROD;
 import static net.minecraft.util.Hand.MAIN_HAND;
 
 @UCUtilsListener
@@ -48,8 +49,10 @@ public class AnglerListener implements IMessageReceiveListener {
 
         Matcher anglerCaptchaContinuedMatcher = ANGLER_CAPTCHA_CONTINUED_PATTERN.matcher(message);
         if (anglerCaptchaContinuedMatcher.find()) {
+            storage.setCaptchaMap(null);
+
             ClientPlayerInteractionManager interactionManager = client.interactionManager;
-            if (interactionManager == null) {
+            if (interactionManager == null || !player.getMainHandStack().isOf(FISHING_ROD)) {
                 return true;
             }
 
