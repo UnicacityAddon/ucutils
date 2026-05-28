@@ -21,7 +21,6 @@
     "GameMenuScreenMixin",
     "HandledScreenMixin",
     "InGameHudMixin",
-    "PlayerEntityRendererMixin",
-    "PlayerListHudMixin"
+    "PlayerEntityRendererMixin"
   ]
 }

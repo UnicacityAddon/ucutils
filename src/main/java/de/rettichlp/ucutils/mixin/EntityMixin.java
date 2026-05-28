@@ -1,7 +1,5 @@
 package de.rettichlp.ucutils.mixin;
 
-import de.rettichlp.ucutils.common.models.Faction;
-import de.rettichlp.ucutils.common.models.WantedEntry;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.ItemEntity;
@@ -9,7 +7,6 @@ import net.minecraft.entity.vehicle.MinecartEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
-import net.minecraft.util.Formatting;
 import net.minecraft.world.entity.UniquelyIdentifiable;
 import org.jetbrains.annotations.NotNull;
 import org.spongepowered.asm.mixin.Mixin;
@@ -19,15 +16,11 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-import java.util.Optional;
-
 import static de.rettichlp.ucutils.UCUtils.commandService;
 import static de.rettichlp.ucutils.UCUtils.configuration;
-import static de.rettichlp.ucutils.UCUtils.nameTagService;
 import static de.rettichlp.ucutils.UCUtils.player;
 import static de.rettichlp.ucutils.UCUtils.storage;
 import static de.rettichlp.ucutils.UCUtils.utilService;
-import static de.rettichlp.ucutils.common.models.Color.WHITE;
 import static net.minecraft.item.Items.SKELETON_SKULL;
 import static net.minecraft.item.Items.WITHER_SKELETON_SKULL;
 import static net.minecraft.text.Text.empty;
@@ -111,30 +104,9 @@ public abstract class EntityMixin {
 
     @Unique
     private MutableText getEnrichedDisplayName(String targetName) {
-        Faction targetFaction = storage.getCachedFaction(targetName);
-
-        Text newTargetDisplayNamePrefix = empty();
-        Text newTargetDisplayName = literal(targetName);
-        Text newTargetDisplayNameSuffix = targetFaction.getNameTagSuffix();
-        Formatting newTargetDisplayNameColor;
-
-        // highlight factions
-        newTargetDisplayNameColor = WHITE.getFormatting();
-
-        // wanted
-        Optional<WantedEntry> optionalTargetWantedEntry = storage.getWantedEntries().stream()
-                .filter(wantedEntry -> wantedEntry.getPlayerName().equals(targetName))
-                .findAny();
-
-        if (optionalTargetWantedEntry.isPresent()) {
-            newTargetDisplayNameColor = nameTagService.getWantedPointColor(optionalTargetWantedEntry.get().getWantedPointAmount());
-        }
-
         return empty()
-                .append(newTargetDisplayNamePrefix)
+                .append(literal(targetName))
                 .append(" ")
-                .append(newTargetDisplayName.copy().formatted(newTargetDisplayNameColor))
-                .append(" ")
-                .append(newTargetDisplayNameSuffix);
+                .append(storage.getCachedFaction(targetName).getNameTagSuffix());
     }
 }
