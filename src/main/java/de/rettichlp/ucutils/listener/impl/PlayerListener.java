@@ -47,7 +47,6 @@ public class PlayerListener implements IMessageReceiveListener, ITickListener {
     private static final Pattern HEALTH_HEADER_PATTERN = compile("^=== Zustand von (?:\\[UC])?(?<playerName>[a-zA-Z0-9_]+) ===$");
     private static final Pattern HEALTH_ENTRY_PATTERN = compile("^§.» (?<type>Gesundheit|Blut §.\\[§..+§.]|Hunger|Durst|Fett|Muskeln)§.: §.((§.)?#)+$");
     private static final Pattern HEALTH_ENTRY_HOVER_PATTERN = compile("^§.(?<value>\\d+(\\.\\d+)?)§./§.20\\.0$");
-    private static final Pattern HOUSE_DRINK_PATTERN = compile("^\\[Küche] Du hast etwas getrunken\\.$");
 
     // jail
     private static final Pattern JAIL_PATTERN = compile("^\\[Gefängnis] Du bist nun für (?<minutes>\\d+) Minuten im Gefängnis\\.$");
@@ -97,12 +96,6 @@ public class PlayerListener implements IMessageReceiveListener, ITickListener {
                         }
                     });
 
-            return commandService.showCommandOutputMessage("health");
-        }
-
-        Matcher houseDrinkMatcher = HOUSE_DRINK_PATTERN.matcher(message);
-        if (houseDrinkMatcher.find()) {
-            commandService.sendCommandWithHiddenOutput("health");
             return commandService.showCommandOutputMessage("health");
         }
 

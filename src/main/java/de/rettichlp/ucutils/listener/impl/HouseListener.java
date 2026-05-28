@@ -11,6 +11,7 @@ import java.time.LocalDateTime;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import static de.rettichlp.ucutils.UCUtils.commandService;
 import static de.rettichlp.ucutils.UCUtils.player;
 import static de.rettichlp.ucutils.common.services.MessageService.DATE_TIME_FORMAT;
 import static java.lang.Integer.parseInt;
@@ -35,6 +36,7 @@ public class HouseListener implements IMessageReceiveListener {
     private static final Pattern HOUSE_RENTER_HEADER_PATTERN = compile("^=== Mieter in Haus (?<number>\\d+) ===$");
     private static final Pattern HOUSE_RENTER_ENTRY_ONLINE_PATTERN = compile("^» (?:\\[UC])?(?<playerName>[a-zA-Z0-9_]+) \\(Online\\)$");
     private static final Pattern HOUSE_RENTER_ENTRY_OFFLINE_PATTERN = compile("^» (?:\\[UC])?(?<playerName>[a-zA-Z0-9_]+) \\(Offline seit (?<dateTime>\\d{2}\\.\\d{2}\\.\\d{4} \\d{2}:\\d{2}:\\d{2})\\)$");
+    private static final Pattern HOUSE_DRINK_PATTERN = compile("^\\[Küche] Du hast etwas getrunken\\.$");
 
     private int lastHouseNumber = 0;
 
@@ -89,6 +91,12 @@ public class HouseListener implements IMessageReceiveListener {
 
             player.sendMessage(modifiedText, false);
             return false;
+        }
+
+        Matcher houseDrinkMatcher = HOUSE_DRINK_PATTERN.matcher(message);
+        if (houseDrinkMatcher.find()) {
+            commandService.sendCommandWithHiddenOutput("health");
+            return commandService.showCommandOutputMessage("health");
         }
 
         return true;
