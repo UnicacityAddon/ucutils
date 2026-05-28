@@ -56,6 +56,8 @@ Folgende Funktionen sind nur für Spieler ohne Premium-Rang verfügbar, da Spiel
 - Für den Pizzalieferanten-Job wird `/getpizza` automatisch ausgeführt, bis 10 Pizzen gesammelt wurden
 - Es werden Countdowns angezeigt, bis ein Job wieder ausgeführt werden kann
 - Aktive Mining XP-Booster werden angezeigt
+- Das Angel-Captcha wird zusätzlich in der Mitte des Bildschirms angezeigt, damit es nicht vom Chat verdeckt wird
+- Nach der erfolgreichen Eingabe des Angel-Captchas wird die Angel automatisch wieder ausgeworfen
 
 ### Widgets
 
