@@ -7,7 +7,6 @@ import de.rettichlp.ucutils.common.models.FactionMember;
 import de.rettichlp.ucutils.common.models.Job;
 import de.rettichlp.ucutils.common.models.ShutdownReason;
 import de.rettichlp.ucutils.common.models.TeamResponse;
-import de.rettichlp.ucutils.common.models.WantedEntry;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -51,9 +50,6 @@ public class Storage {
 
     @Getter
     private final Map<String, Faction> playerFactionCache = new HashMap<>();
-
-    @Getter
-    private final List<WantedEntry> wantedEntries = new ArrayList<>();
 
     @Getter
     @Setter
@@ -131,8 +127,6 @@ public class Storage {
         LOGGER.info("medicPillCooldowns[{}]: {}", this.medicPillCooldowns.size(), this.medicPillCooldowns);
         // playerFactionCache
         LOGGER.info("playerFactionCache[{}]: {}", this.playerFactionCache.size(), this.playerFactionCache);
-        // wantedEntries
-        LOGGER.info("wantedEntries[{}]: {}", this.wantedEntries.size(), this.wantedEntries);
         // activeServices
         LOGGER.info("activeServices: {}", this.activeServices);
         // carLocked

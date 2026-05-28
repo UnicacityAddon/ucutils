@@ -17,6 +17,8 @@ import static de.rettichlp.ucutils.UCUtils.commandService;
 import static de.rettichlp.ucutils.UCUtils.configuration;
 import static de.rettichlp.ucutils.UCUtils.renderService;
 import static de.rettichlp.ucutils.UCUtils.storage;
+import static de.rettichlp.ucutils.UCUtils.utilService;
+import static de.rettichlp.ucutils.common.services.CommandService.COMMAND_COOLDOWN_MILLIS;
 import static java.lang.Integer.parseInt;
 import static java.util.Optional.ofNullable;
 import static java.util.regex.Pattern.compile;
@@ -25,6 +27,7 @@ import static net.minecraft.util.Formatting.AQUA;
 @UCUtilsListener
 public class CarListener implements IEntityRenderListener, IMessageReceiveListener {
 
+    private static final Pattern CAR_CHECK_PATTERN = compile("^Das Fahrzeug mit dem Kennzeichen [A-Z0-9-]+ gehört (?:\\[UC])?(?<playerName>[a-zA-Z0-9_]+)\\.$");
     private static final Pattern CAR_UNLOCK_PATTERN = compile("^\\[Car] Du hast deinen .+ aufgeschlossen\\.$");
     private static final Pattern CAR_LOCK_PATTERN = compile("^\\[Car] Du hast deinen .+ abgeschlossen\\.$");
     private static final Pattern CAR_LOCKED_OWN_PATTERN = compile("^\\[Car] Dein Fahrzeug ist abgeschlossen\\.$");
@@ -45,6 +48,13 @@ public class CarListener implements IEntityRenderListener, IMessageReceiveListen
 
     @Override
     public boolean onMessageReceive(Text text, String message) {
+        Matcher carCheckMatcher = CAR_CHECK_PATTERN.matcher(message);
+        if (carCheckMatcher.find()) {
+            String playerName = carCheckMatcher.group("playerName");
+            utilService.delayedAction(() -> commandService.sendCommand("memberinfo " + playerName), COMMAND_COOLDOWN_MILLIS);
+            return true;
+        }
+
         Matcher carUnlockMatcher = CAR_UNLOCK_PATTERN.matcher(message);
         if (carUnlockMatcher.find()) {
             storage.setCarLocked(false);
