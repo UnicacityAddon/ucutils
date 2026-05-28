@@ -16,6 +16,7 @@ import net.minecraft.text.Text;
 import net.minecraft.util.math.Vec3d;
 import org.jetbrains.annotations.Nullable;
 
+import java.awt.image.BufferedImage;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -63,6 +64,11 @@ public class Storage {
     @Setter
     @Nullable
     private Vec3d blackMarketPosition;
+
+    @Getter
+    @Setter
+    @Nullable
+    private BufferedImage captchaMapImage;
 
     @Getter
     @Setter
@@ -119,6 +125,8 @@ public class Storage {
         LOGGER.info("activeShutdowns[{}]: {}", this.activeShutdowns.size(), this.activeShutdowns);
         // blackMarketPosition
         LOGGER.info("blackMarketPosition: {}", this.blackMarketPosition);
+        // captchaMapImage
+        LOGGER.info("captchaMapImage: {}", this.captchaMapImage);
         // countdowns
         LOGGER.info("countdowns[{}]: {}", this.countdowns.size(), this.countdowns);
         // dealerPosition
