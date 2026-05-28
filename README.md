@@ -81,9 +81,3 @@ Folgende Funktionen sind nur für Spieler ohne Premium-Rang verfügbar, da Spiel
 | `/ff`  | Aktiviert und deaktiviert das dauerhafte Schreiben im F-Chat ohne den `/f` Befehl jedes Mal eingeben zu müssen |
 | `/dd`  | Aktiviert und deaktiviert das dauerhafte Schreiben im D-Chat ohne den `/d` Befehl jedes Mal eingeben zu müssen |
 | `/ww`  | Aktiviert und deaktiviert das dauerhafte Flüstern ohne den `/w` Befehl jedes Mal eingeben zu müssen            |
-
-**Geld**
-
-| Befehl                 | Beschreibung                                                                                                                                                                            |
-|------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `/adropmoney`          | Bucht für den Geldtransport-Job so viel Geld vom Konto ab, sodass das Geld vom Geldtransport-Job in den ATM eingezahlt werden kann und bucht das Geld anschließend zurück auf das Konto |
