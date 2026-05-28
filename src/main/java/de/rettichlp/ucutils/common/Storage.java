@@ -11,12 +11,12 @@ import de.rettichlp.ucutils.common.models.WantedEntry;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
+import net.minecraft.component.type.MapIdComponent;
 import net.minecraft.entity.vehicle.MinecartEntity;
 import net.minecraft.text.Text;
 import net.minecraft.util.math.Vec3d;
 import org.jetbrains.annotations.Nullable;
 
-import java.awt.image.BufferedImage;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -68,7 +68,7 @@ public class Storage {
     @Getter
     @Setter
     @Nullable
-    private BufferedImage captchaMapImage;
+    private MapIdComponent captchaMap;
 
     @Getter
     @Setter
@@ -126,7 +126,7 @@ public class Storage {
         // blackMarketPosition
         LOGGER.info("blackMarketPosition: {}", this.blackMarketPosition);
         // captchaMapImage
-        LOGGER.info("captchaMapImage: {}", this.captchaMapImage);
+        LOGGER.info("captchaMap: {}", this.captchaMap);
         // countdowns
         LOGGER.info("countdowns[{}]: {}", this.countdowns.size(), this.countdowns);
         // dealerPosition

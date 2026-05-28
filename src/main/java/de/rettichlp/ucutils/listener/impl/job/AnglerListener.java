@@ -42,7 +42,7 @@ public class AnglerListener implements IMessageReceiveListener {
                 return true;
             }
 
-            storage.setCaptchaMapImage(getMapImage(offHandStack));
+            storage.setCaptchaMap(offHandStack.get(MAP_ID));
             return true;
         }
 
