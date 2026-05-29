@@ -7,6 +7,7 @@ import de.rettichlp.ucutils.common.gui.widgets.base.IOptionWidget;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.tooltip.Tooltip;
+import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.gui.widget.DirectionalLayoutWidget;
 import net.minecraft.client.gui.widget.GridWidget;
 import net.minecraft.client.gui.widget.Positioner;
@@ -40,7 +41,7 @@ public class WidgetOptionsScreen extends OptionsScreen {
         // general
         directionalLayoutWidget.add(new TextWidget(TEXT_GENERAL, this.textRenderer), Positioner::alignHorizontalCenter);
 
-        renderService.addButton(directionalLayoutWidget, TEXT_POSITION, button -> this.client.setScreen(new WidgetOptionsPositionScreen(this)), 308);
+        directionalLayoutWidget.add(ButtonWidget.builder(TEXT_POSITION, button -> this.client.setScreen(new WidgetOptionsPositionScreen(this))).width(308).build());
 
         // general - enable status
         GridWidget gridWidget = directionalLayoutWidget.add(new GridWidget());
