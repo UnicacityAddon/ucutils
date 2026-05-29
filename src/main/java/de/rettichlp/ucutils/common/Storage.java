@@ -11,6 +11,7 @@ import de.rettichlp.ucutils.common.models.WantedEntry;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
+import net.minecraft.component.type.MapIdComponent;
 import net.minecraft.entity.vehicle.MinecartEntity;
 import net.minecraft.text.Text;
 import net.minecraft.util.math.Vec3d;
@@ -63,6 +64,11 @@ public class Storage {
     @Setter
     @Nullable
     private Vec3d blackMarketPosition;
+
+    @Getter
+    @Setter
+    @Nullable
+    private MapIdComponent captchaMap;
 
     @Getter
     @Setter
@@ -119,6 +125,8 @@ public class Storage {
         LOGGER.info("activeShutdowns[{}]: {}", this.activeShutdowns.size(), this.activeShutdowns);
         // blackMarketPosition
         LOGGER.info("blackMarketPosition: {}", this.blackMarketPosition);
+        // captchaMapImage
+        LOGGER.info("captchaMap: {}", this.captchaMap);
         // countdowns
         LOGGER.info("countdowns[{}]: {}", this.countdowns.size(), this.countdowns);
         // dealerPosition
