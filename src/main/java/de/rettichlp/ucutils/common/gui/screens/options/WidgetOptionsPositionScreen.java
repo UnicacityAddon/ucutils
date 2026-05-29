@@ -6,6 +6,7 @@ import de.rettichlp.ucutils.common.gui.widgets.base.UCUtilsWidgetConfiguration;
 import net.minecraft.client.gui.Click;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.gui.widget.DirectionalLayoutWidget;
 import net.minecraft.client.util.Window;
 import net.minecraft.text.Text;
@@ -39,16 +40,16 @@ public class WidgetOptionsPositionScreen extends UCUtilsScreen {
     public void initBody() {
         DirectionalLayoutWidget directionalLayoutWidget = this.layout.addBody(horizontal().spacing(8), positioner -> positioner.marginTop(this.client.getWindow().getScaledHeight() / 4));
 
-        renderService.addButton(directionalLayoutWidget, DONE, button -> {
+        directionalLayoutWidget.add(ButtonWidget.builder(DONE, button -> {
             renderService.getWidgets().forEach(AbstractUCUtilsWidget::saveConfiguration);
             back();
-        }, 150);
+        }).width(150).build());
 
-        renderService.addButton(directionalLayoutWidget, CANCEL, button -> {
+        directionalLayoutWidget.add(ButtonWidget.builder(CANCEL, button -> {
             // restore configurations from the configuration file
             renderService.getWidgets().forEach(AbstractUCUtilsWidget::loadConfiguration);
             back();
-        }, 150);
+        }).width(150).build());
 
         directionalLayoutWidget.forEachChild(this::addDrawableChild);
     }

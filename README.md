@@ -36,10 +36,7 @@ Folgende Funktionen sind nur für Spieler ohne Premium-Rang verfügbar, da Spiel
 
 ### Fraktionen
 
-- Für bewusstlose Spieler wird hinter dem Spielernamen ein Symbol angezeigt, um die dazugehörige Fraktion zu erkennen
-- Sollte ein Spieler Wanted-Punkte haben, wird der Name der Leiche dementsprechend eingefärbt
 - Das Design der Reinforcements ist so überarbeitet, dass diese besser auffallen
-- Für das FBI, die Polizei und den Rettungsdienst gibt es einen Timer, der die Dauer der Bombe anzeigt
 - Für den Rettungsdienst wird der Cooldown von Bandagen und Schmerzpillen unter dem Spielernamen angezeigt
 - Der Fraktionschat kann individuell eingefärbt werden
 - Mit `/fbank einzahlen <Betrag> <Grund>` kann das Eingabe GUI des Servers übersprungen werden

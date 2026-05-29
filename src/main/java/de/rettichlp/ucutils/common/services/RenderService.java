@@ -9,7 +9,6 @@ import lombok.Getter;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.tooltip.Tooltip;
-import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.gui.widget.CyclingButtonWidget;
 import net.minecraft.client.gui.widget.DirectionalLayoutWidget;
 import net.minecraft.client.render.Camera;
@@ -101,18 +100,6 @@ public class RenderService {
                 .peek(AbstractUCUtilsWidget::init)
                 .sorted(comparing(AbstractUCUtilsWidget::getRegistryName))
                 .collect(toCollection(LinkedHashSet::new));
-    }
-
-    public void addButton(@NotNull DirectionalLayoutWidget widget,
-                          Text name,
-                          ButtonWidget.PressAction onPress,
-                          int width) {
-        ButtonWidget buttonWidget = ButtonWidget.builder(name, onPress)
-                .build();
-
-        buttonWidget.setWidth(width);
-
-        widget.add(buttonWidget);
     }
 
     public <E extends CyclingButtonEntry> void addCyclingButton(@NotNull DirectionalLayoutWidget widget,
