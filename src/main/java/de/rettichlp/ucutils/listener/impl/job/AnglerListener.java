@@ -2,7 +2,6 @@ package de.rettichlp.ucutils.listener.impl.job;
 
 import de.rettichlp.ucutils.common.registry.UCUtilsListener;
 import de.rettichlp.ucutils.listener.IMessageReceiveListener;
-import lombok.NonNull;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerInteractionManager;
 import net.minecraft.component.type.MapIdComponent;
@@ -12,13 +11,16 @@ import net.minecraft.text.Text;
 import org.jetbrains.annotations.Nullable;
 
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import static de.rettichlp.ucutils.UCUtils.LOGGER;
 import static de.rettichlp.ucutils.UCUtils.player;
 import static de.rettichlp.ucutils.UCUtils.storage;
 import static java.awt.image.BufferedImage.TYPE_INT_RGB;
 import static java.util.regex.Pattern.compile;
+import static javax.imageio.ImageIO.write;
 import static net.minecraft.block.MapColor.getRenderColor;
 import static net.minecraft.component.DataComponentTypes.MAP_ID;
 import static net.minecraft.item.FilledMapItem.getMapState;
@@ -43,7 +45,11 @@ public class AnglerListener implements IMessageReceiveListener {
                 return true;
             }
 
-            storage.setCaptchaMap(offHandStack.get(MAP_ID));
+            MapIdComponent captchaMap = offHandStack.get(MAP_ID);
+            storage.setCaptchaMap(captchaMap);
+
+            saveCaptchaImage(captchaMap);
+
             return true;
         }
 
@@ -64,13 +70,25 @@ public class AnglerListener implements IMessageReceiveListener {
         return true;
     }
 
-    private @Nullable BufferedImage getMapImage(@NonNull ItemStack mapItemStack) {
-        MapIdComponent mapId = mapItemStack.get(MAP_ID);
-        if (mapId == null) {
-            return null;
+    private void saveCaptchaImage(MapIdComponent captchaMap) {
+        BufferedImage mapImage = getMapImage(captchaMap);
+        if (mapImage == null) {
+            return;
         }
 
-        MapState mapState = getMapState(mapId, MinecraftClient.getInstance().world);
+        File outputFile = new File("screenshots/ucutils/captcha.png");
+
+        try {
+            outputFile.mkdirs();
+            outputFile.createNewFile();
+            write(mapImage, "PNG", outputFile);
+        } catch (Exception e) {
+            LOGGER.error("Failed to save captcha image", e);
+        }
+    }
+
+    private @Nullable BufferedImage getMapImage(MapIdComponent mapIdComponent) {
+        MapState mapState = getMapState(mapIdComponent, MinecraftClient.getInstance().world);
         if (mapState == null) {
             return null;
         }
