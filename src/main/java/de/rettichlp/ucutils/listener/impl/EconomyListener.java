@@ -58,6 +58,10 @@ public class EconomyListener implements IMessageReceiveListener {
     private static final Pattern PAYDAY_MINE_SALARY_PATTERN = compile("^\\[PayDay] Du bekommst deine Mine Einnahmen von (?<money>\\d+)\\$ am PayDay ausgezahlt\\.$");
     private static final Pattern PAYDAY_COUNTDOWN_PATTERN = compile("^Info: Du hast in (?<minutes>\\d+) Minuten? deinen PayDay$");
 
+    // stock market
+    private static final Pattern STOCK_MARKET_BUY_PATTERN = compile("^\\[Aktien] Du hast (?<amount>\\d+)x (?<company>.+) für (?<price>\\d+)\\$ gekauft\\. \\(Gebühr: (?<fee>\\d+)\\$\\)$");
+    private static final Pattern STOCK_MARKET_SELL_PATTERN = compile("^\\[Aktien] (?<amount>\\d+)x (?<company>.+) verkauft für (?<price>\\d+)\\$\\. \\(Gebühr: (?<fee>\\d+)\\$\\) (?<brutto>[+-]\\d+)\\$ Brutto / (?<netto>[+-]\\d+)\\$ Netto$");
+
     // other
     private static final Pattern BUSINESS_CASH_PATTERN = compile("^Kasse: (\\d+)\\$$");
     private static final Pattern EXP_PATTERN = compile("(?<amount>[+-]\\d+) Exp!( \\(x(?<multiplier>\\d)\\))?");
@@ -259,6 +263,21 @@ public class EconomyListener implements IMessageReceiveListener {
                 }
             }, 50);
 
+            return true;
+        }
+
+        Matcher stockMarketBuyMatcher = STOCK_MARKET_BUY_PATTERN.matcher(message);
+        if (stockMarketBuyMatcher.find()) {
+            int price = parseInt(stockMarketBuyMatcher.group("price"));
+            int fee = parseInt(stockMarketBuyMatcher.group("fee"));
+            configuration.setMoneyCashAmount(configuration.getMoneyCashAmount() - price - fee);
+            return true;
+        }
+
+        Matcher stockMarketSellMatcher = STOCK_MARKET_SELL_PATTERN.matcher(message);
+        if (stockMarketSellMatcher.find()) {
+            int price = parseInt(stockMarketSellMatcher.group("price"));
+            configuration.setMoneyCashAmount(configuration.getMoneyCashAmount() + price);
             return true;
         }
 
