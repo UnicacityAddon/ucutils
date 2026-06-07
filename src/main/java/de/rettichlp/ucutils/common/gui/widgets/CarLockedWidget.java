@@ -81,9 +81,8 @@ public class CarLockedWidget extends AbstractUCUtilsTextWidget<CarLockedWidget.C
 
         @Override
         public Widget optionsWidget() {
-            return CyclingButtonWidget.builder(Style::getDisplayName)
+            return CyclingButtonWidget.builder(Style::getDisplayName, this.style)
                     .values(Style.values())
-                    .initially(this.style)
                     .tooltip(Style::getTooltip)
                     .build(WIDGETS_CAR_LOCKED_OPTIONS_STYLE_NAME, (button, style) -> this.style = style);
         }

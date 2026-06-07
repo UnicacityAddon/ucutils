@@ -57,9 +57,9 @@ public class RenderService {
                                                                 BiConsumer<Options, E> onValueChange,
                                                                 @NotNull Function<Options, E> currentValue,
                                                                 int width) {
-        CyclingButtonWidget<E> cyclingButton = CyclingButtonWidget.builder(displayNameFunction)
+        E initialValue = currentValue.apply(configuration.getOptions());
+        CyclingButtonWidget<E> cyclingButton = CyclingButtonWidget.builder(displayNameFunction, initialValue)
                 .values(values)
-                .initially(currentValue.apply(configuration.getOptions()))
                 .tooltip(CyclingButtonEntry::getTooltip)
                 .build(name, (button, value) -> onValueChange.accept(configuration.getOptions(), value));
 
