@@ -33,7 +33,6 @@
   "ucutils.notification.player_enter_report": "%s is now in a report",
   "ucutils.notification.player_leave_report": "%s is no longer in a report",
 
-  "ucutils.options.text.automation": "Automation",
   "ucutils.options.text.chat": "Chat",
   "ucutils.options.text.car": "Car",
   "ucutils.options.text.faction": "Faction",
