@@ -25,14 +25,15 @@ reibungsloser und angenehmer gestalten.
 
 ### Auto
 
+- Das zuletzt gefahrene Fahrzeug wird besonders hervorgehoben
 - Beim Suchen seines Fahrzeugs (`/car find`) wird automatisch das erste Fahrzeug ausgewählt
 - Werden die Koordinaten eines Autos angezeigt, wird automatisch eine Navigation zu diesen gestartet
+- Wenn man schleicht und ein Auto rechtsklickt, wird `/checkkfz` ausgeführt
 
 Folgende Funktionen sind nur für Spieler ohne Premium-Rang verfügbar, da Spieler mit Premium diese Funktion vom Server aus können:
 - Das Auf-/Abschließen eines Fahrzeuges wurde teilweise automatisiert (automatisches Klicken des Items im Inventar)
 - Beim Rechtsklick auf das eigene Fahrzeug wird automatisch `/car lock` ausgeführt
 - Steigt man in ein Fahrzeug ein, wird dieses automatisch gestartet und abgeschlossen
-- Das zuletzt gefahrene Fahrzeug wird mit einem Symbol markiert
 
 ### Fraktionen
 
