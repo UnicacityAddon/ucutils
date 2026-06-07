@@ -21,7 +21,7 @@ import static net.minecraft.util.Formatting.DARK_RED;
 @UCUtilsListener
 public class BadFactionListener implements IMessageReceiveListener {
 
-    private static final Pattern BLACK_MARKET_DEALER_ENTRY_PATTERN = compile("^» (?<location>.+) – (gerade eben|vor \\d+ min|vor \\d+ std) {2}\\[Navi]$");
+    private static final Pattern BLACK_MARKET_DEALER_ENTRY_PATTERN = compile("^» (?<location>.+) – (gerade eben|vor \\d+ \\w+) {2}\\[Navi]$");
 
     @Override
     public boolean onMessageReceive(Text text, String message) {
