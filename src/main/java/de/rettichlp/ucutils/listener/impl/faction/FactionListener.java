@@ -118,7 +118,7 @@ public class FactionListener implements IMessageReceiveListener, IMessageSendLis
 
             // check if color already matches formatting
             List<Text> siblings = text.getSiblings();
-            if (siblings.size() != 3 || messageMatchesColor(siblings, primaryFormatting, secondaryFormatting)) {
+            if (messageMatchesColor(siblings, primaryFormatting, secondaryFormatting)) {
                 return true;
             }
 
@@ -161,6 +161,10 @@ public class FactionListener implements IMessageReceiveListener, IMessageSendLis
     }
 
     private boolean messageMatchesColor(@NonNull List<Text> siblings, Formatting primaryFormatting, Formatting secondaryFormatting) {
+        if (siblings.size() != 3) {
+            return false;
+        }
+
         TextColor primaryFormattingCurrent = siblings.get(0).getStyle().getColor();
         TextColor secondaryFormattingCurrent = siblings.get(2).getStyle().getColor();
         return primaryFormattingCurrent == null || secondaryFormattingCurrent == null || primaryFormattingCurrent.getRgb() == primaryFormatting.getColorValue() || secondaryFormattingCurrent.getRgb() == secondaryFormatting.getColorValue();
