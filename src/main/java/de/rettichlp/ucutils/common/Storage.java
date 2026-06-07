@@ -27,10 +27,8 @@ import java.util.Optional;
 import java.util.Set;
 
 import static de.rettichlp.ucutils.UCUtils.LOGGER;
-import static de.rettichlp.ucutils.UCUtils.storage;
 import static de.rettichlp.ucutils.common.Storage.ToggledChat.NONE;
 import static de.rettichlp.ucutils.common.models.Faction.NULL;
-import static java.util.Optional.ofNullable;
 import static net.minecraft.text.Text.translatable;
 
 public class Storage {
@@ -159,10 +157,6 @@ public class Storage {
         LOGGER.info("toggledChat: {}", this.toggledChat);
         // unicaCity
         LOGGER.info("unicaCity: {}", this.unicaCity);
-    }
-
-    public Faction getCachedFaction(String playerName) {
-        return ofNullable(this.playerFactionCache.get(playerName)).orElseGet(() -> storage.getFaction(playerName));
     }
 
     public Faction getFaction(String playerName) {
