@@ -9,7 +9,6 @@ import lombok.experimental.Accessors;
 @Accessors(fluent = true)
 public class NameTagOptions {
 
-    private boolean aDuty = true;
     private boolean afk = true;
     private boolean medicalInformation = true;
 }

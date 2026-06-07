@@ -90,10 +90,6 @@ public class Storage {
 
     @Getter
     @Setter
-    private String fBankDepositReason = "";
-
-    @Getter
-    @Setter
     private double hydration = -1.0;
 
     @Getter
@@ -149,8 +145,6 @@ public class Storage {
         LOGGER.info("currentJob: {}", this.currentJob);
         // dead
         LOGGER.info("dead: {}", this.dead);
-        // fBankDepositReason
-        LOGGER.info("fBankDepositReason: {}", this.fBankDepositReason);
         // hydration
         LOGGER.info("hydration: {}", this.hydration);
         // joinTimestamp

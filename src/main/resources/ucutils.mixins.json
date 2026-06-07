@@ -17,7 +17,6 @@
     "ChatScreenMixin",
     "ClientPlayerEntityMixin",
     "ClientPlayNetworkHandlerMixin",
-    "DialogScreenMixin",
     "GameMenuScreenMixin",
     "HandledScreenMixin",
     "InGameHudMixin",

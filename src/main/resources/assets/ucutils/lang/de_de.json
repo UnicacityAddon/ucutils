@@ -57,8 +57,6 @@
   "ucutils.options.car.automation.start.tooltip": "Startet das Auto automatisch, wenn du einsteigst",
   "ucutils.options.car.automation.check_kfz.name": "Automatisches /checkkfz",
   "ucutils.options.car.automation.check_kfz.tooltip": "Führt /checkkfz aus wenn du ein Auto rechtsklickst während du schleichst",
-  "ucutils.options.nametag.a_duty.name": "Admin-Dienst",
-  "ucutils.options.nametag.a_duty.tooltip": "Zeigt eine Information an über dem Namen von Spielern, die im Admin-Dienst sind",
   "ucutils.options.nametag.afk.name": "AFK",
   "ucutils.options.nametag.afk.tooltip": "Zeigt eine Information an über dem Namen von Spielern, die AFK sind",
   "ucutils.options.nametag.medical_information.name": "Information für Ärzte",
