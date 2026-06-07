@@ -86,6 +86,12 @@ public abstract class ClientPlayNetworkHandlerMixin {
 
         String customNameString = requireNonNull(villager.getCustomName()).getString();
         Vec3d entityPos = villager.getEntityPos();
+
+        // already notified check
+        if (entityPos.equals(storage.getDealerPosition()) || entityPos.equals(storage.getBlackMarketPosition())) {
+            return;
+        }
+
         switch (customNameString) {
             case "Dealer" -> {
                 storage.setBlackMarketPosition(entityPos);
