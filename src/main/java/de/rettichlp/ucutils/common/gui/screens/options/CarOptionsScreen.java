@@ -1,24 +1,22 @@
 package de.rettichlp.ucutils.common.gui.screens.options;
 
+import de.rettichlp.ucutils.common.configuration.options.CarOptions;
 import de.rettichlp.ucutils.common.gui.screens.OptionsScreen;
+import de.rettichlp.ucutils.common.gui.screens.components.ToggleButtonWidget;
 import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.gui.widget.DirectionalLayoutWidget;
+import net.minecraft.client.gui.tooltip.Tooltip;
+import net.minecraft.client.gui.widget.GridWidget;
 import net.minecraft.client.gui.widget.MultilineTextWidget;
-import net.minecraft.client.gui.widget.Positioner;
-import net.minecraft.client.gui.widget.TextWidget;
 import net.minecraft.text.Text;
 
-import static de.rettichlp.ucutils.UCUtils.renderService;
-import static net.minecraft.client.gui.widget.DirectionalLayoutWidget.horizontal;
-import static net.minecraft.client.gui.widget.DirectionalLayoutWidget.vertical;
+import static de.rettichlp.ucutils.UCUtils.configuration;
+import static net.minecraft.client.gui.widget.Positioner.create;
 import static net.minecraft.text.Text.translatable;
 import static net.minecraft.util.Formatting.GOLD;
 
 public class CarOptionsScreen extends OptionsScreen {
 
     private static final Text TEXT_CAR = translatable("ucutils.options.text.car");
-    private static final Text TEXT_GENERAL = translatable("ucutils.options.text.general");
-    private static final Text TEXT_AUTOMATION = translatable("ucutils.options.text.automation");
     private static final Text CAR_PREMIUM_INFO = translatable("ucutils.options.car.premium_info");
     private static final Text CAR_GENERAL_FAST_FIND_NAME = translatable("ucutils.options.car.general.fast_find.name");
     private static final Text CAR_GENERAL_FAST_FIND_TOOLTIP = translatable("ucutils.options.car.general.fast_find.tooltip");
@@ -39,30 +37,47 @@ public class CarOptionsScreen extends OptionsScreen {
 
     @Override
     public void initBody() {
-        DirectionalLayoutWidget directionalLayoutWidget = this.layout.addBody(vertical().spacing(4));
+        GridWidget gridWidget = this.layout.addBody(new GridWidget());
+        gridWidget.setColumnSpacing(8).setRowSpacing(4);
+        GridWidget.Adder gridWidgetAdder = gridWidget.createAdder(2);
 
-        MultilineTextWidget multilineTextWidget = directionalLayoutWidget.add(new MultilineTextWidget(CAR_PREMIUM_INFO.copy().formatted(GOLD), this.textRenderer), Positioner::alignHorizontalCenter);
+        CarOptions carOptions = configuration.getOptions().car();
+
+        ToggleButtonWidget toggleButton1 = new ToggleButtonWidget(CAR_GENERAL_HIGHLIGHT_NAME, carOptions::highlight, carOptions.highlight());
+        toggleButton1.setWidth(150);
+        toggleButton1.setTooltip(Tooltip.of(CAR_GENERAL_HIGHLIGHT_TOOLTIP));
+        gridWidgetAdder.add(toggleButton1);
+
+        ToggleButtonWidget toggleButton2 = new ToggleButtonWidget(CAR_GENERAL_FAST_FIND_NAME, carOptions::fastFind, carOptions.fastFind());
+        toggleButton2.setWidth(150);
+        toggleButton2.setTooltip(Tooltip.of(CAR_GENERAL_FAST_FIND_TOOLTIP));
+        gridWidgetAdder.add(toggleButton2);
+
+        ToggleButtonWidget toggleButton3 = new ToggleButtonWidget(CAR_AUTOMATION_CHECK_KFZ_NAME, carOptions::automatedCheckKfz, carOptions.automatedCheckKfz());
+        toggleButton3.setWidth(150);
+        toggleButton3.setTooltip(Tooltip.of(CAR_AUTOMATION_CHECK_KFZ_TOOLTIP));
+        gridWidgetAdder.add(toggleButton3);
+
+        MultilineTextWidget multilineTextWidget = gridWidgetAdder.add(new MultilineTextWidget(CAR_PREMIUM_INFO.copy().formatted(GOLD), this.textRenderer), 2, create().alignHorizontalCenter().marginTop(16));
         multilineTextWidget.setMaxWidth(308);
         multilineTextWidget.setCentered(true);
 
-        directionalLayoutWidget.add(new TextWidget(TEXT_GENERAL, this.textRenderer), Positioner::alignHorizontalCenter);
+        ToggleButtonWidget toggleButton4 = new ToggleButtonWidget(CAR_GENERAL_FAST_LOCK_NAME, carOptions::fastLock, carOptions.fastLock());
+        toggleButton4.setWidth(150);
+        toggleButton4.setTooltip(Tooltip.of(CAR_GENERAL_FAST_LOCK_TOOLTIP));
+        gridWidgetAdder.add(toggleButton4);
 
-        DirectionalLayoutWidget directionalLayoutWidget1 = directionalLayoutWidget.add(horizontal().spacing(8));
-        renderService.addToggleButton(directionalLayoutWidget1, CAR_GENERAL_FAST_FIND_NAME, CAR_GENERAL_FAST_FIND_TOOLTIP, (options, value) -> options.car().fastFind(value), options -> options.car().fastFind(), 150);
-        renderService.addToggleButton(directionalLayoutWidget1, CAR_GENERAL_FAST_LOCK_NAME, CAR_GENERAL_FAST_LOCK_TOOLTIP, (options, value) -> options.car().fastLock(value), options -> options.car().fastLock(), 150);
+        ToggleButtonWidget toggleButton5 = new ToggleButtonWidget(CAR_AUTOMATION_LOCK_NAME, carOptions::automatedLock, carOptions.automatedLock());
+        toggleButton5.setWidth(150);
+        toggleButton5.setTooltip(Tooltip.of(CAR_AUTOMATION_LOCK_TOOLTIP));
+        gridWidgetAdder.add(toggleButton5);
 
-        DirectionalLayoutWidget directionalLayoutWidget2 = directionalLayoutWidget.add(horizontal().spacing(8));
-        renderService.addToggleButton(directionalLayoutWidget2, CAR_GENERAL_HIGHLIGHT_NAME, CAR_GENERAL_HIGHLIGHT_TOOLTIP, (options, value) -> options.car().highlight(value), options -> options.car().highlight(), 150);
+        ToggleButtonWidget toggleButton6 = new ToggleButtonWidget(CAR_AUTOMATION_START_NAME, carOptions::automatedStart, carOptions.automatedStart());
+        toggleButton6.setWidth(150);
+        toggleButton6.setTooltip(Tooltip.of(CAR_AUTOMATION_START_TOOLTIP));
+        gridWidgetAdder.add(toggleButton6);
 
-        directionalLayoutWidget.add(new TextWidget(TEXT_AUTOMATION, this.textRenderer), positioner -> positioner.alignHorizontalCenter().marginTop(16));
-
-        DirectionalLayoutWidget directionalLayoutWidget3 = directionalLayoutWidget.add(horizontal().spacing(8));
-        renderService.addToggleButton(directionalLayoutWidget3, CAR_AUTOMATION_LOCK_NAME, CAR_AUTOMATION_LOCK_TOOLTIP, (options, value) -> options.car().automatedLock(value), options -> options.car().automatedLock(), 150);
-        renderService.addToggleButton(directionalLayoutWidget3, CAR_AUTOMATION_START_NAME, CAR_AUTOMATION_START_TOOLTIP, (options, value) -> options.car().automatedStart(value), options -> options.car().automatedStart(), 150);
-
-        DirectionalLayoutWidget directionalLayoutWidget4 = directionalLayoutWidget.add(horizontal().spacing(8));
-        renderService.addToggleButton(directionalLayoutWidget4, CAR_AUTOMATION_CHECK_KFZ_NAME, CAR_AUTOMATION_CHECK_KFZ_TOOLTIP, (options, value) -> options.car().automatedCheckKfz(value), options -> options.car().automatedCheckKfz(), 150);
-
-        directionalLayoutWidget.forEachChild(this::addDrawableChild);
+        gridWidget.refreshPositions();
+        gridWidget.forEachChild(this::addDrawableChild);
     }
 }
