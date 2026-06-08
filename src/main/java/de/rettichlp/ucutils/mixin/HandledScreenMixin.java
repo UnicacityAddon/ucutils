@@ -84,11 +84,6 @@ public abstract class HandledScreenMixin extends Screen {
                             interactionManager.clickSlot(genericContainerScreenHandler.syncId, 0, 0, PICKUP, player);
                         }
                     }
-                    case "Fahrzeuge" -> {
-                        if (configuration.getOptions().car().fastFind()) {
-                            interactionManager.clickSlot(genericContainerScreenHandler.syncId, 0, 0, PICKUP, player);
-                        }
-                    }
                     default -> {
                         if (commandService.isSuperUser()) {
                             LOGGER.info("Screen opened: {}", title);
