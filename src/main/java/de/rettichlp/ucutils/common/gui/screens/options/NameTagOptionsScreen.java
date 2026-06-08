@@ -14,14 +14,8 @@ import static net.minecraft.text.Text.translatable;
 public class NameTagOptionsScreen extends OptionsScreen {
 
     private static final Text TEXT_NAMETAG = translatable("ucutils.options.text.nametag");
-    private static final Text NAMETAG_A_DUTY_NAME = translatable("ucutils.options.nametag.a_duty.name");
-    private static final Text NAMETAG_A_DUTY_TOOLTIP = translatable("ucutils.options.nametag.a_duty.tooltip");
     private static final Text NAMETAG_AFK_NAME = translatable("ucutils.options.nametag.afk.name");
     private static final Text NAMETAG_AFK_TOOLTIP = translatable("ucutils.options.nametag.afk.tooltip");
-    private static final Text NAMETAG_HOUSE_BAN_NAME = translatable("ucutils.options.nametag.house_ban.name");
-    private static final Text NAMETAG_HOUSE_BAN_TOOLTIP = translatable("ucutils.options.nametag.house_ban.tooltip");
-    private static final Text NAMETAG_OUTLAW_NAME = translatable("ucutils.options.nametag.outlaw.name");
-    private static final Text NAMETAG_OUTLAW_TOOLTIP = translatable("ucutils.options.nametag.outlaw.tooltip");
     private static final Text NAMETAG_MEDICAL_INFORMATION_NAME = translatable("ucutils.options.nametag.medical_information.name");
     private static final Text NAMETAG_MEDICAL_INFORMATION_TOOLTIP = translatable("ucutils.options.nametag.medical_information.tooltip");
 
@@ -37,30 +31,15 @@ public class NameTagOptionsScreen extends OptionsScreen {
 
         NameTagOptions nameTagOptions = configuration.getOptions().nameTag();
 
-        ToggleButtonWidget toggleButton1 = new ToggleButtonWidget(NAMETAG_A_DUTY_NAME, nameTagOptions::aDuty, nameTagOptions.aDuty());
+        ToggleButtonWidget toggleButton1 = new ToggleButtonWidget(NAMETAG_AFK_NAME, nameTagOptions::afk, nameTagOptions.afk());
         toggleButton1.setWidth(150);
-        toggleButton1.setTooltip(Tooltip.of(NAMETAG_A_DUTY_TOOLTIP));
+        toggleButton1.setTooltip(Tooltip.of(NAMETAG_AFK_TOOLTIP));
         gridWidgetAdder.add(toggleButton1);
 
-        ToggleButtonWidget toggleButton2 = new ToggleButtonWidget(NAMETAG_AFK_NAME, nameTagOptions::afk, nameTagOptions.afk());
+        ToggleButtonWidget toggleButton2 = new ToggleButtonWidget(NAMETAG_MEDICAL_INFORMATION_NAME, nameTagOptions::medicalInformation, nameTagOptions.medicalInformation());
         toggleButton2.setWidth(150);
-        toggleButton2.setTooltip(Tooltip.of(NAMETAG_AFK_TOOLTIP));
+        toggleButton2.setTooltip(Tooltip.of(NAMETAG_MEDICAL_INFORMATION_TOOLTIP));
         gridWidgetAdder.add(toggleButton2);
-
-        ToggleButtonWidget toggleButton3 = new ToggleButtonWidget(NAMETAG_HOUSE_BAN_NAME, nameTagOptions::houseBan, nameTagOptions.houseBan());
-        toggleButton3.setWidth(150);
-        toggleButton3.setTooltip(Tooltip.of(NAMETAG_HOUSE_BAN_TOOLTIP));
-        gridWidgetAdder.add(toggleButton3);
-
-        ToggleButtonWidget toggleButton4 = new ToggleButtonWidget(NAMETAG_OUTLAW_NAME, nameTagOptions::outlaw, nameTagOptions.outlaw());
-        toggleButton4.setWidth(150);
-        toggleButton4.setTooltip(Tooltip.of(NAMETAG_OUTLAW_TOOLTIP));
-        gridWidgetAdder.add(toggleButton4);
-
-        ToggleButtonWidget toggleButton5 = new ToggleButtonWidget(NAMETAG_MEDICAL_INFORMATION_NAME, nameTagOptions::medicalInformation, nameTagOptions.medicalInformation());
-        toggleButton5.setWidth(150);
-        toggleButton5.setTooltip(Tooltip.of(NAMETAG_MEDICAL_INFORMATION_TOOLTIP));
-        gridWidgetAdder.add(toggleButton5);
 
         gridWidget.refreshPositions();
         gridWidget.forEachChild(this::addDrawableChild);

@@ -14,13 +14,13 @@
     "requireAnnotations": true
   },
   "client": [
+    "AbstractMinecartEntityRendererMixin",
     "ChatScreenMixin",
     "ClientPlayerEntityMixin",
     "ClientPlayNetworkHandlerMixin",
-    "DialogScreenMixin",
     "GameMenuScreenMixin",
+    "HandledScreenMixin",
     "InGameHudMixin",
-    "MinecraftClientMixin",
     "PlayerEntityRendererMixin",
     "PlayerListHudMixin"
   ]

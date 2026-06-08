@@ -1,13 +1,17 @@
 package de.rettichlp.ucutils.mixin;
 
 import com.llamalad7.mixinextras.sugar.Local;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.hud.InGameHud;
 import net.minecraft.client.render.RenderTickCounter;
+import net.minecraft.client.texture.NativeImage;
+import net.minecraft.client.texture.NativeImageBackedTexture;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.profiler.Profilers;
+import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
@@ -15,6 +19,10 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import java.io.InputStream;
+import java.nio.file.Path;
+
+import static de.rettichlp.ucutils.UCUtils.LOGGER;
 import static de.rettichlp.ucutils.UCUtils.MOD_ID;
 import static de.rettichlp.ucutils.UCUtils.configuration;
 import static de.rettichlp.ucutils.UCUtils.nameTagService;
@@ -26,7 +34,9 @@ import static java.lang.Math.ceil;
 import static java.lang.Math.clamp;
 import static java.lang.Math.round;
 import static java.lang.System.currentTimeMillis;
+import static java.nio.file.Files.newInputStream;
 import static net.minecraft.client.gl.RenderPipelines.GUI_TEXTURED;
+import static net.minecraft.client.texture.NativeImage.read;
 import static net.minecraft.item.Items.GOLDEN_HOE;
 import static net.minecraft.registry.tag.FluidTags.WATER;
 import static org.spongepowered.asm.mixin.injection.At.Shift.AFTER;
@@ -43,8 +53,39 @@ public abstract class InGameHudMixin {
     @Unique
     private static final Identifier HYDRATION_FULL_TEXTURE = Identifier.of(MOD_ID, "textures/hud/hydration_full.png");
 
+    @Unique
+    private static final Identifier CAPTCHA_IDENTIFIER = Identifier.of("ucutils", "captcha");
+
+    @Shadow
+    @Final
+    private MinecraftClient client;
+
     @Shadow
     public abstract TextRenderer getTextRenderer();
+
+    @Inject(method = "renderChat", at = @At("TAIL"))
+    private void ucutils$renderChatTail(DrawContext context, RenderTickCounter tickCounter, CallbackInfo ci) {
+        if (storage.getCaptchaMap() == null) {
+            return;
+        }
+
+        NativeImage nativeImage;
+        try (InputStream is = newInputStream(Path.of("screenshots/ucutils/captcha.png"))) {
+            nativeImage = read(is);
+        } catch (Exception e) {
+            LOGGER.error("Failed to read captcha image", e);
+            return;
+        }
+
+        NativeImageBackedTexture nativeImageBackedTexture = new NativeImageBackedTexture(() -> "captcha", nativeImage);
+        this.client.getTextureManager().registerTexture(CAPTCHA_IDENTIFIER, nativeImageBackedTexture);
+
+        int side = context.getScaledWindowWidth() / 4;
+        int x = context.getScaledWindowWidth() / 2 - side / 2;
+        int y = context.getScaledWindowHeight() / 4 - side / 2;
+
+        context.drawTexture(GUI_TEXTURED, CAPTCHA_IDENTIFIER, x, y, 0, 0, side, side, side, side);
+    }
 
     @Inject(method = "renderCrosshair",
             at = @At(

@@ -3,6 +3,7 @@ package de.rettichlp.ucutils.common.gui.screens.options;
 import de.rettichlp.ucutils.common.configuration.options.Options;
 import de.rettichlp.ucutils.common.gui.screens.OptionsScreen;
 import net.minecraft.client.gui.screen.GameMenuScreen;
+import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.gui.widget.DirectionalLayoutWidget;
 import net.minecraft.text.Text;
 
@@ -22,12 +23,9 @@ public class MainOptionsScreen extends OptionsScreen {
     private static final Text TEXT_SOUNDS = translatable("ucutils.options.text.sounds");
     private static final Text TEXT_WIDGETS = translatable("ucutils.options.text.widgets");
     private static final Text TEXT_NOTIFICATIONS = translatable("ucutils.options.text.notifications");
-    private static final Text TEXT_PERSONAL_USE = translatable("ucutils.options.text.personal_use");
     private static final Text HYDRATION_NAME = translatable("ucutils.options.hydration.name");
     private static final Text HYDRATION_TOOLTIP = translatable("ucutils.options.hydration.tooltip");
     private static final Text BANK_INFORMATION_NAME = translatable("ucutils.options.atm_information.name");
-    private static final Text ENRICHED_KARMA_NAME = translatable("ucutils.options.enriched_karma.name");
-    private static final Text ENRICHED_KARMA_TOOLTIP = translatable("ucutils.options.enriched_karma.tooltip");
 
     public MainOptionsScreen() {
         super(new GameMenuScreen(true));
@@ -41,24 +39,20 @@ public class MainOptionsScreen extends OptionsScreen {
         renderService.addCyclingButton(directionalLayoutWidget, REINFORCEMENT_STYLE_NAME, Options.ReinforcementType.values(), Options.ReinforcementType::getDisplayName, Options::reinforcementType, Options::reinforcementType, 308);
 
         DirectionalLayoutWidget directionalLayoutWidget1 = directionalLayoutWidget.add(horizontal().spacing(8));
-        renderService.addButton(directionalLayoutWidget1, TEXT_NAMETAG, button -> this.client.setScreen(new NameTagOptionsScreen(this)), 150);
-        renderService.addButton(directionalLayoutWidget1, TEXT_CHAT, button -> this.client.setScreen(new ChatOptionsScreen(this)), 150);
+        directionalLayoutWidget1.add(ButtonWidget.builder(TEXT_NAMETAG, button -> this.client.setScreen(new NameTagOptionsScreen(this))).width(150).build());
+        directionalLayoutWidget1.add(ButtonWidget.builder(TEXT_CHAT, button -> this.client.setScreen(new ChatOptionsScreen(this))).width(150).build());
 
         DirectionalLayoutWidget directionalLayoutWidget2 = directionalLayoutWidget.add(horizontal().spacing(8));
-        renderService.addButton(directionalLayoutWidget2, TEXT_CAR, button -> this.client.setScreen(new CarOptionsScreen(this)), 150);
-        renderService.addButton(directionalLayoutWidget2, TEXT_SOUNDS, button -> this.client.setScreen(new SoundOptionsScreen(this)), 150);
+        directionalLayoutWidget2.add(ButtonWidget.builder(TEXT_CAR, button -> this.client.setScreen(new CarOptionsScreen(this))).width(150).build());
+        directionalLayoutWidget2.add(ButtonWidget.builder(TEXT_SOUNDS, button -> this.client.setScreen(new SoundOptionsScreen(this))).width(150).build());
 
         DirectionalLayoutWidget directionalLayoutWidget3 = directionalLayoutWidget.add(horizontal().spacing(8));
-        renderService.addButton(directionalLayoutWidget3, TEXT_WIDGETS, button -> this.client.setScreen(new WidgetOptionsScreen(this)), 150);
-        renderService.addButton(directionalLayoutWidget3, TEXT_NOTIFICATIONS, button -> this.client.setScreen(new NotificationOptionsScreen(this)), 150);
+        directionalLayoutWidget3.add(ButtonWidget.builder(TEXT_WIDGETS, button -> this.client.setScreen(new WidgetOptionsScreen(this))).width(150).build());
+        directionalLayoutWidget3.add(ButtonWidget.builder(TEXT_NOTIFICATIONS, button -> this.client.setScreen(new NotificationOptionsScreen(this))).width(150).build());
 
         DirectionalLayoutWidget directionalLayoutWidget4 = directionalLayoutWidget.add(horizontal().spacing(8));
         renderService.addToggleButton(directionalLayoutWidget4, HYDRATION_NAME, HYDRATION_TOOLTIP, Options::showHydration, Options::showHydration, 150);
         renderService.addCyclingButton(directionalLayoutWidget4, BANK_INFORMATION_NAME, Options.AtmInformationType.values(), Options.AtmInformationType::getDisplayName, Options::atmInformationType, Options::atmInformationType, 150);
-
-        DirectionalLayoutWidget directionalLayoutWidget5 = directionalLayoutWidget.add(horizontal().spacing(8));
-        renderService.addButton(directionalLayoutWidget5, TEXT_PERSONAL_USE, button -> this.client.setScreen(new PersonalUseOptionsScreen(this)), 150);
-        renderService.addToggleButton(directionalLayoutWidget5, ENRICHED_KARMA_NAME, ENRICHED_KARMA_TOOLTIP, Options::showEnrichedKarma, Options::showEnrichedKarma, 150);
 
         directionalLayoutWidget.forEachChild(this::addDrawableChild);
     }

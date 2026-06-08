@@ -4,12 +4,18 @@ import com.mojang.authlib.GameProfile;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NonNull;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
 import net.minecraft.client.network.PlayerListEntry;
+import net.minecraft.client.world.ClientWorld;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.passive.VillagerEntity;
+import net.minecraft.network.packet.s2c.play.EntityTrackerUpdateS2CPacket;
 import net.minecraft.network.packet.s2c.play.PlayerListS2CPacket;
 import net.minecraft.network.packet.s2c.play.PlayerRemoveS2CPacket;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
+import net.minecraft.util.math.Vec3d;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
@@ -22,14 +28,19 @@ import java.util.UUID;
 
 import static de.rettichlp.ucutils.UCUtils.configuration;
 import static de.rettichlp.ucutils.UCUtils.notificationService;
+import static de.rettichlp.ucutils.UCUtils.player;
 import static de.rettichlp.ucutils.UCUtils.storage;
 import static java.awt.Color.WHITE;
+import static java.lang.System.currentTimeMillis;
+import static java.util.Objects.requireNonNull;
 import static net.minecraft.text.Text.empty;
 import static net.minecraft.text.Text.literal;
 import static net.minecraft.text.Text.translatable;
 import static net.minecraft.util.Formatting.BLUE;
 import static net.minecraft.util.Formatting.DARK_GRAY;
 import static net.minecraft.util.Formatting.GOLD;
+import static net.minecraft.util.Formatting.GRAY;
+import static net.minecraft.util.Formatting.RED;
 import static net.minecraft.util.Formatting.YELLOW;
 import static org.spongepowered.asm.mixin.injection.At.Shift.AFTER;
 
@@ -56,6 +67,50 @@ public abstract class ClientPlayNetworkHandlerMixin {
 
     @Unique
     private final Collection<EnrichedGameProfile> enrichedGameProfiles = new HashSet<>();
+
+    @Inject(method = "onEntityTrackerUpdate", at = @At("TAIL"))
+    private void onEntityTrackerUpdate(EntityTrackerUpdateS2CPacket packet, CallbackInfo ci) {
+        if (!storage.isUnicaCity()) {
+            return;
+        }
+
+        ClientWorld world = MinecraftClient.getInstance().world;
+        if (world == null) {
+            return;
+        }
+
+        Entity entity = world.getEntityById(packet.id());
+        if (!(entity instanceof VillagerEntity villager) || !villager.hasCustomName()) {
+            return;
+        }
+
+        String customNameString = requireNonNull(villager.getCustomName()).getString();
+        Vec3d entityPos = villager.getEntityPos();
+
+        // already notified check
+        if (entityPos.equals(storage.getDealerPosition()) || entityPos.equals(storage.getBlackMarketPosition())) {
+            return;
+        }
+
+        switch (customNameString) {
+            case "Dealer" -> {
+                storage.setBlackMarketPosition(entityPos);
+                player.sendMessage(empty()
+                        .append(literal("[").formatted(DARK_GRAY))
+                        .append(literal("Dealer").formatted(RED))
+                        .append(literal("] ").formatted(DARK_GRAY))
+                        .append(literal("Der Dealer ist in der Nähe!").formatted(GRAY)), false);
+            }
+            case "Schwarzmarkt" -> {
+                storage.setDealerPosition(entityPos);
+                player.sendMessage(empty()
+                        .append(literal("[").formatted(DARK_GRAY))
+                        .append(literal("Schwarzmarkt").formatted(RED))
+                        .append(literal("] ").formatted(DARK_GRAY))
+                        .append(literal("Der Schwarzmarkt ist in der Nähe!").formatted(GRAY)), false);
+            }
+        }
+    }
 
     @Inject(method = "onPlayerRemove",
             at = @At(value = "INVOKE",
@@ -104,6 +159,12 @@ public abstract class ClientPlayNetworkHandlerMixin {
                 EnrichedGameProfile enrichedGameProfile = new EnrichedGameProfile(profile, currentDisplayName, currentDisplayName);
                 this.enrichedGameProfiles.removeIf(egp -> egp.getProfile().id().equals(profileId));
                 this.enrichedGameProfiles.add(enrichedGameProfile);
+
+                // if the client joined the server few moments ago, hide notifications due to initial sync of player list
+                if (currentTimeMillis() - storage.getJoinTimestamp() < 1000) {
+                    return;
+                }
+
                 sendChangeNotification(enrichedGameProfile, "ucutils.notification.player_join");
             }
             case UPDATE_DISPLAY_NAME -> {

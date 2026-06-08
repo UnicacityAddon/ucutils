@@ -10,8 +10,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.util.List;
 
-import static de.rettichlp.ucutils.UCUtils.LOGGER;
-import static de.rettichlp.ucutils.UCUtils.networkHandler;
+import static de.rettichlp.ucutils.UCUtils.commandService;
 import static de.rettichlp.ucutils.UCUtils.player;
 import static de.rettichlp.ucutils.UCUtils.storage;
 import static net.minecraft.item.Items.GLASS_BOTTLE;
@@ -36,8 +35,7 @@ public abstract class ClientPlayerEntityMixin {
             cir.setReturnValue(null);
 
             // execute command
-            LOGGER.info("UCUtils executing command: sell pfand");
-            networkHandler.sendChatCommand("sell pfand");
+            commandService.sendCommand("sell pfand");
         }
     }
 

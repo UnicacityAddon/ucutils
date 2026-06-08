@@ -7,6 +7,7 @@ import net.minecraft.text.HoverEvent;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -17,10 +18,10 @@ import static de.rettichlp.ucutils.UCUtils.messageService;
 import static de.rettichlp.ucutils.UCUtils.notificationService;
 import static de.rettichlp.ucutils.UCUtils.player;
 import static de.rettichlp.ucutils.UCUtils.storage;
+import static de.rettichlp.ucutils.UCUtils.utilService;
 import static java.lang.Integer.parseInt;
 import static java.lang.Math.max;
 import static java.lang.System.currentTimeMillis;
-import static java.util.Collections.emptyList;
 import static java.util.Optional.ofNullable;
 import static java.util.regex.Pattern.compile;
 import static net.minecraft.text.Text.of;
@@ -55,10 +56,13 @@ public class EconomyListener implements IMessageReceiveListener {
     private static final Pattern PAYDAY_TIME_PATTERN = compile("^- Zeit seit PayDay: (?<minutes>\\d+)/60 Minuten$");
     private static final Pattern PAYDAY_SALARY_PATTERN = compile("^\\[PayDay] Du bekommst dein Gehalt von (?<money>\\d+)\\$ am PayDay ausgezahlt\\.$");
     private static final Pattern PAYDAY_MINE_SALARY_PATTERN = compile("^\\[PayDay] Du bekommst deine Mine Einnahmen von (?<money>\\d+)\\$ am PayDay ausgezahlt\\.$");
-    private static final Pattern PAYDAY_COUNTDOWN_PATTERN = compile("^Info: Du hast in 3 Minuten deinen PayDay$");
+    private static final Pattern PAYDAY_COUNTDOWN_PATTERN = compile("^Info: Du hast in (?<minutes>\\d+) Minuten? deinen PayDay$");
+
+    // stock market
+    private static final Pattern STOCK_MARKET_BUY_PATTERN = compile("^\\[Aktien] Du hast (?<amount>\\d+)x (?<company>.+) für (?<price>\\d+)\\$ gekauft\\. \\(Gebühr: (?<fee>\\d+)\\$\\)$");
+    private static final Pattern STOCK_MARKET_SELL_PATTERN = compile("^\\[Aktien] (?<amount>\\d+)x (?<company>.+) verkauft für (?<price>\\d+)\\$\\. \\(Gebühr: (?<fee>\\d+)\\$\\) (?<brutto>[+-]\\d+)\\$ Brutto / (?<netto>[+-]\\d+)\\$ Netto$");
 
     // other
-    private static final Pattern ATM_MONEY_AMOUNT_PATTERN = compile("ATM \\d+: (?<moneyAtmAmount>\\d+)\\$/100000\\$");
     private static final Pattern BUSINESS_CASH_PATTERN = compile("^Kasse: (\\d+)\\$$");
     private static final Pattern EXP_PATTERN = compile("(?<amount>[+-]\\d+) Exp!( \\(x(?<multiplier>\\d)\\))?");
     private static final Pattern LOTTO_WIN_PATTERN = compile("^\\[Lotto] Du hast im Lotto gewonnen! \\((?<amount>\\d+)\\$\\)$");
@@ -76,12 +80,16 @@ public class EconomyListener implements IMessageReceiveListener {
             int amount = parseInt(bankStatementMatcher.group("amount"));
             configuration.setMoneyBankAmount(amount);
 
-            List<String> commands = switch (configuration.getOptions().atmInformationType()) {
-                case NONE -> emptyList();
-                case F_BANK -> List.of("fbank");
-                case G_BANK -> List.of("gruppierungkasse");
-                case BOTH -> List.of("fbank", "gruppierungkasse");
-            };
+            List<String> commands = new ArrayList<>();
+            commands.add("atminfo");
+
+            switch (configuration.getOptions().atmInformationType()) {
+                case NONE -> {
+                }
+                case F_BANK -> commands.add("fbank");
+                case G_BANK -> commands.add("gruppierungkasse");
+                case BOTH -> commands.addAll(List.of("fbank", "gruppierungkasse"));
+            }
 
             commandService.sendCommands(commands);
 
@@ -239,20 +247,37 @@ public class EconomyListener implements IMessageReceiveListener {
 
         Matcher paydayCountdownMatcher = PAYDAY_COUNTDOWN_PATTERN.matcher(message);
         if (paydayCountdownMatcher.find()) {
-            configuration.setMinutesSinceLastPayDay(57);
+            int minutes = parseInt(paydayCountdownMatcher.group("minutes"));
+            int minutesSinceLastPayDay = 60 - minutes;
+            configuration.setMinutesSinceLastPayDay(minutesSinceLastPayDay);
 
-            if (configuration.getMoneyBankAmount() > 100000) {
-                messageService.sendModMessage("Du hast über 100000$ auf der Bank!", false);
-                notificationService.notificationSound(3);
-            }
+            utilService.delayedAction(() -> {
+                if (configuration.getMoneyBankAmount() > 100000) {
+                    messageService.sendModMessage("Du hast über 100000$ auf der Bank!", false);
+
+                    switch (minutes) {
+                        case 10 -> notificationService.notificationSound(1);
+                        case 5 -> notificationService.notificationSound(2);
+                        case 3, 2, 1 -> notificationService.notificationSound(3);
+                    }
+                }
+            }, 50);
 
             return true;
         }
 
-        Matcher moneyAtmAmountMatcher = ATM_MONEY_AMOUNT_PATTERN.matcher(message);
-        if (moneyAtmAmountMatcher.find()) {
-            int moneyAtmAmount = parseInt(moneyAtmAmountMatcher.group("moneyAtmAmount"));
-            storage.setMoneyAtmAmount(moneyAtmAmount);
+        Matcher stockMarketBuyMatcher = STOCK_MARKET_BUY_PATTERN.matcher(message);
+        if (stockMarketBuyMatcher.find()) {
+            int price = parseInt(stockMarketBuyMatcher.group("price"));
+            int fee = parseInt(stockMarketBuyMatcher.group("fee"));
+            configuration.setMoneyCashAmount(configuration.getMoneyCashAmount() - price - fee);
+            return true;
+        }
+
+        Matcher stockMarketSellMatcher = STOCK_MARKET_SELL_PATTERN.matcher(message);
+        if (stockMarketSellMatcher.find()) {
+            int price = parseInt(stockMarketSellMatcher.group("price"));
+            configuration.setMoneyCashAmount(configuration.getMoneyCashAmount() + price);
             return true;
         }
 

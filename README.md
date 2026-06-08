@@ -10,43 +10,39 @@ reibungsloser und angenehmer gestalten.
 
 - Sollte ein Command mit einem Großbuchstaben eingegeben werden (z. B. `/Afk` statt `/afk`) wird dieser Command automatisch zu einem
   gültigen Command umgewandelt
+- Statt `/navi Haus:<Hausnummer>` kann `/navi <Hausnummer>` genutzt werden
 - Als Business-Besitzer wird in der Business-Info ein Button angezeigt, um die Einnahmen direkt abzubuchen
 - Wirft man eine Glasflasche in der Nähe eines Shops weg, wird diese als Pfand abgegeben
-- Es wird angezeigt wie lang der Cooldown für Bandagen, Schmerzpillen und Absorption ist
+- Es wird angezeigt, wie lang der Cooldown für Bandagen und Schmerzpillen ist
 - Es werden Sounds abgespielt für Notrufe, Bomben, Feuer, Staatsbankraub und weitere Situationen
 - Über der Hungerleiste wird der Durst angezeigt
-- Mit einem Rechtsklick, während man schleicht, kann man bewusstlosen Personen Erste-Hilfe geben
-- Über dem Spielernamen wird eine Information angezeigt, wenn ein Spieler AFK oder im A-Duty ist
+- Über den Spielernamen wird AFK angezeigt, wenn der Spieler AFK ist
 - Für Teammitglieder wird eine Warnung angezeigt, wenn sie sich im Admindienst befinden und eine Waffe in der Hand haben
-- Hinter der Nachricht, dass sich das Karma geändert hat, wird angezeigt, wie viel Karma man insgesamt besitzt und wann ein Spieler despawnen sollte (falls das Karma durch einen Kill geändert wurde)
 - Bei der Mieterübersicht wird angezeigt wie lang ein Mieter offline ist und ein Button um diesen zu kündigen
 - Beim Beten wird nach 15 Sekunden automatisch der zweite Befehl ausgeführt
-- Es gibt Benachrichtigungen, wenn ein Spieler den Server betritt oder verlässt, einen Report betritt oder verlässt, den Baumodus betritt oder verlässt und den Admindienst betritt oder verlässt
+- Es gibt Benachrichtigungen, wenn ein Spieler den Server betritt oder verlässt, einen Report betritt oder verlässt, den Baumodus
+  betritt oder verlässt und den Admindienst betritt oder verlässt
 
 ### Auto
 
+- Das zuletzt gefahrene Fahrzeug wird besonders hervorgehoben
 - Beim Suchen seines Fahrzeugs (`/car find`) wird automatisch das erste Fahrzeug ausgewählt
 - Werden die Koordinaten eines Autos angezeigt, wird automatisch eine Navigation zu diesen gestartet
+- Wenn man schleicht und ein Auto rechtsklickt, wird `/checkkfz` ausgeführt
+
+Folgende Funktionen sind nur für Spieler ohne Premium-Rang verfügbar, da Spieler mit Premium diese Funktion vom Server aus können:
 - Das Auf-/Abschließen eines Fahrzeuges wurde teilweise automatisiert (automatisches Klicken des Items im Inventar)
 - Beim Rechtsklick auf das eigene Fahrzeug wird automatisch `/car lock` ausgeführt
 - Steigt man in ein Fahrzeug ein, wird dieses automatisch gestartet und abgeschlossen
-- Das zuletzt gefahrene Fahrzeug wird mit einem Symbol markiert
 
 ### Fraktionen
 
-- Für bewusstlose Spieler wird hinter dem Spielernamen ein Symbol angezeigt, um die dazugehörige Fraktion zu erkennen
-- Sollte ein Spieler Contract, auf der Blacklist stehen, Hausverbot oder Wanted-Punkte haben, wird der Name dementsprechend eingefärbt
-  und in der Spielerliste angezeigt
 - Das Design der Reinforcements ist so überarbeitet, dass diese besser auffallen
-- Für das FBI, die Polizei und den Rettungsdienst gibt es einen Timer, der die Dauer der Bombe anzeigt
-- Mit einem Rechtsklick auf ein Fraktionstor (nicht Fraktionstür) wird dieses automatisch geöffnet oder geschlossen
 - Für den Rettungsdienst wird der Cooldown von Bandagen und Schmerzpillen unter dem Spielernamen angezeigt
-- Wenn man den Navi-Punkt eines Notrufs erreicht, wird der Notruf automatisch als erledigt markiert
 - Der Fraktionschat kann individuell eingefärbt werden
-- Eine Plantage kann direkt durch gleichzeitiges Schleichen und Klicken mit einem Samen in der Hand gelegt werden
-- Eine Plantage kann durch einen Rechtsklick mit einem Wassereimer oder Dünger direkt gewässert beziehungsweise gedüngt werden
-- Der Rettungsdienst kann durch einen Rechtsklick auf eine bewusstlose Person diese wiederbeleben
-- Mit `/fbank einzahlen <Betrag> <Grund>` kann das Eingabe GUI des Servers übersprungen werden
+- Für den Rettungsdienst gibt es im Herstellungs-Inventar für Medikamente einen Button, um die benötigte Anzahl an Stoffen in den
+  Fraktionschat zu senden
+- Für den Dealer und Schwarzmarkt wird (in der Übersicht) angezeigt, an welchem Ort der Händler gefunden wurde
 
 ### Jobs
 
@@ -56,8 +52,9 @@ reibungsloser und angenehmer gestalten.
 - Der Müllmann-Job gibt am Ende den gesammelten Müll automatisch ab, ohne dass der `/dropwaste` Command ausgeführt werden muss
 - Für den Pizzalieferanten-Job wird `/getpizza` automatisch ausgeführt, bis 10 Pizzen gesammelt wurden
 - Es werden Countdowns angezeigt, bis ein Job wieder ausgeführt werden kann
-- Bei der Abgabe von Uran am Atomkraftwerk muss man nicht mehr aus dem Auto aussteigen
 - Aktive Mining XP-Booster werden angezeigt
+- Das Angel-Captcha wird zusätzlich in der Mitte des Bildschirms angezeigt, damit es nicht vom Chat verdeckt wird
+- Nach der erfolgreichen Eingabe des Angel-Captchas wird die Angel automatisch wieder ausgeworfen
 
 ### Widgets
 
@@ -73,11 +70,8 @@ reibungsloser und angenehmer gestalten.
 | Befehl                            | Beschreibung                                                                                                    |
 |-----------------------------------|-----------------------------------------------------------------------------------------------------------------|
 | `/ucutils (<sync>)`               | Zeigt nützliche Status-Informationen über das Projekt an oder startet eine Synchronisierung                     |
-| `/mi`                             | Alias für `/memberinfo`                                                                                         |
-| `/mia`                            | Alias für `/memberinfoall`                                                                                      |
 | `/screenshot`                     | Erstellt einen Screenshot in einer bestimmten Kategorie                                                         |
 | `/shutdown <friedhof\|gefängnis>` | Aktiviert das automatische Herunterfahren des PCs nachdem man nicht mehr auf dem Friedhof oder im Gefängnis ist |
-| `/selldrugall` `/sda`             | Verkauft alle illegalen Drogen für 0$ an den angegebenen Spieler (Pulver, Kräuter, Kristalle und Wundertüten)   |
 
 **Chat**
 
@@ -86,27 +80,3 @@ reibungsloser und angenehmer gestalten.
 | `/ff`  | Aktiviert und deaktiviert das dauerhafte Schreiben im F-Chat ohne den `/f` Befehl jedes Mal eingeben zu müssen |
 | `/dd`  | Aktiviert und deaktiviert das dauerhafte Schreiben im D-Chat ohne den `/d` Befehl jedes Mal eingeben zu müssen |
 | `/ww`  | Aktiviert und deaktiviert das dauerhafte Flüstern ohne den `/w` Befehl jedes Mal eingeben zu müssen            |
-
-**Fraktionen**
-
-| Befehl                 | Beschreibung                                                                                                                                      |
-|------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------|
-| `/eigenbedarf`         | Nimmt eine eingestellte Menge an Drogen aus der Drogenbank einer Fraktion oder gibt diese an einen Spieler                                        |
-| `/schwarzmarkt`        | Zeigt alle Schwarzmärkte an einschließlich des Zeitpunkts des letzten Besuchs des Ortes und einer Markierung ob sich der Schwarzmarkt dort befand |
-| `/dealer`              | Zeigt alle Dealer an einschließlich des Zeitpunkts des letzten Besuchs des Ortes und einer Markierung ob sich der Dealer dort befand              |
-| `/dbankdropall` `/dda` | Legt alle Drogen in die Drogenbank der Fraktion (Pulver, Kräuter, Kristalle und Wundertüten)                                                      |
-
-**Geld**
-
-| Befehl                 | Beschreibung                                                                                                                                                                            |
-|------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `/einzahlen (<force>)` | Zahlt das gesamte Bargeld in den ATM in der Nähe ein                                                                                                                                    |
-| `/adropmoney`          | Bucht für den Geldtransport-Job so viel Geld vom Konto ab, sodass das Geld vom Geldtransport-Job in den ATM eingezahlt werden kann und bucht das Geld anschließend zurück auf das Konto |
-
-**Handy**
-
-| Befehl                            | Beschreibung                                                             |
-|-----------------------------------|--------------------------------------------------------------------------|
-| `/acall <Spielername>`            | Ermöglicht das Anrufen mittels Spielername statt der Nummer              |
-| `/asms <Spielername> <Nachricht>` | Ermöglicht das Schreiben einer SMS mittels Spielername statt der Nummer  |
-| `/reply <Nachricht>`              | Antwortet direkt auf eine SMS                                            |

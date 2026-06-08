@@ -73,12 +73,7 @@ public class SyncService {
         Faction faction = storage.getFaction(player.getStringifiedName());
         switch (faction) {
             case FBI, POLIZEI -> commandService.sendCommandWithHiddenOutput("wanteds");
-            case MERCENARY -> commandService.sendCommandWithHiddenOutput("contractlist");
-            case RETTUNGSDIENST -> commandService.sendCommandWithHiddenOutput("hausverbot");
             default -> {
-                if (faction.isBadFaction()) {
-                    commandService.sendCommandWithHiddenOutput("blacklist");
-                }
             }
         }
     }

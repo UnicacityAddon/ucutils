@@ -2,7 +2,6 @@ package de.rettichlp.ucutils.listener.impl;
 
 import de.rettichlp.ucutils.common.models.Countdown;
 import de.rettichlp.ucutils.common.registry.UCUtilsListener;
-import de.rettichlp.ucutils.listener.IAbsorptionGetListener;
 import de.rettichlp.ucutils.listener.IMessageReceiveListener;
 import de.rettichlp.ucutils.listener.ITickListener;
 import net.minecraft.network.ClientConnection;
@@ -20,7 +19,6 @@ import static de.rettichlp.ucutils.UCUtils.configuration;
 import static de.rettichlp.ucutils.UCUtils.nameTagService;
 import static de.rettichlp.ucutils.UCUtils.player;
 import static de.rettichlp.ucutils.UCUtils.storage;
-import static de.rettichlp.ucutils.UCUtils.utilService;
 import static de.rettichlp.ucutils.common.models.ShutdownReason.CEMETERY;
 import static de.rettichlp.ucutils.common.models.ShutdownReason.JAIL;
 import static java.lang.Double.parseDouble;
@@ -36,10 +34,9 @@ import static net.minecraft.util.Formatting.GRAY;
 import static net.minecraft.util.Formatting.RED;
 
 @UCUtilsListener
-public class PlayerListener implements IAbsorptionGetListener, IMessageReceiveListener, ITickListener {
+public class PlayerListener implements IMessageReceiveListener, ITickListener {
 
     private static final String SHUTDOWN_TIMEOUT = "5";
-    private static final int PRAY_DELAY_IN_SECONDS = 30;
 
     // dead
     private static final Pattern DEAD_PATTERN = compile("^Du bist nun für (?<minutes>\\d+) Minuten auf dem Friedhof\\.$");
@@ -56,17 +53,12 @@ public class PlayerListener implements IAbsorptionGetListener, IMessageReceiveLi
     private static final Pattern JAIL_PATTERN = compile("^\\[Gefängnis] Du bist nun für (?<minutes>\\d+) Minuten im Gefängnis\\.$");
     private static final Pattern JAIL_UNJAIL_PATTERN = compile("^\\[Gefängnis] Du bist nun wieder frei!$");
 
-    // pray
-    private static final Pattern PRAY_START_PATTERN = compile("^\\[Kirche] Du fängst an für (?:\\[UC])?(?<playerName>[a-zA-Z0-9_]+) zu beten\\.$");
+    // premium
+    private static final Pattern PREMIUM_PATTERN = compile("^\\[Premium] Dein Premium Account ist noch .+ aktiv\\.$");
 
     // requests
     private static final Pattern ACCEPT_PATTERN = compile("^\\[Deal] (?:\\[UC])?(?<playerName>[a-zA-Z0-9_]+) hat den Deal angenommen\\.$");
     private static final Pattern DECLINE_PATTERN = compile("^\\[Deal] (?:\\[UC])?(?<playerName>[a-zA-Z0-9_]+) hat das Angebot abgelehnt\\.$");
-
-    @Override
-    public void onAbsorptionGet() {
-        storage.getCountdowns().add(new Countdown("Absorption", ofMinutes(3)));
-    }
 
     @Override
     public boolean onMessageReceive(Text text, String message) {
@@ -143,9 +135,9 @@ public class PlayerListener implements IAbsorptionGetListener, IMessageReceiveLi
             return true;
         }
 
-        Matcher prayStartMatcher = PRAY_START_PATTERN.matcher(message);
-        if (prayStartMatcher.find()) {
-            utilService.delayedAction(() -> commandService.sendCommand("beten"), PRAY_DELAY_IN_SECONDS * 1000L);
+        Matcher premiumMatcher = PREMIUM_PATTERN.matcher(message);
+        if (premiumMatcher.find()) {
+            storage.setPremium(true);
             return true;
         }
 

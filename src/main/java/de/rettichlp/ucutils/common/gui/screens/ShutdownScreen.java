@@ -1,11 +1,11 @@
 package de.rettichlp.ucutils.common.gui.screens;
 
 import de.rettichlp.ucutils.common.models.ShutdownReason;
+import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.gui.widget.DirectionalLayoutWidget;
 import net.minecraft.client.gui.widget.TextWidget;
 import net.minecraft.text.Text;
 
-import static de.rettichlp.ucutils.UCUtils.renderService;
 import static de.rettichlp.ucutils.UCUtils.storage;
 import static net.minecraft.client.gui.widget.DirectionalLayoutWidget.vertical;
 import static net.minecraft.text.Text.empty;
@@ -44,7 +44,7 @@ public class ShutdownScreen extends UCUtilsScreen {
         directionalLayoutWidget.add(new TextWidget(empty()
                 .append(of("wird das automatische Herunterfahren gestoppt.").copy().formatted(GRAY)), this.textRenderer), positioner -> positioner.marginBottom(16));
 
-        renderService.addButton(directionalLayoutWidget, BUTTON_SHUTDOWN_ABORT_NAME, button -> close(), 150);
+        directionalLayoutWidget.add(ButtonWidget.builder(BUTTON_SHUTDOWN_ABORT_NAME, button -> close()).width(150).build());
 
         directionalLayoutWidget.forEachChild(this::addDrawableChild);
     }
