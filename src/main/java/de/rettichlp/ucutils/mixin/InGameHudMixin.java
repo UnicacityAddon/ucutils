@@ -36,6 +36,7 @@ import static java.lang.Math.round;
 import static java.lang.System.currentTimeMillis;
 import static java.nio.file.Files.newInputStream;
 import static net.minecraft.client.gl.RenderPipelines.GUI_TEXTURED;
+import static net.minecraft.client.texture.NativeImage.read;
 import static net.minecraft.item.Items.GOLDEN_HOE;
 import static net.minecraft.registry.tag.FluidTags.WATER;
 import static org.spongepowered.asm.mixin.injection.At.Shift.AFTER;
@@ -69,8 +70,8 @@ public abstract class InGameHudMixin {
         }
 
         NativeImage nativeImage;
-        try (InputStream is = newInputStream(Path.of("captcha.png"))) {
-            nativeImage = NativeImage.read(is);
+        try (InputStream is = newInputStream(Path.of("screenshots/ucutils/captcha.png"))) {
+            nativeImage = read(is);
         } catch (Exception e) {
             LOGGER.error("Failed to read captcha image", e);
             return;

@@ -18,6 +18,7 @@ import java.util.regex.Pattern;
 import static de.rettichlp.ucutils.UCUtils.LOGGER;
 import static de.rettichlp.ucutils.UCUtils.player;
 import static de.rettichlp.ucutils.UCUtils.storage;
+import static de.rettichlp.ucutils.UCUtils.utilService;
 import static java.awt.image.BufferedImage.TYPE_INT_RGB;
 import static java.util.regex.Pattern.compile;
 import static javax.imageio.ImageIO.write;
@@ -31,7 +32,7 @@ import static net.minecraft.util.Hand.MAIN_HAND;
 @UCUtilsListener
 public class AnglerListener implements IMessageReceiveListener {
 
-    private static final Pattern ANGLER_CAPTCHA_PATTERN = compile("^\\[AntiBot] Zufällige Überprüfung$");
+    private static final Pattern ANGLER_CAPTCHA_PATTERN = compile("^Lies den Code auf der Karte in deiner Nebenhand ab und schreib ihn in den Chat\\.$");
     private static final Pattern ANGLER_CAPTCHA_CONTINUED_PATTERN = compile("^Deine Combo wurde fortgesetzt! \\(\\d+\\)$");
 
     @Override
@@ -40,15 +41,14 @@ public class AnglerListener implements IMessageReceiveListener {
 
         Matcher anglerCaptchaMatcher = ANGLER_CAPTCHA_PATTERN.matcher(message);
         if (anglerCaptchaMatcher.find()) {
-            ItemStack offHandStack = player.getOffHandStack();
-            if (!offHandStack.isOf(FILLED_MAP)) {
-                return true;
-            }
-
-            MapIdComponent captchaMap = offHandStack.get(MAP_ID);
-            storage.setCaptchaMap(captchaMap);
-
-            saveCaptchaImage(captchaMap);
+            utilService.delayedAction(() -> {
+                ItemStack offHandStack = player.getOffHandStack();
+                if (offHandStack.isOf(FILLED_MAP)) {
+                    MapIdComponent captchaMap = offHandStack.get(MAP_ID);
+                    storage.setCaptchaMap(captchaMap);
+                    saveCaptchaImage(captchaMap);
+                }
+            }, 500);
 
             return true;
         }
