@@ -8,6 +8,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import static de.rettichlp.ucutils.UCUtils.commandService;
+import static de.rettichlp.ucutils.UCUtils.configuration;
 import static de.rettichlp.ucutils.UCUtils.storage;
 import static java.lang.Integer.parseInt;
 import static java.util.regex.Pattern.compile;
@@ -41,7 +42,7 @@ public class CarListener implements IMessageReceiveListener {
         }
 
         Matcher carFindMatcher = CAR_FIND_PATTERN.matcher(message);
-        if (carFindMatcher.find()) {
+        if (carFindMatcher.find() && configuration.getOptions().car().fastFind()) {
             int x = parseInt(carFindMatcher.group("x"));
             int y = parseInt(carFindMatcher.group("y"));
             int z = parseInt(carFindMatcher.group("z"));
