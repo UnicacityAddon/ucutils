@@ -20,11 +20,11 @@ public class MoneyWidget extends AbstractUCUtilsTextWidget<MoneyWidget.Configura
         // with over 100.000$ on bank and PayDay within next 5 minutes, animate text
         return configuration.getMinutesSinceLastPayDay() >= 55 && configuration.getMoneyBankAmount() > 100000 && (currentTimeMillis() / 500 % 2 == 0)
                 ? empty()
-                  .append(keyValue("Geld", configuration.getMoneyCashAmount() + "$")).append(" ")
-                  .append(keyValue("Bank", configuration.getMoneyBankAmount() + "$").withColor(RED.getRGB()))
+                .append(keyValue("Geld", configuration.getMoneyCashAmount() + "$")).append(" ")
+                .append(keyValue("Bank", configuration.getMoneyBankAmount() + "$").withColor(RED.getRGB()))
                 : empty()
-                  .append(keyValue("Geld", configuration.getMoneyCashAmount() + "$")).append(" ")
-                  .append(keyValue("Bank", configuration.getMoneyBankAmount() + "$"));
+                .append(keyValue("Geld", configuration.getMoneyCashAmount() + "$")).append(" ")
+                .append(keyValue("Bank", configuration.getMoneyBankAmount() + "$"));
     }
 
     @Override

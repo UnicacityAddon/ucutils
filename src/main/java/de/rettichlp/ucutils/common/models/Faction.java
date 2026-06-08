@@ -52,9 +52,9 @@ public enum Faction {
     public Text getNameTagSuffix() {
         return this != NULL
                 ? empty()
-                  .append(literal("⌜").copy().formatted(DARK_GRAY))
-                  .append(literal(this.icon).copy().formatted(this.color))
-                  .append(literal("⌟").copy().formatted(DARK_GRAY))
+                .append(literal("⌜").copy().formatted(DARK_GRAY))
+                .append(literal(this.icon).copy().formatted(this.color))
+                .append(literal("⌟").copy().formatted(DARK_GRAY))
                 : empty();
     }
 
