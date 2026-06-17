@@ -12,6 +12,11 @@ repositories {
     // Loom adds the essential maven repositories to download Minecraft and libraries from automatically.
     // See https://docs.gradle.org/current/userguide/declaring_repositories.html
     // for more information about repositories.
+
+    maven {
+        name = "Terraformers"
+        url = uri("https://maven.terraformersmc.com/")
+    }
 }
 
 dependencies {
@@ -26,6 +31,9 @@ dependencies {
     // https://mvnrepository.com/artifact/org.projectlombok/lombok
     compileOnly("org.projectlombok:lombok:1.18.46")
     annotationProcessor("org.projectlombok:lombok:1.18.46")
+
+    // https://github.com/TerraformersMC/ModMenu
+    compileOnly("com.terraformersmc:modmenu:${providers.gradleProperty("modmenu_version").get()}")
 
     // https://github.com/atteo/classindex
     implementation("org.atteo.classindex:classindex:3.13")
