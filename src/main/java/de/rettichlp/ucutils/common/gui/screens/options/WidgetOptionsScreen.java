@@ -4,25 +4,25 @@ import de.rettichlp.ucutils.common.gui.screens.OptionsScreen;
 import de.rettichlp.ucutils.common.gui.screens.components.ToggleButtonWidget;
 import de.rettichlp.ucutils.common.gui.widgets.base.AbstractUCUtilsWidget;
 import de.rettichlp.ucutils.common.gui.widgets.base.IOptionWidget;
-import net.minecraft.client.gui.DrawContext;
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.gui.tooltip.Tooltip;
-import net.minecraft.client.gui.widget.ButtonWidget;
-import net.minecraft.client.gui.widget.DirectionalLayoutWidget;
-import net.minecraft.client.gui.widget.GridWidget;
-import net.minecraft.client.gui.widget.Positioner;
-import net.minecraft.client.gui.widget.TextWidget;
-import net.minecraft.text.Text;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.client.gui.components.Button;
+import net.minecraft.client.gui.components.StringWidget;
+import net.minecraft.client.gui.components.Tooltip;
+import net.minecraft.client.gui.layouts.GridLayout;
+import net.minecraft.client.gui.layouts.LayoutSettings;
+import net.minecraft.client.gui.layouts.LinearLayout;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.network.chat.Component;
 
 import static de.rettichlp.ucutils.UCUtils.renderService;
-import static net.minecraft.client.gui.widget.DirectionalLayoutWidget.vertical;
-import static net.minecraft.text.Text.translatable;
+import static net.minecraft.client.gui.layouts.LinearLayout.vertical;
+import static net.minecraft.network.chat.Component.translatable;
 
 public class WidgetOptionsScreen extends OptionsScreen {
 
-    private static final Text TEXT_WIDGETS = translatable("ucutils.options.text.widgets");
-    private static final Text TEXT_GENERAL = translatable("ucutils.options.text.general");
-    private static final Text TEXT_POSITION = translatable("ucutils.options.text.position");
+    private static final Component TEXT_WIDGETS = translatable("ucutils.options.text.widgets");
+    private static final Component TEXT_GENERAL = translatable("ucutils.options.text.general");
+    private static final Component TEXT_POSITION = translatable("ucutils.options.text.position");
 
     public WidgetOptionsScreen(Screen parent) {
         super(parent, TEXT_WIDGETS, false);
@@ -36,27 +36,27 @@ public class WidgetOptionsScreen extends OptionsScreen {
 
     @Override
     public void initBody() {
-        DirectionalLayoutWidget directionalLayoutWidget = this.layout.addBody(vertical().spacing(4));
+        LinearLayout directionalLayoutWidget = this.layout.addToContents(vertical().spacing(4));
 
         // general
-        directionalLayoutWidget.add(new TextWidget(TEXT_GENERAL, this.textRenderer), Positioner::alignHorizontalCenter);
+        directionalLayoutWidget.addChild(new StringWidget(TEXT_GENERAL, this.font), LayoutSettings::alignHorizontallyCenter);
 
-        directionalLayoutWidget.add(ButtonWidget.builder(TEXT_POSITION, button -> this.client.setScreen(new WidgetOptionsPositionScreen(this))).width(308).build());
+        directionalLayoutWidget.addChild(Button.builder(TEXT_POSITION, button -> this.minecraft.setScreen(new WidgetOptionsPositionScreen(this))).width(308).build());
 
         // general - enable status
-        GridWidget gridWidget = directionalLayoutWidget.add(new GridWidget());
-        gridWidget.setColumnSpacing(8).setRowSpacing(4);
-        GridWidget.Adder gridWidgetAdder = gridWidget.createAdder(2);
+        GridLayout gridLayout = this.layout.addToContents(new GridLayout());
+        gridLayout.columnSpacing(8).rowSpacing(4);
+        GridLayout.RowHelper gridLayoutRowHelper = gridLayout.createRowHelper(2);
 
         renderService.getWidgets().forEach(abstractUCUtilsWidget -> {
-            Text displayName = abstractUCUtilsWidget.getDisplayName();
+            Component displayName = abstractUCUtilsWidget.getDisplayName();
             ToggleButtonWidget toggleButton = new ToggleButtonWidget(displayName, value -> abstractUCUtilsWidget.getWidgetConfiguration().setEnabled(value), abstractUCUtilsWidget.getWidgetConfiguration().isEnabled());
-            toggleButton.setTooltip(Tooltip.of(abstractUCUtilsWidget.getTooltip()));
-            gridWidgetAdder.add(toggleButton);
+            toggleButton.setTooltip(Tooltip.create(abstractUCUtilsWidget.getTooltip()));
+            gridLayoutRowHelper.addChild(toggleButton);
         });
 
-        gridWidget.refreshPositions();
-        gridWidget.forEachChild(this::addDrawableChild);
+        gridLayout.arrangeElements();
+        gridLayout.visitWidgets(this::addRenderableWidget);
 
         // options section per widget
         renderService.getWidgets().stream()
@@ -65,17 +65,18 @@ public class WidgetOptionsScreen extends OptionsScreen {
                     IOptionWidget iOptionWidget = (IOptionWidget) abstractUCUtilsWidget.getWidgetConfiguration();
 
                     // section title
-                    Text text = abstractUCUtilsWidget.getDisplayName();
-                    directionalLayoutWidget.add(new TextWidget(text, this.textRenderer), positioner -> positioner.alignHorizontalCenter().marginTop(16));
+                    Component text = abstractUCUtilsWidget.getDisplayName();
+                    directionalLayoutWidget.addChild(new StringWidget(text, this.font), positioner -> positioner.alignHorizontallyCenter().paddingTop(16));
 
                     // options widget
-                    directionalLayoutWidget.add(iOptionWidget.optionsWidget(), Positioner::alignHorizontalCenter);
+                    directionalLayoutWidget.addChild(iOptionWidget.optionsWidget(), LayoutSettings::alignHorizontallyCenter);
                 });
 
-        directionalLayoutWidget.forEachChild(this::addDrawableChild);
+        directionalLayoutWidget.visitWidgets(this::addRenderableWidget);
     }
 
     // disable background rendering to see overlay better
+
     @Override
-    public void renderBackground(DrawContext context, int mouseX, int mouseY, float delta) {}
+    public void extractBackground(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float a) {}
 }

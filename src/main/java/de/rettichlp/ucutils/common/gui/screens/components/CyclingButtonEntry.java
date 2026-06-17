@@ -1,11 +1,11 @@
 package de.rettichlp.ucutils.common.gui.screens.components;
 
-import net.minecraft.client.gui.tooltip.Tooltip;
-import net.minecraft.text.Text;
+import net.minecraft.client.gui.components.Tooltip;
+import net.minecraft.network.chat.Component;
 
 public interface CyclingButtonEntry {
 
-    Text getDisplayName();
+    Component getDisplayName();
 
     Tooltip getTooltip();
 }
