@@ -2,14 +2,17 @@ package de.rettichlp.ucutils.common.models;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.sound.PositionedSoundInstance;
-import net.minecraft.sound.SoundEvent;
-import net.minecraft.util.Identifier;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.resources.sounds.SimpleSoundInstance;
+import net.minecraft.resources.Identifier;
+import net.minecraft.sounds.SoundEvent;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 
-import static net.minecraft.client.sound.PositionedSoundInstance.master;
+import static de.rettichlp.ucutils.UCUtils.MOD_ID;
+import static net.minecraft.client.resources.sounds.SimpleSoundInstance.forUI;
+import static net.minecraft.resources.Identifier.fromNamespaceAndPath;
+import static net.minecraft.sounds.SoundEvent.createVariableRangeEvent;
 
 @Getter
 @AllArgsConstructor
@@ -28,21 +31,21 @@ public enum Sound {
 
     @Contract(" -> new")
     public @NotNull Identifier getIdentifier() {
-        return Identifier.of("ucutils", this.path);
+        return fromNamespaceAndPath(MOD_ID, this.path);
     }
 
     @Contract(" -> new")
     public @NotNull SoundEvent getSoundEvent() {
-        return SoundEvent.of(getIdentifier());
+        return createVariableRangeEvent(getIdentifier());
     }
 
     public void play() {
-        PositionedSoundInstance positionedSoundInstance = master(getSoundEvent(), 1.0F, 1.0F);
-        MinecraftClient.getInstance().getSoundManager().play(positionedSoundInstance);
+        SimpleSoundInstance simpleSoundInstance = forUI(getSoundEvent(), 1.0F, 1.0F);
+        Minecraft.getInstance().getSoundManager().play(simpleSoundInstance);
     }
 
     public void play(float pitch, float volume) {
-        PositionedSoundInstance positionedSoundInstance = master(getSoundEvent(), pitch, volume);
-        MinecraftClient.getInstance().getSoundManager().play(positionedSoundInstance);
+        SimpleSoundInstance simpleSoundInstance = forUI(getSoundEvent(), pitch, volume);
+        Minecraft.getInstance().getSoundManager().play(simpleSoundInstance);
     }
 }

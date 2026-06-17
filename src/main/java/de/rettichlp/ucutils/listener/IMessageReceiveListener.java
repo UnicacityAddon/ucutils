@@ -1,8 +1,8 @@
 package de.rettichlp.ucutils.listener;
 
-import net.minecraft.text.Text;
+import net.minecraft.network.chat.Component;
 
 public interface IMessageReceiveListener extends IUCUtilsListener {
 
-    boolean onMessageReceive(Text text, String message);
+    boolean onMessageReceive(Component text, String message);
 }

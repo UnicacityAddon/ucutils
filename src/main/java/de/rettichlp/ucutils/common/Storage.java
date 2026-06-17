@@ -11,10 +11,10 @@ import de.rettichlp.ucutils.common.models.WantedEntry;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
-import net.minecraft.component.type.MapIdComponent;
-import net.minecraft.entity.vehicle.MinecartEntity;
-import net.minecraft.text.Text;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.core.Vec3i;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.entity.vehicle.minecart.Minecart;
+import net.minecraft.world.level.saveddata.maps.MapId;
 import org.jetbrains.annotations.Nullable;
 
 import java.time.LocalDateTime;
@@ -29,7 +29,7 @@ import java.util.Set;
 import static de.rettichlp.ucutils.UCUtils.LOGGER;
 import static de.rettichlp.ucutils.common.Storage.ToggledChat.NONE;
 import static de.rettichlp.ucutils.common.models.Faction.NULL;
-import static net.minecraft.text.Text.translatable;
+import static net.minecraft.network.chat.Component.translatable;
 
 public class Storage {
 
@@ -61,12 +61,12 @@ public class Storage {
     @Getter
     @Setter
     @Nullable
-    private Vec3d blackMarketPosition;
+    private Vec3i blackMarketPosition;
 
     @Getter
     @Setter
     @Nullable
-    private MapIdComponent captchaMap;
+    private MapId captchaMap;
 
     @Getter
     @Setter
@@ -84,7 +84,7 @@ public class Storage {
     @Getter
     @Setter
     @Nullable
-    private Vec3d dealerPosition;
+    private Vec3i dealerPosition;
 
     @Getter
     @Setter
@@ -96,7 +96,7 @@ public class Storage {
 
     @Getter
     @Setter
-    private MinecartEntity minecartEntityToHighlight;
+    private Minecart minecartEntityToHighlight;
 
     @Getter
     @Setter
@@ -188,6 +188,6 @@ public class Storage {
         W_CHAT("w", translatable("ucutils.notification.toggled_chat.w"));
 
         private final String command;
-        private final Text toggleMessage;
+        private final Component toggleMessage;
     }
 }

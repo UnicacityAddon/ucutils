@@ -1,9 +1,9 @@
 package de.rettichlp.ucutils.common.services;
 
-import net.minecraft.scoreboard.Team;
-import net.minecraft.text.MutableText;
-import net.minecraft.text.Text;
-import net.minecraft.util.Formatting;
+import net.minecraft.ChatFormatting;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.world.scores.Team;
 import org.jetbrains.annotations.NotNull;
 
 import java.time.Duration;
@@ -13,49 +13,49 @@ import static de.rettichlp.ucutils.UCUtils.networkHandler;
 import static de.rettichlp.ucutils.UCUtils.storage;
 import static java.time.Duration.between;
 import static java.time.LocalDateTime.now;
-import static net.minecraft.scoreboard.AbstractTeam.CollisionRule.NEVER;
-import static net.minecraft.text.Text.empty;
-import static net.minecraft.text.Text.literal;
-import static net.minecraft.util.Formatting.BLUE;
-import static net.minecraft.util.Formatting.BOLD;
-import static net.minecraft.util.Formatting.DARK_GRAY;
-import static net.minecraft.util.Formatting.DARK_GREEN;
-import static net.minecraft.util.Formatting.DARK_RED;
-import static net.minecraft.util.Formatting.GOLD;
-import static net.minecraft.util.Formatting.GRAY;
-import static net.minecraft.util.Formatting.GREEN;
-import static net.minecraft.util.Formatting.RED;
-import static net.minecraft.util.Formatting.YELLOW;
+import static net.minecraft.ChatFormatting.BLUE;
+import static net.minecraft.ChatFormatting.BOLD;
+import static net.minecraft.ChatFormatting.DARK_GRAY;
+import static net.minecraft.ChatFormatting.DARK_GREEN;
+import static net.minecraft.ChatFormatting.DARK_RED;
+import static net.minecraft.ChatFormatting.GOLD;
+import static net.minecraft.ChatFormatting.GRAY;
+import static net.minecraft.ChatFormatting.GREEN;
+import static net.minecraft.ChatFormatting.RED;
+import static net.minecraft.ChatFormatting.YELLOW;
+import static net.minecraft.network.chat.Component.empty;
+import static net.minecraft.network.chat.Component.literal;
+import static net.minecraft.world.scores.Team.CollisionRule.NEVER;
 
 public class NameTagService {
 
-    public static final MutableText AFK_TAG = literal("ᴀꜰᴋ").formatted(GOLD, BOLD);
+    public static final Component AFK_TAG = literal("ᴀꜰᴋ").withStyle(GOLD, BOLD);
 
-    private static final MutableText A_DUTY_PREFIX = empty()
-            .append(literal("[").formatted(DARK_GRAY))
-            .append(literal("UC").formatted(BLUE))
-            .append(literal("]").formatted(DARK_GRAY));
+    private static final Component A_DUTY_PREFIX = empty()
+            .append(literal("[").withStyle(DARK_GRAY))
+            .append(literal("UC").withStyle(BLUE))
+            .append(literal("]").withStyle(DARK_GRAY));
 
     public boolean isAfk(String targetName) {
-        return networkHandler.getPlayerList().stream()
+        return networkHandler.getOnlinePlayers().stream()
                 .filter(entry -> entry.getProfile().name().equals(targetName))
                 .anyMatch(entry -> {
-                    Team team = entry.getScoreboardTeam();
+                    Team team = entry.getTeam();
                     return team != null && !isADuty(targetName) && team.getCollisionRule() == NEVER;
                 });
     }
 
     public boolean isADuty(String targetName) {
-        return networkHandler.getPlayerList().stream()
+        return networkHandler.getOnlinePlayers().stream()
                 .filter(entry -> entry.getProfile().name().equals(targetName))
                 .anyMatch(entry -> {
-                    Text displayName = entry.getDisplayName();
+                    Component displayName = entry.getTabListDisplayName();
                     return displayName != null && displayName.contains(A_DUTY_PREFIX);
                 });
     }
 
-    public @NotNull Formatting getWantedPointColor(int wantedPointAmount) {
-        Formatting color;
+    public @NotNull ChatFormatting getWantedPointColor(int wantedPointAmount) {
+        ChatFormatting color;
 
         if (wantedPointAmount >= 60) {
             color = DARK_RED;
@@ -73,15 +73,15 @@ public class NameTagService {
         return color;
     }
 
-    public MutableText getMedicInformation(String playerName) {
-        MutableText text = empty();
+    public Component getMedicInformation(String playerName) {
+        MutableComponent text = empty();
 
         LocalDateTime bandageCooldownExpiration = storage.getMedicBandageCooldowns().getOrDefault(playerName, now());
         Duration bandageExpirationDuration = between(now(), bandageCooldownExpiration);
         if (bandageExpirationDuration.isPositive()) {
             text
-                    .append(literal("Bandage").formatted(GRAY))
-                    .append(literal(": ").formatted(DARK_GRAY))
+                    .append(literal("Bandage").withStyle(GRAY))
+                    .append(literal(": ").withStyle(DARK_GRAY))
                     .append(literal(bandageExpirationDuration.toSeconds() + "s"));
         }
 
@@ -93,8 +93,8 @@ public class NameTagService {
             }
 
             text
-                    .append(literal("Schmerzpille").formatted(GRAY))
-                    .append(literal(": ").formatted(DARK_GRAY))
+                    .append(literal("Schmerzpille").withStyle(GRAY))
+                    .append(literal(": ").withStyle(DARK_GRAY))
                     .append(literal(pillExpirationDuration.toSeconds() + "s"));
         }
 

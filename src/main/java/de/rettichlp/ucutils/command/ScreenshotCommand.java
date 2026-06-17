@@ -5,8 +5,9 @@ import de.rettichlp.ucutils.common.models.ScreenshotType;
 import de.rettichlp.ucutils.common.registry.CommandBase;
 import de.rettichlp.ucutils.common.registry.UCUtilsCommand;
 import net.fabricmc.fabric.api.client.command.v2.FabricClientCommandSource;
-import net.minecraft.text.ClickEvent;
-import net.minecraft.text.HoverEvent;
+import net.minecraft.network.chat.ClickEvent;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.HoverEvent;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
@@ -20,14 +21,13 @@ import static de.rettichlp.ucutils.UCUtils.player;
 import static java.lang.String.valueOf;
 import static java.nio.file.Files.list;
 import static java.util.Arrays.stream;
-import static net.fabricmc.fabric.api.client.command.v2.ClientCommandManager.argument;
-import static net.minecraft.command.CommandSource.suggestMatching;
-import static net.minecraft.text.Text.empty;
-import static net.minecraft.text.Text.of;
-import static net.minecraft.util.Formatting.AQUA;
-import static net.minecraft.util.Formatting.DARK_AQUA;
-import static net.minecraft.util.Formatting.DARK_GRAY;
-import static net.minecraft.util.Formatting.GRAY;
+import static net.fabricmc.fabric.api.client.command.v2.ClientCommands.argument;
+import static net.minecraft.ChatFormatting.AQUA;
+import static net.minecraft.ChatFormatting.DARK_AQUA;
+import static net.minecraft.ChatFormatting.DARK_GRAY;
+import static net.minecraft.ChatFormatting.GRAY;
+import static net.minecraft.commands.SharedSuggestionProvider.suggest;
+import static net.minecraft.network.chat.Component.empty;
 
 @UCUtilsCommand(label = "screenshot")
 public class ScreenshotCommand extends CommandBase {
@@ -36,13 +36,13 @@ public class ScreenshotCommand extends CommandBase {
     public LiteralArgumentBuilder<FabricClientCommandSource> execute(@NotNull LiteralArgumentBuilder<FabricClientCommandSource> node) {
         return node
                 .then(argument("screenshotType", greedyString())
-                        .suggests((context, builder) -> suggestMatching(stream(ScreenshotType.values()).map(ScreenshotType::getDisplayName).toList(), builder))
+                        .suggests((context, builder) -> suggest(stream(ScreenshotType.values()).map(ScreenshotType::getDisplayName).toList(), builder))
                         .executes(context -> {
                             // placeholder method: implemented as mixin in ChatScreenMixin
                             return 1;
                         }))
                 .executes(context -> {
-                    player.sendMessage(empty(), false);
+                    player.sendSystemMessage(empty());
                     messageService.sendModMessage("Screenshots:", false);
 
                     for (ScreenshotType screenshotType : ScreenshotType.values()) {
@@ -56,17 +56,17 @@ public class ScreenshotCommand extends CommandBase {
                         }
 
                         messageService.sendModMessage(empty()
-                                .append(of(screenshotType.getDisplayName()).copy().formatted(GRAY))
-                                .append(of(":").copy().formatted(DARK_GRAY)).append(" ")
-                                .append(of(valueOf(fileCount)))
-                                .append(of(" ↗").copy().styled(style -> style
+                                .append(Component.literal(screenshotType.getDisplayName()).withStyle(GRAY))
+                                .append(Component.literal(":").withStyle(DARK_GRAY)).append(" ")
+                                .append(Component.literal(valueOf(fileCount)))
+                                .append(Component.literal(" ↗").withStyle(style -> style
                                         .withColor(AQUA)
                                         .withBold(true)
-                                        .withHoverEvent(new HoverEvent.ShowText(of("Ordner öffnen").copy().formatted(DARK_AQUA)))
+                                        .withHoverEvent(new HoverEvent.ShowText(Component.literal("Ordner öffnen").withStyle(DARK_AQUA)))
                                         .withClickEvent(new ClickEvent.OpenFile(screenshotDirectory.getAbsolutePath())))), false);
                     }
 
-                    player.sendMessage(empty(), false);
+                    player.sendSystemMessage(empty());
                     return 1;
                 });
     }

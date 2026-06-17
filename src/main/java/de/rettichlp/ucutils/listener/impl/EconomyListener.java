@@ -2,10 +2,10 @@ package de.rettichlp.ucutils.listener.impl;
 
 import de.rettichlp.ucutils.common.registry.UCUtilsListener;
 import de.rettichlp.ucutils.listener.IMessageReceiveListener;
-import net.minecraft.text.ClickEvent;
-import net.minecraft.text.HoverEvent;
-import net.minecraft.text.MutableText;
-import net.minecraft.text.Text;
+import net.minecraft.network.chat.ClickEvent;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.HoverEvent;
+import net.minecraft.network.chat.MutableComponent;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,9 +24,9 @@ import static java.lang.Math.max;
 import static java.lang.System.currentTimeMillis;
 import static java.util.Optional.ofNullable;
 import static java.util.regex.Pattern.compile;
-import static net.minecraft.text.Text.of;
-import static net.minecraft.util.Formatting.GRAY;
-import static net.minecraft.util.Formatting.UNDERLINE;
+import static net.minecraft.ChatFormatting.GRAY;
+import static net.minecraft.ChatFormatting.UNDERLINE;
+import static net.minecraft.network.chat.Component.literal;
 
 @UCUtilsListener
 public class EconomyListener implements IMessageReceiveListener {
@@ -74,7 +74,7 @@ public class EconomyListener implements IMessageReceiveListener {
     private long lastMedicReviveAction = 0;
 
     @Override
-    public boolean onMessageReceive(Text text, String message) {
+    public boolean onMessageReceive(Component text, String message) {
         Matcher bankStatementMatcher = BANK_STATEMENT_PATTERN.matcher(message);
         if (bankStatementMatcher.find()) {
             int amount = parseInt(bankStatementMatcher.group("amount"));
@@ -285,14 +285,14 @@ public class EconomyListener implements IMessageReceiveListener {
         if (businessCashMatcher.find()) {
             String amountString = businessCashMatcher.group(1);
 
-            MutableText appendedText = text.copy().append(" ")
-                    .append(of("Geld entnehmen").copy().formatted(GRAY, UNDERLINE))
-                    .styled(style -> style
+            MutableComponent appendedText = text.copy().append(" ")
+                    .append(literal("Geld entnehmen").withStyle(GRAY, UNDERLINE))
+                    .withStyle(style -> style
                             .withClickEvent(new ClickEvent.RunCommand("/biz kasse get " + amountString))
-                            .withHoverEvent(new HoverEvent.ShowText(of("Klicke, um " + amountString + "$ aus der Kasse zu nehmen.")))
+                            .withHoverEvent(new HoverEvent.ShowText(literal("Klicke, um " + amountString + "$ aus der Kasse zu nehmen.")))
                     );
 
-            player.sendMessage(appendedText, false);
+            player.sendSystemMessage(appendedText);
             return false;
         }
 

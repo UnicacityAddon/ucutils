@@ -2,27 +2,27 @@ package de.rettichlp.ucutils.common.models;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import net.minecraft.text.Text;
-import net.minecraft.util.Formatting;
+import net.minecraft.ChatFormatting;
+import net.minecraft.network.chat.Component;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Optional;
 
 import static java.util.Arrays.stream;
-import static net.minecraft.text.Text.empty;
-import static net.minecraft.text.Text.literal;
-import static net.minecraft.util.Formatting.BLUE;
-import static net.minecraft.util.Formatting.DARK_AQUA;
-import static net.minecraft.util.Formatting.DARK_BLUE;
-import static net.minecraft.util.Formatting.DARK_GRAY;
-import static net.minecraft.util.Formatting.DARK_PURPLE;
-import static net.minecraft.util.Formatting.DARK_RED;
-import static net.minecraft.util.Formatting.GOLD;
-import static net.minecraft.util.Formatting.GRAY;
-import static net.minecraft.util.Formatting.GREEN;
-import static net.minecraft.util.Formatting.LIGHT_PURPLE;
-import static net.minecraft.util.Formatting.RED;
-import static net.minecraft.util.Formatting.YELLOW;
+import static net.minecraft.ChatFormatting.BLUE;
+import static net.minecraft.ChatFormatting.DARK_AQUA;
+import static net.minecraft.ChatFormatting.DARK_BLUE;
+import static net.minecraft.ChatFormatting.DARK_GRAY;
+import static net.minecraft.ChatFormatting.DARK_PURPLE;
+import static net.minecraft.ChatFormatting.DARK_RED;
+import static net.minecraft.ChatFormatting.GOLD;
+import static net.minecraft.ChatFormatting.GRAY;
+import static net.minecraft.ChatFormatting.GREEN;
+import static net.minecraft.ChatFormatting.LIGHT_PURPLE;
+import static net.minecraft.ChatFormatting.RED;
+import static net.minecraft.ChatFormatting.YELLOW;
+import static net.minecraft.network.chat.Component.empty;
+import static net.minecraft.network.chat.Component.literal;
 
 @Getter
 @AllArgsConstructor
@@ -46,15 +46,15 @@ public enum Faction {
     private final String displayName;
     private final String apiKey;
     private final boolean isBadFaction;
-    private final Formatting color;
+    private final ChatFormatting color;
     private final String icon;
 
-    public Text getNameTagSuffix() {
+    public Component getNameTagSuffix() {
         return this != NULL
                 ? empty()
-                .append(literal("⌜").copy().formatted(DARK_GRAY))
-                .append(literal(this.icon).copy().formatted(this.color))
-                .append(literal("⌟").copy().formatted(DARK_GRAY))
+                .append(literal("⌜").withStyle(DARK_GRAY))
+                .append(literal(this.icon).withStyle(this.color))
+                .append(literal("⌟").withStyle(DARK_GRAY))
                 : empty();
     }
 
