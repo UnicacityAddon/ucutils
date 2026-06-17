@@ -1,8 +1,8 @@
 package de.rettichlp.ucutils.common.gui.widgets.base;
 
-import net.minecraft.client.gui.widget.Widget;
+import net.minecraft.client.gui.layouts.LayoutElement;
 
 public interface IOptionWidget {
 
-    Widget optionsWidget();
+    LayoutElement optionsWidget();
 }

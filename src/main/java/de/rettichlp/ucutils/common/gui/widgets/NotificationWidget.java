@@ -4,26 +4,26 @@ import de.rettichlp.ucutils.common.gui.widgets.base.AbstractUCUtilsProgressTextW
 import de.rettichlp.ucutils.common.gui.widgets.base.UCUtilsWidget;
 import de.rettichlp.ucutils.common.gui.widgets.base.UCUtilsWidgetConfiguration;
 import lombok.RequiredArgsConstructor;
-import net.minecraft.text.Text;
+import net.minecraft.network.chat.Component;
 
 import java.awt.Color;
 import java.time.LocalDateTime;
 
 import static java.time.LocalDateTime.now;
 import static java.time.temporal.ChronoUnit.MILLIS;
-import static net.minecraft.text.Text.empty;
+import static net.minecraft.network.chat.Component.empty;
 
 @RequiredArgsConstructor
 @UCUtilsWidget(registryName = "notification")
 public class NotificationWidget extends AbstractUCUtilsProgressTextWidget<NotificationWidget.Configuration> {
 
-    private final Text text;
+    private final Component text;
     private final Color borderColor;
     private final LocalDateTime creationTime;
     private final long durationInMillis;
 
     @Override
-    public Text text() {
+    public Component text() {
         return this.text;
     }
 
@@ -38,12 +38,12 @@ public class NotificationWidget extends AbstractUCUtilsProgressTextWidget<Notifi
     }
 
     @Override
-    public Text getDisplayName() {
+    public Component getDisplayName() {
         return empty();
     }
 
     @Override
-    public Text getTooltip() {
+    public Component getTooltip() {
         return empty();
     }
 
