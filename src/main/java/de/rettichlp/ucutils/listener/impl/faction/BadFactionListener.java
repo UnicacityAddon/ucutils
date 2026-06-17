@@ -2,11 +2,10 @@ package de.rettichlp.ucutils.listener.impl.faction;
 
 import de.rettichlp.ucutils.common.registry.UCUtilsListener;
 import de.rettichlp.ucutils.listener.IMessageReceiveListener;
-import net.minecraft.core.BlockPos;
-import net.minecraft.core.Vec3i;
 import net.minecraft.network.chat.ClickEvent;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.world.phys.Vec3;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -28,8 +27,8 @@ public class BadFactionListener implements IMessageReceiveListener {
     public boolean onMessageReceive(Component text, String message) {
         Matcher blackMarketDealerEntryMatcher = BLACK_MARKET_DEALER_ENTRY_PATTERN.matcher(message);
         if (blackMarketDealerEntryMatcher.find()) {
-            Vec3i blackMarketPosition = storage.getBlackMarketPosition();
-            Vec3i dealerPosition = storage.getDealerPosition();
+            Vec3 blackMarketPosition = storage.getBlackMarketPosition();
+            Vec3 dealerPosition = storage.getDealerPosition();
 
             // extract location from message
             Component last = text.getSiblings().getLast();
@@ -44,9 +43,9 @@ public class BadFactionListener implements IMessageReceiveListener {
                 return true;
             }
 
-            Vec3i extractedPosition = new BlockPos(parseInt(locationPieces[0]), parseInt(locationPieces[1]), parseInt(locationPieces[2]));
+            Vec3 extractedPosition = new Vec3(parseInt(locationPieces[0]), parseInt(locationPieces[1]), parseInt(locationPieces[2]));
 
-            if ((blackMarketPosition != null && extractedPosition.distSqr(blackMarketPosition) < 5) || (dealerPosition != null && extractedPosition.distSqr(dealerPosition) < 5)) {
+            if ((blackMarketPosition != null && extractedPosition.distanceToSqr(blackMarketPosition) < 5) || (dealerPosition != null && extractedPosition.distanceToSqr(dealerPosition) < 5)) {
                 MutableComponent text1 = text.copy().append(literal(" ⯐").withStyle(DARK_RED, BOLD));
                 player.sendSystemMessage(text1);
                 return false;

@@ -73,7 +73,7 @@ public class NameTagService {
         return color;
     }
 
-    public Component getMedicInformation(String playerName) {
+    public MutableComponent getMedicInformation(String playerName) {
         MutableComponent text = empty();
 
         LocalDateTime bandageCooldownExpiration = storage.getMedicBandageCooldowns().getOrDefault(playerName, now());

@@ -5,8 +5,8 @@ import de.rettichlp.ucutils.listener.IMessageReceiveListener;
 import de.rettichlp.ucutils.listener.INaviSpotReachedListener;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import net.minecraft.text.Text;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.Component;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Unmodifiable;
 
@@ -38,7 +38,7 @@ public class DeepSeaFisherListener implements IMessageReceiveListener, INaviSpot
     private boolean canCatchFish = true;
 
     @Override
-    public boolean onMessageReceive(Text text, String message) {
+    public boolean onMessageReceive(Component text, String message) {
         Matcher deepSeaFisherStartMatcher = DEEP_SEA_FISHER_START_PATTERN.matcher(message);
         if (deepSeaFisherStartMatcher.find()) {
             this.visitedDeepSeaFisherJobSpots = new ArrayList<>();
@@ -106,8 +106,8 @@ public class DeepSeaFisherListener implements IMessageReceiveListener, INaviSpot
     private @NotNull Optional<DeepSeaFisherJobSpot> getNearestFisherJobSpot(@NotNull Collection<DeepSeaFisherJobSpot> deepSeaFisherJobSpots) {
         return deepSeaFisherJobSpots.stream()
                 .min((spot1, spot2) -> {
-                    double distance1 = player.squaredDistanceTo(spot1.getPosition().getX(), spot1.getPosition().getY(), spot1.getPosition().getZ());
-                    double distance2 = player.squaredDistanceTo(spot2.getPosition().getX(), spot2.getPosition().getY(), spot2.getPosition().getZ());
+                    double distance1 = player.distanceToSqr(spot1.getPosition().getX(), spot1.getPosition().getY(), spot1.getPosition().getZ());
+                    double distance2 = player.distanceToSqr(spot2.getPosition().getX(), spot2.getPosition().getY(), spot2.getPosition().getZ());
                     return compare(distance1, distance2);
                 });
     }

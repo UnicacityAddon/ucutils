@@ -5,7 +5,7 @@
   "mixins": [
     "EntityMixin",
     "ItemStackMixin",
-    "MinecartEntityMixin"
+    "MinecartMixin"
   ],
   "injectors": {
     "defaultRequire": 1
@@ -14,14 +14,14 @@
     "requireAnnotations": true
   },
   "client": [
-    "AbstractMinecartEntityRendererMixin",
+    "AbstractContainerScreenMixin",
+    "AbstractMinecartRendererMixin",
     "ChatScreenMixin",
     "ClientPlayerEntityMixin",
     "ClientPlayNetworkHandlerMixin",
+    "EntityRendererMixin",
     "GameMenuScreenMixin",
-    "HandledScreenMixin",
-    "InGameHudMixin",
-    "PlayerEntityRendererMixin",
-    "PlayerListHudMixin"
+    "GuiMixin",
+    "PlayerTabOverlayMixin"
   ]
 }

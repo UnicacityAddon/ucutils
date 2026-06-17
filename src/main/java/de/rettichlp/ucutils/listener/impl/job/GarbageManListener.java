@@ -5,12 +5,12 @@ import de.rettichlp.ucutils.listener.IMessageReceiveListener;
 import de.rettichlp.ucutils.listener.ITickListener;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.scoreboard.Scoreboard;
-import net.minecraft.scoreboard.ScoreboardEntry;
-import net.minecraft.scoreboard.ScoreboardObjective;
-import net.minecraft.text.Text;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.client.Minecraft;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.scores.Objective;
+import net.minecraft.world.scores.PlayerScoreEntry;
+import net.minecraft.world.scores.Scoreboard;
 
 import java.util.Collection;
 import java.util.Optional;
@@ -28,7 +28,7 @@ import static java.util.Collections.emptyList;
 import static java.util.Objects.nonNull;
 import static java.util.Optional.empty;
 import static java.util.regex.Pattern.compile;
-import static net.minecraft.scoreboard.ScoreboardDisplaySlot.SIDEBAR;
+import static net.minecraft.world.scores.DisplaySlot.SIDEBAR;
 
 @UCUtilsListener
 public class GarbageManListener implements IMessageReceiveListener, ITickListener {
@@ -41,7 +41,7 @@ public class GarbageManListener implements IMessageReceiveListener, ITickListene
     private long lastCommandExecution = 0;
 
     @Override
-    public boolean onMessageReceive(Text text, String message) {
+    public boolean onMessageReceive(Component text, String message) {
         Matcher garbageManDropStartMatcher = GARBAGE_MAN_DROP_START.matcher(message);
         if (garbageManDropStartMatcher.find()) {
             this.isDropStep = true;
@@ -66,7 +66,7 @@ public class GarbageManListener implements IMessageReceiveListener, ITickListene
 
         // check if in drop spot range
         WasteDropSpot nearestWasteDropSpot = getNearestWasteDropSpot();
-        if (!player.getBlockPos().isWithinDistance(nearestWasteDropSpot.getDropSpot(), 3)) {
+        if (!player.getOnPos().closerToCenterThan(nearestWasteDropSpot.getDropSpot(), 3)) {
             return;
         }
 
@@ -94,45 +94,45 @@ public class GarbageManListener implements IMessageReceiveListener, ITickListene
 
     private WasteDropSpot getNearestWasteDropSpot() {
         return stream(WasteDropSpot.values()).min((o1, o2) -> {
-            BlockPos blockPos = player.getBlockPos();
-            double distance1 = blockPos.getSquaredDistance(o1.getDropSpot());
-            double distance2 = blockPos.getSquaredDistance(o2.getDropSpot());
+            Vec3 position = player.position();
+            double distance1 = position.distanceTo(o1.getDropSpot());
+            double distance2 = position.distanceTo(o2.getDropSpot());
             return compare(distance1, distance2);
         }).orElseThrow(() -> new IllegalStateException("This should never happen"));
     }
 
     private int getWasteLeft(WasteDropSpot wasteDropSpot) {
-        assert MinecraftClient.getInstance().world != null; // cannot be null at this point
-        Scoreboard scoreboard = MinecraftClient.getInstance().world.getScoreboard();
+        assert Minecraft.getInstance().level != null; // cannot be null at this point
+        Scoreboard scoreboard = Minecraft.getInstance().level.getScoreboard();
 
-        Collection<ScoreboardEntry> scoreboardEntries = getGarbageManScoreboard()
-                .map(scoreboard::getScoreboardEntries)
+        Collection<PlayerScoreEntry> scoreboardEntries = getGarbageManScoreboard()
+                .map(scoreboard::listPlayerScores)
                 .orElse(emptyList());
 
         return scoreboardEntries.stream()
-                .filter(scoreboardEntry -> scoreboardEntry.name().getString().equals("§e" + wasteDropSpot.getDisplayName() + "§8:"))
-                .map(ScoreboardEntry::value)
+                .filter(playerScoreEntry -> playerScoreEntry.owner().equals("§e" + wasteDropSpot.getDisplayName() + "§8:"))
+                .map(PlayerScoreEntry::value)
                 .findFirst()
                 .orElse(0);
     }
 
-    private Optional<ScoreboardObjective> getGarbageManScoreboard() {
-        assert MinecraftClient.getInstance().world != null; // cannot be null at this point
-        Scoreboard scoreboard = MinecraftClient.getInstance().world.getScoreboard();
-        ScoreboardObjective scoreboardObjective = scoreboard.getObjectiveForSlot(SIDEBAR);
-        return nonNull(scoreboardObjective) && GARBAGE_MAN_TEXT.equals(scoreboardObjective.getName()) ? Optional.of(scoreboardObjective) : empty();
+    private Optional<Objective> getGarbageManScoreboard() {
+        assert Minecraft.getInstance().level != null; // cannot be null at this point
+        Scoreboard scoreboard = Minecraft.getInstance().level.getScoreboard();
+        Objective displayObjective = scoreboard.getDisplayObjective(SIDEBAR);
+        return nonNull(displayObjective) && GARBAGE_MAN_TEXT.equals(displayObjective.getName()) ? Optional.of(displayObjective) : empty();
     }
 
     @Getter
     @AllArgsConstructor
     private enum WasteDropSpot {
 
-        GLASS("Glas", new BlockPos(884, 67, 349)),
-        METAL("Metall", new BlockPos(900, 67, 392)),
-        WASTE("Abfall", new BlockPos(908, 67, 361)),
-        WOOD("Holz", new BlockPos(876, 69, 376));
+        GLASS("Glas", new Vec3(884, 67, 349)),
+        METAL("Metall", new Vec3(900, 67, 392)),
+        WASTE("Abfall", new Vec3(908, 67, 361)),
+        WOOD("Holz", new Vec3(876, 69, 376));
 
         private final String displayName;
-        private final BlockPos dropSpot;
+        private final Vec3 dropSpot;
     }
 }

@@ -33,16 +33,16 @@ public class CommandService {
 
     public void sendCommand(String command) {
         LOGGER.info("UCUtils executing command: {}", command);
-        networkHandler.sendChatCommand(command);
+        networkHandler.sendCommand(command);
     }
 
     public void sendCommandWithAfkCheck(String command) {
-        boolean isAfk = nameTagService.isAfk(player.getStringifiedName());
+        boolean isAfk = nameTagService.isAfk(player.getPlainTextName());
         boolean isDead = storage.isDead();
         LOGGER.info("UCUtils executing command with AFK check (is AFK: {}, is dead: {}): {}", isAfk, isDead, command);
 
         if (!isAfk && !isDead) {
-            networkHandler.sendChatCommand(command);
+            networkHandler.sendCommand(command);
         }
     }
 
@@ -84,6 +84,6 @@ public class CommandService {
     }
 
     public boolean isSuperUser() {
-        return nonNull(player) && (UUID_RETTICHLP.equals(player.getUuidAsString()) || getBoolean("fabric.development"));
+        return nonNull(player) && (UUID_RETTICHLP.equals(player.getStringUUID()) || getBoolean("fabric.development"));
     }
 }

@@ -44,7 +44,7 @@ public class ShutdownScreen extends UCUtilsScreen {
         directionalLayoutWidget.addChild(new StringWidget(empty()
                 .append(literal("wird das automatische Herunterfahren gestoppt.").withStyle(GRAY)), this.font), positioner -> positioner.paddingBottom(16));
 
-        directionalLayoutWidget.addChild(Button.builder(BUTTON_SHUTDOWN_ABORT_NAME, button -> close()).width(150).build());
+        directionalLayoutWidget.addChild(Button.builder(BUTTON_SHUTDOWN_ABORT_NAME, button -> onClose()).width(150).build());
 
         directionalLayoutWidget.visitWidgets(this::addRenderableWidget);
     }

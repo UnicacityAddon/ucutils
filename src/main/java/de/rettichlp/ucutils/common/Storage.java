@@ -15,6 +15,7 @@ import net.minecraft.core.Vec3i;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.vehicle.minecart.Minecart;
 import net.minecraft.world.level.saveddata.maps.MapId;
+import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
 import java.time.LocalDateTime;
@@ -61,7 +62,7 @@ public class Storage {
     @Getter
     @Setter
     @Nullable
-    private Vec3i blackMarketPosition;
+    private Vec3 blackMarketPosition;
 
     @Getter
     @Setter
@@ -84,7 +85,7 @@ public class Storage {
     @Getter
     @Setter
     @Nullable
-    private Vec3i dealerPosition;
+    private Vec3 dealerPosition;
 
     @Getter
     @Setter
