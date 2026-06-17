@@ -27,9 +27,9 @@ public abstract class GameMenuScreenMixin extends Screen {
                     value = "INVOKE",
                     target = "Lnet/minecraft/client/gui/layouts/GridLayout$RowHelper;addChild(Lnet/minecraft/client/gui/layouts/LayoutElement;ILnet/minecraft/client/gui/layouts/LayoutSettings;)Lnet/minecraft/client/gui/layouts/LayoutElement;",
                     ordinal = 0))
-    private void ucutils$initWidgetsInvoke(CallbackInfo ci,
-                                           @Local(name = "gridLayout") GridLayout gridLayout,
-                                           @Local(name = "helper") GridLayout.@NotNull RowHelper helper) {
+    private void ucutils$createPauseMenuInvoke(CallbackInfo ci,
+                                               @Local(name = "gridLayout") GridLayout gridLayout,
+                                               @Local(name = "helper") GridLayout.@NotNull RowHelper helper) {
         Button buttonWidget = Button.builder(literal("UCUtils Settings"), button -> this.minecraft.setScreen(new MainOptionsScreen()))
                 .width(204)
                 .build();

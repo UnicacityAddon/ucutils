@@ -84,10 +84,10 @@ public abstract class GuiMixin {
                     value = "INVOKE",
                     target = "Lnet/minecraft/client/gui/Gui;extractHearts(Lnet/minecraft/client/gui/GuiGraphicsExtractor;Lnet/minecraft/world/entity/player/Player;IIIIFIIIZ)V",
                     shift = AFTER))
-    private void ucutils$renderStatusBarsInvoke(GuiGraphicsExtractor graphics,
-                                                CallbackInfo ci,
-                                                @Local(name = "xRight") int xRight,
-                                                @Local(name = "yLineAir") int yLineAir) {
+    private void ucutils$extractPlayerHealthInvoke(GuiGraphicsExtractor graphics,
+                                                   CallbackInfo ci,
+                                                   @Local(name = "xRight") int xRight,
+                                                   @Local(name = "yLineAir") int yLineAir) {
         if (!storage.isUnicaCity()) {
             return;
         }

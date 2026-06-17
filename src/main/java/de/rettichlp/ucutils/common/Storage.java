@@ -11,7 +11,6 @@ import de.rettichlp.ucutils.common.models.WantedEntry;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
-import net.minecraft.core.Vec3i;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.vehicle.minecart.Minecart;
 import net.minecraft.world.level.saveddata.maps.MapId;

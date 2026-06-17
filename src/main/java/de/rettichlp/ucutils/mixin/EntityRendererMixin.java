@@ -53,7 +53,6 @@ public abstract class EntityRendererMixin<T extends Entity, S extends EntityRend
         // handle afk tag
         if (configuration.getOptions().nameTag().afk() && nameTagService.isAfk(playerName)) {
             submitNodeCollector.submitNameTag(poseStack, state.nameTagAttachment, offset, AFK_TAG, !state.isDiscrete, state.lightCoords, state.distanceToCameraSq, camera);
-            return;
         }
     }
 }

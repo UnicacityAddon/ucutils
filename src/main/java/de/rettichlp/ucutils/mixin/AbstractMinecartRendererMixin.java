@@ -14,7 +14,8 @@ import static de.rettichlp.ucutils.UCUtils.configuration;
 import static de.rettichlp.ucutils.UCUtils.storage;
 
 @Mixin(AbstractMinecartRenderer.class)
-public abstract class AbstractMinecartRendererMixin<T extends AbstractMinecart, S extends MinecartRenderState> extends EntityRenderer<T, S> {
+public abstract class AbstractMinecartRendererMixin<T extends AbstractMinecart, S extends MinecartRenderState>
+        extends EntityRenderer<T, S> {
 
     protected AbstractMinecartRendererMixin(EntityRendererProvider.Context context) {
         super(context);
