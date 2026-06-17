@@ -1,7 +1,7 @@
 package de.rettichlp.ucutils.mixin;
 
 import de.rettichlp.ucutils.common.models.ScreenshotType;
-import net.minecraft.client.gui.screen.ChatScreen;
+import net.minecraft.client.gui.screens.ChatScreen;
 import org.jetbrains.annotations.NotNull;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
@@ -16,7 +16,7 @@ import static de.rettichlp.ucutils.UCUtils.notificationService;
 import static de.rettichlp.ucutils.common.models.ScreenshotType.OTHER;
 import static java.lang.Thread.sleep;
 import static java.util.Arrays.stream;
-import static net.minecraft.text.Text.translatable;
+import static net.minecraft.network.chat.Component.translatable;
 
 @Mixin(ChatScreen.class)
 public abstract class ChatScreenMixin {

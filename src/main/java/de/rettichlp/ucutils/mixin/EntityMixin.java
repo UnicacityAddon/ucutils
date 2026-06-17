@@ -1,9 +1,9 @@
 package de.rettichlp.ucutils.mixin;
 
-import net.minecraft.client.network.ClientPlayerEntity;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.vehicle.MinecartEntity;
-import net.minecraft.world.entity.UniquelyIdentifiable;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.vehicle.minecart.Minecart;
+import net.minecraft.world.level.entity.UniquelyIdentifyable;
 import org.jetbrains.annotations.NotNull;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -20,10 +20,10 @@ import static de.rettichlp.ucutils.UCUtils.utilService;
 @Mixin(Entity.class)
 public abstract class EntityMixin {
 
-    @Inject(method = "startRiding(Lnet/minecraft/entity/Entity;ZZ)Z", at = @At("RETURN"))
-    private void ucutils$startRidingReturn(Entity vehicle,
+    @Inject(method = "startRiding(Lnet/minecraft/world/entity/Entity;ZZ)Z", at = @At("RETURN"))
+    private void ucutils$startRidingReturn(Entity entityToRide,
                                            boolean force,
-                                           boolean emitEvent,
+                                           boolean sendEventAndTriggers,
                                            @NotNull CallbackInfoReturnable<Boolean> cir) {
         if (!storage.isUnicaCity()) {
             return;
@@ -34,8 +34,8 @@ public abstract class EntityMixin {
             return;
         }
 
-        UniquelyIdentifiable self = (Entity) (Object) this;
-        if (self.getUuid().equals(player.getUuid()) && vehicle instanceof MinecartEntity) {
+        UniquelyIdentifyable self = (Entity) (Object) this;
+        if (self.getUUID().equals(player.getUUID()) && entityToRide instanceof Minecart) {
             storage.setMinecartEntityToHighlight(null);
 
             if (configuration.getOptions().car().automatedStart() && !storage.isPremium()) {
@@ -57,8 +57,8 @@ public abstract class EntityMixin {
         }
 
         Entity self = (Entity) (Object) this;
-        if (self instanceof ClientPlayerEntity && self.hasVehicle() && self.getVehicle() instanceof MinecartEntity minecartEntity) {
-            storage.setMinecartEntityToHighlight(minecartEntity);
+        if (self instanceof Player && self.isPassenger() && self.getVehicle() instanceof Minecart minecart) {
+            storage.setMinecartEntityToHighlight(minecart);
         }
     }
 }
