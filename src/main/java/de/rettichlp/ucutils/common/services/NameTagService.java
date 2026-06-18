@@ -14,7 +14,6 @@ import static de.rettichlp.ucutils.UCUtils.storage;
 import static java.time.Duration.between;
 import static java.time.LocalDateTime.now;
 import static net.minecraft.ChatFormatting.BLUE;
-import static net.minecraft.ChatFormatting.BOLD;
 import static net.minecraft.ChatFormatting.DARK_GRAY;
 import static net.minecraft.ChatFormatting.DARK_GREEN;
 import static net.minecraft.ChatFormatting.DARK_RED;
@@ -28,8 +27,6 @@ import static net.minecraft.network.chat.Component.literal;
 import static net.minecraft.world.scores.Team.CollisionRule.NEVER;
 
 public class NameTagService {
-
-    public static final Component AFK_TAG = literal("ᴀꜰᴋ").withStyle(GOLD, BOLD);
 
     private static final Component A_DUTY_PREFIX = empty()
             .append(literal("[").withStyle(DARK_GRAY))

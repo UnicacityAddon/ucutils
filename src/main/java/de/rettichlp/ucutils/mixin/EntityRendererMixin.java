@@ -9,6 +9,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.entity.Entity;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -16,10 +17,15 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import static de.rettichlp.ucutils.UCUtils.configuration;
 import static de.rettichlp.ucutils.UCUtils.nameTagService;
 import static de.rettichlp.ucutils.UCUtils.storage;
-import static de.rettichlp.ucutils.common.services.NameTagService.AFK_TAG;
+import static net.minecraft.ChatFormatting.BOLD;
+import static net.minecraft.ChatFormatting.GOLD;
+import static net.minecraft.network.chat.Component.literal;
 
 @Mixin(EntityRenderer.class)
 public abstract class EntityRendererMixin<T extends Entity, S extends EntityRenderState> {
+
+    @Unique
+    private static final Component AFK_TAG = literal("ᴀꜰᴋ").withStyle(GOLD, BOLD);
 
     @Inject(method = "submitNameDisplay(Lnet/minecraft/client/renderer/entity/state/EntityRenderState;Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/SubmitNodeCollector;Lnet/minecraft/client/renderer/state/level/CameraRenderState;I)V",
             at = @At(value = "INVOKE",
@@ -52,7 +58,10 @@ public abstract class EntityRendererMixin<T extends Entity, S extends EntityRend
 
         // handle afk tag
         if (configuration.getOptions().nameTag().afk() && nameTagService.isAfk(playerName)) {
-            submitNodeCollector.submitNameTag(poseStack, state.nameTagAttachment, offset, AFK_TAG, !state.isDiscrete, state.lightCoords, state.distanceToCameraSq, camera);
+            poseStack.pushPose();
+            poseStack.scale(0.7f, 0.7f, 0.7f);
+            submitNodeCollector.submitNameTag(poseStack, state.nameTagAttachment.add(0, 1.2, 0), offset, AFK_TAG, !state.isDiscrete, state.lightCoords, state.distanceToCameraSq, camera);
+            poseStack.popPose();
         }
     }
 }
