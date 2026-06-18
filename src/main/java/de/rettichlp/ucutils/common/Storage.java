@@ -12,7 +12,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 import net.minecraft.network.chat.Component;
-import net.minecraft.world.entity.vehicle.minecart.Minecart;
 import net.minecraft.world.level.saveddata.maps.MapId;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
@@ -96,10 +95,6 @@ public class Storage {
 
     @Getter
     @Setter
-    private Minecart minecartEntityToHighlight;
-
-    @Getter
-    @Setter
     private boolean premium = false;
 
     @Getter
@@ -147,8 +142,6 @@ public class Storage {
         LOGGER.info("hydration: {}", this.hydration);
         // joinTimestamp
         LOGGER.info("joinTimestamp: {}", this.joinTimestamp);
-        // minecartEntityToHighlight
-        LOGGER.info("minecartEntityToHighlight: {}", this.minecartEntityToHighlight);
         // premium
         LOGGER.info("premium: {}", this.premium);
         // team
