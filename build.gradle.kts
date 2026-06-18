@@ -1,3 +1,5 @@
+import org.gradle.api.JavaVersion.VERSION_25
+
 plugins {
     id("net.fabricmc.fabric-loom")
     `maven-publish`
@@ -36,6 +38,7 @@ dependencies {
     compileOnly("com.terraformersmc:modmenu:${providers.gradleProperty("modmenu_version").get()}")
 
     // https://github.com/atteo/classindex
+    include("org.atteo.classindex:classindex:3.13")
     implementation("org.atteo.classindex:classindex:3.13")
     annotationProcessor("org.atteo.classindex:classindex:3.13")
 }
@@ -59,8 +62,8 @@ java {
     // If you remove this line, sources will not be generated.
     withSourcesJar()
 
-    sourceCompatibility = JavaVersion.VERSION_25
-    targetCompatibility = JavaVersion.VERSION_25
+    sourceCompatibility = VERSION_25
+    targetCompatibility = VERSION_25
 }
 
 tasks.jar {
