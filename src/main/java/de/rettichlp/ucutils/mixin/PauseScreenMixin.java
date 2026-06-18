@@ -16,9 +16,9 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import static net.minecraft.network.chat.Component.literal;
 
 @Mixin(PauseScreen.class)
-public abstract class GameMenuScreenMixin extends Screen {
+public abstract class PauseScreenMixin extends Screen {
 
-    protected GameMenuScreenMixin(Component title) {
+    protected PauseScreenMixin(Component title) {
         super(title);
     }
 

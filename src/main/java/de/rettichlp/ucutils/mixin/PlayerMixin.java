@@ -18,7 +18,7 @@ import static de.rettichlp.ucutils.UCUtils.storage;
 import static net.minecraft.world.item.Items.GLASS_BOTTLE;
 
 @Mixin(Player.class)
-public abstract class ClientPlayerEntityMixin {
+public abstract class PlayerMixin {
 
     @Unique
     private final static List<Vec3> SHOP_LOCATIONS = List.of(
