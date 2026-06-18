@@ -4,6 +4,7 @@ import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.StringWidget;
 import net.minecraft.client.gui.layouts.HeaderAndFooterLayout;
+import net.minecraft.client.gui.layouts.LayoutSettings;
 import net.minecraft.client.gui.layouts.LinearLayout;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
@@ -102,8 +103,8 @@ public abstract class UCUtilsScreen extends Screen {
     protected void initHeader() {
         LinearLayout linearLayout = this.layout.addToHeader(vertical().spacing(4));
         linearLayout.newCellSettings().alignHorizontallyCenter();
-        linearLayout.addChild(new StringWidget(this.title, this.font));
-        linearLayout.addChild(new StringWidget(this.subTitle, this.font));
+        linearLayout.addChild(new StringWidget(this.title, this.font), LayoutSettings::alignHorizontallyCenter);
+        linearLayout.addChild(new StringWidget(this.subTitle, this.font), LayoutSettings::alignHorizontallyCenter);
     }
 
     protected void initFooter() {}
