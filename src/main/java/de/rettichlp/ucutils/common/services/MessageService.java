@@ -1,6 +1,7 @@
 package de.rettichlp.ucutils.common.services;
 
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 import org.jetbrains.annotations.NotNull;
 
 import java.time.LocalDate;
@@ -23,7 +24,7 @@ public class MessageService {
     public static final DateTimeFormatter DATE_TIME_FORMAT = ofPattern("dd.MM.yyyy HH:mm:ss");
     public static final DateTimeFormatter TIME_FORMAT = ofPattern("HH:mm:ss");
 
-    protected static final Component modMessagePrefix = Component.empty()
+    protected static final MutableComponent modMessagePrefix = Component.empty()
             .append(literal("✦").withStyle(DARK_PURPLE))
             .append(literal(" "))
             .append(literal("UCU").withStyle(LIGHT_PURPLE))
@@ -36,7 +37,7 @@ public class MessageService {
     }
 
     public void sendModMessage(Component message, boolean inActionbar) {
-        Component messageText = modMessagePrefix.copy().append(message);
+        Component messageText = modMessagePrefix.append(message);
 
         if (inActionbar) {
             player.sendOverlayMessage(messageText);

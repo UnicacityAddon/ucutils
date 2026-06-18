@@ -44,7 +44,7 @@ public abstract class AbstractUCUtilsTextWidget<C extends UCUtilsWidgetConfigura
         return renderService.getSecondaryColor(getBorderColor());
     }
 
-    protected Component keyValue(String key, String value) {
+    protected MutableComponent keyValue(String key, String value) {
         return keyValue(key, literal(value));
     }
 

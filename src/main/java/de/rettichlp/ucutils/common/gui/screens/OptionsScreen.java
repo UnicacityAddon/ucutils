@@ -51,7 +51,7 @@ public abstract class OptionsScreen extends UCUtilsScreen {
         LinearLayout directionalLayoutWidget = this.layout.addToFooter(horizontal().spacing(8));
         directionalLayoutWidget.addChild(Button.builder(GUI_BACK, _ -> back()).width(120).build());
         directionalLayoutWidget.addChild(Button.builder(GUI_DONE, _ -> onClose()).width(200).build());
-        directionalLayoutWidget.addChild(Button.builder(literal("Discord").copy().withColor(DISCORD_COLOR), confirmLink(this, DISCORD_INVITE)).width(56).build());
-        directionalLayoutWidget.addChild(Button.builder(literal("Modrinth").copy().withColor(MODRINTH_COLOR), confirmLink(this, MODRINTH)).width(56).build());
+        directionalLayoutWidget.addChild(Button.builder(literal("Discord").withColor(DISCORD_COLOR), confirmLink(this, DISCORD_INVITE)).width(56).build());
+        directionalLayoutWidget.addChild(Button.builder(literal("Modrinth").withColor(MODRINTH_COLOR), confirmLink(this, MODRINTH)).width(56).build());
     }
 }

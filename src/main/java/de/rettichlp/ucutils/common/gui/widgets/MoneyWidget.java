@@ -21,7 +21,7 @@ public class MoneyWidget extends AbstractUCUtilsTextWidget<MoneyWidget.Configura
         return configuration.getMinutesSinceLastPayDay() >= 55 && configuration.getMoneyBankAmount() > 100000 && (currentTimeMillis() / 500 % 2 == 0)
                 ? empty()
                 .append(keyValue("Geld", configuration.getMoneyCashAmount() + "$")).append(" ")
-                .append(keyValue("Bank", configuration.getMoneyBankAmount() + "$").copy().withColor(RED.getRGB()))
+                .append(keyValue("Bank", configuration.getMoneyBankAmount() + "$").withColor(RED.getRGB()))
                 : empty()
                 .append(keyValue("Geld", configuration.getMoneyCashAmount() + "$")).append(" ")
                 .append(keyValue("Bank", configuration.getMoneyBankAmount() + "$"));
