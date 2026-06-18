@@ -3,7 +3,7 @@ package de.rettichlp.ucutils.common.gui.screens.options;
 import de.rettichlp.ucutils.common.configuration.options.CarOptions;
 import de.rettichlp.ucutils.common.gui.screens.OptionsScreen;
 import de.rettichlp.ucutils.common.gui.screens.components.ToggleButtonWidget;
-import net.minecraft.client.gui.components.StringWidget;
+import net.minecraft.client.gui.components.MultiLineTextWidget;
 import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.client.gui.layouts.GridLayout;
 import net.minecraft.client.gui.layouts.LayoutSettings;
@@ -58,8 +58,9 @@ public class CarOptionsScreen extends OptionsScreen {
         toggleButton3.setTooltip(Tooltip.create(CAR_AUTOMATION_CHECK_KFZ_TOOLTIP));
         gridLayoutRowHelper.addChild(toggleButton3);
 
-        StringWidget stringWidget = gridLayoutRowHelper.addChild(new StringWidget(CAR_PREMIUM_INFO.copy().withStyle(GOLD), this.font), 2, LayoutSettings.defaults().alignHorizontallyCenter().paddingTop(16));
-        stringWidget.setMaxWidth(308);
+        MultiLineTextWidget multiLineTextWidget = gridLayoutRowHelper.addChild(new MultiLineTextWidget(CAR_PREMIUM_INFO.copy().withStyle(GOLD), this.font), 2, LayoutSettings.defaults().alignHorizontallyCenter().paddingTop(16));
+        multiLineTextWidget.setMaxWidth(308);
+        multiLineTextWidget.setCentered(true);
 
         ToggleButtonWidget toggleButton4 = new ToggleButtonWidget(CAR_GENERAL_FAST_LOCK_NAME, carOptions::fastLock, carOptions.fastLock());
         toggleButton4.setWidth(150);
