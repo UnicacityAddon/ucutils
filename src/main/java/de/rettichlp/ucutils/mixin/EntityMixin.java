@@ -1,14 +1,11 @@
 package de.rettichlp.ucutils.mixin;
 
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.vehicle.minecart.Minecart;
-import net.minecraft.world.level.entity.UniquelyIdentifyable;
 import org.jetbrains.annotations.NotNull;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import static de.rettichlp.ucutils.UCUtils.commandService;
@@ -36,7 +33,6 @@ public abstract class EntityMixin {
 
         Entity self = (Entity) (Object) this;
         if (self.equals(player) && entityToRide instanceof Minecart minecart) {
-            System.out.println("startRiding: " + self + " -> " + minecart);
             storage.setMinecartEntityToHighlight(minecart);
 
             if (configuration.getOptions().car().automatedStart() && !storage.isPremium()) {
