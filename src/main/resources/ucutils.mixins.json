@@ -3,6 +3,7 @@
   "package": "de.rettichlp.ucutils.mixin",
   "compatibilityLevel": "JAVA_21",
   "mixins": [
+    "EntityMixin",
     "ItemStackMixin",
     "MinecartMixin"
   ],
