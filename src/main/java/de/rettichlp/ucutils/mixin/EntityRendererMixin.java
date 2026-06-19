@@ -53,14 +53,17 @@ public abstract class EntityRendererMixin<T extends Entity, S extends EntityRend
         MutableComponent medicInformation = nameTagService.getMedicInformation(playerName);
         boolean medicInformationPresent = !medicInformation.getSiblings().isEmpty();
         if (configuration.getOptions().nameTag().medicalInformation() && medicInformationPresent) {
-            submitNodeCollector.submitNameTag(poseStack, state.nameTagAttachment, offset, medicInformation, !state.isDiscrete, state.lightCoords, state.distanceToCameraSq, camera);
+            poseStack.pushPose();
+            poseStack.scale(0.7f, 0.7f, 0.7f);
+            submitNodeCollector.submitNameTag(poseStack, state.nameTagAttachment.add(0, 0.6, 0), offset, medicInformation, !state.isDiscrete, state.lightCoords, state.distanceToCameraSq, camera);
+            poseStack.popPose();
         }
 
         // handle afk tag
         if (configuration.getOptions().nameTag().afk() && nameTagService.isAfk(playerName)) {
             poseStack.pushPose();
             poseStack.scale(0.7f, 0.7f, 0.7f);
-            submitNodeCollector.submitNameTag(poseStack, state.nameTagAttachment.add(0, 1.2, 0), offset, AFK_TAG, !state.isDiscrete, state.lightCoords, state.distanceToCameraSq, camera);
+            submitNodeCollector.submitNameTag(poseStack, state.nameTagAttachment.add(0, 1.3, 0), offset, AFK_TAG, !state.isDiscrete, state.lightCoords, state.distanceToCameraSq, camera);
             poseStack.popPose();
         }
     }
