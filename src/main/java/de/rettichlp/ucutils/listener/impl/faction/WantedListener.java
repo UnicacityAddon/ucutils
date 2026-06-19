@@ -3,8 +3,8 @@ package de.rettichlp.ucutils.listener.impl.faction;
 import de.rettichlp.ucutils.common.models.WantedEntry;
 import de.rettichlp.ucutils.common.registry.UCUtilsListener;
 import de.rettichlp.ucutils.listener.IMessageReceiveListener;
-import net.minecraft.text.Text;
-import net.minecraft.util.Formatting;
+import net.minecraft.ChatFormatting;
+import net.minecraft.network.chat.Component;
 
 import java.util.function.Predicate;
 import java.util.regex.Matcher;
@@ -19,14 +19,14 @@ import static de.rettichlp.ucutils.common.services.CommandService.COMMAND_COOLDO
 import static java.lang.Integer.parseInt;
 import static java.lang.String.valueOf;
 import static java.util.regex.Pattern.compile;
-import static net.minecraft.text.Text.empty;
-import static net.minecraft.text.Text.of;
-import static net.minecraft.util.Formatting.BLUE;
-import static net.minecraft.util.Formatting.DARK_AQUA;
-import static net.minecraft.util.Formatting.DARK_GRAY;
-import static net.minecraft.util.Formatting.GOLD;
-import static net.minecraft.util.Formatting.GRAY;
-import static net.minecraft.util.Formatting.RED;
+import static net.minecraft.ChatFormatting.BLUE;
+import static net.minecraft.ChatFormatting.DARK_AQUA;
+import static net.minecraft.ChatFormatting.DARK_GRAY;
+import static net.minecraft.ChatFormatting.GOLD;
+import static net.minecraft.ChatFormatting.GRAY;
+import static net.minecraft.ChatFormatting.RED;
+import static net.minecraft.network.chat.Component.empty;
+import static net.minecraft.network.chat.Component.literal;
 
 @UCUtilsListener
 public class WantedListener implements IMessageReceiveListener {
@@ -53,7 +53,7 @@ public class WantedListener implements IMessageReceiveListener {
     private static final Pattern TRACKER_AGENT_PATTERN = compile("^HQ: (Agent|Agentin) (?:\\[UC])?(?<playerName>[a-zA-Z0-9_]+) hat ein Peilsender an (?:\\[UC])?(?<targetName>[a-zA-Z0-9_]+) befestigt, over\\.$");
 
     @Override
-    public boolean onMessageReceive(Text text, String message) {
+    public boolean onMessageReceive(Component text, String message) {
         Matcher wantedGivenPointsMatcher = WANTED_GIVEN_POINTS_PATTERN.matcher(message);
         if (wantedGivenPointsMatcher.find()) {
             String playerName = wantedGivenPointsMatcher.group(1);
@@ -67,12 +67,12 @@ public class WantedListener implements IMessageReceiveListener {
                         storage.getWantedEntries().add(wantedEntry);
                     });
 
-            Text modifiedMessage = empty()
-                    .append(of("➥").copy().formatted(GRAY)).append(" ")
-                    .append(of(wantedGivenPointsMatcher.group(2)).copy().formatted(BLUE)).append(" ")
-                    .append(of("Wanteds").copy().formatted(BLUE));
+            Component modifiedMessage = empty()
+                    .append(literal("➥").withStyle(GRAY)).append(" ")
+                    .append(literal(wantedGivenPointsMatcher.group(2)).withStyle(BLUE)).append(" ")
+                    .append(literal("Wanteds").withStyle(BLUE));
 
-            player.sendMessage(modifiedMessage, false);
+            player.sendSystemMessage(modifiedMessage);
 
             return false;
         }
@@ -87,14 +87,14 @@ public class WantedListener implements IMessageReceiveListener {
                     .findFirst()
                     .ifPresent(wantedEntry -> wantedEntry.setReason(reason));
 
-            Text modifiedMessage = empty()
-                    .append(of("Gesucht").copy().formatted(RED)).append(" ")
-                    .append(of("-").copy().formatted(GRAY)).append(" ")
-                    .append(of(wantedGivenReasonMatcher.group(1)).copy().formatted(BLUE)).append(" ")
-                    .append(of("-").copy().formatted(GRAY)).append(" ")
-                    .append(of(wantedGivenReasonMatcher.group(2)).copy().formatted(BLUE));
+            Component modifiedMessage = empty()
+                    .append(literal("Gesucht").withStyle(RED)).append(" ")
+                    .append(literal("-").withStyle(GRAY)).append(" ")
+                    .append(literal(wantedGivenReasonMatcher.group(1)).withStyle(BLUE)).append(" ")
+                    .append(literal("-").withStyle(GRAY)).append(" ")
+                    .append(literal(wantedGivenReasonMatcher.group(2)).withStyle(BLUE));
 
-            player.sendMessage(modifiedMessage, false);
+            player.sendSystemMessage(modifiedMessage);
 
             return false;
         }
@@ -104,13 +104,13 @@ public class WantedListener implements IMessageReceiveListener {
             String reason = wantedReasonMatcher.group("reason");
             String time = wantedReasonMatcher.group("time");
 
-            Text modifiedMessage = empty()
-                    .append(of("➥").copy().formatted(GRAY)).append(" ")
-                    .append(of(reason).copy().formatted(BLUE)).append(" ")
-                    .append(of("-").copy().formatted(GRAY)).append(" ")
-                    .append(of(time).copy().formatted(BLUE));
+            Component modifiedMessage = empty()
+                    .append(literal("➥").withStyle(GRAY)).append(" ")
+                    .append(literal(reason).withStyle(BLUE)).append(" ")
+                    .append(literal("-").withStyle(GRAY)).append(" ")
+                    .append(literal(time).withStyle(BLUE));
 
-            player.sendMessage(modifiedMessage, false);
+            player.sendSystemMessage(modifiedMessage);
 
             return false;
         }
@@ -122,17 +122,17 @@ public class WantedListener implements IMessageReceiveListener {
 
             int wpAmount = getWpAmountAndDelete(targetName);
 
-            Text modifiedMessage = empty()
-                    .append(of("Gelöscht").copy().formatted(RED)).append(" ")
-                    .append(of("-").copy().formatted(GRAY)).append(" ")
-                    .append(of(targetName).copy().formatted(BLUE)).append(" ")
-                    .append(of("(").copy().formatted(GRAY))
-                    .append(of(valueOf(wpAmount)).copy().formatted(RED))
-                    .append(of(")").copy().formatted(GRAY)).append(" ")
-                    .append(of("-").copy().formatted(GRAY)).append(" ")
-                    .append(of(playerName).copy().formatted(BLUE));
+            Component modifiedMessage = empty()
+                    .append(literal("Gelöscht").withStyle(RED)).append(" ")
+                    .append(literal("-").withStyle(GRAY)).append(" ")
+                    .append(literal(targetName).withStyle(BLUE)).append(" ")
+                    .append(literal("(").withStyle(GRAY))
+                    .append(literal(valueOf(wpAmount)).withStyle(RED))
+                    .append(literal(")").withStyle(GRAY)).append(" ")
+                    .append(literal("-").withStyle(GRAY)).append(" ")
+                    .append(literal(playerName).withStyle(BLUE));
 
-            player.sendMessage(modifiedMessage, false);
+            player.sendSystemMessage(modifiedMessage);
 
             return false;
         }
@@ -143,17 +143,17 @@ public class WantedListener implements IMessageReceiveListener {
             String playerName = wantedKillMatcher.group("playerName");
             int wpAmount = getWpAmountAndDelete(targetName);
 
-            Text modifiedMessage = empty()
-                    .append(of("Getötet").copy().formatted(RED)).append(" ")
-                    .append(of("-").copy().formatted(GRAY)).append(" ")
-                    .append(of(targetName).copy().formatted(BLUE)).append(" ")
-                    .append(of("(").copy().formatted(GRAY))
-                    .append(of(valueOf(wpAmount)).copy().formatted(RED))
-                    .append(of(")").copy().formatted(GRAY)).append(" ")
-                    .append(of("-").copy().formatted(GRAY)).append(" ")
-                    .append(of(playerName).copy().formatted(BLUE));
+            Component modifiedMessage = empty()
+                    .append(literal("Getötet").withStyle(RED)).append(" ")
+                    .append(literal("-").withStyle(GRAY)).append(" ")
+                    .append(literal(targetName).withStyle(BLUE)).append(" ")
+                    .append(literal("(").withStyle(GRAY))
+                    .append(literal(valueOf(wpAmount)).withStyle(RED))
+                    .append(literal(")").withStyle(GRAY)).append(" ")
+                    .append(literal("-").withStyle(GRAY)).append(" ")
+                    .append(literal(playerName).withStyle(BLUE));
 
-            player.sendMessage(modifiedMessage, false);
+            player.sendSystemMessage(modifiedMessage);
             return false;
         }
 
@@ -163,17 +163,17 @@ public class WantedListener implements IMessageReceiveListener {
             String playerName = wantedJailMatcher.group("playerName");
             int wpAmount = getWpAmountAndDelete(targetName);
 
-            Text modifiedMessage = empty()
-                    .append(of("Eingesperrt").copy().formatted(RED)).append(" ")
-                    .append(of("-").copy().formatted(GRAY)).append(" ")
-                    .append(of(targetName).copy().formatted(BLUE)).append(" ")
-                    .append(of("(").copy().formatted(GRAY))
-                    .append(of(valueOf(wpAmount)).copy().formatted(RED))
-                    .append(of(")").copy().formatted(GRAY)).append(" ")
-                    .append(of("-").copy().formatted(GRAY)).append(" ")
-                    .append(of(playerName).copy().formatted(BLUE));
+            Component modifiedMessage = empty()
+                    .append(literal("Eingesperrt").withStyle(RED)).append(" ")
+                    .append(literal("-").withStyle(GRAY)).append(" ")
+                    .append(literal(targetName).withStyle(BLUE)).append(" ")
+                    .append(literal("(").withStyle(GRAY))
+                    .append(literal(valueOf(wpAmount)).withStyle(RED))
+                    .append(literal(")").withStyle(GRAY)).append(" ")
+                    .append(literal("-").withStyle(GRAY)).append(" ")
+                    .append(literal(playerName).withStyle(BLUE));
 
-            player.sendMessage(modifiedMessage, false);
+            player.sendSystemMessage(modifiedMessage);
             return false;
         }
 
@@ -188,14 +188,14 @@ public class WantedListener implements IMessageReceiveListener {
             String officerName = carParkticketMatcher.group("playerName");
             String plate = carParkticketMatcher.group("plate");
 
-            Text modifiedMessage = empty()
-                    .append(of("Strafzettel").copy().formatted(RED)).append(" ")
-                    .append(of("-").copy().formatted(GRAY)).append(" ")
-                    .append(of(plate).copy().formatted(BLUE)).append(" ")
-                    .append(of("-").copy().formatted(GRAY)).append(" ")
-                    .append(of(officerName).copy().formatted(BLUE));
+            Component modifiedMessage = empty()
+                    .append(literal("Strafzettel").withStyle(RED)).append(" ")
+                    .append(literal("-").withStyle(GRAY)).append(" ")
+                    .append(literal(plate).withStyle(BLUE)).append(" ")
+                    .append(literal("-").withStyle(GRAY)).append(" ")
+                    .append(literal(officerName).withStyle(BLUE));
 
-            player.sendMessage(modifiedMessage, false);
+            player.sendSystemMessage(modifiedMessage);
             return false;
         }
 
@@ -204,14 +204,14 @@ public class WantedListener implements IMessageReceiveListener {
             String officerName = carParkticketRemoveMatcher.group("playerName");
             String plate = carParkticketRemoveMatcher.group("plate");
 
-            Text modifiedMessage = empty()
-                    .append(of("Strafzettel entfernt").copy().formatted(RED)).append(" ")
-                    .append(of("-").copy().formatted(GRAY)).append(" ")
-                    .append(of(plate).copy().formatted(BLUE)).append(" ")
-                    .append(of("-").copy().formatted(GRAY)).append(" ")
-                    .append(of(officerName).copy().formatted(BLUE));
+            Component modifiedMessage = empty()
+                    .append(literal("Strafzettel entfernt").withStyle(RED)).append(" ")
+                    .append(literal("-").withStyle(GRAY)).append(" ")
+                    .append(literal(plate).withStyle(BLUE)).append(" ")
+                    .append(literal("-").withStyle(GRAY)).append(" ")
+                    .append(literal(officerName).withStyle(BLUE));
 
-            player.sendMessage(modifiedMessage, false);
+            player.sendSystemMessage(modifiedMessage);
 
             return false;
         }
@@ -221,14 +221,14 @@ public class WantedListener implements IMessageReceiveListener {
             String officerName = searchTrunkMatcher.group("playerName");
             String plate = searchTrunkMatcher.group("plate");
 
-            Text modifiedMessage = empty()
-                    .append(of("Fahrzeugkontrolle").copy().formatted(RED)).append(" ")
-                    .append(of("-").copy().formatted(GRAY)).append(" ")
-                    .append(of(plate).copy().formatted(BLUE)).append(" ")
-                    .append(of("-").copy().formatted(GRAY)).append(" ")
-                    .append(of(officerName).copy().formatted(BLUE));
+            Component modifiedMessage = empty()
+                    .append(literal("Fahrzeugkontrolle").withStyle(RED)).append(" ")
+                    .append(literal("-").withStyle(GRAY)).append(" ")
+                    .append(literal(plate).withStyle(BLUE)).append(" ")
+                    .append(literal("-").withStyle(GRAY)).append(" ")
+                    .append(literal(officerName).withStyle(BLUE));
 
-            player.sendMessage(modifiedMessage, false);
+            player.sendSystemMessage(modifiedMessage);
 
             return false;
         }
@@ -238,14 +238,14 @@ public class WantedListener implements IMessageReceiveListener {
             String playerName = wantedUnarrestMatcher.group("playerName");
             String targetName = wantedUnarrestMatcher.group("targetName");
 
-            Text modifiedMessage = empty()
-                    .append(of("Entlassen").copy().formatted(RED)).append(" ")
-                    .append(of("-").copy().formatted(GRAY)).append(" ")
-                    .append(of(targetName).copy().formatted(BLUE)).append(" ")
-                    .append(of("-").copy().formatted(GRAY)).append(" ")
-                    .append(of(playerName).copy().formatted(BLUE));
+            Component modifiedMessage = empty()
+                    .append(literal("Entlassen").withStyle(RED)).append(" ")
+                    .append(literal("-").withStyle(GRAY)).append(" ")
+                    .append(literal(targetName).withStyle(BLUE)).append(" ")
+                    .append(literal("-").withStyle(GRAY)).append(" ")
+                    .append(literal(playerName).withStyle(BLUE));
 
-            player.sendMessage(modifiedMessage, false);
+            player.sendSystemMessage(modifiedMessage);
 
             return false;
         }
@@ -266,21 +266,21 @@ public class WantedListener implements IMessageReceiveListener {
             WantedEntry wantedEntry = new WantedEntry(playerName, wantedPointAmount, reason);
             storage.getWantedEntries().add(wantedEntry);
 
-            Formatting color = nameTagService.getWantedPointColor(wantedPointAmount);
+            ChatFormatting color = nameTagService.getWantedPointColor(wantedPointAmount);
 
             if (commandService.showCommandOutputMessage("wanteds")) {
-                Text modifiedMessage = empty()
-                        .append(of("➥").copy().formatted(GRAY)).append(" ")
-                        .append(of(playerName).copy().formatted(color)).append(" ")
-                        .append(of("-").copy().formatted(GRAY)).append(" ")
-                        .append(of(reason).copy().formatted(color)).append(" ")
-                        .append(of("(").copy().formatted(GRAY))
-                        .append(of(valueOf(wantedPointAmount)).copy().formatted(BLUE))
-                        .append(of(")").copy().formatted(GRAY)).append(" ")
-                        .append(of(isAfk ? "|" : "").copy().formatted(DARK_GRAY)).append(" ")
-                        .append(of(isAfk ? "AFK" : "").copy().formatted(GRAY));
+                Component modifiedMessage = empty()
+                        .append(literal("➥").withStyle(GRAY)).append(" ")
+                        .append(literal(playerName).withStyle(color)).append(" ")
+                        .append(literal("-").withStyle(GRAY)).append(" ")
+                        .append(literal(reason).withStyle(color)).append(" ")
+                        .append(literal("(").withStyle(GRAY))
+                        .append(literal(valueOf(wantedPointAmount)).withStyle(BLUE))
+                        .append(literal(")").withStyle(GRAY)).append(" ")
+                        .append(literal(isAfk ? "|" : "").withStyle(DARK_GRAY)).append(" ")
+                        .append(literal(isAfk ? "AFK" : "").withStyle(GRAY));
 
-                player.sendMessage(modifiedMessage, false);
+                player.sendSystemMessage(modifiedMessage);
             }
 
             return false;
@@ -291,14 +291,14 @@ public class WantedListener implements IMessageReceiveListener {
             String playerName = licenseDrivingGiveMatcher.group("playerName");
             String targetName = licenseDrivingGiveMatcher.group("targetName");
 
-            Text modifiedMessage = empty()
-                    .append(of("Führerscheinrückgabe").copy().formatted(RED)).append(" ")
-                    .append(of("-").copy().formatted(GRAY)).append(" ")
-                    .append(of(targetName).copy().formatted(BLUE)).append(" ")
-                    .append(of("-").copy().formatted(GRAY)).append(" ")
-                    .append(of(playerName).copy().formatted(BLUE));
+            Component modifiedMessage = empty()
+                    .append(literal("Führerscheinrückgabe").withStyle(RED)).append(" ")
+                    .append(literal("-").withStyle(GRAY)).append(" ")
+                    .append(literal(targetName).withStyle(BLUE)).append(" ")
+                    .append(literal("-").withStyle(GRAY)).append(" ")
+                    .append(literal(playerName).withStyle(BLUE));
 
-            player.sendMessage(modifiedMessage, false);
+            player.sendSystemMessage(modifiedMessage);
 
             return false;
         }
@@ -308,14 +308,14 @@ public class WantedListener implements IMessageReceiveListener {
             String playerName = licenseDrivingTakeMatcher.group("playerName");
             String targetName = licenseDrivingTakeMatcher.group("targetName");
 
-            Text modifiedMessage = empty()
-                    .append(of("Führerscheinabnahme").copy().formatted(RED)).append(" ")
-                    .append(of("-").copy().formatted(GRAY)).append(" ")
-                    .append(of(targetName).copy().formatted(BLUE)).append(" ")
-                    .append(of("-").copy().formatted(GRAY)).append(" ")
-                    .append(of(playerName).copy().formatted(BLUE));
+            Component modifiedMessage = empty()
+                    .append(literal("Führerscheinabnahme").withStyle(RED)).append(" ")
+                    .append(literal("-").withStyle(GRAY)).append(" ")
+                    .append(literal(targetName).withStyle(BLUE)).append(" ")
+                    .append(literal("-").withStyle(GRAY)).append(" ")
+                    .append(literal(playerName).withStyle(BLUE));
 
-            player.sendMessage(modifiedMessage, false);
+            player.sendSystemMessage(modifiedMessage);
 
             return false;
         }
@@ -325,14 +325,14 @@ public class WantedListener implements IMessageReceiveListener {
             String playerName = licenseGunGiveMatcher.group("playerName");
             String targetName = licenseGunGiveMatcher.group("targetName");
 
-            Text modifiedMessage = empty()
-                    .append(of("Waffenscheinrückgabe").copy().formatted(RED)).append(" ")
-                    .append(of("-").copy().formatted(GRAY)).append(" ")
-                    .append(of(targetName).copy().formatted(BLUE)).append(" ")
-                    .append(of("-").copy().formatted(GRAY)).append(" ")
-                    .append(of(playerName).copy().formatted(BLUE));
+            Component modifiedMessage = empty()
+                    .append(literal("Waffenscheinrückgabe").withStyle(RED)).append(" ")
+                    .append(literal("-").withStyle(GRAY)).append(" ")
+                    .append(literal(targetName).withStyle(BLUE)).append(" ")
+                    .append(literal("-").withStyle(GRAY)).append(" ")
+                    .append(literal(playerName).withStyle(BLUE));
 
-            player.sendMessage(modifiedMessage, false);
+            player.sendSystemMessage(modifiedMessage);
 
             return false;
         }
@@ -342,14 +342,14 @@ public class WantedListener implements IMessageReceiveListener {
             String playerName = licenseGunTakeMatcher.group("playerName");
             String targetName = licenseGunTakeMatcher.group("targetName");
 
-            Text modifiedMessage = empty()
-                    .append(of("Waffenscheinabnahme").copy().formatted(RED)).append(" ")
-                    .append(of("-").copy().formatted(GRAY)).append(" ")
-                    .append(of(targetName).copy().formatted(BLUE)).append(" ")
-                    .append(of("-").copy().formatted(GRAY)).append(" ")
-                    .append(of(playerName).copy().formatted(BLUE));
+            Component modifiedMessage = empty()
+                    .append(literal("Waffenscheinabnahme").withStyle(RED)).append(" ")
+                    .append(literal("-").withStyle(GRAY)).append(" ")
+                    .append(literal(targetName).withStyle(BLUE)).append(" ")
+                    .append(literal("-").withStyle(GRAY)).append(" ")
+                    .append(literal(playerName).withStyle(BLUE));
 
-            player.sendMessage(modifiedMessage, false);
+            player.sendSystemMessage(modifiedMessage);
 
             return false;
         }
@@ -359,14 +359,14 @@ public class WantedListener implements IMessageReceiveListener {
             String playerName = takeGunsMatcher.group("playerName");
             String targetName = takeGunsMatcher.group("targetName");
 
-            Text modifiedMessage = empty()
-                    .append(of("Waffenabnahme").copy().formatted(RED)).append(" ")
-                    .append(of("-").copy().formatted(GRAY)).append(" ")
-                    .append(of(targetName).copy().formatted(BLUE)).append(" ")
-                    .append(of("-").copy().formatted(GRAY)).append(" ")
-                    .append(of(playerName).copy().formatted(BLUE));
+            Component modifiedMessage = empty()
+                    .append(literal("Waffenabnahme").withStyle(RED)).append(" ")
+                    .append(literal("-").withStyle(GRAY)).append(" ")
+                    .append(literal(targetName).withStyle(BLUE)).append(" ")
+                    .append(literal("-").withStyle(GRAY)).append(" ")
+                    .append(literal(playerName).withStyle(BLUE));
 
-            player.sendMessage(modifiedMessage, false);
+            player.sendSystemMessage(modifiedMessage);
 
             return false;
         }
@@ -376,14 +376,14 @@ public class WantedListener implements IMessageReceiveListener {
             String playerName = takeDrugsMatcher.group("playerName");
             String targetName = takeDrugsMatcher.group("targetName");
 
-            Text modifiedMessage = empty()
-                    .append(of("Drogenabnahme").copy().formatted(RED)).append(" ")
-                    .append(of("-").copy().formatted(GRAY)).append(" ")
-                    .append(of(targetName).copy().formatted(BLUE)).append(" ")
-                    .append(of("-").copy().formatted(GRAY)).append(" ")
-                    .append(of(playerName).copy().formatted(BLUE));
+            Component modifiedMessage = empty()
+                    .append(literal("Drogenabnahme").withStyle(RED)).append(" ")
+                    .append(literal("-").withStyle(GRAY)).append(" ")
+                    .append(literal(targetName).withStyle(BLUE)).append(" ")
+                    .append(literal("-").withStyle(GRAY)).append(" ")
+                    .append(literal(playerName).withStyle(BLUE));
 
-            player.sendMessage(modifiedMessage, false);
+            player.sendSystemMessage(modifiedMessage);
 
             return false;
         }
@@ -393,14 +393,14 @@ public class WantedListener implements IMessageReceiveListener {
             String playerName = trackerMatcher.group("playerName");
             String targetName = trackerMatcher.group("targetName");
 
-            Text modifiedMessage = empty()
-                    .append(of("Peilsender").copy().formatted(RED)).append(" ")
-                    .append(of("-").copy().formatted(GRAY)).append(" ")
-                    .append(of(playerName).copy().formatted(DARK_AQUA)).append(" ")
-                    .append(of("»").copy().formatted(GRAY)).append(" ")
-                    .append(of(targetName).copy().formatted(GOLD));
+            Component modifiedMessage = empty()
+                    .append(literal("Peilsender").withStyle(RED)).append(" ")
+                    .append(literal("-").withStyle(GRAY)).append(" ")
+                    .append(literal(playerName).withStyle(DARK_AQUA)).append(" ")
+                    .append(literal("»").withStyle(GRAY)).append(" ")
+                    .append(literal(targetName).withStyle(GOLD));
 
-            player.sendMessage(modifiedMessage, false);
+            player.sendSystemMessage(modifiedMessage);
 
             return false;
         }

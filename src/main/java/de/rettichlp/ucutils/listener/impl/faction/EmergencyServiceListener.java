@@ -2,7 +2,7 @@ package de.rettichlp.ucutils.listener.impl.faction;
 
 import de.rettichlp.ucutils.common.registry.UCUtilsListener;
 import de.rettichlp.ucutils.listener.IMessageReceiveListener;
-import net.minecraft.text.Text;
+import net.minecraft.network.chat.Component;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -26,7 +26,7 @@ public class EmergencyServiceListener implements IMessageReceiveListener {
     private static final Pattern SERVICE_NONE_PATTERN = compile("^Fehler: Es ist kein Service offen\\.$");
 
     @Override
-    public boolean onMessageReceive(Text text, String message) {
+    public boolean onMessageReceive(Component text, String message) {
         Matcher serviceMatcher = SERVICE_PATTERN.matcher(message);
         if (serviceMatcher.find()) {
             storage.setActiveServices(storage.getActiveServices() + 1);

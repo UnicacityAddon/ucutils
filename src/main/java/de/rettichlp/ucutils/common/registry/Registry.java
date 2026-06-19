@@ -4,7 +4,6 @@ import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import de.rettichlp.ucutils.common.models.Sound;
 import de.rettichlp.ucutils.listener.ICommandSendListener;
-import de.rettichlp.ucutils.listener.IHudRenderListener;
 import de.rettichlp.ucutils.listener.IMessageReceiveListener;
 import de.rettichlp.ucutils.listener.IMessageSendListener;
 import de.rettichlp.ucutils.listener.INaviSpotReachedListener;
@@ -14,20 +13,19 @@ import net.fabricmc.fabric.api.client.command.v2.FabricClientCommandSource;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.message.v1.ClientReceiveMessageEvents;
 import net.fabricmc.fabric.api.client.message.v1.ClientSendMessageEvents;
-import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
 import java.util.Set;
 
+import static com.mojang.brigadier.builder.LiteralArgumentBuilder.literal;
 import static de.rettichlp.ucutils.UCUtils.LOGGER;
 import static de.rettichlp.ucutils.UCUtils.storage;
 import static java.util.Collections.emptySet;
 import static java.util.stream.Collectors.toSet;
 import static java.util.stream.StreamSupport.stream;
-import static net.fabricmc.fabric.api.client.command.v2.ClientCommandManager.literal;
-import static net.minecraft.registry.Registries.SOUND_EVENT;
-import static net.minecraft.registry.Registry.register;
+import static net.minecraft.core.Registry.register;
+import static net.minecraft.core.registries.BuiltInRegistries.SOUND_EVENT;
 import static org.atteo.classindex.ClassIndex.getAnnotated;
 
 public class Registry {
@@ -116,7 +114,7 @@ public class Registry {
 
         ClientTickEvents.END_CLIENT_TICK.register((server) -> getListenersImplementing(ITickListener.class).forEach(ITickListener::onTick));
 
-        HudRenderCallback.EVENT.register((drawContext, tickCounter) -> getListenersImplementing(IHudRenderListener.class).forEach(iHudRenderListener -> iHudRenderListener.onHudRender(drawContext, tickCounter)));
+        // FIXME HudRenderCallback.EVENT.register((drawContext, tickCounter) -> getListenersImplementing(IHudRenderListener.class).forEach(iHudRenderListener -> iHudRenderListener.onHudRender(drawContext, tickCounter)));
 
         // prevent multiple registrations of listeners
         this.initialized = true;

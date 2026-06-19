@@ -1,27 +1,28 @@
 package de.rettichlp.ucutils.common.gui.screens.components;
 
-import net.minecraft.client.gui.widget.ButtonWidget;
-import net.minecraft.client.input.AbstractInput;
-import net.minecraft.text.Text;
+import net.minecraft.client.gui.components.Button;
+import net.minecraft.client.input.InputWithModifiers;
+import net.minecraft.network.chat.Component;
+import org.jspecify.annotations.NonNull;
 
 import java.util.function.Consumer;
 
-import static net.minecraft.screen.ScreenTexts.OFF;
-import static net.minecraft.screen.ScreenTexts.ON;
-import static net.minecraft.text.Text.empty;
-import static net.minecraft.text.Text.of;
-import static net.minecraft.util.Formatting.GRAY;
-import static net.minecraft.util.Formatting.GREEN;
-import static net.minecraft.util.Formatting.RED;
+import static net.minecraft.ChatFormatting.GRAY;
+import static net.minecraft.ChatFormatting.GREEN;
+import static net.minecraft.ChatFormatting.RED;
+import static net.minecraft.network.chat.CommonComponents.OPTION_OFF;
+import static net.minecraft.network.chat.CommonComponents.OPTION_ON;
+import static net.minecraft.network.chat.Component.empty;
+import static net.minecraft.network.chat.Component.literal;
 
-public class ToggleButtonWidget extends ButtonWidget {
+public class ToggleButtonWidget extends Button.Plain {
 
-    private final Text text;
+    private final Component text;
     private final Consumer<Boolean> changeListener;
     private boolean state;
 
-    public ToggleButtonWidget(Text text, Consumer<Boolean> changeListener, boolean defaultState) {
-        super(0, 0, 150, 20, empty(), button -> {}, DEFAULT_NARRATION_SUPPLIER);
+    public ToggleButtonWidget(Component text, Consumer<Boolean> changeListener, boolean defaultState) {
+        super(0, 0, 150, 20, empty(), button -> {}, DEFAULT_NARRATION);
         this.text = text;
         this.changeListener = changeListener;
         this.state = defaultState;
@@ -29,7 +30,7 @@ public class ToggleButtonWidget extends ButtonWidget {
     }
 
     @Override
-    public void onPress(AbstractInput input) {
+    public void onPress(@NonNull InputWithModifiers input) {
         super.onPress(input);
         this.state = !this.state;
         this.changeListener.accept(this.state);
@@ -40,9 +41,9 @@ public class ToggleButtonWidget extends ButtonWidget {
         setMessage(getText());
     }
 
-    private Text getText() {
+    private Component getText() {
         return this.text.copy()
-                .append(of(":").copy().formatted(GRAY)).append(" ")
-                .append(this.state ? ON.copy().formatted(GREEN) : OFF.copy().formatted(RED));
+                .append(literal(":").withStyle(GRAY)).append(" ")
+                .append(this.state ? OPTION_ON.copy().withStyle(GREEN) : OPTION_OFF.copy().withStyle(RED));
     }
 }

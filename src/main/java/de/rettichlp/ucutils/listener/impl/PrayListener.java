@@ -2,7 +2,7 @@ package de.rettichlp.ucutils.listener.impl;
 
 import de.rettichlp.ucutils.common.registry.UCUtilsListener;
 import de.rettichlp.ucutils.listener.IMessageReceiveListener;
-import net.minecraft.text.Text;
+import net.minecraft.network.chat.Component;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -17,7 +17,7 @@ public class PrayListener implements IMessageReceiveListener {
     private static final Pattern PRAYING_START_PATTERN = compile("^\\[Kirche] Du hast begonnen für (?:\\[UC])?(?<playerName>[a-zA-Z0-9_]+) zu beten\\.$");
 
     @Override
-    public boolean onMessageReceive(Text text, String message) {
+    public boolean onMessageReceive(Component text, String message) {
         Matcher prayingStartMatcher = PRAYING_START_PATTERN.matcher(message);
         if (prayingStartMatcher.find()) {
             String playerName = prayingStartMatcher.group("playerName");

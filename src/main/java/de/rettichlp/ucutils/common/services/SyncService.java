@@ -20,13 +20,13 @@ import static java.util.Objects.nonNull;
 import static java.util.concurrent.Executors.newSingleThreadScheduledExecutor;
 import static java.util.concurrent.TimeUnit.MINUTES;
 import static java.util.concurrent.TimeUnit.SECONDS;
-import static net.minecraft.text.Text.empty;
-import static net.minecraft.text.Text.literal;
-import static net.minecraft.text.Text.translatable;
-import static net.minecraft.util.Formatting.DARK_GRAY;
-import static net.minecraft.util.Formatting.GRAY;
-import static net.minecraft.util.Formatting.GREEN;
-import static net.minecraft.util.Formatting.RED;
+import static net.minecraft.ChatFormatting.DARK_GRAY;
+import static net.minecraft.ChatFormatting.GRAY;
+import static net.minecraft.ChatFormatting.GREEN;
+import static net.minecraft.ChatFormatting.RED;
+import static net.minecraft.network.chat.Component.empty;
+import static net.minecraft.network.chat.Component.literal;
+import static net.minecraft.network.chat.Component.translatable;
 
 public class SyncService {
 
@@ -70,7 +70,7 @@ public class SyncService {
 
     public void syncFactionSpecificData() {
         // parse from faction-related init commands after all faction members are synced
-        Faction faction = storage.getFaction(player.getStringifiedName());
+        Faction faction = storage.getFaction(player.getPlainTextName());
         switch (faction) {
             case FBI, POLIZEI -> commandService.sendCommandWithHiddenOutput("wanteds");
             default -> {
@@ -90,11 +90,11 @@ public class SyncService {
             String currentVersion = utilService.getVersion();
             if (nonNull(latestVersion) && !currentVersion.equals(latestVersion)) {
                 notificationService.sendNotification(empty()
-                        .append(translatable("ucutils.notification.info.new_version").copy().formatted(GRAY))
-                        .append(literal(":").copy().formatted(DARK_GRAY)).append(" ")
-                        .append(literal(currentVersion).copy().formatted(RED)).append(" ")
-                        .append(literal("→").copy().formatted(GRAY)).append(" ")
-                        .append(literal(latestVersion).copy().formatted(GREEN)), MAGENTA, MINUTES.toMillis(5));
+                        .append(translatable("ucutils.notification.info.new_version").withStyle(GRAY))
+                        .append(literal(":").withStyle(DARK_GRAY)).append(" ")
+                        .append(literal(currentVersion).withStyle(RED)).append(" ")
+                        .append(literal("→").withStyle(GRAY)).append(" ")
+                        .append(literal(latestVersion).withStyle(GREEN)), MAGENTA, MINUTES.toMillis(5));
             }
         });
     }

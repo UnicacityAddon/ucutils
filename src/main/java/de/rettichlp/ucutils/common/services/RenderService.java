@@ -6,10 +6,9 @@ import de.rettichlp.ucutils.common.gui.screens.components.ToggleButtonWidget;
 import de.rettichlp.ucutils.common.gui.widgets.base.AbstractUCUtilsWidget;
 import de.rettichlp.ucutils.common.gui.widgets.base.UCUtilsWidget;
 import lombok.Getter;
-import net.minecraft.client.gui.tooltip.Tooltip;
-import net.minecraft.client.gui.widget.CyclingButtonWidget;
-import net.minecraft.client.gui.widget.DirectionalLayoutWidget;
-import net.minecraft.text.Text;
+import net.minecraft.client.gui.components.Tooltip;
+import net.minecraft.client.gui.layouts.LinearLayout;
+import net.minecraft.network.chat.Component;
 import org.jetbrains.annotations.NotNull;
 
 import java.awt.Color;
@@ -50,35 +49,35 @@ public class RenderService {
                 .collect(toCollection(LinkedHashSet::new));
     }
 
-    public <E extends CyclingButtonEntry> void addCyclingButton(@NotNull DirectionalLayoutWidget widget,
-                                                                Text name,
+    public <E extends CyclingButtonEntry> void addCyclingButton(@NotNull LinearLayout widget,
+                                                                Component name,
                                                                 E[] values,
-                                                                Function<E, Text> displayNameFunction,
+                                                                Function<E, Component> displayNameFunction,
                                                                 BiConsumer<Options, E> onValueChange,
                                                                 @NotNull Function<Options, E> currentValue,
                                                                 int width) {
-        CyclingButtonWidget<E> cyclingButton = CyclingButtonWidget.builder(displayNameFunction)
-                .values(values)
-                .initially(currentValue.apply(configuration.getOptions()))
-                .tooltip(CyclingButtonEntry::getTooltip)
-                .build(name, (button, value) -> onValueChange.accept(configuration.getOptions(), value));
-
-        cyclingButton.setWidth(width);
-
-        widget.add(cyclingButton);
+//        FIXME CyclingButtonWidget<E> cyclingButton = CyclingButtonWidget.builder(displayNameFunction)
+//                .values(values)
+//                .initially(currentValue.apply(configuration.getOptions()))
+//                .tooltip(CyclingButtonEntry::getTooltip)
+//                .build(name, (button, value) -> onValueChange.accept(configuration.getOptions(), value));
+//
+//        cyclingButton.setWidth(width);
+//
+//        widget.addChild(cyclingButton);
     }
 
-    public void addToggleButton(@NotNull DirectionalLayoutWidget widget,
-                                Text name,
-                                Text tooltip,
+    public void addToggleButton(@NotNull LinearLayout widget,
+                                Component name,
+                                Component tooltip,
                                 BiConsumer<Options, Boolean> onPress,
                                 @NotNull Function<Options, Boolean> currentValue,
                                 int width) {
         ToggleButtonWidget toggleButton = new ToggleButtonWidget(name, value -> onPress.accept(configuration.getOptions(), value), currentValue.apply(configuration.getOptions()));
 
         toggleButton.setWidth(width);
-        toggleButton.setTooltip(Tooltip.of(tooltip));
+        toggleButton.setTooltip(Tooltip.create(tooltip));
 
-        widget.add(toggleButton);
+        widget.addChild(toggleButton);
     }
 }

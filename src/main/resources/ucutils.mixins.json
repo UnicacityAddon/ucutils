@@ -3,9 +3,8 @@
   "package": "de.rettichlp.ucutils.mixin",
   "compatibilityLevel": "JAVA_21",
   "mixins": [
-    "EntityMixin",
     "ItemStackMixin",
-    "MinecartEntityMixin"
+    "MinecartMixin"
   ],
   "injectors": {
     "defaultRequire": 1
@@ -14,14 +13,14 @@
     "requireAnnotations": true
   },
   "client": [
-    "AbstractMinecartEntityRendererMixin",
+    "AbstractContainerScreenMixin",
+    "AbstractMinecartRendererMixin",
     "ChatScreenMixin",
-    "ClientPlayerEntityMixin",
     "ClientPlayNetworkHandlerMixin",
-    "GameMenuScreenMixin",
-    "HandledScreenMixin",
-    "InGameHudMixin",
-    "PlayerEntityRendererMixin",
-    "PlayerListHudMixin"
+    "EntityRendererMixin",
+    "GuiMixin",
+    "PauseScreenMixin",
+    "PlayerMixin",
+    "PlayerTabOverlayMixin"
   ]
 }

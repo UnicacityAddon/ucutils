@@ -6,7 +6,8 @@ import de.rettichlp.ucutils.common.registry.UCUtilsCommand;
 import net.fabricmc.fabric.api.client.command.v2.FabricClientCommandSource;
 import net.fabricmc.loader.api.FabricLoader;
 import net.fabricmc.loader.api.metadata.Person;
-import net.minecraft.text.ClickEvent;
+import net.minecraft.network.chat.ClickEvent;
+import net.minecraft.network.chat.Component;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Collection;
@@ -19,12 +20,11 @@ import static de.rettichlp.ucutils.UCUtils.storage;
 import static de.rettichlp.ucutils.UCUtils.syncService;
 import static de.rettichlp.ucutils.UCUtils.utilService;
 import static java.net.URI.create;
-import static net.fabricmc.fabric.api.client.command.v2.ClientCommandManager.literal;
-import static net.minecraft.text.Text.empty;
-import static net.minecraft.text.Text.of;
-import static net.minecraft.util.Formatting.DARK_GRAY;
-import static net.minecraft.util.Formatting.GRAY;
-import static net.minecraft.util.Formatting.WHITE;
+import static net.fabricmc.fabric.api.client.command.v2.ClientCommands.literal;
+import static net.minecraft.ChatFormatting.DARK_GRAY;
+import static net.minecraft.ChatFormatting.GRAY;
+import static net.minecraft.ChatFormatting.WHITE;
+import static net.minecraft.network.chat.Component.empty;
 
 @UCUtilsCommand(label = "ucutils")
 public class ModCommand extends CommandBase {
@@ -50,35 +50,35 @@ public class ModCommand extends CommandBase {
                     String authors = getAuthors();
                     String contributors = getContributors();
 
-                    player.sendMessage(empty(), false);
+                    player.sendSystemMessage(empty());
 
                     messageService.sendModMessage("UCUtils Version " + version, false);
 
                     messageService.sendModMessage(empty()
-                            .append(of("Autoren").copy().formatted(GRAY))
-                            .append(of(":").copy().formatted(DARK_GRAY)).append(" ")
-                            .append(of(authors).copy().formatted(WHITE)), false);
+                            .append(Component.literal("Autoren").withStyle(GRAY))
+                            .append(Component.literal(":").withStyle(DARK_GRAY)).append(" ")
+                            .append(Component.literal(authors).withStyle(WHITE)), false);
 
                     messageService.sendModMessage(empty()
-                            .append(of("Discord").copy().formatted(GRAY))
-                            .append(of(":").copy().formatted(DARK_GRAY)).append(" ")
-                            .append(of("https://discord.gg/mZGAAwhPHu").copy().styled(style -> style
+                            .append(Component.literal("Discord").withStyle(GRAY))
+                            .append(Component.literal(":").withStyle(DARK_GRAY)).append(" ")
+                            .append(Component.literal("https://discord.gg/mZGAAwhPHu").withStyle(style -> style
                                     .withColor(WHITE)
                                     .withClickEvent(new ClickEvent.OpenUrl(create("https://discord.gg/mZGAAwhPHu"))))), false);
 
                     messageService.sendModMessage(empty()
-                            .append(of("GitHub").copy().formatted(GRAY))
-                            .append(of(":").copy().formatted(DARK_GRAY)).append(" ")
-                            .append(of("https://github.com/UnicacityAddon/ucutils").copy().styled(style -> style
+                            .append(Component.literal("GitHub").withStyle(GRAY))
+                            .append(Component.literal(":").withStyle(DARK_GRAY)).append(" ")
+                            .append(Component.literal("https://github.com/UnicacityAddon/ucutils").withStyle(style -> style
                                     .withColor(WHITE)
                                     .withClickEvent(new ClickEvent.OpenUrl(create("https://github.com/UnicacityAddon/ucutils"))))), false);
 
                     messageService.sendModMessage(empty()
-                            .append(of("Contributors").copy().formatted(GRAY))
-                            .append(of(":").copy().formatted(DARK_GRAY)).append(" ")
-                            .append(of(contributors).copy().formatted(WHITE)), false);
+                            .append(Component.literal("Contributors").withStyle(GRAY))
+                            .append(Component.literal(":").withStyle(DARK_GRAY)).append(" ")
+                            .append(Component.literal(contributors).withStyle(WHITE)), false);
 
-                    player.sendMessage(empty(), false);
+                    player.sendSystemMessage(empty());
 
                     storage.print();
 

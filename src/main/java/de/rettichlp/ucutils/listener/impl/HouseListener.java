@@ -2,10 +2,10 @@ package de.rettichlp.ucutils.listener.impl;
 
 import de.rettichlp.ucutils.common.registry.UCUtilsListener;
 import de.rettichlp.ucutils.listener.IMessageReceiveListener;
-import net.minecraft.text.ClickEvent;
-import net.minecraft.text.HoverEvent;
-import net.minecraft.text.MutableText;
-import net.minecraft.text.Text;
+import net.minecraft.network.chat.ClickEvent;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.HoverEvent;
+import net.minecraft.network.chat.MutableComponent;
 
 import java.time.LocalDateTime;
 import java.util.regex.Matcher;
@@ -19,15 +19,14 @@ import static java.time.Duration.between;
 import static java.time.LocalDateTime.now;
 import static java.time.LocalDateTime.parse;
 import static java.util.regex.Pattern.compile;
-import static net.minecraft.text.Text.empty;
-import static net.minecraft.text.Text.literal;
-import static net.minecraft.util.Formatting.BOLD;
-import static net.minecraft.util.Formatting.DARK_GRAY;
-import static net.minecraft.util.Formatting.DARK_RED;
-import static net.minecraft.util.Formatting.GOLD;
-import static net.minecraft.util.Formatting.GRAY;
-import static net.minecraft.util.Formatting.GREEN;
-import static net.minecraft.util.Formatting.RED;
+import static net.minecraft.ChatFormatting.DARK_GRAY;
+import static net.minecraft.ChatFormatting.DARK_RED;
+import static net.minecraft.ChatFormatting.GOLD;
+import static net.minecraft.ChatFormatting.GRAY;
+import static net.minecraft.ChatFormatting.GREEN;
+import static net.minecraft.ChatFormatting.RED;
+import static net.minecraft.network.chat.Component.empty;
+import static net.minecraft.network.chat.Component.literal;
 
 @UCUtilsListener
 public class HouseListener implements IMessageReceiveListener {
@@ -39,7 +38,7 @@ public class HouseListener implements IMessageReceiveListener {
     private int lastHouseNumber = 0;
 
     @Override
-    public boolean onMessageReceive(Text text, String message) {
+    public boolean onMessageReceive(Component text, String message) {
         Matcher houseRenterHeaderMatcher = HOUSE_RENTER_HEADER_PATTERN.matcher(message);
         if (houseRenterHeaderMatcher.find()) {
             this.lastHouseNumber = parseInt(houseRenterHeaderMatcher.group("number"));
@@ -50,19 +49,19 @@ public class HouseListener implements IMessageReceiveListener {
         if (houseRenterEntryOnlineMatcher.find() && this.lastHouseNumber != 0) {
             String playerName = houseRenterEntryOnlineMatcher.group("playerName");
 
-            MutableText modifiedText = empty()
-                    .append(literal("  » ").formatted(GRAY))
-                    .append(literal(playerName).formatted(GOLD))
-                    .append(literal(" (").formatted(DARK_GRAY))
-                    .append(literal("Online").formatted(GREEN))
-                    .append(literal(") ").formatted(DARK_GRAY))
-                    .append(literal("⨉").styled(style -> style
+            MutableComponent modifiedText = empty()
+                    .append(literal("  » ").withStyle(GRAY))
+                    .append(literal(playerName).withStyle(GOLD))
+                    .append(literal(" (").withStyle(DARK_GRAY))
+                    .append(literal("Online").withStyle(GREEN))
+                    .append(literal(") ").withStyle(DARK_GRAY))
+                    .append(literal("⨉").withStyle(style -> style
                             .withColor(RED)
-                            .withFormatting(BOLD)
-                            .withHoverEvent(new HoverEvent.ShowText(literal("Kündigen").formatted(RED)))
+                            .withBold(true)
+                            .withHoverEvent(new HoverEvent.ShowText(literal("Kündigen").withStyle(RED)))
                             .withClickEvent(new ClickEvent.RunCommand("/unrent " + this.lastHouseNumber + " " + playerName))));
 
-            player.sendMessage(modifiedText, false);
+            player.sendSystemMessage(modifiedText);
             return false;
         }
 
@@ -73,21 +72,21 @@ public class HouseListener implements IMessageReceiveListener {
             LocalDateTime dateTime = parse(dateTimeString, DATE_TIME_FORMAT);
             long daysSinceOffline = abs(between(now(), dateTime).toDays());
 
-            MutableText modifiedText = empty()
-                    .append(literal("  » ").formatted(GRAY))
-                    .append(literal(playerName).formatted(GOLD))
-                    .append(literal(" (").formatted(DARK_GRAY))
-                    .append(literal("Offline seit " + dateTimeString).formatted(RED))
-                    .append(literal(" - ").formatted(DARK_GRAY))
-                    .append(literal(daysSinceOffline + " " + (daysSinceOffline == 1 ? "Tag" : "Tage")).formatted(DARK_RED))
-                    .append(literal(") ").formatted(DARK_GRAY))
-                    .append(literal("⨉").styled(style -> style
+            MutableComponent modifiedText = empty()
+                    .append(literal("  » ").withStyle(GRAY))
+                    .append(literal(playerName).withStyle(GOLD))
+                    .append(literal(" (").withStyle(DARK_GRAY))
+                    .append(literal("Offline seit " + dateTimeString).withStyle(RED))
+                    .append(literal(" - ").withStyle(DARK_GRAY))
+                    .append(literal(daysSinceOffline + " " + (daysSinceOffline == 1 ? "Tag" : "Tage")).withStyle(DARK_RED))
+                    .append(literal(") ").withStyle(DARK_GRAY))
+                    .append(literal("⨉").withStyle(style -> style
                             .withColor(RED)
-                            .withFormatting(BOLD)
-                            .withHoverEvent(new HoverEvent.ShowText(literal("Kündigen").formatted(RED)))
+                            .withBold(true)
+                            .withHoverEvent(new HoverEvent.ShowText(literal("Kündigen").withStyle(RED)))
                             .withClickEvent(new ClickEvent.RunCommand("/unrent " + this.lastHouseNumber + " " + playerName))));
 
-            player.sendMessage(modifiedText, false);
+            player.sendSystemMessage(modifiedText);
             return false;
         }
 

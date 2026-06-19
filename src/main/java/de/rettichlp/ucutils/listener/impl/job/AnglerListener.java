@@ -2,12 +2,12 @@ package de.rettichlp.ucutils.listener.impl.job;
 
 import de.rettichlp.ucutils.common.registry.UCUtilsListener;
 import de.rettichlp.ucutils.listener.IMessageReceiveListener;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.network.ClientPlayerInteractionManager;
-import net.minecraft.component.type.MapIdComponent;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.map.MapState;
-import net.minecraft.text.Text;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.multiplayer.MultiPlayerGameMode;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.saveddata.maps.MapId;
+import net.minecraft.world.level.saveddata.maps.MapItemSavedData;
 import org.jetbrains.annotations.Nullable;
 
 import java.awt.image.BufferedImage;
@@ -22,12 +22,12 @@ import static de.rettichlp.ucutils.UCUtils.utilService;
 import static java.awt.image.BufferedImage.TYPE_INT_RGB;
 import static java.util.regex.Pattern.compile;
 import static javax.imageio.ImageIO.write;
-import static net.minecraft.block.MapColor.getRenderColor;
-import static net.minecraft.component.DataComponentTypes.MAP_ID;
-import static net.minecraft.item.FilledMapItem.getMapState;
-import static net.minecraft.item.Items.FILLED_MAP;
-import static net.minecraft.item.Items.FISHING_ROD;
-import static net.minecraft.util.Hand.MAIN_HAND;
+import static net.minecraft.core.component.DataComponents.MAP_ID;
+import static net.minecraft.world.InteractionHand.MAIN_HAND;
+import static net.minecraft.world.item.Items.FILLED_MAP;
+import static net.minecraft.world.item.Items.FISHING_ROD;
+import static net.minecraft.world.item.MapItem.getSavedData;
+import static net.minecraft.world.level.material.MapColor.getColorFromPackedId;
 
 @UCUtilsListener
 public class AnglerListener implements IMessageReceiveListener {
@@ -36,17 +36,17 @@ public class AnglerListener implements IMessageReceiveListener {
     private static final Pattern ANGLER_CAPTCHA_CONTINUED_PATTERN = compile("^Deine Combo wurde fortgesetzt! \\(\\d+\\)$");
 
     @Override
-    public boolean onMessageReceive(Text text, String message) {
-        MinecraftClient client = MinecraftClient.getInstance();
+    public boolean onMessageReceive(Component text, String message) {
+        Minecraft client = Minecraft.getInstance();
 
         Matcher anglerCaptchaMatcher = ANGLER_CAPTCHA_PATTERN.matcher(message);
         if (anglerCaptchaMatcher.find()) {
             utilService.delayedAction(() -> {
-                ItemStack offHandStack = player.getOffHandStack();
-                if (offHandStack.isOf(FILLED_MAP)) {
-                    MapIdComponent captchaMap = offHandStack.get(MAP_ID);
-                    storage.setCaptchaMap(captchaMap);
-                    saveCaptchaImage(captchaMap);
+                ItemStack offHandStack = player.getOffhandItem();
+                if (offHandStack.is(FILLED_MAP)) {
+                    MapId mapId = offHandStack.get(MAP_ID);
+                    storage.setCaptchaMap(mapId);
+                    saveCaptchaImage(mapId);
                 }
             }, 500);
 
@@ -57,21 +57,21 @@ public class AnglerListener implements IMessageReceiveListener {
         if (anglerCaptchaContinuedMatcher.find()) {
             storage.setCaptchaMap(null);
 
-            ClientPlayerInteractionManager interactionManager = client.interactionManager;
-            if (interactionManager == null || !player.getMainHandStack().isOf(FISHING_ROD)) {
+            MultiPlayerGameMode gameMode = client.gameMode;
+            if (gameMode == null || !player.getMainHandItem().is(FISHING_ROD)) {
                 return true;
             }
 
-            interactionManager.interactItem(player, MAIN_HAND);
-            player.swingHand(MAIN_HAND);
+            gameMode.useItem(player, MAIN_HAND);
+            player.swing(MAIN_HAND);
             return true;
         }
 
         return true;
     }
 
-    private void saveCaptchaImage(MapIdComponent captchaMap) {
-        BufferedImage mapImage = getMapImage(captchaMap);
+    private void saveCaptchaImage(MapId mapId) {
+        BufferedImage mapImage = getMapImage(mapId);
         if (mapImage == null) {
             return;
         }
@@ -87,19 +87,20 @@ public class AnglerListener implements IMessageReceiveListener {
         }
     }
 
-    private @Nullable BufferedImage getMapImage(MapIdComponent mapIdComponent) {
-        MapState mapState = getMapState(mapIdComponent, MinecraftClient.getInstance().world);
-        if (mapState == null) {
+    private @Nullable BufferedImage getMapImage(MapId mapId) {
+        assert Minecraft.getInstance().level != null;
+        MapItemSavedData savedData = getSavedData(mapId, Minecraft.getInstance().level);
+        if (savedData == null) {
             return null;
         }
 
         BufferedImage mapImage = new BufferedImage(128, 128, TYPE_INT_RGB);
 
-        for (int i = 0; i < mapState.colors.length; i++) {
+        for (int i = 0; i < savedData.colors.length; i++) {
             int x = i % 128;
             int y = i / 128;
 
-            int argb = getRenderColor(mapState.colors[i]);
+            int argb = getColorFromPackedId(savedData.colors[i]);
             mapImage.setRGB(x, y, argb);
         }
 

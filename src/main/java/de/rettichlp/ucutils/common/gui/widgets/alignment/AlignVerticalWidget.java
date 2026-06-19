@@ -2,11 +2,11 @@ package de.rettichlp.ucutils.common.gui.widgets.alignment;
 
 import de.rettichlp.ucutils.common.gui.widgets.base.AbstractUCUtilsWidget;
 import de.rettichlp.ucutils.common.gui.widgets.base.UCUtilsWidgetConfiguration;
-import net.minecraft.client.gui.DrawContext;
-import net.minecraft.text.Text;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.network.chat.Component;
 import org.jetbrains.annotations.NotNull;
 
-import static net.minecraft.text.Text.empty;
+import static net.minecraft.network.chat.Component.empty;
 
 public class AlignVerticalWidget extends AlignWidget<AbstractUCUtilsWidget<UCUtilsWidgetConfiguration>> {
 
@@ -16,12 +16,12 @@ public class AlignVerticalWidget extends AlignWidget<AbstractUCUtilsWidget<UCUti
     }
 
     @Override
-    public Text getDisplayName() {
+    public Component getDisplayName() {
         return empty();
     }
 
     @Override
-    public Text getTooltip() {
+    public Component getTooltip() {
         return empty();
     }
 
@@ -36,7 +36,7 @@ public class AlignVerticalWidget extends AlignWidget<AbstractUCUtilsWidget<UCUti
     }
 
     @Override
-    public void draw(@NotNull DrawContext drawContext, int x, int y, AbstractUCUtilsWidget.Alignment alignment) {
+    public void draw(@NotNull GuiGraphicsExtractor graphics, int x, int y, AbstractUCUtilsWidget.Alignment alignment) {
         int yOffset = y;
 
         for (AbstractUCUtilsWidget<UCUtilsWidgetConfiguration> ucUtilsWidget : this.ucUtilsWidgets) {
@@ -47,7 +47,7 @@ public class AlignVerticalWidget extends AlignWidget<AbstractUCUtilsWidget<UCUti
                 case RIGHT -> getWidth() - ucUtilsWidget.getWidth();
             };
 
-            ucUtilsWidget.draw(drawContext, x + alignmentXModifier, yOffset, alignment);
+            ucUtilsWidget.draw(graphics, x + alignmentXModifier, yOffset, alignment);
             yOffset += ucUtilsWidget.getHeight();
         }
     }

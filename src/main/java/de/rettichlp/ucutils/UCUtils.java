@@ -15,8 +15,8 @@ import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallback;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientLifecycleEvents;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
-import net.minecraft.client.network.ClientPlayNetworkHandler;
-import net.minecraft.client.network.ClientPlayerEntity;
+import net.minecraft.client.multiplayer.ClientPacketListener;
+import net.minecraft.client.player.LocalPlayer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -45,8 +45,8 @@ public class UCUtils implements ModInitializer {
     public static final Storage storage = new Storage();
     public static final Configuration configuration = new Configuration().loadFromFile();
 
-    public static ClientPlayerEntity player;
-    public static ClientPlayNetworkHandler networkHandler;
+    public static LocalPlayer player;
+    public static ClientPacketListener networkHandler;
 
     private static final String NEOPROTECT_ENTRYPOINT = "c970141b-0cca-4ad2-894b-21ac9c171cbe.shield.neoprotect.ovh";
 
@@ -85,7 +85,7 @@ public class UCUtils implements ModInitializer {
         ClientLifecycleEvents.CLIENT_STOPPING.register(client -> configuration.saveToFile());
     }
 
-    private boolean isUnicaCity(ClientPlayNetworkHandler networkHandler) {
+    private boolean isUnicaCity(ClientPacketListener networkHandler) {
         if (getBoolean("fabric.development") || !configuration.getOptions().checkUnicacityServer()) {
             return true;
         }
@@ -95,7 +95,7 @@ public class UCUtils implements ModInitializer {
             return false;
         }
 
-        String addressString = networkHandler.getConnection().getAddress().toString();
+        String addressString = networkHandler.getConnection().getRemoteAddress().toString();
         // for LabyMod players, there is no dot at the end of the domain
         if (!addressString.matches(NEOPROTECT_ENTRYPOINT + "\\.?/\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}:\\d+")) {
             LOGGER.warn("Not connected to UnicaCity: {}", addressString);

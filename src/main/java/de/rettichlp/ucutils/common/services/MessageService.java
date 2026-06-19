@@ -1,6 +1,7 @@
 package de.rettichlp.ucutils.common.services;
 
-import net.minecraft.text.Text;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 import org.jetbrains.annotations.NotNull;
 
 import java.time.LocalDate;
@@ -12,32 +13,37 @@ import static de.rettichlp.ucutils.UCUtils.player;
 import static java.lang.Math.abs;
 import static java.lang.String.format;
 import static java.time.format.DateTimeFormatter.ofPattern;
-import static net.minecraft.text.Text.of;
-import static net.minecraft.util.Formatting.DARK_GRAY;
-import static net.minecraft.util.Formatting.DARK_PURPLE;
-import static net.minecraft.util.Formatting.LIGHT_PURPLE;
-import static net.minecraft.util.Formatting.WHITE;
+import static net.minecraft.ChatFormatting.DARK_GRAY;
+import static net.minecraft.ChatFormatting.DARK_PURPLE;
+import static net.minecraft.ChatFormatting.LIGHT_PURPLE;
+import static net.minecraft.ChatFormatting.WHITE;
+import static net.minecraft.network.chat.Component.literal;
 
 public class MessageService {
 
     public static final DateTimeFormatter DATE_TIME_FORMAT = ofPattern("dd.MM.yyyy HH:mm:ss");
     public static final DateTimeFormatter TIME_FORMAT = ofPattern("HH:mm:ss");
 
-    protected static final Text modMessagePrefix = Text.empty()
-            .append(of("✦").copy().formatted(DARK_PURPLE))
-            .append(of(" "))
-            .append(of("UCU").copy().formatted(LIGHT_PURPLE))
-            .append(of(" "))
-            .append(of("|").copy().formatted(DARK_GRAY))
-            .append(of(" "));
+    protected static final MutableComponent modMessagePrefix = Component.empty()
+            .append(literal("✦").withStyle(DARK_PURPLE))
+            .append(literal(" "))
+            .append(literal("UCU").withStyle(LIGHT_PURPLE))
+            .append(literal(" "))
+            .append(literal("|").withStyle(DARK_GRAY))
+            .append(literal(" "));
 
     public void sendModMessage(String message, boolean inActionbar) {
-        messageService.sendModMessage(of(message).copy().formatted(WHITE), inActionbar);
+        messageService.sendModMessage(literal(message).withStyle(WHITE), inActionbar);
     }
 
-    public void sendModMessage(Text message, boolean inActionbar) {
-        Text messageText = modMessagePrefix.copy().append(message);
-        player.sendMessage(messageText, inActionbar);
+    public void sendModMessage(Component message, boolean inActionbar) {
+        Component messageText = modMessagePrefix.append(message);
+
+        if (inActionbar) {
+            player.sendOverlayMessage(messageText);
+        } else {
+            player.sendSystemMessage(messageText);
+        }
     }
 
     public String dateTimeToFriendlyString(@NotNull ChronoLocalDateTime<LocalDate> dateTime) {

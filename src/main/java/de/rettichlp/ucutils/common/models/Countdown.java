@@ -3,7 +3,7 @@ package de.rettichlp.ucutils.common.models;
 import de.rettichlp.ucutils.common.gui.widgets.CountdownWidget;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import net.minecraft.text.Text;
+import net.minecraft.network.chat.Component;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
@@ -12,10 +12,10 @@ import static de.rettichlp.ucutils.UCUtils.messageService;
 import static de.rettichlp.ucutils.UCUtils.utilService;
 import static java.time.Duration.between;
 import static java.time.LocalDateTime.now;
-import static net.minecraft.text.Text.empty;
-import static net.minecraft.text.Text.of;
-import static net.minecraft.util.Formatting.GRAY;
-import static net.minecraft.util.Formatting.WHITE;
+import static net.minecraft.ChatFormatting.GRAY;
+import static net.minecraft.ChatFormatting.WHITE;
+import static net.minecraft.network.chat.Component.empty;
+import static net.minecraft.network.chat.Component.literal;
 
 @Getter
 @RequiredArgsConstructor
@@ -43,10 +43,10 @@ public class Countdown {
     public CountdownWidget toWidget() {
         String millisToFriendlyString = messageService.millisToFriendlyString(getRemainingDuration().toMillis());
 
-        Text text = empty()
-                .append(of(this.title).copy().formatted(WHITE))
-                .append(of(":").copy().formatted(GRAY)).append(" ")
-                .append(of(millisToFriendlyString));
+        Component text = empty()
+                .append(literal(this.title).withStyle(WHITE))
+                .append(literal(":").withStyle(GRAY)).append(" ")
+                .append(literal(millisToFriendlyString));
 
         return new CountdownWidget(text, this.startTime, this.duration.toMillis());
     }

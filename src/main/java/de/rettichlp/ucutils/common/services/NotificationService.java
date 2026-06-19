@@ -2,7 +2,7 @@ package de.rettichlp.ucutils.common.services;
 
 import de.rettichlp.ucutils.common.gui.widgets.NotificationWidget;
 import lombok.Data;
-import net.minecraft.text.Text;
+import net.minecraft.network.chat.Component;
 
 import java.awt.Color;
 import java.time.LocalDateTime;
@@ -31,23 +31,23 @@ public class NotificationService {
 
     private final Collection<Notification> notifications = new ArrayList<>();
 
-    public void sendSuccessNotification(Text text) {
+    public void sendSuccessNotification(Component text) {
         sendNotification(text, GREEN, 5000);
     }
 
-    public void sendInfoNotification(Text text) {
+    public void sendInfoNotification(Component text) {
         sendNotification(text, CYAN, 5000);
     }
 
-    public void sendWarningNotification(Text text) {
+    public void sendWarningNotification(Component text) {
         sendNotification(text, ORANGE, 5000);
     }
 
-    public void sendErrorNotification(Text text) {
+    public void sendErrorNotification(Component text) {
         sendNotification(text, RED, 5000);
     }
 
-    public void sendNotification(Text text, Color color, long durationInMillis) {
+    public void sendNotification(Component text, Color color, long durationInMillis) {
         Notification notification = new Notification(text, durationInMillis);
         notification.setColor(color);
         this.notifications.add(notification);
@@ -75,7 +75,7 @@ public class NotificationService {
     public static class Notification {
 
         private final UUID id = randomUUID();
-        private final Text text;
+        private final Component text;
         private final long durationInMillis;
         private final LocalDateTime timestamp = now();
         private Color color = WHITE;
