@@ -9,6 +9,7 @@ import de.rettichlp.ucutils.common.services.MessageService;
 import de.rettichlp.ucutils.common.services.NameTagService;
 import de.rettichlp.ucutils.common.services.NotificationService;
 import de.rettichlp.ucutils.common.services.RenderService;
+import de.rettichlp.ucutils.common.services.ResyncableTimer;
 import de.rettichlp.ucutils.common.services.SyncService;
 import de.rettichlp.ucutils.common.services.UtilService;
 import net.fabricmc.api.ModInitializer;
@@ -23,6 +24,7 @@ import org.slf4j.LoggerFactory;
 import static java.lang.Boolean.getBoolean;
 import static java.lang.System.currentTimeMillis;
 import static java.util.Objects.isNull;
+import static java.util.concurrent.TimeUnit.MINUTES;
 
 public class UCUtils implements ModInitializer {
 
@@ -44,6 +46,7 @@ public class UCUtils implements ModInitializer {
     public static final Api api = new Api();
     public static final Storage storage = new Storage();
     public static final Configuration configuration = new Configuration().loadFromFile();
+    public static final ResyncableTimer synchronisedMinuteTimer = new ResyncableTimer(0, 1, MINUTES);
 
     public static LocalPlayer player;
     public static ClientPacketListener networkHandler;

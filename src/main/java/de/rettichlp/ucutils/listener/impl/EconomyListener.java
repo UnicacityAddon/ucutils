@@ -18,6 +18,7 @@ import static de.rettichlp.ucutils.UCUtils.messageService;
 import static de.rettichlp.ucutils.UCUtils.notificationService;
 import static de.rettichlp.ucutils.UCUtils.player;
 import static de.rettichlp.ucutils.UCUtils.storage;
+import static de.rettichlp.ucutils.UCUtils.synchronisedMinuteTimer;
 import static de.rettichlp.ucutils.UCUtils.utilService;
 import static java.lang.Integer.parseInt;
 import static java.lang.Math.max;
@@ -249,6 +250,7 @@ public class EconomyListener implements IMessageReceiveListener {
         if (paydayCountdownMatcher.find()) {
             int minutes = parseInt(paydayCountdownMatcher.group("minutes"));
             int minutesSinceLastPayDay = 60 - minutes;
+            synchronisedMinuteTimer.synchronize();
             configuration.setMinutesSinceLastPayDay(minutesSinceLastPayDay);
 
             utilService.delayedAction(() -> {
