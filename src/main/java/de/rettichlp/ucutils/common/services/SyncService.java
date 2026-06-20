@@ -8,18 +8,14 @@ import java.util.Map;
 import static de.rettichlp.ucutils.UCUtils.LOGGER;
 import static de.rettichlp.ucutils.UCUtils.api;
 import static de.rettichlp.ucutils.UCUtils.commandService;
-import static de.rettichlp.ucutils.UCUtils.configuration;
 import static de.rettichlp.ucutils.UCUtils.notificationService;
 import static de.rettichlp.ucutils.UCUtils.player;
 import static de.rettichlp.ucutils.UCUtils.storage;
 import static de.rettichlp.ucutils.UCUtils.utilService;
 import static de.rettichlp.ucutils.common.models.Faction.NULL;
-import static de.rettichlp.ucutils.common.services.CommandService.COMMAND_COOLDOWN_MILLIS;
 import static java.awt.Color.MAGENTA;
 import static java.util.Objects.nonNull;
-import static java.util.concurrent.Executors.newSingleThreadScheduledExecutor;
 import static java.util.concurrent.TimeUnit.MINUTES;
-import static java.util.concurrent.TimeUnit.SECONDS;
 import static net.minecraft.ChatFormatting.DARK_GRAY;
 import static net.minecraft.ChatFormatting.GRAY;
 import static net.minecraft.ChatFormatting.GREEN;
@@ -29,19 +25,6 @@ import static net.minecraft.network.chat.Component.literal;
 import static net.minecraft.network.chat.Component.translatable;
 
 public class SyncService {
-
-    public void startRepeatingSync() {
-        newSingleThreadScheduledExecutor().scheduleAtFixedRate(() -> {
-            if (!storage.isUnicaCity()) {
-                return;
-            }
-
-            // show health for hydration bar sync
-            if (configuration.getOptions().showHydration()) {
-                utilService.delayedAction(() -> commandService.sendCommandWithHiddenOutput("health"), COMMAND_COOLDOWN_MILLIS);
-            }
-        }, 20, 180, SECONDS);
-    }
 
     public void syncFactionMembers() {
         for (Faction faction : Faction.values()) {

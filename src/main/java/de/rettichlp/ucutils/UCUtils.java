@@ -64,7 +64,34 @@ public class UCUtils implements ModInitializer {
 
         this.registry.registerSounds();
 
-        syncService.startRepeatingSync();
+        // add payday minute
+        synchronisedMinuteTimer.add(_ -> {
+            if (storage.isUnicaCity() && !nameTagService.isAfk(player.getPlainTextName())) {
+                configuration.setMinutesSinceLastPayDay(configuration.getMinutesSinceLastPayDay() + 1);
+            }
+        });
+
+        // show health for hydration bar sync
+        synchronisedMinuteTimer.add(currentTick -> {
+            // every 3 minutes
+            if (currentTick % 3 != 0) {
+                return;
+            }
+
+            if (storage.isUnicaCity() && !nameTagService.isAfk(player.getPlainTextName()) && configuration.getOptions().showHydration()) {
+                commandService.sendCommandWithHiddenOutput("health");
+            }
+        });
+
+        // asynchronously save every 10 minutes
+        synchronisedMinuteTimer.add(currentTick -> {
+            // every 10 minutes
+            if (currentTick % 10 != 0) {
+                return;
+            }
+
+            new Thread(configuration::saveToFile).start();
+        });
 
         ClientPlayConnectionEvents.JOIN.register((handler, sender, client) -> {
             player = client.player;
