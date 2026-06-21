@@ -1,27 +1,28 @@
 package de.rettichlp.ucutils.mixin;
 
-import com.mojang.authlib.GameProfile;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NonNull;
 import net.minecraft.client.multiplayer.ClientPacketListener;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.protocol.game.ClientboundPlayerInfoRemovePacket;
+import net.minecraft.network.protocol.game.ClientboundPlayerInfoUpdatePacket;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import java.util.Collection;
-import java.util.HashSet;
+import java.util.EnumSet;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import static de.rettichlp.ucutils.UCUtils.configuration;
 import static de.rettichlp.ucutils.UCUtils.notificationService;
 import static de.rettichlp.ucutils.UCUtils.storage;
 import static java.awt.Color.WHITE;
+import static java.lang.System.currentTimeMillis;
+import static java.util.Optional.ofNullable;
 import static net.minecraft.ChatFormatting.BLUE;
 import static net.minecraft.ChatFormatting.DARK_GRAY;
 import static net.minecraft.ChatFormatting.GOLD;
@@ -29,6 +30,8 @@ import static net.minecraft.ChatFormatting.YELLOW;
 import static net.minecraft.network.chat.Component.empty;
 import static net.minecraft.network.chat.Component.literal;
 import static net.minecraft.network.chat.Component.translatable;
+import static net.minecraft.network.protocol.game.ClientboundPlayerInfoUpdatePacket.Action.ADD_PLAYER;
+import static net.minecraft.network.protocol.game.ClientboundPlayerInfoUpdatePacket.Action.UPDATE_DISPLAY_NAME;
 import static org.spongepowered.asm.mixin.injection.At.Shift.AFTER;
 
 @Mixin(ClientPacketListener.class)
@@ -53,7 +56,7 @@ public abstract class ClientPlayNetworkHandlerMixin {
                     .append(literal("]").withStyle(DARK_GRAY)));
 
     @Unique
-    private final Collection<EnrichedGameProfile> enrichedGameProfiles = new HashSet<>();
+    private final Map<UUID, Component> displayNames = new HashMap<>();
 
     @Inject(method = "handlePlayerInfoRemove",
             at = @At(value = "INVOKE",
@@ -69,128 +72,94 @@ public abstract class ClientPlayNetworkHandlerMixin {
         }
 
         for (UUID uuid : packet.profileIds()) {
-            this.enrichedGameProfiles.stream()
-                    .filter(egp -> egp.getProfile().id().equals(uuid))
-                    .findFirst()
-                    .ifPresent(egp -> sendChangeNotification(egp, "ucutils.notification.player_quit"));
+            ofNullable(this.displayNames.get(uuid)).ifPresent(displayName -> sendChangeNotification(displayName, "ucutils.notification.player_quit"));
         }
     }
 
-//    @Inject(method = "", at = @At("HEAD"))
-//    private void ucutils$handlePlayerListActionHead(PlayerListS2CPacket.Action action,
-//                                                    PlayerListS2CPacket.Entry receivedEntry,
-//                                                    PlayerListEntry currentEntry,
-//                                                    CallbackInfo ci) {
-//        if (!storage.isUnicaCity()) {
-//            return;
-//        }
-//
-//
-//
-//        GameProfile profile = receivedEntry.profile();
-//        UUID profileId = receivedEntry.profileId();
-//        Component currentDisplayName = receivedEntry.displayName();
-//
-//        if (currentDisplayName == null) {
-//            return;
-//        }
-//
-//        switch (action) {
-//            case ADD_PLAYER -> {
-//                if (!configuration.getOptions().notification().joinQuit()) {
-//                    return;
-//                }
-//
-//                EnrichedGameProfile enrichedGameProfile = new EnrichedGameProfile(profile, currentDisplayName, currentDisplayName);
-//                this.enrichedGameProfiles.removeIf(egp -> egp.getProfile().id().equals(profileId));
-//                this.enrichedGameProfiles.add(enrichedGameProfile);
-//
-//                // if the client joined the server few moments ago, hide notifications due to initial sync of player list
-//                if (currentTimeMillis() - storage.getJoinTimestamp() < 1000) {
-//                    return;
-//                }
-//
-//                sendChangeNotification(enrichedGameProfile, "ucutils.notification.player_join");
-//            }
-//            case UPDATE_DISPLAY_NAME -> {
-//                EnrichedGameProfile enrichedGameProfile = this.enrichedGameProfiles.stream()
-//                        .filter(egp -> egp.getProfile().id().equals(profileId))
-//                        .findFirst()
-//                        .orElseGet(() -> {
-//                            EnrichedGameProfile egp = new EnrichedGameProfile(profile, currentDisplayName, currentDisplayName);
-//                            this.enrichedGameProfiles.add(egp);
-//                            return egp;
-//                        });
-//
-//                Component previousDisplayName = enrichedGameProfile.getPreviousDisplayName();
-//
-//                // handle report change
-//                if (configuration.getOptions().notification().report()) {
-//                    if (!previousDisplayName.contains(REPORT_PREFIX) && currentDisplayName.contains(REPORT_PREFIX)) {
-//                        sendChangeNotification(enrichedGameProfile, "ucutils.notification.player_enter_report");
-//                        enrichedGameProfile.setPreviousDisplayName(currentDisplayName);
-//                        return;
-//                    }
-//
-//                    if (previousDisplayName.contains(REPORT_PREFIX) && !currentDisplayName.contains(REPORT_PREFIX)) {
-//                        sendChangeNotification(enrichedGameProfile, "ucutils.notification.player_leave_report");
-//                        enrichedGameProfile.setPreviousDisplayName(currentDisplayName);
-//                        return;
-//                    }
-//                }
-//
-//                // handle build mode change
-//                if (configuration.getOptions().notification().buildMode()) {
-//                    if (!previousDisplayName.contains(BUILD_MODE_PREFIX) && currentDisplayName.contains(BUILD_MODE_PREFIX)) {
-//                        sendChangeNotification(enrichedGameProfile, "ucutils.notification.player_enter_buildmode");
-//                        enrichedGameProfile.setPreviousDisplayName(currentDisplayName);
-//                        return;
-//                    }
-//
-//                    if (previousDisplayName.contains(BUILD_MODE_PREFIX) && !currentDisplayName.contains(BUILD_MODE_PREFIX)) {
-//                        sendChangeNotification(enrichedGameProfile, "ucutils.notification.player_leave_buildmode");
-//                        enrichedGameProfile.setPreviousDisplayName(currentDisplayName);
-//                        return;
-//                    }
-//                }
-//
-//                // handle admin-duty change
-//                if (configuration.getOptions().notification().aDuty()) {
-//                    if (!previousDisplayName.contains(A_DUTY_PREFIX) && currentDisplayName.contains(A_DUTY_PREFIX)) {
-//                        sendChangeNotification(enrichedGameProfile, "ucutils.notification.player_enter_a_duty");
-//                    }
-//
-//                    if (previousDisplayName.contains(A_DUTY_PREFIX) && !currentDisplayName.contains(A_DUTY_PREFIX)) {
-//                        sendChangeNotification(enrichedGameProfile, "ucutils.notification.player_leave_a_duty");
-//                    }
-//                }
-//
-//                enrichedGameProfile.setPreviousDisplayName(currentDisplayName);
-//            }
-//        }
-//    }
-
-    @Unique
-    private void sendChangeNotification(@NonNull EnrichedGameProfile enrichedGameProfile, String translationKey) {
-        Component currentDisplayName = enrichedGameProfile.getCurrentDisplayName();
-        if (currentDisplayName.equals(empty())) {
+    @Inject(method = "handlePlayerInfoUpdate", at = @At("HEAD"))
+    private void ucutils$handlePlayerListActionHead(ClientboundPlayerInfoUpdatePacket packet, CallbackInfo ci) {
+        if (!storage.isUnicaCity()) {
             return;
         }
 
-        MutableComponent text = translatable(translationKey, currentDisplayName);
-        notificationService.sendNotification(text, WHITE, 5000);
+        EnumSet<ClientboundPlayerInfoUpdatePacket.Action> actions = packet.actions();
+        List<ClientboundPlayerInfoUpdatePacket.Entry> entries = packet.entries();
+
+        for (ClientboundPlayerInfoUpdatePacket.Entry entry : entries) {
+            UUID profileId = entry.profileId();
+            Component displayName = entry.displayName();
+
+            if (displayName == null) {
+                continue;
+            }
+
+            if (actions.contains(ADD_PLAYER)) {
+                if (!configuration.getOptions().notification().joinQuit()) {
+                    return;
+                }
+
+                // if the client joined the server few moments ago, hide notifications due to initial sync of player list
+                if (currentTimeMillis() - storage.getJoinTimestamp() < 1000) {
+                    return;
+                }
+
+                sendChangeNotification(displayName, "ucutils.notification.player_join");
+            } else if (actions.contains(UPDATE_DISPLAY_NAME)) {
+                Component previousDisplayName = this.displayNames.get(profileId);
+
+                // handle report change
+                if (configuration.getOptions().notification().report()) {
+                    if (!previousDisplayName.contains(REPORT_PREFIX) && displayName.contains(REPORT_PREFIX)) {
+                        sendChangeNotification(displayName, "ucutils.notification.player_enter_report");
+                        this.displayNames.put(profileId, displayName);
+                        continue;
+                    }
+
+                    if (previousDisplayName.contains(REPORT_PREFIX) && !displayName.contains(REPORT_PREFIX)) {
+                        sendChangeNotification(displayName, "ucutils.notification.player_leave_report");
+                        this.displayNames.put(profileId, displayName);
+                        continue;
+                    }
+                }
+
+                // handle build mode change
+                if (configuration.getOptions().notification().buildMode()) {
+                    if (!previousDisplayName.contains(BUILD_MODE_PREFIX) && displayName.contains(BUILD_MODE_PREFIX)) {
+                        sendChangeNotification(displayName, "ucutils.notification.player_enter_buildmode");
+                        this.displayNames.put(profileId, displayName);
+                        continue;
+                    }
+
+                    if (previousDisplayName.contains(BUILD_MODE_PREFIX) && !displayName.contains(BUILD_MODE_PREFIX)) {
+                        sendChangeNotification(displayName, "ucutils.notification.player_leave_buildmode");
+                        this.displayNames.put(profileId, displayName);
+                        continue;
+                    }
+                }
+
+                // handle admin-duty change
+                if (configuration.getOptions().notification().aDuty()) {
+                    if (!previousDisplayName.contains(A_DUTY_PREFIX) && displayName.contains(A_DUTY_PREFIX)) {
+                        sendChangeNotification(displayName, "ucutils.notification.player_enter_a_duty");
+                        this.displayNames.put(profileId, displayName);
+                        continue;
+                    }
+
+                    if (previousDisplayName.contains(A_DUTY_PREFIX) && !displayName.contains(A_DUTY_PREFIX)) {
+                        sendChangeNotification(displayName, "ucutils.notification.player_leave_a_duty");
+                        this.displayNames.put(profileId, displayName);
+                        continue;
+                    }
+                }
+            }
+
+            this.displayNames.put(profileId, displayName);
+        }
     }
 
-    @Data
-    @AllArgsConstructor
-    public static class EnrichedGameProfile {
-
-        private final GameProfile profile;
-        private Component previousDisplayName;
-        private Component currentDisplayName;
-
-        public boolean isTeamMember() {
-            return storage.getTeam().ucTeam().stream().anyMatch(teamMember -> teamMember.uuid().equals(this.profile.id()));
-        }
+    @Unique
+    private void sendChangeNotification(Component displayName, String translationKey) {
+        MutableComponent text = translatable(translationKey, displayName);
+        notificationService.sendNotification(text, WHITE, 5000);
     }
 }
