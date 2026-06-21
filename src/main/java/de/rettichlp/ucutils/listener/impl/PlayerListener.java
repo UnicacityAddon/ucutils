@@ -3,7 +3,6 @@ package de.rettichlp.ucutils.listener.impl;
 import de.rettichlp.ucutils.common.models.Countdown;
 import de.rettichlp.ucutils.common.registry.UCUtilsListener;
 import de.rettichlp.ucutils.listener.IMessageReceiveListener;
-import de.rettichlp.ucutils.listener.ITickListener;
 import net.minecraft.network.Connection;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.HoverEvent;
@@ -15,8 +14,6 @@ import java.util.regex.Pattern;
 
 import static de.rettichlp.ucutils.UCUtils.LOGGER;
 import static de.rettichlp.ucutils.UCUtils.commandService;
-import static de.rettichlp.ucutils.UCUtils.configuration;
-import static de.rettichlp.ucutils.UCUtils.nameTagService;
 import static de.rettichlp.ucutils.UCUtils.player;
 import static de.rettichlp.ucutils.UCUtils.storage;
 import static de.rettichlp.ucutils.common.models.ShutdownReason.CEMETERY;
@@ -33,7 +30,7 @@ import static net.minecraft.network.chat.Component.empty;
 import static net.minecraft.network.chat.Component.literal;
 
 @UCUtilsListener
-public class PlayerListener implements IMessageReceiveListener, ITickListener {
+public class PlayerListener implements IMessageReceiveListener {
 
     private static final String SHUTDOWN_TIMEOUT = "5";
 
@@ -151,13 +148,6 @@ public class PlayerListener implements IMessageReceiveListener, ITickListener {
         }
 
         return true;
-    }
-
-    @Override
-    public void onTick() {
-        if (player.tickCount % 1200 == 0 && !nameTagService.isAfk(player.getPlainTextName())) {
-            configuration.addMinutesSinceLastPayDay(1);
-        }
     }
 
     private void shutdownPC() {

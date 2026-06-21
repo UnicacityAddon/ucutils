@@ -9,6 +9,7 @@ import de.rettichlp.ucutils.common.services.MessageService;
 import de.rettichlp.ucutils.common.services.NameTagService;
 import de.rettichlp.ucutils.common.services.NotificationService;
 import de.rettichlp.ucutils.common.services.RenderService;
+import de.rettichlp.ucutils.common.services.ResyncableTimer;
 import de.rettichlp.ucutils.common.services.SyncService;
 import de.rettichlp.ucutils.common.services.UtilService;
 import net.fabricmc.api.ModInitializer;
@@ -23,6 +24,7 @@ import org.slf4j.LoggerFactory;
 import static java.lang.Boolean.getBoolean;
 import static java.lang.System.currentTimeMillis;
 import static java.util.Objects.isNull;
+import static java.util.concurrent.TimeUnit.MINUTES;
 
 public class UCUtils implements ModInitializer {
 
@@ -44,6 +46,7 @@ public class UCUtils implements ModInitializer {
     public static final Api api = new Api();
     public static final Storage storage = new Storage();
     public static final Configuration configuration = new Configuration().loadFromFile();
+    public static final ResyncableTimer synchronisedMinuteTimer = new ResyncableTimer(1, 1, MINUTES);
 
     public static LocalPlayer player;
     public static ClientPacketListener networkHandler;
@@ -55,13 +58,41 @@ public class UCUtils implements ModInitializer {
     @Override
     public void onInitialize() {
         // This entrypoint is suitable for setting up client-specific logic, such as rendering.
+        synchronisedMinuteTimer.start();
 
         syncService.syncFactionMembers();
         syncService.syncTeamMembers();
 
         this.registry.registerSounds();
 
-        syncService.startRepeatingSync();
+        // add payday minute
+        synchronisedMinuteTimer.add(_ -> {
+            if (storage.isUnicaCity() && !nameTagService.isAfk(player.getPlainTextName())) {
+                configuration.setMinutesSinceLastPayDay(configuration.getMinutesSinceLastPayDay() + 1);
+            }
+        });
+
+        // show health for hydration bar sync
+        synchronisedMinuteTimer.add(currentTick -> {
+            // every 3 minutes
+            if (currentTick % 3 != 0) {
+                return;
+            }
+
+            if (storage.isUnicaCity() && !nameTagService.isAfk(player.getPlainTextName()) && configuration.getOptions().showHydration()) {
+                commandService.sendCommandWithHiddenOutput("health");
+            }
+        });
+
+        // asynchronously save every 10 minutes
+        synchronisedMinuteTimer.add(currentTick -> {
+            // every 10 minutes
+            if (currentTick % 10 != 0) {
+                return;
+            }
+
+            new Thread(configuration::saveToFile).start();
+        });
 
         ClientPlayConnectionEvents.JOIN.register((handler, sender, client) -> {
             player = client.player;
