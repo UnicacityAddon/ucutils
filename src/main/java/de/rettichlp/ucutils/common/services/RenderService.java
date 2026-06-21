@@ -6,6 +6,7 @@ import de.rettichlp.ucutils.common.gui.screens.components.ToggleButtonWidget;
 import de.rettichlp.ucutils.common.gui.widgets.base.AbstractUCUtilsWidget;
 import de.rettichlp.ucutils.common.gui.widgets.base.UCUtilsWidget;
 import lombok.Getter;
+import net.minecraft.client.gui.components.CycleButton;
 import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.client.gui.layouts.LinearLayout;
 import net.minecraft.network.chat.Component;
@@ -56,15 +57,13 @@ public class RenderService {
                                                                 BiConsumer<Options, E> onValueChange,
                                                                 @NotNull Function<Options, E> currentValue,
                                                                 int width) {
-//        FIXME CyclingButtonWidget<E> cyclingButton = CyclingButtonWidget.builder(displayNameFunction)
-//                .values(values)
-//                .initially(currentValue.apply(configuration.getOptions()))
-//                .tooltip(CyclingButtonEntry::getTooltip)
-//                .build(name, (button, value) -> onValueChange.accept(configuration.getOptions(), value));
-//
-//        cyclingButton.setWidth(width);
-//
-//        widget.addChild(cyclingButton);
+        CycleButton<E> cycleButton = CycleButton.builder(displayNameFunction, currentValue.apply(configuration.getOptions()))
+                .withValues(values)
+                .withTooltip(CyclingButtonEntry::getTooltip)
+                .create(name, (_, value) -> onValueChange.accept(configuration.getOptions(), value));
+
+        cycleButton.setWidth(width);
+        widget.addChild(cycleButton);
     }
 
     public void addToggleButton(@NotNull LinearLayout widget,
