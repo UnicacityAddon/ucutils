@@ -17,6 +17,7 @@
     "AbstractContainerScreenMixin",
     "AbstractMinecartRendererMixin",
     "ChatScreenMixin",
+    "ClientPacketListenerMixin",
     "ClientPlayNetworkHandlerMixin",
     "EntityRendererMixin",
     "GuiMixin",
