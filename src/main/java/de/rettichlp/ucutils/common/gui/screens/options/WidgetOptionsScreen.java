@@ -13,6 +13,7 @@ import net.minecraft.client.gui.layouts.LayoutSettings;
 import net.minecraft.client.gui.layouts.LinearLayout;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
+import org.jspecify.annotations.NonNull;
 
 import static de.rettichlp.ucutils.UCUtils.renderService;
 import static net.minecraft.client.gui.layouts.LinearLayout.vertical;
@@ -78,5 +79,5 @@ public class WidgetOptionsScreen extends OptionsScreen {
     // disable background rendering to see overlay better
 
     @Override
-    public void extractBackground(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float a) {}
+    public void extractBackground(@NonNull GuiGraphicsExtractor graphics, int mouseX, int mouseY, float a) {}
 }
