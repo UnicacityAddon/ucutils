@@ -46,7 +46,7 @@ public class UCUtils implements ModInitializer {
     public static final Api api = new Api();
     public static final Storage storage = new Storage();
     public static final Configuration configuration = new Configuration().loadFromFile();
-    public static final ResyncableTimer synchronisedMinuteTimer = new ResyncableTimer(0, 1, MINUTES);
+    public static final ResyncableTimer synchronisedMinuteTimer = new ResyncableTimer(1, 1, MINUTES);
 
     public static LocalPlayer player;
     public static ClientPacketListener networkHandler;
@@ -58,6 +58,7 @@ public class UCUtils implements ModInitializer {
     @Override
     public void onInitialize() {
         // This entrypoint is suitable for setting up client-specific logic, such as rendering.
+        synchronisedMinuteTimer.start();
 
         syncService.syncFactionMembers();
         syncService.syncTeamMembers();
