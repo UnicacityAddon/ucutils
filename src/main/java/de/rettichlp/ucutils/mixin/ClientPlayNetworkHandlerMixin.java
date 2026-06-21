@@ -4,16 +4,10 @@ import com.mojang.authlib.GameProfile;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NonNull;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientPacketListener;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.protocol.game.ClientboundPlayerInfoRemovePacket;
-import net.minecraft.network.protocol.game.ClientboundPlayerInfoUpdatePacket;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.npc.villager.Villager;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.phys.Vec3;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
@@ -26,15 +20,11 @@ import java.util.UUID;
 
 import static de.rettichlp.ucutils.UCUtils.configuration;
 import static de.rettichlp.ucutils.UCUtils.notificationService;
-import static de.rettichlp.ucutils.UCUtils.player;
 import static de.rettichlp.ucutils.UCUtils.storage;
 import static java.awt.Color.WHITE;
-import static java.util.Objects.requireNonNull;
 import static net.minecraft.ChatFormatting.BLUE;
 import static net.minecraft.ChatFormatting.DARK_GRAY;
 import static net.minecraft.ChatFormatting.GOLD;
-import static net.minecraft.ChatFormatting.GRAY;
-import static net.minecraft.ChatFormatting.RED;
 import static net.minecraft.ChatFormatting.YELLOW;
 import static net.minecraft.network.chat.Component.empty;
 import static net.minecraft.network.chat.Component.literal;
@@ -64,52 +54,6 @@ public abstract class ClientPlayNetworkHandlerMixin {
 
     @Unique
     private final Collection<EnrichedGameProfile> enrichedGameProfiles = new HashSet<>();
-
-    @Inject(method = "handlePlayerInfoUpdate", at = @At("TAIL"))
-    private void ucutils$handlePlayerInfoUpdateTail(ClientboundPlayerInfoUpdatePacket packet, CallbackInfo ci) {
-        if (!storage.isUnicaCity()) {
-            return;
-        }
-
-        Level world = Minecraft.getInstance().level;
-        if (world == null) {
-            return;
-        }
-
-        packet.entries().forEach(entry -> {
-            Entity entity = world.getEntity(entry.profileId());
-            if (!(entity instanceof Villager villager) || !villager.hasCustomName()) {
-                return;
-            }
-
-            String customNameString = requireNonNull(villager.getCustomName()).getString();
-            Vec3 entityPos = villager.position();
-
-            // already notified check
-            if (entityPos.equals(storage.getDealerPosition()) || entityPos.equals(storage.getBlackMarketPosition())) {
-                return;
-            }
-
-            switch (customNameString) {
-                case "Dealer" -> {
-                    storage.setBlackMarketPosition(entityPos);
-                    player.sendSystemMessage(empty()
-                            .append(literal("[").withStyle(DARK_GRAY))
-                            .append(literal("Dealer").withStyle(RED))
-                            .append(literal("] ").withStyle(DARK_GRAY))
-                            .append(literal("Der Dealer ist in der Nähe!").withStyle(GRAY)));
-                }
-                case "Schwarzmarkt" -> {
-                    storage.setDealerPosition(entityPos);
-                    player.sendSystemMessage(empty()
-                            .append(literal("[").withStyle(DARK_GRAY))
-                            .append(literal("Schwarzmarkt").withStyle(RED))
-                            .append(literal("] ").withStyle(DARK_GRAY))
-                            .append(literal("Der Schwarzmarkt ist in der Nähe!").withStyle(GRAY)));
-                }
-            }
-        });
-    }
 
     @Inject(method = "handlePlayerInfoRemove",
             at = @At(value = "INVOKE",
