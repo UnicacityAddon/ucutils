@@ -37,7 +37,7 @@ public class MessageService {
     }
 
     public void sendModMessage(Component message, boolean inActionbar) {
-        Component messageText = modMessagePrefix.append(message);
+        Component messageText = modMessagePrefix.copy().append(message);
 
         if (inActionbar) {
             player.sendOverlayMessage(messageText);
