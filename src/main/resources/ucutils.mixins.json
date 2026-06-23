@@ -21,8 +21,8 @@
     "ClientPlayNetworkHandlerMixin",
     "EntityRendererMixin",
     "GuiMixin",
+    "LivingEntityMixin",
     "PauseScreenMixin",
-    "PlayerMixin",
     "PlayerTabOverlayMixin"
   ]
 }
