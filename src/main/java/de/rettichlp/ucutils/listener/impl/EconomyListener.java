@@ -67,6 +67,7 @@ public class EconomyListener implements IMessageReceiveListener {
     private static final Pattern BUSINESS_CASH_PATTERN = compile("^Kasse: (\\d+)\\$$");
     private static final Pattern EXP_PATTERN = compile("(?<amount>[+-]\\d+) Exp!( \\(x(?<multiplier>\\d)\\))?");
     private static final Pattern LOTTO_WIN_PATTERN = compile("^\\[Lotto] Du hast im Lotto gewonnen! \\((?<amount>\\d+)\\$\\)$");
+    private static final Pattern BATTLEPASS_REWARD_PATTERN = compile("\\[Battle Pass] \\+(?<amount>\\d+)\\$ erhalten\\.$");
     private static final Pattern MEDIC_DESPAWNED_PATTERN = compile("^Verdammt\\.\\.\\. mein Kopf dröhnt so\\.\\.\\.$");
     private static final Pattern MEDIC_REVIVE_PATTERN = compile("^Du wirst von (?:\\[UC])?(?<playerName>[a-zA-Z0-9_]+) wiederbelebt\\.$");
     private static final Pattern REVIVE_ADMIN_PATTERN = compile("^Du wurdest von \\[UC](?<playerName>[a-zA-Z0-9_]+) wiederbelebt\\.$");
@@ -311,6 +312,13 @@ public class EconomyListener implements IMessageReceiveListener {
         Matcher lottoWinMatcher = LOTTO_WIN_PATTERN.matcher(message);
         if (lottoWinMatcher.find()) {
             int amount = parseInt(lottoWinMatcher.group("amount"));
+            configuration.setMoneyBankAmount(configuration.getMoneyBankAmount() + amount);
+            return true;
+        }
+
+        Matcher battlepassRewardMatcher = BATTLEPASS_REWARD_PATTERN.matcher(message);
+        if (battlepassRewardMatcher.find()) {
+            int amount = parseInt(battlepassRewardMatcher.group("amount"));
             configuration.setMoneyBankAmount(configuration.getMoneyBankAmount() + amount);
             return true;
         }
