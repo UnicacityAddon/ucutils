@@ -91,3 +91,11 @@ publishing {
         // retrieving dependencies.
     }
 }
+
+loom {
+    runs {
+        named("client") {
+            property("devauth.enabled", "1")
+        }
+    }
+}
