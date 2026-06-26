@@ -1,4 +1,8 @@
 {
+  "ucutils.legend": "Legende",
+  "ucutils.minimum_price": "Mindestpreis",
+  "ucutils.price_difference": "Preisdifferenz",
+
   "ucutils.color.black": "Schwarz",
   "ucutils.color.dark_blue": "Dunkelblau",
   "ucutils.color.dark_green": "Dunkelgrün",
