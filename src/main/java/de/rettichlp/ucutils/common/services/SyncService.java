@@ -71,7 +71,7 @@ public class SyncService {
             String latestVersion = (String) latestRelease.get("version_number");
 
             String currentVersion = utilService.getVersion();
-            if (nonNull(latestVersion) && !currentVersion.equals(latestVersion)) {
+            if (nonNull(latestVersion) && !currentVersion.equals(latestVersion) && !currentVersion.equals("0.0.0") && latestVersion.matches("^\\d+\\.\\d+\\.\\d+$")) {
                 notificationService.sendNotification(empty()
                         .append(translatable("ucutils.notification.info.new_version").withStyle(GRAY))
                         .append(literal(":").withStyle(DARK_GRAY)).append(" ")
