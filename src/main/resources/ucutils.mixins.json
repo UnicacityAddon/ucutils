@@ -19,6 +19,7 @@
     "ChatScreenMixin",
     "ClientPacketListenerMixin",
     "ClientPlayNetworkHandlerMixin",
+    "EntityHitboxDebugRendererMixin",
     "EntityRendererMixin",
     "GuiMixin",
     "LivingEntityMixin",
