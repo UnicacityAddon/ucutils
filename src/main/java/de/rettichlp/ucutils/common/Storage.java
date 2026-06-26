@@ -104,6 +104,11 @@ public class Storage {
 
     @Getter
     @Setter
+    @Nullable
+    private Vec3 summerTreasurePosition;
+
+    @Getter
+    @Setter
     private TeamResponse team;
 
     @Getter
@@ -151,6 +156,8 @@ public class Storage {
         LOGGER.info("minecartEntityToHighlight: {}", this.minecartEntityToHighlight);
         // premium
         LOGGER.info("premium: {}", this.premium);
+        // summerTreasurePosition
+        LOGGER.info("summerTreasurePosition: {}", this.summerTreasurePosition);
         // team
         LOGGER.info("team: {}", this.team);
         // toggledChat
