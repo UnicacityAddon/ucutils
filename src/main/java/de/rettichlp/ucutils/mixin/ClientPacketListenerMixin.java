@@ -17,6 +17,7 @@ import static de.rettichlp.ucutils.UCUtils.player;
 import static de.rettichlp.ucutils.UCUtils.storage;
 import static java.util.Objects.requireNonNull;
 import static net.minecraft.ChatFormatting.DARK_GRAY;
+import static net.minecraft.ChatFormatting.DARK_RED;
 import static net.minecraft.ChatFormatting.GRAY;
 import static net.minecraft.ChatFormatting.RED;
 import static net.minecraft.ChatFormatting.YELLOW;
@@ -49,7 +50,7 @@ public class ClientPacketListenerMixin {
         Vec3 entityPos = entity.position();
 
         // already notified check
-        if (entityPos.equals(storage.getDealerPosition()) || entityPos.equals(storage.getBlackMarketPosition()) || entityPos.equals(storage.getSummerTreasurePosition())) {
+        if (entityPos.equals(storage.getDealerPosition()) || entityPos.equals(storage.getBlackMarketPosition()) || entityPos.equals(storage.getBloodDealerPosition()) || entityPos.equals(storage.getSummerTreasurePosition())) {
             return;
         }
 
@@ -72,6 +73,14 @@ public class ClientPacketListenerMixin {
                                 .append(literal("Schwarzmarkt").withStyle(RED))
                                 .append(literal("] ").withStyle(DARK_GRAY))
                                 .append(literal("Der Schwarzmarkt ist in der Nähe!").withStyle(GRAY)));
+                    }
+                    case "Bluthändler" -> {
+                        storage.setBloodDealerPosition(entityPos);
+                        player.sendSystemMessage(empty()
+                                .append(literal("[").withStyle(DARK_GRAY))
+                                .append(literal("Bluthändler").withStyle(DARK_RED))
+                                .append(literal("] ").withStyle(DARK_GRAY))
+                                .append(literal("Der Bluthändler ist in der Nähe!").withStyle(GRAY)));
                     }
                 }
             }

@@ -66,6 +66,11 @@ public class Storage {
     @Getter
     @Setter
     @Nullable
+    private Vec3 bloodDealerPosition;
+
+    @Getter
+    @Setter
+    @Nullable
     private MapId captchaMap;
 
     @Getter
@@ -124,6 +129,8 @@ public class Storage {
         LOGGER.info("activeShutdowns[{}]: {}", this.activeShutdowns.size(), this.activeShutdowns);
         // blackMarketPosition
         LOGGER.info("blackMarketPosition: {}", this.blackMarketPosition);
+        // bloodDealerPosition
+        LOGGER.info("bloodDealerPosition: {}", this.bloodDealerPosition);
         // captchaMapImage
         LOGGER.info("captchaMap: {}", this.captchaMap);
         // countdowns
