@@ -96,6 +96,7 @@ loom {
     runs {
         named("client") {
             property("devauth.enabled", "1")
+            property("mixin.debug.export", "true")
         }
     }
 }
