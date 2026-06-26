@@ -74,8 +74,8 @@ public class UCUtils implements ModInitializer {
 
         // show health for hydration bar sync
         synchronisedMinuteTimer.add(currentTick -> {
-            // every 3 minutes
-            if (currentTick % 3 != 0) {
+            // every 3 minutes starting from first (not third) minute
+            if ((currentTick + 2) % 3 != 0) {
                 return;
             }
 
