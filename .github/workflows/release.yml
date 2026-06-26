@@ -53,7 +53,7 @@ jobs:
         tag: ${{ inputs.version }}
       run: |
         gh release create "$tag" \
-            --target main \
+            --target "${{ github.ref_name }}" \
             --repo="$GITHUB_REPOSITORY" \
             --title="$tag" \
             --generate-notes \
