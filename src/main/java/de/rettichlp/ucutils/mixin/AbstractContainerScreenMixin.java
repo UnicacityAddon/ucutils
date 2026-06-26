@@ -41,8 +41,10 @@ public abstract class AbstractContainerScreenMixin<T extends AbstractContainerMe
     protected int imageWidth;
 
     @Shadow
-    @Final
-    protected int imageHeight;
+    protected int leftPos;
+
+    @Shadow
+    protected int topPos;
 
     protected AbstractContainerScreenMixin(Component title) {
         super(title);
@@ -59,25 +61,7 @@ public abstract class AbstractContainerScreenMixin<T extends AbstractContainerMe
         String title = getTitle().getString();
 
         switch (getTitle().getString()) {
-            case "ʟᴀɢᴇʀ" -> {
-                int ingredient1StoredAmount = getStoredAmount(this, 11);
-                int ingredient2StoredAmount = getStoredAmount(this, 13);
-                int ingredient3StoredAmount = getStoredAmount(this, 15);
-
-                int x = (this.width - this.imageWidth) / 2;
-                int y = (this.height - this.imageHeight) / 2;
-                int buttonX = x + this.imageWidth + 2;
-
-                // render button right to the inventory
-                Button button = new Button.Builder(literal("➤"), _ -> commandService.sendCommand("f " + ingredient1StoredAmount + "x Wirkstoff | " + ingredient2StoredAmount + "x Trägerstoff | " + ingredient3StoredAmount + "x Zusatzstoff"))
-                        .bounds(buttonX, y, 20, 20)
-                        .build();
-
-                if (ingredient1StoredAmount != 0 && ingredient2StoredAmount != 0 && ingredient3StoredAmount != 0) {
-                    button.extractRenderState(graphics, mouseX, mouseY, a);
-                    addRenderableWidget(button);
-                }
-            }
+            case "ʟᴀɢᴇʀ" -> extractMedicStorageButton(graphics, mouseX, mouseY, a);
             case "ᴄᴀʀᴄᴏɴᴛʀᴏʟ" -> {
                 if (configuration.getOptions().car().fastLock() && !storage.isPremium()) {
                     gameMode.handleContainerInput(getMenu().containerId, 0, 0, PICKUP, player);
@@ -88,6 +72,23 @@ public abstract class AbstractContainerScreenMixin<T extends AbstractContainerMe
                     LOGGER.info("Screen opened: {}", title);
                 }
             }
+        }
+    }
+
+    @Unique
+    private void extractMedicStorageButton(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float a) {
+        int ingredient1StoredAmount = getStoredAmount(this, 11);
+        int ingredient2StoredAmount = getStoredAmount(this, 13);
+        int ingredient3StoredAmount = getStoredAmount(this, 15);
+
+        // render button right to the inventory
+        Button button = new Button.Builder(literal("➤"), _ -> commandService.sendCommand("f " + ingredient1StoredAmount + "x Wirkstoff | " + ingredient2StoredAmount + "x Trägerstoff | " + ingredient3StoredAmount + "x Zusatzstoff"))
+                .bounds(this.leftPos + this.imageWidth + 2, this.topPos, 20, 20)
+                .build();
+
+        if (ingredient1StoredAmount != 0 && ingredient2StoredAmount != 0 && ingredient3StoredAmount != 0) {
+            button.extractRenderState(graphics, mouseX, mouseY, a);
+            addRenderableWidget(button);
         }
     }
 
