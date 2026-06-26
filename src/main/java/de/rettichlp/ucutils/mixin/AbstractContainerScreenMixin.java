@@ -12,7 +12,9 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.component.ItemLore;
 import org.jspecify.annotations.NonNull;
+import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -27,14 +29,20 @@ import static de.rettichlp.ucutils.UCUtils.player;
 import static de.rettichlp.ucutils.UCUtils.storage;
 import static java.lang.Integer.parseInt;
 import static java.util.regex.Pattern.compile;
-import static net.minecraft.client.gui.screens.inventory.BookEditScreen.BACKGROUND_TEXTURE_HEIGHT;
-import static net.minecraft.client.gui.screens.inventory.BookEditScreen.BACKGROUND_TEXTURE_WIDTH;
 import static net.minecraft.core.component.DataComponents.LORE;
 import static net.minecraft.network.chat.Component.literal;
 import static net.minecraft.world.inventory.ContainerInput.PICKUP;
 
 @Mixin(AbstractContainerScreen.class)
 public abstract class AbstractContainerScreenMixin<T extends AbstractContainerMenu> extends Screen implements MenuAccess<T> {
+
+    @Shadow
+    @Final
+    protected int imageWidth;
+
+    @Shadow
+    @Final
+    protected int imageHeight;
 
     protected AbstractContainerScreenMixin(Component title) {
         super(title);
@@ -56,9 +64,9 @@ public abstract class AbstractContainerScreenMixin<T extends AbstractContainerMe
                 int ingredient2StoredAmount = getStoredAmount(this, 13);
                 int ingredient3StoredAmount = getStoredAmount(this, 15);
 
-                int x = (this.width - BACKGROUND_TEXTURE_WIDTH) / 2;
-                int y = (this.height - BACKGROUND_TEXTURE_HEIGHT) / 2;
-                int buttonX = x + BACKGROUND_TEXTURE_WIDTH + 2;
+                int x = (this.width - this.imageWidth) / 2;
+                int y = (this.height - this.imageHeight) / 2;
+                int buttonX = x + this.imageWidth + 2;
 
                 // render button right to the inventory
                 Button button = new Button.Builder(literal("➤"), _ -> commandService.sendCommand("f " + ingredient1StoredAmount + "x Wirkstoff | " + ingredient2StoredAmount + "x Trägerstoff | " + ingredient3StoredAmount + "x Zusatzstoff"))
