@@ -14,6 +14,7 @@ import java.time.Duration;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import static de.rettichlp.ucutils.UCUtils.LOGGER;
 import static de.rettichlp.ucutils.UCUtils.commandService;
 import static de.rettichlp.ucutils.UCUtils.player;
 import static de.rettichlp.ucutils.UCUtils.storage;
@@ -102,9 +103,19 @@ public class MedicListener implements IMessageReceiveListener {
         Matcher storageIngredientShareMatcher = STORAGE_INGREDIENT_SHARE_PATTERN.matcher(message);
         if (storageIngredientShareMatcher.find()) {
             String playerName = storageIngredientShareMatcher.group("playerName");
-            int ingredient1 = parseInt(storageIngredientShareMatcher.group("ingredient1"));
-            int ingredient2 = parseInt(storageIngredientShareMatcher.group("ingredient2"));
-            int ingredient3 = parseInt(storageIngredientShareMatcher.group("ingredient3"));
+
+            int ingredient1;
+            int ingredient2;
+            int ingredient3;
+
+            try {
+                ingredient1 = parseInt(storageIngredientShareMatcher.group("ingredient1"));
+                ingredient2 = parseInt(storageIngredientShareMatcher.group("ingredient2"));
+                ingredient3 = parseInt(storageIngredientShareMatcher.group("ingredient3"));
+            } catch (NumberFormatException e) {
+                LOGGER.warn("Could not parse ingredient amounts from message: {}", message);
+                return true;
+            }
 
             player.sendSystemMessage(empty());
 
