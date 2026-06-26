@@ -16,6 +16,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import static de.rettichlp.ucutils.UCUtils.configuration;
 import static de.rettichlp.ucutils.UCUtils.notificationService;
+import static de.rettichlp.ucutils.UCUtils.player;
 import static de.rettichlp.ucutils.UCUtils.storage;
 import static java.awt.Color.WHITE;
 import static java.util.Optional.ofNullable;
@@ -152,6 +153,11 @@ public abstract class ClientPlayNetworkHandlerMixin {
     private void sendChangeNotification(@NonNull Component displayName, String translationKey) {
         // skip NPC names
         if (displayName.getString().isEmpty()) {
+            return;
+        }
+
+        // skip if player joined some seconds ago
+        if (player.tickCount < 5 * 20) {
             return;
         }
 
