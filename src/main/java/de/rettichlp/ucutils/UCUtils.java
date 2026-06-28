@@ -79,9 +79,12 @@ public class UCUtils implements ModInitializer {
                 return;
             }
 
-            if (storage.isUnicaCity() && !nameTagService.isAfk(player.getPlainTextName()) && configuration.getOptions().showHydration()) {
-                commandService.sendCommandWithHiddenOutput("health");
-            }
+            // delayed to wait for afk message if in same minute
+            utilService.delayedAction(() -> {
+                if (storage.isUnicaCity() && !nameTagService.isAfk(player.getPlainTextName()) && configuration.getOptions().showHydration()) {
+                    commandService.sendCommandWithHiddenOutput("health");
+                }
+            }, 50);
         });
 
         // asynchronously save every 10 minutes
