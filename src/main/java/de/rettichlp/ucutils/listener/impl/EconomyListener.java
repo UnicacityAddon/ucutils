@@ -26,7 +26,9 @@ import static java.lang.System.currentTimeMillis;
 import static java.util.Optional.ofNullable;
 import static java.util.regex.Pattern.compile;
 import static net.minecraft.ChatFormatting.GRAY;
+import static net.minecraft.ChatFormatting.RED;
 import static net.minecraft.ChatFormatting.UNDERLINE;
+import static net.minecraft.network.chat.CommonComponents.SPACE;
 import static net.minecraft.network.chat.Component.literal;
 
 @UCUtilsListener
@@ -65,7 +67,8 @@ public class EconomyListener implements IMessageReceiveListener {
 
     // other
     private static final Pattern BUSINESS_CASH_PATTERN = compile("^Kasse: (\\d+)\\$$");
-    private static final Pattern EXP_PATTERN = compile("(?<amount>[+-]\\d+) Exp!( \\(x(?<multiplier>\\d)\\))?");
+    private static final Pattern EXP_PATTERN = compile("(?<amount>[+-]\\d+) Exp!( \\(x(?<multiplier>\\d)\\))?$");
+    private static final Pattern MAX_EXP_REACHED_PATTERN = compile("^Du hast die maximale Exp erreicht! Benutze /buylevel um ein Level aufzusteigen\\.$");
     private static final Pattern LOTTO_WIN_PATTERN = compile("^\\[Lotto] Du hast im Lotto gewonnen! \\((?<amount>\\d+)\\$\\)$");
     private static final Pattern BATTLEPASS_REWARD_PATTERN = compile("\\[Battle Pass] \\+(?<amount>\\d+)\\$ erhalten\\.$");
     private static final Pattern MEDIC_DESPAWNED_PATTERN = compile("^Verdammt\\.\\.\\. mein Kopf dröhnt so\\.\\.\\.$");
@@ -74,6 +77,7 @@ public class EconomyListener implements IMessageReceiveListener {
     private static final Pattern BACK_IN_LIFE_PATTERN = compile("^\\[Friedhof] Du lebst nun wieder\\.$");
 
     private long lastMedicReviveAction = 0;
+    private boolean maxExperiencePerLevelReached = false;
 
     @Override
     public boolean onMessageReceive(Component text, String message) {
@@ -306,7 +310,26 @@ public class EconomyListener implements IMessageReceiveListener {
             int multiplier = ofNullable(multiplierString).map(Integer::parseInt).orElse(1);
 
             configuration.addPredictedPayDayExp(amount * multiplier);
+
+            if (this.maxExperiencePerLevelReached) {
+                MutableComponent modifiedMessage = text.copy()
+                        .append(SPACE)
+                        .append(literal("↑").withStyle(style -> style
+                                .withHoverEvent(new HoverEvent.ShowText(literal("Du hast die maximale Exp erreicht! Benutze /buylevel um ein Level aufzusteigen.").withStyle(RED)))
+                                .withColor(RED)
+                                .withBold(true)));
+                player.sendSystemMessage(modifiedMessage);
+                return false;
+            }
+
             return true;
+        }
+
+        Matcher maxExpReachedMatcher = MAX_EXP_REACHED_PATTERN.matcher(message);
+        if (maxExpReachedMatcher.find()) {
+            boolean sendNotification = !this.maxExperiencePerLevelReached;
+            this.maxExperiencePerLevelReached = true;
+            return sendNotification; // notify only first time, after that hide message
         }
 
         Matcher lottoWinMatcher = LOTTO_WIN_PATTERN.matcher(message);
