@@ -107,7 +107,6 @@ public class UCUtils implements ModInitializer {
             if (isUnicaCity) {
                 client.execute(() -> {
                     this.registry.registerListeners();
-                    renderService.initializeWidgets();
                     utilService.delayedAction(syncService::syncFactionSpecificData, 10000);
                     utilService.delayedAction(syncService::checkForUpdates, 15000);
                 });
