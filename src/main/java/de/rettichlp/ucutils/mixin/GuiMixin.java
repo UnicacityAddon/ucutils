@@ -130,9 +130,6 @@ public abstract class GuiMixin {
                 .filter(Countdown::isActive)
                 .map(Countdown::toWidget)
                 .toList());
-        widgets.addAll(notificationService.getActiveNotifications().stream()
-                .map(NotificationService.Notification::toWidget)
-                .toList());
 
         for (int i = 0; i < widgets.size(); i++) {
             AbstractUCUtilsProgressTextWidget<?> abstractUCUtilsProgressTextWidget = widgets.get(i);

@@ -14,6 +14,7 @@ repositories {
     // Loom adds the essential maven repositories to download Minecraft and libraries from automatically.
     // See https://docs.gradle.org/current/userguide/declaring_repositories.html
     // for more information about repositories.
+    mavenLocal()
 
     maven {
         name = "Terraformers"
@@ -41,6 +42,8 @@ dependencies {
     include("org.atteo.classindex:classindex:3.13")
     implementation("org.atteo.classindex:classindex:3.13")
     annotationProcessor("org.atteo.classindex:classindex:3.13")
+
+    compileOnly("de.rettichlp:the-rettington-companion:0.0.0")
 }
 
 tasks.processResources {
