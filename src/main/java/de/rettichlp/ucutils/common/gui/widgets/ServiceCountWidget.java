@@ -3,8 +3,6 @@ package de.rettichlp.ucutils.common.gui.widgets;
 import de.rettichlp.therettingtoncompanion.gui.options.list.TRCOptionsList;
 import de.rettichlp.therettingtoncompanion.gui.widgets.base.AbstractTRCTextWidget;
 import de.rettichlp.therettingtoncompanion.gui.widgets.base.WidgetConfiguration;
-import de.rettichlp.ucutils.common.gui.screens.options.WidgetOptionsPositionScreen;
-import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
 import org.jspecify.annotations.NonNull;
 import org.jspecify.annotations.Nullable;
@@ -46,7 +44,7 @@ public class ServiceCountWidget extends AbstractTRCTextWidget<ServiceCountWidget
     @Override
     public boolean isVisible() {
         // visible if in the position options screen to allow positioning
-        return storage.getActiveServices() > 0 || Minecraft.getInstance().screen instanceof WidgetOptionsPositionScreen;
+        return super.isVisible() && (storage.getActiveServices() > 0 || isWidgetPositionScreen());
     }
 
     public static class Configuration extends WidgetConfiguration {}
