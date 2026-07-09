@@ -46,6 +46,6 @@ public enum Job {
     }
 
     public void startCountdown() {
-        storage.getCountdowns().add(new Countdown(this.displayName, this.cooldown, () -> {}));
+        new Countdown(this.displayName, this.cooldown, () -> {});
     }
 }

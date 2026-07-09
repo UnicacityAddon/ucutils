@@ -63,7 +63,7 @@ public class MedicListener implements IMessageReceiveListener {
     public boolean onMessageReceive(Component text, String message) {
         Matcher medicBandageMatcher = MEDIC_BANDAGE_PATTERN.matcher(message);
         if (medicBandageMatcher.find()) {
-            storage.getCountdowns().add(new Countdown("Bandage", MEDIC_BANDAGE_DURATION));
+            new Countdown("Bandage", MEDIC_BANDAGE_DURATION);
             return true;
         }
 
@@ -76,7 +76,7 @@ public class MedicListener implements IMessageReceiveListener {
 
         Matcher medicPillMatcher = MEDIC_PILL_PATTERN.matcher(message);
         if (medicPillMatcher.find()) {
-            storage.getCountdowns().add(new Countdown("Schmerzpille", MEDIC_PILL_DURATION));
+            new Countdown("Schmerzpille", MEDIC_PILL_DURATION);
             return true;
         }
 
@@ -96,7 +96,7 @@ public class MedicListener implements IMessageReceiveListener {
         Matcher laborTransportStartedMatcher = LABOR_TRANSPORT_STARTED_PATTERN.matcher(message);
         if (laborTransportStartedMatcher.find()) {
             Duration duration = ofMinutes(5).plusSeconds(56); // please don't ask why it is like this
-            storage.getCountdowns().add(new Countdown("Labor Transport", duration, () -> {}));
+            new Countdown("Labor Transport", duration, () -> {});
             return true;
         }
 

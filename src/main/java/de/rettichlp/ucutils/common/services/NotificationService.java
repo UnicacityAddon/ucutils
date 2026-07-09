@@ -40,7 +40,7 @@ public class NotificationService {
 
     public void sendNotification(Component text, Color color, long durationInMillis) {
         Notification notification = Notification.builder()
-                .text(text)
+                .componentSupplier(() -> text)
                 .color(color)
                 .displayDuration(ofMillis(durationInMillis))
                 .build();

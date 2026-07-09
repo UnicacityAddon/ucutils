@@ -68,7 +68,7 @@ public class JobListener implements IMessageReceiveListener, INaviSpotReachedLis
                     : now.plusSeconds(seconds);
 
             storage.getCountdowns().removeIf(countdown -> countdown.getTitle().equals(MINING_BOOSTER_COUNTDOWN_TITLE));
-            storage.getCountdowns().add(new Countdown(MINING_BOOSTER_COUNTDOWN_TITLE, between(now, this.miningBoosterExpirationTime), () -> {}));
+            new Countdown(MINING_BOOSTER_COUNTDOWN_TITLE, between(now, this.miningBoosterExpirationTime), () -> {});
             return true;
         }
 
