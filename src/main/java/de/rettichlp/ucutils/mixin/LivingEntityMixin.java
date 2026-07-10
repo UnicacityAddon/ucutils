@@ -26,7 +26,7 @@ public abstract class LivingEntityMixin {
             new Vec3(1027, 69, 275)
     );
 
-    @Inject(method = "drop", at = @At("RETURN"), cancellable = true)
+    @Inject(method = "drop", at = @At("HEAD"), cancellable = true)
     private void ucutils$dropHead(ItemStack itemStack, boolean randomly, boolean thrownFromHand, CallbackInfoReturnable<ItemEntity> cir) {
         if (!storage.isUnicaCity()) {
             return;
@@ -36,7 +36,7 @@ public abstract class LivingEntityMixin {
             return;
         }
 
-        if (player.getMainHandItem().is(GLASS_BOTTLE) && isNearShop()) {
+        if (itemStack.is(GLASS_BOTTLE) && isNearShop()) {
             // cancel drop
             cir.setReturnValue(null);
 
