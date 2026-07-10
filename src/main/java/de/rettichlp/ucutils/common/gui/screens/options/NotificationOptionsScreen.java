@@ -3,14 +3,12 @@ package de.rettichlp.ucutils.common.gui.screens.options;
 import de.rettichlp.ucutils.common.configuration.options.NotificationOptions;
 import de.rettichlp.ucutils.common.gui.screens.OptionsScreen;
 import de.rettichlp.ucutils.common.gui.screens.components.ToggleButtonWidget;
-import de.rettichlp.ucutils.common.gui.widgets.base.AbstractUCUtilsWidget;
 import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.client.gui.layouts.GridLayout;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 
 import static de.rettichlp.ucutils.UCUtils.configuration;
-import static de.rettichlp.ucutils.UCUtils.renderService;
 import static net.minecraft.network.chat.Component.translatable;
 
 public class NotificationOptionsScreen extends OptionsScreen {
@@ -27,12 +25,6 @@ public class NotificationOptionsScreen extends OptionsScreen {
 
     public NotificationOptionsScreen(Screen parent) {
         super(parent, TEXT_NOTIFICATIONS);
-    }
-
-    @Override
-    public void doOnClose() {
-        renderService.getWidgets().forEach(AbstractUCUtilsWidget::saveConfiguration);
-        super.doOnClose();
     }
 
     @Override

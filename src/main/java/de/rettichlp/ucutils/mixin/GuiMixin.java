@@ -2,9 +2,6 @@ package de.rettichlp.ucutils.mixin;
 
 import com.llamalad7.mixinextras.sugar.Local;
 import com.mojang.blaze3d.platform.NativeImage;
-import de.rettichlp.ucutils.common.gui.widgets.base.AbstractUCUtilsProgressTextWidget;
-import de.rettichlp.ucutils.common.models.Countdown;
-import de.rettichlp.ucutils.common.services.NotificationService;
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
@@ -24,17 +21,13 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.io.InputStream;
 import java.nio.file.Path;
-import java.util.ArrayList;
 
 import static com.mojang.blaze3d.platform.NativeImage.read;
 import static de.rettichlp.ucutils.UCUtils.LOGGER;
 import static de.rettichlp.ucutils.UCUtils.MOD_ID;
 import static de.rettichlp.ucutils.UCUtils.configuration;
-import static de.rettichlp.ucutils.UCUtils.notificationService;
 import static de.rettichlp.ucutils.UCUtils.player;
-import static de.rettichlp.ucutils.UCUtils.renderService;
 import static de.rettichlp.ucutils.UCUtils.storage;
-import static de.rettichlp.ucutils.common.gui.widgets.base.AbstractUCUtilsWidget.Alignment.RIGHT;
 import static java.lang.Math.ceil;
 import static java.lang.Math.clamp;
 import static java.lang.Math.round;
@@ -86,21 +79,6 @@ public abstract class GuiMixin {
         graphics.blit(GUI_TEXTURED, CAPTCHA_IDENTIFIER, x, y, 0, 0, side, side, side, side);
     }
 
-    @Inject(method = "extractHotbarAndDecorations", at = @At("TAIL"))
-    private void ucutils$extractHotbarAndDecorationsTail(GuiGraphicsExtractor graphics, DeltaTracker deltaTracker, CallbackInfo ci) {
-        Profiler.get().popPush("notification");
-        extractNotifications(graphics);
-        Profiler.get().pop();
-
-        if (!storage.isUnicaCity()) {
-            return;
-        }
-
-        Profiler.get().popPush("widget");
-        extractWidgets(graphics);
-        Profiler.get().pop();
-    }
-
     @Inject(method = "extractPlayerHealth",
             at = @At(
                     value = "INVOKE",
@@ -121,30 +99,6 @@ public abstract class GuiMixin {
         Profiler.get().popPush("hydration");
         renderHydration(graphics, yLineAir, xRight);
         Profiler.get().pop();
-    }
-
-    @Unique
-    private void extractNotifications(GuiGraphicsExtractor graphics) {
-        ArrayList<AbstractUCUtilsProgressTextWidget<?>> widgets = new ArrayList<>();
-        widgets.addAll(storage.getCountdowns().stream()
-                .filter(Countdown::isActive)
-                .map(Countdown::toWidget)
-                .toList());
-        widgets.addAll(notificationService.getActiveNotifications().stream()
-                .map(NotificationService.Notification::toWidget)
-                .toList());
-
-        for (int i = 0; i < widgets.size(); i++) {
-            AbstractUCUtilsProgressTextWidget<?> abstractUCUtilsProgressTextWidget = widgets.get(i);
-            int x = Minecraft.getInstance().getWindow().getGuiScaledWidth() - abstractUCUtilsProgressTextWidget.getWidth() - 4;
-            int y = 19 * i + 4;
-            abstractUCUtilsProgressTextWidget.draw(graphics, x, y, RIGHT);
-        }
-    }
-
-    @Unique
-    private void extractWidgets(GuiGraphicsExtractor graphics) {
-        renderService.getWidgets().forEach(ucUtilsWidgetInstance -> ucUtilsWidgetInstance.draw(graphics));
     }
 
     @Unique

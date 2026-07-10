@@ -14,10 +14,16 @@ repositories {
     // Loom adds the essential maven repositories to download Minecraft and libraries from automatically.
     // See https://docs.gradle.org/current/userguide/declaring_repositories.html
     // for more information about repositories.
+    mavenCentral()
 
     maven {
         name = "Terraformers"
         url = uri("https://maven.terraformersmc.com/")
+    }
+
+    maven {
+        name = "Modrinth"
+        url = uri("https://api.modrinth.com/maven")
     }
 }
 
@@ -41,6 +47,8 @@ dependencies {
     include("org.atteo.classindex:classindex:3.13")
     implementation("org.atteo.classindex:classindex:3.13")
     annotationProcessor("org.atteo.classindex:classindex:3.13")
+
+    compileOnly("maven.modrinth:the-rettington-companion:2.0.0")
 }
 
 tasks.processResources {

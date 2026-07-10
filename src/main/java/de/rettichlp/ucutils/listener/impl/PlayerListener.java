@@ -105,7 +105,7 @@ public class PlayerListener implements IMessageReceiveListener {
         Matcher jailMatcher = JAIL_PATTERN.matcher(message);
         if (jailMatcher.find()) {
             int minutes = parseInt(jailMatcher.group("minutes"));
-            storage.getCountdowns().add(new Countdown("Gefängnis", ofMinutes(minutes)));
+            new Countdown("Gefängnis", ofMinutes(minutes));
             return true;
         }
 

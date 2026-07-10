@@ -1,5 +1,6 @@
 package de.rettichlp.ucutils.common.gui.screens.options;
 
+import de.rettichlp.therettingtoncompanion.gui.screens.TRCOptionsScreen;
 import de.rettichlp.ucutils.common.configuration.options.Options;
 import de.rettichlp.ucutils.common.gui.screens.OptionsScreen;
 import net.minecraft.client.gui.components.Button;
@@ -47,7 +48,7 @@ public class MainOptionsScreen extends OptionsScreen {
         directionalLayoutWidget2.addChild(Button.builder(TEXT_SOUNDS, button -> this.minecraft.setScreen(new SoundOptionsScreen(this))).width(150).build());
 
         LinearLayout directionalLayoutWidget3 = directionalLayoutWidget.addChild(horizontal().spacing(8));
-        directionalLayoutWidget3.addChild(Button.builder(TEXT_WIDGETS, button -> this.minecraft.setScreen(new WidgetOptionsScreen(this))).width(150).build());
+        directionalLayoutWidget3.addChild(Button.builder(TEXT_WIDGETS, button -> this.minecraft.setScreen(new TRCOptionsScreen("widgets", this, true))).width(150).build());
         directionalLayoutWidget3.addChild(Button.builder(TEXT_NOTIFICATIONS, button -> this.minecraft.setScreen(new NotificationOptionsScreen(this))).width(150).build());
 
         LinearLayout directionalLayoutWidget4 = directionalLayoutWidget.addChild(horizontal().spacing(8));
