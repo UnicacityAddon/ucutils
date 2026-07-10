@@ -8,6 +8,7 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 
 import static de.rettichlp.ucutils.UCUtils.messageService;
+import static de.rettichlp.ucutils.UCUtils.notificationService;
 import static de.rettichlp.ucutils.UCUtils.storage;
 import static de.rettichlp.ucutils.UCUtils.utilService;
 import static java.time.Duration.between;
@@ -29,17 +30,7 @@ public class Countdown {
         this.title = title;
         this.duration = duration;
 
-        storage.getCountdowns().add(this);
-
-        utilService.delayedAction(runAfter, this.duration.toMillis());
-    }
-
-    public Duration getRemainingDuration() {
-        return between(now(), this.startTime.plus(this.duration));
-    }
-
-    public Notification toWidget() {
-        return Notification.builder()
+        Notification countdownNotification = Notification.builder()
                 .componentSupplier(() -> {
                     String millisToFriendlyString = messageService.millisToFriendlyString(getRemainingDuration().toMillis());
 
@@ -48,7 +39,15 @@ public class Countdown {
                             .append(literal(":").withStyle(GRAY)).append(" ")
                             .append(literal(millisToFriendlyString));
                 })
-                .displayDuration(this.duration)
+                .displayDuration(duration)
                 .build();
+
+        storage.getCountdowns().add(this);
+        notificationService.getNotifications().add(countdownNotification);
+        utilService.delayedAction(runAfter, this.duration.toMillis());
+    }
+
+    public Duration getRemainingDuration() {
+        return between(now(), this.startTime.plus(this.duration));
     }
 }
