@@ -1,7 +1,9 @@
 package de.rettichlp.ucutils.mixin;
 
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.item.ItemEntity;
+import com.mojang.authlib.GameProfile;
+import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.client.player.AbstractClientPlayer;
+import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.Vec3;
 import org.spongepowered.asm.mixin.Mixin;
@@ -17,8 +19,8 @@ import static de.rettichlp.ucutils.UCUtils.player;
 import static de.rettichlp.ucutils.UCUtils.storage;
 import static net.minecraft.world.item.Items.GLASS_BOTTLE;
 
-@Mixin(LivingEntity.class)
-public abstract class LivingEntityMixin {
+@Mixin(LocalPlayer.class)
+public class LocalPlayerMixin extends AbstractClientPlayer {
 
     @Unique
     private final static List<Vec3> SHOP_LOCATIONS = List.of(
@@ -26,19 +28,21 @@ public abstract class LivingEntityMixin {
             new Vec3(1027, 69, 275)
     );
 
-    @Inject(method = "drop", at = @At("RETURN"), cancellable = true)
-    private void ucutils$dropHead(ItemStack itemStack, boolean randomly, boolean thrownFromHand, CallbackInfoReturnable<ItemEntity> cir) {
+    public LocalPlayerMixin(ClientLevel level, GameProfile gameProfile) {
+        super(level, gameProfile);
+    }
+
+    @Inject(method = "drop", at = @At("HEAD"), cancellable = true)
+    private void ucutils$dropHead(boolean all, CallbackInfoReturnable<Boolean> cir) {
         if (!storage.isUnicaCity()) {
             return;
         }
 
-        if (cir.getReturnValue() == null) {
-            return;
-        }
+        ItemStack selectedItem = getInventory().getSelectedItem();
 
-        if (player.getMainHandItem().is(GLASS_BOTTLE) && isNearShop()) {
+        if (selectedItem.is(GLASS_BOTTLE) && isNearShop()) {
             // cancel drop
-            cir.setReturnValue(null);
+            cir.cancel();
 
             // execute command
             commandService.sendCommand("sell pfand");
