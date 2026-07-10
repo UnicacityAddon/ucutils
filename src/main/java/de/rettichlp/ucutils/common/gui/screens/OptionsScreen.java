@@ -1,20 +1,20 @@
 package de.rettichlp.ucutils.common.gui.screens;
 
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.gui.widget.ButtonWidget;
-import net.minecraft.client.gui.widget.DirectionalLayoutWidget;
-import net.minecraft.text.Text;
+import net.minecraft.client.gui.components.Button;
+import net.minecraft.client.gui.layouts.LinearLayout;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.network.chat.Component;
 
 import java.net.URI;
 
 import static de.rettichlp.ucutils.UCUtils.configuration;
-import static net.minecraft.client.gui.screen.ConfirmLinkScreen.opening;
-import static net.minecraft.client.gui.widget.DirectionalLayoutWidget.horizontal;
-import static net.minecraft.screen.ScreenTexts.BACK;
-import static net.minecraft.screen.ScreenTexts.DONE;
-import static net.minecraft.text.Text.empty;
-import static net.minecraft.text.Text.of;
-import static net.minecraft.text.Text.translatable;
+import static net.minecraft.client.gui.layouts.LinearLayout.horizontal;
+import static net.minecraft.client.gui.screens.ConfirmLinkScreen.confirmLink;
+import static net.minecraft.network.chat.CommonComponents.GUI_BACK;
+import static net.minecraft.network.chat.CommonComponents.GUI_DONE;
+import static net.minecraft.network.chat.Component.empty;
+import static net.minecraft.network.chat.Component.literal;
+import static net.minecraft.network.chat.Component.translatable;
 
 public abstract class OptionsScreen extends UCUtilsScreen {
 
@@ -29,13 +29,13 @@ public abstract class OptionsScreen extends UCUtilsScreen {
                 .append(translatable("options.title")), parent);
     }
 
-    public OptionsScreen(Screen parent, Text subTitle) {
+    public OptionsScreen(Screen parent, Component subTitle) {
         super(empty()
                 .append("UCUtils").append(" ")
                 .append(translatable("options.title")), subTitle, parent);
     }
 
-    public OptionsScreen(Screen parent, Text subTitel, boolean renderBackground) {
+    public OptionsScreen(Screen parent, Component subTitel, boolean renderBackground) {
         super(empty()
                 .append("UCUtils").append(" ")
                 .append(translatable("options.title")), subTitel, parent, renderBackground);
@@ -48,10 +48,10 @@ public abstract class OptionsScreen extends UCUtilsScreen {
 
     @Override
     protected void initFooter() {
-        DirectionalLayoutWidget directionalLayoutWidget = this.layout.addFooter(horizontal().spacing(8));
-        directionalLayoutWidget.add(ButtonWidget.builder(BACK, button -> back()).width(120).build());
-        directionalLayoutWidget.add(ButtonWidget.builder(DONE, button -> close()).width(200).build());
-        directionalLayoutWidget.add(ButtonWidget.builder(of("Discord").copy().withColor(DISCORD_COLOR), opening(this, DISCORD_INVITE)).width(56).build());
-        directionalLayoutWidget.add(ButtonWidget.builder(of("Modrinth").copy().withColor(MODRINTH_COLOR), opening(this, MODRINTH)).width(56).build());
+        LinearLayout directionalLayoutWidget = this.layout.addToFooter(horizontal().spacing(8));
+        directionalLayoutWidget.addChild(Button.builder(GUI_BACK, _ -> back()).width(120).build());
+        directionalLayoutWidget.addChild(Button.builder(GUI_DONE, _ -> onClose()).width(200).build());
+        directionalLayoutWidget.addChild(Button.builder(literal("Discord").withColor(DISCORD_COLOR), confirmLink(this, DISCORD_INVITE)).width(56).build());
+        directionalLayoutWidget.addChild(Button.builder(literal("Modrinth").withColor(MODRINTH_COLOR), confirmLink(this, MODRINTH)).width(56).build());
     }
 }

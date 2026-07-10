@@ -2,7 +2,7 @@ package de.rettichlp.ucutils.common.services;
 
 import lombok.Getter;
 import net.fabricmc.loader.api.FabricLoader;
-import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.Minecraft;
 
 import java.time.ZoneId;
 import java.util.Timer;
@@ -19,7 +19,7 @@ public class UtilService {
         new Timer().schedule(new TimerTask() {
             @Override
             public void run() {
-                MinecraftClient.getInstance().execute(runnable);
+                Minecraft.getInstance().execute(runnable);
             }
         }, milliseconds);
     }

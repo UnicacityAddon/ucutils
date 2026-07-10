@@ -1,52 +1,53 @@
 package de.rettichlp.ucutils.common.gui.screens;
 
 import de.rettichlp.ucutils.common.models.ShutdownReason;
-import net.minecraft.client.gui.widget.ButtonWidget;
-import net.minecraft.client.gui.widget.DirectionalLayoutWidget;
-import net.minecraft.client.gui.widget.TextWidget;
-import net.minecraft.text.Text;
+import net.minecraft.client.gui.components.Button;
+import net.minecraft.client.gui.components.StringWidget;
+import net.minecraft.client.gui.layouts.LayoutSettings;
+import net.minecraft.client.gui.layouts.LinearLayout;
+import net.minecraft.network.chat.Component;
 
 import static de.rettichlp.ucutils.UCUtils.storage;
-import static net.minecraft.client.gui.widget.DirectionalLayoutWidget.vertical;
-import static net.minecraft.text.Text.empty;
-import static net.minecraft.text.Text.of;
-import static net.minecraft.text.Text.translatable;
-import static net.minecraft.util.Formatting.GOLD;
-import static net.minecraft.util.Formatting.GRAY;
+import static net.minecraft.ChatFormatting.GOLD;
+import static net.minecraft.ChatFormatting.GRAY;
+import static net.minecraft.client.gui.layouts.LinearLayout.vertical;
+import static net.minecraft.network.chat.Component.empty;
+import static net.minecraft.network.chat.Component.literal;
+import static net.minecraft.network.chat.Component.translatable;
 
 public class ShutdownScreen extends UCUtilsScreen {
 
-    private static final Text BUTTON_SHUTDOWN_ABORT_NAME = translatable("ucutils.screen.shutdown_abort.button.name");
+    private static final Component BUTTON_SHUTDOWN_ABORT_NAME = translatable("ucutils.screen.shutdown_abort.button.name");
 
     private final ShutdownReason shutdownReason;
 
     public ShutdownScreen(ShutdownReason shutdownReason) {
-        super(of("Automatisches Herunterfahren"), of(shutdownReason.getDisplayName()));
+        super(literal("Automatisches Herunterfahren"), literal(shutdownReason.getDisplayName()));
         this.shutdownReason = shutdownReason;
     }
 
     @Override
     public void initBody() {
-        DirectionalLayoutWidget directionalLayoutWidget = this.layout.addBody(vertical().spacing(4));
-        directionalLayoutWidget.getMainPositioner().alignHorizontalCenter();
+        LinearLayout directionalLayoutWidget = this.layout.addToContents(vertical().spacing(4));
+        directionalLayoutWidget.newCellSettings().alignHorizontallyCenter();
 
-        directionalLayoutWidget.add(new TextWidget(empty()
-                .append(of("Das Spiel wird beendet und der PC heruntergefahren,").copy().formatted(GRAY)), this.textRenderer), positioner -> positioner.marginTop(16));
+        directionalLayoutWidget.addChild(new StringWidget(empty()
+                .append(literal("Das Spiel wird beendet und der PC heruntergefahren,").withStyle(GRAY)), this.font), positioner -> positioner.alignHorizontallyCenter().paddingTop(16));
 
-        directionalLayoutWidget.add(new TextWidget(empty()
-                .append(of("wenn folgende Bedingung erfüllt ist:").copy().formatted(GRAY)), this.textRenderer), positioner -> positioner.marginBottom(16));
+        directionalLayoutWidget.addChild(new StringWidget(empty()
+                .append(literal("wenn folgende Bedingung erfüllt ist:").withStyle(GRAY)), this.font), positioner -> positioner.alignHorizontallyCenter().paddingBottom(16));
 
-        directionalLayoutWidget.add(new TextWidget(of(this.shutdownReason.getConditionString()).copy().formatted(GOLD), this.textRenderer));
+        directionalLayoutWidget.addChild(new StringWidget(literal(this.shutdownReason.getConditionString()).withStyle(GOLD), this.font), LayoutSettings::alignHorizontallyCenter);
 
-        directionalLayoutWidget.add(new TextWidget(empty()
-                .append(of("Wenn du dieses Fenster schließt,").copy().formatted(GRAY)), this.textRenderer), positioner -> positioner.marginTop(16));
+        directionalLayoutWidget.addChild(new StringWidget(empty()
+                .append(literal("Wenn du dieses Fenster schließt,").withStyle(GRAY)), this.font), positioner -> positioner.alignHorizontallyCenter().paddingTop(16));
 
-        directionalLayoutWidget.add(new TextWidget(empty()
-                .append(of("wird das automatische Herunterfahren gestoppt.").copy().formatted(GRAY)), this.textRenderer), positioner -> positioner.marginBottom(16));
+        directionalLayoutWidget.addChild(new StringWidget(empty()
+                .append(literal("wird das automatische Herunterfahren gestoppt.").withStyle(GRAY)), this.font), positioner -> positioner.alignHorizontallyCenter().paddingBottom(16));
 
-        directionalLayoutWidget.add(ButtonWidget.builder(BUTTON_SHUTDOWN_ABORT_NAME, button -> close()).width(150).build());
+        directionalLayoutWidget.addChild(Button.builder(BUTTON_SHUTDOWN_ABORT_NAME, button -> onClose()).width(150).build(), LayoutSettings::alignHorizontallyCenter);
 
-        directionalLayoutWidget.forEachChild(this::addDrawableChild);
+        directionalLayoutWidget.visitWidgets(this::addRenderableWidget);
     }
 
     @Override

@@ -1,91 +1,93 @@
 package de.rettichlp.ucutils.common.gui.widgets;
 
-import de.rettichlp.ucutils.common.gui.screens.components.CyclingButtonEntry;
-import de.rettichlp.ucutils.common.gui.widgets.base.AbstractUCUtilsTextWidget;
-import de.rettichlp.ucutils.common.gui.widgets.base.IOptionWidget;
-import de.rettichlp.ucutils.common.gui.widgets.base.UCUtilsWidget;
-import de.rettichlp.ucutils.common.gui.widgets.base.UCUtilsWidgetConfiguration;
+import de.rettichlp.therettingtoncompanion.gui.ICycleButtonValue;
+import de.rettichlp.therettingtoncompanion.gui.options.list.TRCOptionsList;
+import de.rettichlp.therettingtoncompanion.gui.widgets.base.AbstractTRCTextWidget;
+import de.rettichlp.therettingtoncompanion.gui.widgets.base.WidgetConfiguration;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
-import net.minecraft.client.gui.tooltip.Tooltip;
-import net.minecraft.client.gui.widget.CyclingButtonWidget;
-import net.minecraft.client.gui.widget.Widget;
-import net.minecraft.text.Text;
-import org.jetbrains.annotations.NotNull;
+import net.minecraft.client.gui.components.Tooltip;
+import net.minecraft.network.chat.Component;
+import org.jetbrains.annotations.Contract;
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 
 import static de.rettichlp.ucutils.UCUtils.storage;
 import static de.rettichlp.ucutils.common.gui.widgets.CarLockedWidget.Style.MINIMALISTIC;
-import static net.minecraft.text.Text.empty;
-import static net.minecraft.text.Text.of;
-import static net.minecraft.text.Text.translatable;
-import static net.minecraft.util.Formatting.DARK_GRAY;
-import static net.minecraft.util.Formatting.GOLD;
-import static net.minecraft.util.Formatting.GRAY;
-import static net.minecraft.util.Formatting.GREEN;
+import static java.util.Arrays.asList;
+import static net.minecraft.ChatFormatting.DARK_GRAY;
+import static net.minecraft.ChatFormatting.GOLD;
+import static net.minecraft.ChatFormatting.GRAY;
+import static net.minecraft.ChatFormatting.GREEN;
+import static net.minecraft.client.gui.components.Tooltip.create;
+import static net.minecraft.network.chat.Component.empty;
+import static net.minecraft.network.chat.Component.literal;
+import static net.minecraft.network.chat.Component.translatable;
 
-@UCUtilsWidget(registryName = "car_locked", defaultX = 110.0, defaultY = 4.0)
-public class CarLockedWidget extends AbstractUCUtilsTextWidget<CarLockedWidget.Configuration> {
+public class CarLockedWidget extends AbstractTRCTextWidget<CarLockedWidget.Configuration> {
 
-    private static final Text WIDGETS_CAR_LOCKED_OPTIONS_NAME = translatable("ucutils.options.widgets.car_locked.options.name");
-    private static final Text WIDGETS_CAR_LOCKED_OPTIONS_TOOLTIP = translatable("ucutils.options.widgets.car_locked.options.tooltip");
-    private static final Text WIDGETS_CAR_LOCKED_OPTIONS_STYLE_NAME = translatable("ucutils.options.widgets.car_locked.options.style.name");
+    private static final Component WIDGETS_CAR_LOCKED_OPTIONS_NAME = translatable("ucutils.options.widgets.car_locked.options.name");
+    private static final Component WIDGETS_CAR_LOCKED_OPTIONS_TOOLTIP = translatable("ucutils.options.widgets.car_locked.options.tooltip");
+    private static final Component WIDGETS_CAR_LOCKED_OPTIONS_STYLE_NAME = translatable("ucutils.options.widgets.car_locked.options.style.name");
 
     @Override
-    public Text text() {
+    public Component text() {
         return getWidgetConfiguration().getStyle() == MINIMALISTIC
-                ? (storage.isCarLocked() ? of("🔒").copy().formatted(GREEN) : of("🔓").copy().formatted(GOLD))
+                ? (storage.isCarLocked() ? literal("🔒").withStyle(GREEN) : literal("🔓").withStyle(GOLD))
                 : empty()
-                .append(of("Fahrzeug").copy().formatted(GRAY))
-                .append(of(":").copy().formatted(DARK_GRAY)).append(" ")
-                .append(storage.isCarLocked() ? of("zu").copy().formatted(GREEN) : of("offen").copy().formatted(GOLD));
+                .append(literal("Fahrzeug").withStyle(GRAY))
+                .append(literal(":").withStyle(DARK_GRAY)).append(" ")
+                .append(storage.isCarLocked() ? literal("zu").withStyle(GREEN) : literal("offen").withStyle(GOLD));
     }
 
     @Override
-    public Text getDisplayName() {
+    public @Nullable String getRegistryName() {
+        return "car_locked";
+    }
+
+    @Override
+    public Component getLabel() {
         return WIDGETS_CAR_LOCKED_OPTIONS_NAME;
     }
 
     @Override
-    public Text getTooltip() {
+    public Component getTooltip() {
         return WIDGETS_CAR_LOCKED_OPTIONS_TOOLTIP;
+    }
+
+    @Override
+    public void addOptions(@NonNull TRCOptionsList optionsList) {
+        optionsList.addCycleButton(WIDGETS_CAR_LOCKED_OPTIONS_STYLE_NAME, create(WIDGETS_CAR_LOCKED_OPTIONS_TOOLTIP), getWidgetConfiguration().getStyle(), asList(Style.values()), (_, value) -> getWidgetConfiguration().setStyle(value));
     }
 
     @Getter
     @AllArgsConstructor
-    public enum Style implements CyclingButtonEntry {
+    public enum Style implements ICycleButtonValue {
 
         DEFAULT(translatable("ucutils.options.widgets.car_locked.options.style.value.default.name"), translatable("ucutils.options.widgets.car_locked.options.style.value.default.tooltip")),
         MINIMALISTIC(translatable("ucutils.options.widgets.car_locked.options.style.value.minimalistic.name"), translatable("ucutils.options.widgets.car_locked.options.style.value.minimalistic.tooltip"));
 
-        private final Text name;
-        private final Text tooltip;
+        private final Component name;
+        private final Component tooltip;
 
         @Override
-        public @NotNull Text getDisplayName() {
+        public Component value() {
             return this.name;
         }
 
+        @Contract(value = " -> new", pure = true)
         @Override
-        public @NotNull Tooltip getTooltip() {
-            return Tooltip.of(this.tooltip);
+        public @NonNull Tooltip tooltip() {
+            return create(this.tooltip);
         }
     }
 
     @Data
     @EqualsAndHashCode(callSuper = false)
-    public static class Configuration extends UCUtilsWidgetConfiguration implements IOptionWidget {
+    public static class Configuration extends WidgetConfiguration {
 
         private Style style = MINIMALISTIC;
-
-        @Override
-        public Widget optionsWidget() {
-            return CyclingButtonWidget.builder(Style::getDisplayName)
-                    .values(Style.values())
-                    .initially(this.style)
-                    .tooltip(Style::getTooltip)
-                    .build(WIDGETS_CAR_LOCKED_OPTIONS_STYLE_NAME, (button, style) -> this.style = style);
-        }
     }
 }

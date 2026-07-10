@@ -1,10 +1,12 @@
+import org.gradle.api.JavaVersion.VERSION_25
+
 plugins {
-    id 'net.fabricmc.fabric-loom-remap' version "${loom_version}"
-    id 'maven-publish'
+    id("net.fabricmc.fabric-loom")
+    `maven-publish`
 }
 
-version = project.mod_version
-group = project.maven_group
+version = providers.gradleProperty("mod_version").get()
+group = providers.gradleProperty("maven_group").get()
 
 repositories {
     // Add repositories to retrieve artifacts from in here.
@@ -12,41 +14,54 @@ repositories {
     // Loom adds the essential maven repositories to download Minecraft and libraries from automatically.
     // See https://docs.gradle.org/current/userguide/declaring_repositories.html
     // for more information about repositories.
+    mavenCentral()
+
+    maven {
+        name = "Terraformers"
+        url = uri("https://maven.terraformersmc.com/")
+    }
+
+    maven {
+        name = "Modrinth"
+        url = uri("https://api.modrinth.com/maven")
+    }
 }
 
 dependencies {
     // To change the versions see the gradle.properties file
-    minecraft "com.mojang:minecraft:${project.minecraft_version}"
-    mappings "net.fabricmc:yarn:${project.yarn_mappings}:v2"
-    modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
+    minecraft("com.mojang:minecraft:${providers.gradleProperty("minecraft_version").get()}")
+
+    implementation("net.fabricmc:fabric-loader:${providers.gradleProperty("loader_version").get()}")
 
     // Fabric API. This is technically optional, but you probably want it anyway.
-    modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_api_version}"
+    implementation("net.fabricmc.fabric-api:fabric-api:${providers.gradleProperty("fabric_api_version").get()}")
 
     // https://mvnrepository.com/artifact/org.projectlombok/lombok
     compileOnly("org.projectlombok:lombok:1.18.46")
     annotationProcessor("org.projectlombok:lombok:1.18.46")
 
-    testCompileOnly("org.projectlombok:lombok:1.18.46")
-    testAnnotationProcessor("org.projectlombok:lombok:1.18.46")
+    // https://github.com/TerraformersMC/ModMenu
+    compileOnly("com.terraformersmc:modmenu:${providers.gradleProperty("modmenu_version").get()}")
 
     // https://github.com/atteo/classindex
     include("org.atteo.classindex:classindex:3.13")
     implementation("org.atteo.classindex:classindex:3.13")
-    annotationProcessor('org.atteo.classindex:classindex:3.13')
+    annotationProcessor("org.atteo.classindex:classindex:3.13")
+
+    compileOnly("maven.modrinth:the-rettington-companion:2.0.0")
 }
 
-processResources {
-    def version = project.version
-    inputs.property "version", version
+tasks.processResources {
+    val version = version
+    inputs.property("version", version)
 
     filesMatching("fabric.mod.json") {
-        expand "version": version
+        expand("version" to version)
     }
 }
 
-tasks.withType(JavaCompile).configureEach {
-    it.options.release = 21
+tasks.withType<JavaCompile>().configureEach {
+    options.release = 25
 }
 
 java {
@@ -55,13 +70,13 @@ java {
     // If you remove this line, sources will not be generated.
     withSourcesJar()
 
-    sourceCompatibility = JavaVersion.VERSION_21
-    targetCompatibility = JavaVersion.VERSION_21
+    sourceCompatibility = VERSION_25
+    targetCompatibility = VERSION_25
 }
 
-jar {
-    def projectName = project.name
-    inputs.property "projectName", projectName
+tasks.jar {
+    val projectName = project.name
+    inputs.property("projectName", projectName)
 
     from("LICENSE") {
         rename { "${it}_$projectName" }
@@ -71,8 +86,8 @@ jar {
 // configure the maven publication
 publishing {
     publications {
-        create("mavenJava", MavenPublication) {
-            from components.java
+        register<MavenPublication>("mavenJava") {
+            from(components["java"])
         }
     }
 
@@ -82,5 +97,14 @@ publishing {
         // Notice: This block does NOT have the same function as the block in the top level.
         // The repositories here will be used for publishing your artifact, not for
         // retrieving dependencies.
+    }
+}
+
+loom {
+    runs {
+        named("client") {
+            property("devauth.enabled", "1")
+            property("mixin.debug.export", "true")
+        }
     }
 }

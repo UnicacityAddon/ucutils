@@ -3,7 +3,7 @@ package de.rettichlp.ucutils.common.models;
 import de.rettichlp.ucutils.common.gui.screens.ShutdownScreen;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.Minecraft;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -28,8 +28,8 @@ public enum ShutdownReason {
         new Timer().schedule(new TimerTask() {
             @Override
             public void run() {
-                MinecraftClient client = MinecraftClient.getInstance();
-                client.execute(() -> client.setScreen(new ShutdownScreen(ShutdownReason.this)));
+                Minecraft minecraft = Minecraft.getInstance();
+                minecraft.execute(() -> minecraft.setScreen(new ShutdownScreen(ShutdownReason.this)));
             }
         }, 100);
     }

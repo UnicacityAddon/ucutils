@@ -6,20 +6,21 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
-import net.minecraft.client.gui.tooltip.Tooltip;
-import net.minecraft.text.Text;
+import net.minecraft.client.gui.components.Tooltip;
+import net.minecraft.network.chat.Component;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 
 import static de.rettichlp.ucutils.common.configuration.options.Options.AtmInformationType.NONE;
 import static de.rettichlp.ucutils.common.configuration.options.Options.ReinforcementType.UNICACITYADDON;
-import static net.minecraft.text.Text.empty;
-import static net.minecraft.text.Text.of;
-import static net.minecraft.text.Text.translatable;
-import static net.minecraft.util.Formatting.AQUA;
-import static net.minecraft.util.Formatting.BLUE;
-import static net.minecraft.util.Formatting.DARK_AQUA;
-import static net.minecraft.util.Formatting.RED;
+import static net.minecraft.ChatFormatting.AQUA;
+import static net.minecraft.ChatFormatting.BLUE;
+import static net.minecraft.ChatFormatting.DARK_AQUA;
+import static net.minecraft.ChatFormatting.RED;
+import static net.minecraft.client.gui.components.Tooltip.create;
+import static net.minecraft.network.chat.Component.empty;
+import static net.minecraft.network.chat.Component.literal;
+import static net.minecraft.network.chat.Component.translatable;
 
 @Getter
 @Setter
@@ -45,22 +46,22 @@ public class Options {
     public enum ReinforcementType implements CyclingButtonEntry {
 
         UCUTILS(empty()
-                .append(of("UC").copy().formatted(DARK_AQUA))
-                .append(of("Utils").copy().formatted(AQUA))),
+                .append(literal("UC").withStyle(DARK_AQUA))
+                .append(literal("Utils").withStyle(AQUA))),
         UNICACITYADDON(empty()
-                .append(of("U").copy().formatted(BLUE))
-                .append(of("nica"))
-                .append(of("C").copy().formatted(RED))
-                .append(of("ity"))
-                .append(of("A").copy().formatted(BLUE))
-                .append(of("ddon")));
+                .append(literal("U").withStyle(BLUE))
+                .append(literal("nica"))
+                .append(literal("C").withStyle(RED))
+                .append(literal("ity"))
+                .append(literal("A").withStyle(BLUE))
+                .append(literal("ddon")));
 
-        private final Text displayName;
+        private final Component displayName;
 
         @Contract(value = " -> new", pure = true)
         @Override
         public @NotNull Tooltip getTooltip() {
-            return Tooltip.of(this.displayName);
+            return create(this.displayName);
         }
     }
 
@@ -74,13 +75,13 @@ public class Options {
         G_BANK(translatable("ucutils.options.atm_information.value.g_bank.name"), translatable("ucutils.options.atm_information.value.g_bank.tooltip")),
         BOTH(translatable("ucutils.options.atm_information.value.both.name"), translatable("ucutils.options.atm_information.value.both.tooltip"));
 
-        private final Text displayName;
-        private final Text tooltip;
+        private final Component displayName;
+        private final Component tooltip;
 
         @Contract(value = " -> new", pure = true)
         @Override
         public @NotNull Tooltip getTooltip() {
-            return Tooltip.of(this.tooltip);
+            return create(this.tooltip);
         }
     }
 }

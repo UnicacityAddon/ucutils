@@ -5,8 +5,8 @@ import de.rettichlp.ucutils.common.models.Job;
 import de.rettichlp.ucutils.common.registry.UCUtilsListener;
 import de.rettichlp.ucutils.listener.IMessageReceiveListener;
 import de.rettichlp.ucutils.listener.INaviSpotReachedListener;
-import net.minecraft.text.Text;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.phys.Vec3;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
@@ -39,7 +39,7 @@ public class JobListener implements IMessageReceiveListener, INaviSpotReachedLis
     private LocalDateTime miningBoosterExpirationTime;
 
     @Override
-    public boolean onMessageReceive(Text text, String message) {
+    public boolean onMessageReceive(Component text, String message) {
         Matcher transportDeliverMatcher = TRANSPORT_DELIVER_PATTERN.matcher(message);
         if (transportDeliverMatcher.find()) {
             utilService.delayedAction(() -> commandService.sendCommand("droptransport"), SECONDS.toMillis(10));
@@ -68,7 +68,7 @@ public class JobListener implements IMessageReceiveListener, INaviSpotReachedLis
                     : now.plusSeconds(seconds);
 
             storage.getCountdowns().removeIf(countdown -> countdown.getTitle().equals(MINING_BOOSTER_COUNTDOWN_TITLE));
-            storage.getCountdowns().add(new Countdown(MINING_BOOSTER_COUNTDOWN_TITLE, between(now, this.miningBoosterExpirationTime), () -> {}));
+            new Countdown(MINING_BOOSTER_COUNTDOWN_TITLE, between(now, this.miningBoosterExpirationTime), () -> {});
             return true;
         }
 
@@ -93,12 +93,12 @@ public class JobListener implements IMessageReceiveListener, INaviSpotReachedLis
             return;
         }
 
-        if (storage.getCurrentJob() == PIZZA_DELIVERY && player.getBlockPos().isWithinDistance(new BlockPos(266, 69, 54), 2)) {
+        if (storage.getCurrentJob() == PIZZA_DELIVERY && player.position().closerThan(new Vec3(266, 69, 54), 2)) {
             commandService.sendCommand("getpizza");
             return;
         }
 
-        if (storage.getCurrentJob() == TOBACCO_PLANTATION && player.getBlockPos().isWithinDistance(new BlockPos(-133, 69, -78), 3)) {
+        if (storage.getCurrentJob() == TOBACCO_PLANTATION && player.position().closerThan(new Vec3(-133, 69, -78), 3)) {
             commandService.sendCommand("droptabak");
         }
     }

@@ -5,7 +5,7 @@
   "name": "UCUtils",
   "description": "Essential utilities and QoL tools for the UnicaCity roleplay server.",
   "authors": [
-    "rettichlp"
+    "RettichLP"
   ],
   "contributors": [
     "Fauliikou",
@@ -24,18 +24,25 @@
   "entrypoints": {
     "main": [
       "de.rettichlp.ucutils.UCUtils"
+    ],
+    "modmenu": [
+      "de.rettichlp.ucutils.integrations.ModMenuIntegration"
+    ],
+    "the-rettington-companion": [
+      "de.rettichlp.ucutils.common.integrations.TheRettingtonCompanionIntegration"
     ]
   },
   "mixins": [
     "ucutils.mixins.json"
   ],
   "depends": {
-    "fabricloader": ">=0.17.0",
-    "minecraft": "~1.21.3",
-    "java": ">=21",
+    "fabricloader": ">=0.19.3",
+    "minecraft": "~26.1.2",
+    "java": ">=25",
     "fabric-api": "*"
   },
-  "suggests": {
-    "another-mod": "*"
+  "recommends": {
+    "modmenu": ">=18.0.0",
+    "the-rettington-companion": ">=2.0.0"
   }
 }

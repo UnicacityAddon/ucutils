@@ -3,82 +3,70 @@ package de.rettichlp.ucutils.common.services;
 import de.rettichlp.ucutils.common.configuration.options.Options;
 import de.rettichlp.ucutils.common.gui.screens.components.CyclingButtonEntry;
 import de.rettichlp.ucutils.common.gui.screens.components.ToggleButtonWidget;
-import de.rettichlp.ucutils.common.gui.widgets.base.AbstractUCUtilsWidget;
-import de.rettichlp.ucutils.common.gui.widgets.base.UCUtilsWidget;
-import lombok.Getter;
-import net.minecraft.client.gui.tooltip.Tooltip;
-import net.minecraft.client.gui.widget.CyclingButtonWidget;
-import net.minecraft.client.gui.widget.DirectionalLayoutWidget;
-import net.minecraft.text.Text;
+import net.minecraft.client.gui.components.CycleButton;
+import net.minecraft.client.gui.components.Tooltip;
+import net.minecraft.client.gui.layouts.LinearLayout;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 
 import java.awt.Color;
-import java.util.LinkedHashSet;
-import java.util.Objects;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
 
 import static de.rettichlp.ucutils.UCUtils.configuration;
-import static java.util.Comparator.comparing;
-import static java.util.stream.Collectors.toCollection;
-import static java.util.stream.StreamSupport.stream;
-import static org.atteo.classindex.ClassIndex.getAnnotated;
+import static net.minecraft.ChatFormatting.DARK_GRAY;
+import static net.minecraft.ChatFormatting.GRAY;
+import static net.minecraft.network.chat.Component.empty;
+import static net.minecraft.network.chat.Component.literal;
 
 public class RenderService {
 
     public static final int TEXT_BOX_PADDING = 3;
 
-    @Getter
-    private LinkedHashSet<AbstractUCUtilsWidget<?>> widgets = new LinkedHashSet<>();
-
     public Color getSecondaryColor(@NotNull Color color) {
         return new Color(color.getRed() / 2, color.getGreen() / 2, color.getBlue() / 2, 100);
     }
 
-    public void initializeWidgets() {
-        this.widgets = stream(getAnnotated(UCUtilsWidget.class).spliterator(), false)
-                .map(ucUtilsWidgetClass -> {
-                    try {
-                        return (AbstractUCUtilsWidget<?>) ucUtilsWidgetClass.getConstructor().newInstance();
-                    } catch (Exception e) {
-                        return null;
-                    }
-                })
-                .filter(Objects::nonNull)
-                .peek(AbstractUCUtilsWidget::init)
-                .sorted(comparing(AbstractUCUtilsWidget::getRegistryName))
-                .collect(toCollection(LinkedHashSet::new));
-    }
-
-    public <E extends CyclingButtonEntry> void addCyclingButton(@NotNull DirectionalLayoutWidget widget,
-                                                                Text name,
+    public <E extends CyclingButtonEntry> void addCyclingButton(@NotNull LinearLayout widget,
+                                                                Component name,
                                                                 E[] values,
-                                                                Function<E, Text> displayNameFunction,
+                                                                Function<E, Component> displayNameFunction,
                                                                 BiConsumer<Options, E> onValueChange,
                                                                 @NotNull Function<Options, E> currentValue,
                                                                 int width) {
-        CyclingButtonWidget<E> cyclingButton = CyclingButtonWidget.builder(displayNameFunction)
-                .values(values)
-                .initially(currentValue.apply(configuration.getOptions()))
-                .tooltip(CyclingButtonEntry::getTooltip)
-                .build(name, (button, value) -> onValueChange.accept(configuration.getOptions(), value));
+        CycleButton<E> cycleButton = CycleButton.builder(displayNameFunction, currentValue.apply(configuration.getOptions()))
+                .withValues(values)
+                .withTooltip(CyclingButtonEntry::getTooltip)
+                .create(name, (_, value) -> onValueChange.accept(configuration.getOptions(), value));
 
-        cyclingButton.setWidth(width);
-
-        widget.add(cyclingButton);
+        cycleButton.setWidth(width);
+        widget.addChild(cycleButton);
     }
 
-    public void addToggleButton(@NotNull DirectionalLayoutWidget widget,
-                                Text name,
-                                Text tooltip,
+    public void addToggleButton(@NotNull LinearLayout widget,
+                                Component name,
+                                Component tooltip,
                                 BiConsumer<Options, Boolean> onPress,
                                 @NotNull Function<Options, Boolean> currentValue,
                                 int width) {
         ToggleButtonWidget toggleButton = new ToggleButtonWidget(name, value -> onPress.accept(configuration.getOptions(), value), currentValue.apply(configuration.getOptions()));
 
         toggleButton.setWidth(width);
-        toggleButton.setTooltip(Tooltip.of(tooltip));
+        toggleButton.setTooltip(Tooltip.create(tooltip));
 
-        widget.add(toggleButton);
+        widget.addChild(toggleButton);
+    }
+
+    public static @NonNull MutableComponent keyValue(String key, String value) {
+        return keyValue(key, literal(value));
+    }
+
+    public static @NonNull MutableComponent keyValue(String key, Component value) {
+        return empty()
+                .append(literal(key).withStyle(GRAY))
+                .append(literal(":").withStyle(DARK_GRAY)).append(" ")
+                .append(value);
     }
 }

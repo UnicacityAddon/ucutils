@@ -1,14 +1,11 @@
 package de.rettichlp.ucutils.mixin;
 
-import net.minecraft.client.network.ClientPlayerEntity;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.vehicle.MinecartEntity;
-import net.minecraft.world.entity.UniquelyIdentifiable;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.vehicle.minecart.Minecart;
 import org.jetbrains.annotations.NotNull;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import static de.rettichlp.ucutils.UCUtils.commandService;
@@ -20,10 +17,10 @@ import static de.rettichlp.ucutils.UCUtils.utilService;
 @Mixin(Entity.class)
 public abstract class EntityMixin {
 
-    @Inject(method = "startRiding(Lnet/minecraft/entity/Entity;ZZ)Z", at = @At("RETURN"))
-    private void ucutils$startRidingReturn(Entity vehicle,
+    @Inject(method = "startRiding(Lnet/minecraft/world/entity/Entity;ZZ)Z", at = @At("RETURN"))
+    private void ucutils$startRidingReturn(Entity entityToRide,
                                            boolean force,
-                                           boolean emitEvent,
+                                           boolean sendEventAndTriggers,
                                            @NotNull CallbackInfoReturnable<Boolean> cir) {
         if (!storage.isUnicaCity()) {
             return;
@@ -34,9 +31,9 @@ public abstract class EntityMixin {
             return;
         }
 
-        UniquelyIdentifiable self = (Entity) (Object) this;
-        if (self.getUuid().equals(player.getUuid()) && vehicle instanceof MinecartEntity) {
-            storage.setMinecartEntityToHighlight(null);
+        Entity self = (Entity) (Object) this;
+        if (self.equals(player) && entityToRide instanceof Minecart minecart) {
+            storage.setMinecartEntityToHighlight(minecart);
 
             if (configuration.getOptions().car().automatedStart() && !storage.isPremium()) {
                 // start the car with a small delay to ensure the player is fully in the vehicle
@@ -47,18 +44,6 @@ public abstract class EntityMixin {
             if (!storage.isCarLocked() && configuration.getOptions().car().automatedLock() && !storage.isPremium()) {
                 utilService.delayedAction(() -> commandService.sendCommand("car lock"), 1500);
             }
-        }
-    }
-
-    @Inject(method = "stopRiding", at = @At("HEAD"))
-    private void ucutils$stopRidingHead(CallbackInfo ci) {
-        if (!storage.isUnicaCity()) {
-            return;
-        }
-
-        Entity self = (Entity) (Object) this;
-        if (self instanceof ClientPlayerEntity && self.hasVehicle() && self.getVehicle() instanceof MinecartEntity minecartEntity) {
-            storage.setMinecartEntityToHighlight(minecartEntity);
         }
     }
 }

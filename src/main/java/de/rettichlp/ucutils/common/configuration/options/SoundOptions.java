@@ -5,8 +5,8 @@ import de.rettichlp.ucutils.common.models.Faction;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
-import net.minecraft.client.gui.tooltip.Tooltip;
-import net.minecraft.text.Text;
+import net.minecraft.client.gui.components.Tooltip;
+import net.minecraft.network.chat.Component;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 
@@ -15,7 +15,8 @@ import static de.rettichlp.ucutils.common.configuration.options.SoundOptions.Sta
 import static de.rettichlp.ucutils.common.models.Faction.FBI;
 import static de.rettichlp.ucutils.common.models.Faction.POLIZEI;
 import static de.rettichlp.ucutils.common.models.Faction.RETTUNGSDIENST;
-import static net.minecraft.text.Text.translatable;
+import static net.minecraft.client.gui.components.Tooltip.create;
+import static net.minecraft.network.chat.Component.translatable;
 
 @Getter
 @Setter
@@ -39,14 +40,14 @@ public class SoundOptions {
 
         @Contract(" -> new")
         @Override
-        public @NotNull Text getDisplayName() {
+        public @NotNull Component getDisplayName() {
             return translatable("ucutils.select_state." + name().toLowerCase() + ".name");
         }
 
         @Contract(" -> new")
         @Override
         public @NotNull Tooltip getTooltip() {
-            return Tooltip.of(translatable("ucutils.select_state." + name().toLowerCase() + ".tooltip"));
+            return create(translatable("ucutils.select_state." + name().toLowerCase() + ".tooltip"));
         }
 
         public boolean verify(Faction faction) {
@@ -62,14 +63,14 @@ public class SoundOptions {
 
         @Contract(" -> new")
         @Override
-        public @NotNull Text getDisplayName() {
+        public @NotNull Component getDisplayName() {
             return translatable("ucutils.select_medic." + name().toLowerCase() + ".name");
         }
 
         @Contract(" -> new")
         @Override
         public @NotNull Tooltip getTooltip() {
-            return Tooltip.of(translatable("ucutils.select_medic." + name().toLowerCase() + ".tooltip"));
+            return create(translatable("ucutils.select_medic." + name().toLowerCase() + ".tooltip"));
         }
 
         public boolean verify(Faction faction) {

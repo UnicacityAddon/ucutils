@@ -8,7 +8,7 @@ import org.jetbrains.annotations.NotNull;
 
 import static de.rettichlp.ucutils.common.models.ShutdownReason.CEMETERY;
 import static de.rettichlp.ucutils.common.models.ShutdownReason.JAIL;
-import static net.fabricmc.fabric.api.client.command.v2.ClientCommandManager.literal;
+import static net.fabricmc.fabric.api.client.command.v2.ClientCommands.literal;
 
 @UCUtilsCommand(label = "shutdown")
 public class ShutdownCommand extends CommandBase {
@@ -17,12 +17,12 @@ public class ShutdownCommand extends CommandBase {
     public LiteralArgumentBuilder<FabricClientCommandSource> execute(@NotNull LiteralArgumentBuilder<FabricClientCommandSource> node) {
         return node
                 .then(literal("friedhof")
-                        .executes(context -> {
+                        .executes(_ -> {
                             CEMETERY.activate();
                             return 1;
                         }))
                 .then(literal("gefängnis")
-                        .executes(context -> {
+                        .executes(_ -> {
                             JAIL.activate();
                             return 1;
                         }));

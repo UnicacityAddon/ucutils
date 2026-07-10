@@ -30,14 +30,6 @@ public class Configuration {
     private int predictedPayDaySalary = 0;
     private int predictedPayDayExp = 0;
 
-    public void addMinutesSinceLastPayDay(int minutes) {
-        this.minutesSinceLastPayDay += minutes;
-
-        if (this.minutesSinceLastPayDay % 10 == 0) {
-            new Thread(this::saveToFile).start(); // asynchronously save every active 10 minutes
-        }
-    }
-
     public void addPredictedPayDaySalary(int salary) {
         this.predictedPayDaySalary += salary;
     }

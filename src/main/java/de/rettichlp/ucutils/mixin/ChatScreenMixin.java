@@ -1,7 +1,7 @@
 package de.rettichlp.ucutils.mixin;
 
 import de.rettichlp.ucutils.common.models.ScreenshotType;
-import net.minecraft.client.gui.screen.ChatScreen;
+import net.minecraft.client.gui.screens.ChatScreen;
 import org.jetbrains.annotations.NotNull;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
@@ -16,15 +16,15 @@ import static de.rettichlp.ucutils.UCUtils.notificationService;
 import static de.rettichlp.ucutils.common.models.ScreenshotType.OTHER;
 import static java.lang.Thread.sleep;
 import static java.util.Arrays.stream;
-import static net.minecraft.text.Text.translatable;
+import static net.minecraft.network.chat.Component.translatable;
 
 @Mixin(ChatScreen.class)
 public abstract class ChatScreenMixin {
 
-    @Inject(method = "sendMessage", at = @At("HEAD"))
-    private void ucutils$sendMessageHead(@NotNull String message, boolean addToHistory, CallbackInfo ci) {
-        String[] messageParts = message.split(" ");
-        if (messageParts.length >= 2 && message.startsWith("/screenshot ")) {
+    @Inject(method = "handleChatInput", at = @At("HEAD"))
+    private void ucutils$handleChatInputHead(String msg, boolean addToRecent, CallbackInfo ci) {
+        String[] messageParts = msg.split(" ");
+        if (messageParts.length >= 2 && msg.startsWith("/screenshot ")) {
             String screenshotTypeString = messageParts[1].toLowerCase();
             ScreenshotType screenshotType = fromDisplayName(screenshotTypeString).orElse(OTHER);
             screenshotType.take(file -> notificationService.sendInfoNotification(translatable("ucutils.notification.info.screenshot_saved", file.getName())));

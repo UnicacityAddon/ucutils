@@ -1,122 +1,62 @@
 package de.rettichlp.ucutils.mixin;
 
-import com.mojang.authlib.GameProfile;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NonNull;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.network.ClientPlayNetworkHandler;
-import net.minecraft.client.network.PlayerListEntry;
-import net.minecraft.client.world.ClientWorld;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.passive.VillagerEntity;
-import net.minecraft.network.packet.s2c.play.EntityTrackerUpdateS2CPacket;
-import net.minecraft.network.packet.s2c.play.PlayerListS2CPacket;
-import net.minecraft.network.packet.s2c.play.PlayerRemoveS2CPacket;
-import net.minecraft.text.MutableText;
-import net.minecraft.text.Text;
-import net.minecraft.util.math.Vec3d;
+import com.llamalad7.mixinextras.sugar.Local;
+import net.minecraft.client.multiplayer.ClientPacketListener;
+import net.minecraft.client.multiplayer.PlayerInfo;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.network.protocol.game.ClientboundPlayerInfoRemovePacket;
+import net.minecraft.network.protocol.game.ClientboundPlayerInfoUpdatePacket;
+import org.jspecify.annotations.NonNull;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.UUID;
-
 import static de.rettichlp.ucutils.UCUtils.configuration;
 import static de.rettichlp.ucutils.UCUtils.notificationService;
 import static de.rettichlp.ucutils.UCUtils.player;
 import static de.rettichlp.ucutils.UCUtils.storage;
 import static java.awt.Color.WHITE;
-import static java.lang.System.currentTimeMillis;
-import static java.util.Objects.requireNonNull;
-import static net.minecraft.text.Text.empty;
-import static net.minecraft.text.Text.literal;
-import static net.minecraft.text.Text.translatable;
-import static net.minecraft.util.Formatting.BLUE;
-import static net.minecraft.util.Formatting.DARK_GRAY;
-import static net.minecraft.util.Formatting.GOLD;
-import static net.minecraft.util.Formatting.GRAY;
-import static net.minecraft.util.Formatting.RED;
-import static net.minecraft.util.Formatting.YELLOW;
+import static java.util.Optional.ofNullable;
+import static net.minecraft.ChatFormatting.BLUE;
+import static net.minecraft.ChatFormatting.DARK_GRAY;
+import static net.minecraft.ChatFormatting.GOLD;
+import static net.minecraft.ChatFormatting.YELLOW;
+import static net.minecraft.network.chat.Component.empty;
+import static net.minecraft.network.chat.Component.literal;
+import static net.minecraft.network.chat.Component.translatable;
 import static org.spongepowered.asm.mixin.injection.At.Shift.AFTER;
 
-@Mixin(ClientPlayNetworkHandler.class)
+@Mixin(ClientPacketListener.class)
 public abstract class ClientPlayNetworkHandlerMixin {
 
     @Unique
-    private static final MutableText A_DUTY_PREFIX = empty()
-            .append(literal("[").formatted(DARK_GRAY)
-                    .append(literal("UC").formatted(BLUE))
-                    .append(literal("]").formatted(DARK_GRAY)));
+    private static final MutableComponent A_DUTY_PREFIX = empty()
+            .append(literal("[").withStyle(DARK_GRAY)
+                    .append(literal("UC").withStyle(BLUE))
+                    .append(literal("]").withStyle(DARK_GRAY)));
 
     @Unique
-    private static final MutableText BUILD_MODE_PREFIX = empty()
-            .append(literal("[").formatted(DARK_GRAY)
-                    .append(literal("B").formatted(YELLOW))
-                    .append(literal("]").formatted(DARK_GRAY)));
+    private static final MutableComponent BUILD_MODE_PREFIX = empty()
+            .append(literal("[").withStyle(DARK_GRAY)
+                    .append(literal("B").withStyle(YELLOW))
+                    .append(literal("]").withStyle(DARK_GRAY)));
 
     @Unique
-    private static final MutableText REPORT_PREFIX = empty()
-            .append(literal("[").formatted(DARK_GRAY)
-                    .append(literal("R").formatted(GOLD))
-                    .append(literal("]").formatted(DARK_GRAY)));
+    private static final MutableComponent REPORT_PREFIX = empty()
+            .append(literal("[").withStyle(DARK_GRAY)
+                    .append(literal("R").withStyle(GOLD))
+                    .append(literal("]").withStyle(DARK_GRAY)));
 
-    @Unique
-    private final Collection<EnrichedGameProfile> enrichedGameProfiles = new HashSet<>();
-
-    @Inject(method = "onEntityTrackerUpdate", at = @At("TAIL"))
-    private void onEntityTrackerUpdate(EntityTrackerUpdateS2CPacket packet, CallbackInfo ci) {
-        if (!storage.isUnicaCity()) {
-            return;
-        }
-
-        ClientWorld world = MinecraftClient.getInstance().world;
-        if (world == null) {
-            return;
-        }
-
-        Entity entity = world.getEntityById(packet.id());
-        if (!(entity instanceof VillagerEntity villager) || !villager.hasCustomName()) {
-            return;
-        }
-
-        String customNameString = requireNonNull(villager.getCustomName()).getString();
-        Vec3d entityPos = villager.getEntityPos();
-
-        // already notified check
-        if (entityPos.equals(storage.getDealerPosition()) || entityPos.equals(storage.getBlackMarketPosition())) {
-            return;
-        }
-
-        switch (customNameString) {
-            case "Dealer" -> {
-                storage.setBlackMarketPosition(entityPos);
-                player.sendMessage(empty()
-                        .append(literal("[").formatted(DARK_GRAY))
-                        .append(literal("Dealer").formatted(RED))
-                        .append(literal("] ").formatted(DARK_GRAY))
-                        .append(literal("Der Dealer ist in der Nähe!").formatted(GRAY)), false);
-            }
-            case "Schwarzmarkt" -> {
-                storage.setDealerPosition(entityPos);
-                player.sendMessage(empty()
-                        .append(literal("[").formatted(DARK_GRAY))
-                        .append(literal("Schwarzmarkt").formatted(RED))
-                        .append(literal("] ").formatted(DARK_GRAY))
-                        .append(literal("Der Schwarzmarkt ist in der Nähe!").formatted(GRAY)), false);
-            }
-        }
-    }
-
-    @Inject(method = "onPlayerRemove",
+    @Inject(method = "handlePlayerInfoRemove",
             at = @At(value = "INVOKE",
-                     target = "Lnet/minecraft/network/NetworkThreadUtils;forceMainThread(Lnet/minecraft/network/packet/Packet;Lnet/minecraft/network/listener/PacketListener;Lnet/minecraft/network/PacketApplyBatcher;)V",
+                     target = "Ljava/util/Set;remove(Ljava/lang/Object;)Z",
                      shift = AFTER))
-    private void ucutils$onPlayerRemoveHead(PlayerRemoveS2CPacket packet, CallbackInfo ci) {
+    private void ucutils$handlePlayerInfoRemoveInvoke(ClientboundPlayerInfoRemovePacket packet,
+                                                      CallbackInfo ci,
+                                                      @Local(name = "info") PlayerInfo info) {
         if (!storage.isUnicaCity()) {
             return;
         }
@@ -125,127 +65,103 @@ public abstract class ClientPlayNetworkHandlerMixin {
             return;
         }
 
-        for (UUID uuid : packet.profileIds()) {
-            this.enrichedGameProfiles.stream()
-                    .filter(egp -> egp.getProfile().id().equals(uuid))
-                    .findFirst()
-                    .ifPresent(egp -> sendChangeNotification(egp, "ucutils.notification.player_quit"));
-        }
+        sendChangeNotification(ofNullable(info.getTabListDisplayName()).orElseGet(() -> literal(info.getProfile().name())), "ucutils.notification.player_quit");
     }
 
-    @Inject(method = "handlePlayerListAction", at = @At("HEAD"))
-    private void ucutils$handlePlayerListActionHead(PlayerListS2CPacket.Action action,
-                                                    PlayerListS2CPacket.Entry receivedEntry,
-                                                    PlayerListEntry currentEntry,
-                                                    CallbackInfo ci) {
+    @Inject(method = "handlePlayerInfoUpdate",
+            at = @At(value = "INVOKE",
+                     target = "Lnet/minecraft/client/gui/screens/social/PlayerSocialManager;addPlayer(Lnet/minecraft/client/multiplayer/PlayerInfo;)V",
+                     shift = AFTER))
+    private void ucutils$handlePlayerInfoUpdateInvoke(ClientboundPlayerInfoUpdatePacket packet,
+                                                      CallbackInfo ci,
+                                                      @Local(name = "entry") ClientboundPlayerInfoUpdatePacket.Entry entry,
+                                                      @Local(name = "playerInfo") @NonNull PlayerInfo playerInfo) {
         if (!storage.isUnicaCity()) {
             return;
         }
 
-        GameProfile profile = receivedEntry.profile();
-        UUID profileId = receivedEntry.profileId();
-        Text currentDisplayName = receivedEntry.displayName();
-
-        if (currentDisplayName == null) {
+        if (!configuration.getOptions().notification().joinQuit()) {
             return;
         }
 
-        switch (action) {
-            case ADD_PLAYER -> {
-                if (!configuration.getOptions().notification().joinQuit()) {
-                    return;
-                }
+        sendChangeNotification(ofNullable(entry.displayName()).orElseGet(() -> literal(playerInfo.getProfile().name())), "ucutils.notification.player_join");
+    }
 
-                EnrichedGameProfile enrichedGameProfile = new EnrichedGameProfile(profile, currentDisplayName, currentDisplayName);
-                this.enrichedGameProfiles.removeIf(egp -> egp.getProfile().id().equals(profileId));
-                this.enrichedGameProfiles.add(enrichedGameProfile);
+    @Inject(method = "applyPlayerInfoUpdate",
+            at = @At(value = "INVOKE",
+                     target = "Lnet/minecraft/client/multiplayer/PlayerInfo;setTabListDisplayName(Lnet/minecraft/network/chat/Component;)V"))
+    private void ucutils$applyPlayerInfoUpdateInvoke(ClientboundPlayerInfoUpdatePacket.Action action,
+                                                     ClientboundPlayerInfoUpdatePacket.Entry entry,
+                                                     PlayerInfo info,
+                                                     CallbackInfo ci) {
+        if (!storage.isUnicaCity()) {
+            return;
+        }
 
-                // if the client joined the server few moments ago, hide notifications due to initial sync of player list
-                if (currentTimeMillis() - storage.getJoinTimestamp() < 1000) {
-                    return;
-                }
+        if (!configuration.getOptions().notification().joinQuit()) {
+            return;
+        }
 
-                sendChangeNotification(enrichedGameProfile, "ucutils.notification.player_join");
+        Component previousDisplayName = info.getTabListDisplayName();
+        Component currentDisplayName = entry.displayName();
+
+        if (previousDisplayName == null || currentDisplayName == null) {
+            return;
+        }
+
+        // handle report change
+        if (configuration.getOptions().notification().report()) {
+            if (!previousDisplayName.contains(REPORT_PREFIX) && currentDisplayName.contains(REPORT_PREFIX)) {
+                sendChangeNotification(currentDisplayName, "ucutils.notification.player_enter_report");
+                return;
             }
-            case UPDATE_DISPLAY_NAME -> {
-                EnrichedGameProfile enrichedGameProfile = this.enrichedGameProfiles.stream()
-                        .filter(egp -> egp.getProfile().id().equals(profileId))
-                        .findFirst()
-                        .orElseGet(() -> {
-                            EnrichedGameProfile egp = new EnrichedGameProfile(profile, currentDisplayName, currentDisplayName);
-                            this.enrichedGameProfiles.add(egp);
-                            return egp;
-                        });
 
-                Text previousDisplayName = enrichedGameProfile.getPreviousDisplayName();
+            if (previousDisplayName.contains(REPORT_PREFIX) && !currentDisplayName.contains(REPORT_PREFIX)) {
+                sendChangeNotification(currentDisplayName, "ucutils.notification.player_leave_report");
+                return;
+            }
+        }
 
-                // handle report change
-                if (configuration.getOptions().notification().report()) {
-                    if (!previousDisplayName.contains(REPORT_PREFIX) && currentDisplayName.contains(REPORT_PREFIX)) {
-                        sendChangeNotification(enrichedGameProfile, "ucutils.notification.player_enter_report");
-                        enrichedGameProfile.setPreviousDisplayName(currentDisplayName);
-                        return;
-                    }
+        // handle build mode change
+        if (configuration.getOptions().notification().buildMode()) {
+            if (!previousDisplayName.contains(BUILD_MODE_PREFIX) && currentDisplayName.contains(BUILD_MODE_PREFIX)) {
+                sendChangeNotification(currentDisplayName, "ucutils.notification.player_enter_buildmode");
+                return;
+            }
 
-                    if (previousDisplayName.contains(REPORT_PREFIX) && !currentDisplayName.contains(REPORT_PREFIX)) {
-                        sendChangeNotification(enrichedGameProfile, "ucutils.notification.player_leave_report");
-                        enrichedGameProfile.setPreviousDisplayName(currentDisplayName);
-                        return;
-                    }
-                }
+            if (previousDisplayName.contains(BUILD_MODE_PREFIX) && !currentDisplayName.contains(BUILD_MODE_PREFIX)) {
+                sendChangeNotification(currentDisplayName, "ucutils.notification.player_leave_buildmode");
+                return;
+            }
+        }
 
-                // handle build mode change
-                if (configuration.getOptions().notification().buildMode()) {
-                    if (!previousDisplayName.contains(BUILD_MODE_PREFIX) && currentDisplayName.contains(BUILD_MODE_PREFIX)) {
-                        sendChangeNotification(enrichedGameProfile, "ucutils.notification.player_enter_buildmode");
-                        enrichedGameProfile.setPreviousDisplayName(currentDisplayName);
-                        return;
-                    }
+        // handle admin-duty change
+        if (configuration.getOptions().notification().aDuty()) {
+            if (!previousDisplayName.contains(A_DUTY_PREFIX) && currentDisplayName.contains(A_DUTY_PREFIX)) {
+                sendChangeNotification(currentDisplayName, "ucutils.notification.player_enter_a_duty");
+                return;
+            }
 
-                    if (previousDisplayName.contains(BUILD_MODE_PREFIX) && !currentDisplayName.contains(BUILD_MODE_PREFIX)) {
-                        sendChangeNotification(enrichedGameProfile, "ucutils.notification.player_leave_buildmode");
-                        enrichedGameProfile.setPreviousDisplayName(currentDisplayName);
-                        return;
-                    }
-                }
-
-                // handle admin-duty change
-                if (configuration.getOptions().notification().aDuty()) {
-                    if (!previousDisplayName.contains(A_DUTY_PREFIX) && currentDisplayName.contains(A_DUTY_PREFIX)) {
-                        sendChangeNotification(enrichedGameProfile, "ucutils.notification.player_enter_a_duty");
-                    }
-
-                    if (previousDisplayName.contains(A_DUTY_PREFIX) && !currentDisplayName.contains(A_DUTY_PREFIX)) {
-                        sendChangeNotification(enrichedGameProfile, "ucutils.notification.player_leave_a_duty");
-                    }
-                }
-
-                enrichedGameProfile.setPreviousDisplayName(currentDisplayName);
+            if (previousDisplayName.contains(A_DUTY_PREFIX) && !currentDisplayName.contains(A_DUTY_PREFIX)) {
+                sendChangeNotification(currentDisplayName, "ucutils.notification.player_leave_a_duty");
+                return;
             }
         }
     }
 
     @Unique
-    private void sendChangeNotification(@NonNull EnrichedGameProfile enrichedGameProfile, String translationKey) {
-        Text currentDisplayName = enrichedGameProfile.getCurrentDisplayName();
-        if (currentDisplayName.equals(empty())) {
+    private void sendChangeNotification(@NonNull Component displayName, String translationKey) {
+        // skip NPC names
+        if (displayName.getString().isEmpty()) {
             return;
         }
 
-        MutableText text = translatable(translationKey, currentDisplayName);
-        notificationService.sendNotification(text, WHITE, 5000);
-    }
-
-    @Data
-    @AllArgsConstructor
-    public static class EnrichedGameProfile {
-
-        private final GameProfile profile;
-        private Text previousDisplayName;
-        private Text currentDisplayName;
-
-        public boolean isTeamMember() {
-            return storage.getTeam().ucTeam().stream().anyMatch(teamMember -> teamMember.uuid().equals(this.profile.id()));
+        // skip if player joined some seconds ago
+        if (player.tickCount < 5 * 20) {
+            return;
         }
+
+        MutableComponent text = translatable(translationKey, displayName);
+        notificationService.sendNotification(text, WHITE, 5000);
     }
 }

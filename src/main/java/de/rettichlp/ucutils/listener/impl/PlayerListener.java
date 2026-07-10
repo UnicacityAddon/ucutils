@@ -3,10 +3,9 @@ package de.rettichlp.ucutils.listener.impl;
 import de.rettichlp.ucutils.common.models.Countdown;
 import de.rettichlp.ucutils.common.registry.UCUtilsListener;
 import de.rettichlp.ucutils.listener.IMessageReceiveListener;
-import de.rettichlp.ucutils.listener.ITickListener;
-import net.minecraft.network.ClientConnection;
-import net.minecraft.text.HoverEvent;
-import net.minecraft.text.Text;
+import net.minecraft.network.Connection;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.HoverEvent;
 
 import java.io.IOException;
 import java.util.List;
@@ -15,8 +14,6 @@ import java.util.regex.Pattern;
 
 import static de.rettichlp.ucutils.UCUtils.LOGGER;
 import static de.rettichlp.ucutils.UCUtils.commandService;
-import static de.rettichlp.ucutils.UCUtils.configuration;
-import static de.rettichlp.ucutils.UCUtils.nameTagService;
 import static de.rettichlp.ucutils.UCUtils.player;
 import static de.rettichlp.ucutils.UCUtils.storage;
 import static de.rettichlp.ucutils.common.models.ShutdownReason.CEMETERY;
@@ -26,15 +23,14 @@ import static java.lang.Integer.parseInt;
 import static java.lang.Runtime.getRuntime;
 import static java.lang.System.getProperty;
 import static java.time.Duration.ofMinutes;
-import static java.util.Objects.nonNull;
 import static java.util.regex.Pattern.compile;
-import static net.minecraft.text.Text.empty;
-import static net.minecraft.text.Text.of;
-import static net.minecraft.util.Formatting.GRAY;
-import static net.minecraft.util.Formatting.RED;
+import static net.minecraft.ChatFormatting.GRAY;
+import static net.minecraft.ChatFormatting.RED;
+import static net.minecraft.network.chat.Component.empty;
+import static net.minecraft.network.chat.Component.literal;
 
 @UCUtilsListener
-public class PlayerListener implements IMessageReceiveListener, ITickListener {
+public class PlayerListener implements IMessageReceiveListener {
 
     private static final String SHUTDOWN_TIMEOUT = "5";
 
@@ -61,7 +57,7 @@ public class PlayerListener implements IMessageReceiveListener, ITickListener {
     private static final Pattern DECLINE_PATTERN = compile("^\\[Deal] (?:\\[UC])?(?<playerName>[a-zA-Z0-9_]+) hat das Angebot abgelehnt\\.$");
 
     @Override
-    public boolean onMessageReceive(Text text, String message) {
+    public boolean onMessageReceive(Component text, String message) {
         Matcher deadAReviveMatcher = DEAD_AREVIVE_PATTERN.matcher(message);
         if (deadAReviveMatcher.find()) {
             storage.getActiveShutdowns().removeIf(shutdownReason -> shutdownReason == CEMETERY);
@@ -109,7 +105,7 @@ public class PlayerListener implements IMessageReceiveListener, ITickListener {
         Matcher jailMatcher = JAIL_PATTERN.matcher(message);
         if (jailMatcher.find()) {
             int minutes = parseInt(jailMatcher.group("minutes"));
-            storage.getCountdowns().add(new Countdown("Gefängnis", ofMinutes(minutes)));
+            new Countdown("Gefängnis", ofMinutes(minutes));
             return true;
         }
 
@@ -154,13 +150,6 @@ public class PlayerListener implements IMessageReceiveListener, ITickListener {
         return true;
     }
 
-    @Override
-    public void onTick() {
-        if (player.age % 1200 == 0 && !nameTagService.isAfk(player.getStringifiedName())) {
-            configuration.addMinutesSinceLastPayDay(1);
-        }
-    }
-
     private void shutdownPC() {
         String os = getProperty("os.name").toLowerCase();
         String[] command = new String[0];
@@ -171,13 +160,11 @@ public class PlayerListener implements IMessageReceiveListener, ITickListener {
             command = new String[]{ "shutdown", "-h", "+" + SHUTDOWN_TIMEOUT }; // will fail potentially without sudo
         }
 
-        ClientConnection connection = player.networkHandler.getConnection();
-        if (nonNull(connection)) {
-            connection.disconnect(empty()
-                    .append(of("Der PC wird in").copy().formatted(GRAY)).append(" ")
-                    .append(of(SHUTDOWN_TIMEOUT + " Sekunden").copy().formatted(RED)).append(" ")
-                    .append(of("durch UCUtils heruntergefahren...").copy().formatted(GRAY)));
-        }
+        Connection connection = player.connection.getConnection();
+        connection.disconnect(empty()
+                .append(literal("Der PC wird in").withStyle(GRAY)).append(" ")
+                .append(literal(SHUTDOWN_TIMEOUT + " Sekunden").withStyle(RED)).append(" ")
+                .append(literal("durch UCUtils heruntergefahren...").withStyle(GRAY)));
 
         if (command.length == 0) {
             LOGGER.warn("Unknown operating system {} - shutdown aborted", os);

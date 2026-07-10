@@ -2,10 +2,10 @@ package de.rettichlp.ucutils.listener.impl;
 
 import de.rettichlp.ucutils.common.registry.UCUtilsListener;
 import de.rettichlp.ucutils.listener.IMessageReceiveListener;
-import net.minecraft.text.ClickEvent;
-import net.minecraft.text.HoverEvent;
-import net.minecraft.text.MutableText;
-import net.minecraft.text.Text;
+import net.minecraft.network.chat.ClickEvent;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.HoverEvent;
+import net.minecraft.network.chat.MutableComponent;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,15 +18,18 @@ import static de.rettichlp.ucutils.UCUtils.messageService;
 import static de.rettichlp.ucutils.UCUtils.notificationService;
 import static de.rettichlp.ucutils.UCUtils.player;
 import static de.rettichlp.ucutils.UCUtils.storage;
+import static de.rettichlp.ucutils.UCUtils.synchronisedMinuteTimer;
 import static de.rettichlp.ucutils.UCUtils.utilService;
 import static java.lang.Integer.parseInt;
 import static java.lang.Math.max;
 import static java.lang.System.currentTimeMillis;
 import static java.util.Optional.ofNullable;
 import static java.util.regex.Pattern.compile;
-import static net.minecraft.text.Text.of;
-import static net.minecraft.util.Formatting.GRAY;
-import static net.minecraft.util.Formatting.UNDERLINE;
+import static net.minecraft.ChatFormatting.GRAY;
+import static net.minecraft.ChatFormatting.RED;
+import static net.minecraft.ChatFormatting.UNDERLINE;
+import static net.minecraft.network.chat.CommonComponents.SPACE;
+import static net.minecraft.network.chat.Component.literal;
 
 @UCUtilsListener
 public class EconomyListener implements IMessageReceiveListener {
@@ -64,17 +67,20 @@ public class EconomyListener implements IMessageReceiveListener {
 
     // other
     private static final Pattern BUSINESS_CASH_PATTERN = compile("^Kasse: (\\d+)\\$$");
-    private static final Pattern EXP_PATTERN = compile("(?<amount>[+-]\\d+) Exp!( \\(x(?<multiplier>\\d)\\))?");
+    private static final Pattern EXP_PATTERN = compile("(?<amount>[+-]\\d+) Exp!( \\(x(?<multiplier>\\d)\\))?$");
+    private static final Pattern MAX_EXP_REACHED_PATTERN = compile("^Du hast die maximale Exp erreicht! Benutze /buylevel um ein Level aufzusteigen\\.$");
     private static final Pattern LOTTO_WIN_PATTERN = compile("^\\[Lotto] Du hast im Lotto gewonnen! \\((?<amount>\\d+)\\$\\)$");
+    private static final Pattern BATTLEPASS_REWARD_PATTERN = compile("\\[.+ Pass] \\+(?<amount>\\d+)\\$ erhalten\\.$");
     private static final Pattern MEDIC_DESPAWNED_PATTERN = compile("^Verdammt\\.\\.\\. mein Kopf dröhnt so\\.\\.\\.$");
     private static final Pattern MEDIC_REVIVE_PATTERN = compile("^Du wirst von (?:\\[UC])?(?<playerName>[a-zA-Z0-9_]+) wiederbelebt\\.$");
     private static final Pattern REVIVE_ADMIN_PATTERN = compile("^Du wurdest von \\[UC](?<playerName>[a-zA-Z0-9_]+) wiederbelebt\\.$");
     private static final Pattern BACK_IN_LIFE_PATTERN = compile("^\\[Friedhof] Du lebst nun wieder\\.$");
 
     private long lastMedicReviveAction = 0;
+    private boolean maxExperiencePerLevelReached = false;
 
     @Override
-    public boolean onMessageReceive(Text text, String message) {
+    public boolean onMessageReceive(Component text, String message) {
         Matcher bankStatementMatcher = BANK_STATEMENT_PATTERN.matcher(message);
         if (bankStatementMatcher.find()) {
             int amount = parseInt(bankStatementMatcher.group("amount"));
@@ -249,6 +255,7 @@ public class EconomyListener implements IMessageReceiveListener {
         if (paydayCountdownMatcher.find()) {
             int minutes = parseInt(paydayCountdownMatcher.group("minutes"));
             int minutesSinceLastPayDay = 60 - minutes;
+            synchronisedMinuteTimer.synchronize();
             configuration.setMinutesSinceLastPayDay(minutesSinceLastPayDay);
 
             utilService.delayedAction(() -> {
@@ -285,14 +292,14 @@ public class EconomyListener implements IMessageReceiveListener {
         if (businessCashMatcher.find()) {
             String amountString = businessCashMatcher.group(1);
 
-            MutableText appendedText = text.copy().append(" ")
-                    .append(of("Geld entnehmen").copy().formatted(GRAY, UNDERLINE))
-                    .styled(style -> style
+            MutableComponent appendedText = text.copy().append(" ")
+                    .append(literal("Geld entnehmen").withStyle(GRAY, UNDERLINE))
+                    .withStyle(style -> style
                             .withClickEvent(new ClickEvent.RunCommand("/biz kasse get " + amountString))
-                            .withHoverEvent(new HoverEvent.ShowText(of("Klicke, um " + amountString + "$ aus der Kasse zu nehmen.")))
+                            .withHoverEvent(new HoverEvent.ShowText(literal("Klicke, um " + amountString + "$ aus der Kasse zu nehmen.")))
                     );
 
-            player.sendMessage(appendedText, false);
+            player.sendSystemMessage(appendedText);
             return false;
         }
 
@@ -303,12 +310,38 @@ public class EconomyListener implements IMessageReceiveListener {
             int multiplier = ofNullable(multiplierString).map(Integer::parseInt).orElse(1);
 
             configuration.addPredictedPayDayExp(amount * multiplier);
+
+            if (this.maxExperiencePerLevelReached) {
+                MutableComponent modifiedMessage = text.copy()
+                        .append(SPACE)
+                        .append(literal("↑").withStyle(style -> style
+                                .withHoverEvent(new HoverEvent.ShowText(literal("Du hast die maximale Exp erreicht! Benutze /buylevel um ein Level aufzusteigen.").withStyle(RED)))
+                                .withColor(RED)
+                                .withBold(true)));
+                player.sendSystemMessage(modifiedMessage);
+                return false;
+            }
+
             return true;
+        }
+
+        Matcher maxExpReachedMatcher = MAX_EXP_REACHED_PATTERN.matcher(message);
+        if (maxExpReachedMatcher.find()) {
+            boolean sendNotification = !this.maxExperiencePerLevelReached;
+            this.maxExperiencePerLevelReached = true;
+            return sendNotification; // notify only first time, after that hide message
         }
 
         Matcher lottoWinMatcher = LOTTO_WIN_PATTERN.matcher(message);
         if (lottoWinMatcher.find()) {
             int amount = parseInt(lottoWinMatcher.group("amount"));
+            configuration.setMoneyBankAmount(configuration.getMoneyBankAmount() + amount);
+            return true;
+        }
+
+        Matcher battlepassRewardMatcher = BATTLEPASS_REWARD_PATTERN.matcher(message);
+        if (battlepassRewardMatcher.find()) {
+            int amount = parseInt(battlepassRewardMatcher.group("amount"));
             configuration.setMoneyBankAmount(configuration.getMoneyBankAmount() + amount);
             return true;
         }

@@ -6,10 +6,10 @@ import de.rettichlp.ucutils.common.registry.UCUtilsListener;
 import de.rettichlp.ucutils.listener.IMessageReceiveListener;
 import de.rettichlp.ucutils.listener.IMessageSendListener;
 import lombok.NonNull;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.text.Text;
-import net.minecraft.text.TextColor;
-import net.minecraft.util.Formatting;
+import net.minecraft.ChatFormatting;
+import net.minecraft.client.Minecraft;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TextColor;
 
 import java.util.List;
 import java.util.Optional;
@@ -24,15 +24,14 @@ import static de.rettichlp.ucutils.common.Storage.ToggledChat.NONE;
 import static de.rettichlp.ucutils.common.configuration.options.Options.ReinforcementType.UNICACITYADDON;
 import static java.util.Optional.ofNullable;
 import static java.util.regex.Pattern.compile;
-import static net.minecraft.text.Text.empty;
-import static net.minecraft.text.Text.literal;
-import static net.minecraft.text.Text.of;
-import static net.minecraft.util.Formatting.AQUA;
-import static net.minecraft.util.Formatting.BOLD;
-import static net.minecraft.util.Formatting.DARK_AQUA;
-import static net.minecraft.util.Formatting.DARK_GRAY;
-import static net.minecraft.util.Formatting.GRAY;
-import static net.minecraft.util.Formatting.RED;
+import static net.minecraft.ChatFormatting.AQUA;
+import static net.minecraft.ChatFormatting.BOLD;
+import static net.minecraft.ChatFormatting.DARK_AQUA;
+import static net.minecraft.ChatFormatting.DARK_GRAY;
+import static net.minecraft.ChatFormatting.GRAY;
+import static net.minecraft.ChatFormatting.RED;
+import static net.minecraft.network.chat.Component.empty;
+import static net.minecraft.network.chat.Component.literal;
 
 @UCUtilsListener
 public class FactionListener implements IMessageReceiveListener, IMessageSendListener {
@@ -44,24 +43,24 @@ public class FactionListener implements IMessageReceiveListener, IMessageSendLis
     private static final Pattern FACTION_CHAT_PATTERN = compile("^(?<playerPrefix>[\\p{L} ]+) (?:\\[UC])?(?<senderPlayerName>[a-zA-Z0-9_]+): (?<message>.+)$");
 
     private static final ReinforcementConsumer<String, String, String, String> REINFORCEMENT = (type, sender, naviPoint, distance) -> empty()
-            .append(of(type).copy().formatted(RED, BOLD)).append(" ")
-            .append(of(sender).copy().formatted(AQUA)).append(" ")
-            .append(of("-").copy().formatted(GRAY)).append(" ")
-            .append(of(naviPoint).copy().formatted(AQUA)).append(" ")
-            .append(of("-").copy().formatted(GRAY)).append(" ")
-            .append(of(distance + "m").copy().formatted(DARK_AQUA));
+            .append(literal(type).withStyle(RED, BOLD)).append(" ")
+            .append(literal(sender).withStyle(AQUA)).append(" ")
+            .append(literal("-").withStyle(GRAY)).append(" ")
+            .append(literal(naviPoint).withStyle(AQUA)).append(" ")
+            .append(literal("-").withStyle(GRAY)).append(" ")
+            .append(literal(distance + "m").withStyle(DARK_AQUA));
 
     private static final ReinforcementOnTheWayConsumer<String, String, String> REINFORCEMENT_ON_THE_WAY = (sender, target, distance) -> empty()
-            .append(of("➥").copy().formatted(GRAY)).append(" ")
-            .append(of(sender).copy().formatted(AQUA)).append(" ")
-            .append(of("➡").copy().formatted(GRAY)).append(" ")
-            .append(of(target).copy().formatted(DARK_AQUA)).append(" ")
-            .append(of("- (").copy().formatted(GRAY))
-            .append(of(distance + "m").copy().formatted(DARK_AQUA))
-            .append(of(")").copy().formatted(GRAY));
+            .append(literal("➥").withStyle(GRAY)).append(" ")
+            .append(literal(sender).withStyle(AQUA)).append(" ")
+            .append(literal("➡").withStyle(GRAY)).append(" ")
+            .append(literal(target).withStyle(DARK_AQUA)).append(" ")
+            .append(literal("- (").withStyle(GRAY))
+            .append(literal(distance + "m").withStyle(DARK_AQUA))
+            .append(literal(")").withStyle(GRAY));
 
     @Override
-    public boolean onMessageReceive(Text text, String message) {
+    public boolean onMessageReceive(Component text, String message) {
         Matcher reinforcementMatcher = REINFORCEMENT_PATTERN.matcher(message);
         if (reinforcementMatcher.find()) {
             String type = ofNullable(reinforcementMatcher.group("type")).orElse("Reinforcement");
@@ -72,9 +71,9 @@ public class FactionListener implements IMessageReceiveListener, IMessageSendLis
 
             boolean modernReinforcementStyle = configuration.getOptions().reinforcementType() == UNICACITYADDON;
             if (modernReinforcementStyle) {
-                Text reinforcementText = REINFORCEMENT.create(type, senderRank + " " + senderPlayerName, naviPoint, distance);
-                player.sendMessage(empty(), false);
-                player.sendMessage(reinforcementText, false);
+                Component reinforcementText = REINFORCEMENT.create(type, senderRank + " " + senderPlayerName, naviPoint, distance);
+                player.sendSystemMessage(empty());
+                player.sendSystemMessage(reinforcementText);
             }
 
             return !modernReinforcementStyle;
@@ -85,7 +84,7 @@ public class FactionListener implements IMessageReceiveListener, IMessageSendLis
             boolean modernReinforcementStyle = configuration.getOptions().reinforcementType() == UNICACITYADDON;
             if (modernReinforcementStyle) {
                 // send empty line after buttons
-                MinecraftClient.getInstance().execute(() -> player.sendMessage(empty(), false));
+                Minecraft.getInstance().execute(() -> player.sendSystemMessage(empty()));
             }
 
             return true;
@@ -100,8 +99,8 @@ public class FactionListener implements IMessageReceiveListener, IMessageSendLis
 
             boolean modernReinforcementStyle = configuration.getOptions().reinforcementType() == UNICACITYADDON;
             if (modernReinforcementStyle) {
-                Text reinforcementAnswer = REINFORCEMENT_ON_THE_WAY.create(senderRank + " " + senderPlayerName, target, distance);
-                player.sendMessage(reinforcementAnswer, false);
+                Component reinforcementAnswer = REINFORCEMENT_ON_THE_WAY.create(senderRank + " " + senderPlayerName, target, distance);
+                player.sendSystemMessage(reinforcementAnswer);
             }
 
             return !modernReinforcementStyle;
@@ -113,11 +112,11 @@ public class FactionListener implements IMessageReceiveListener, IMessageSendLis
                 return true;
             }
 
-            Formatting primaryFormatting = configuration.getOptions().factionChatColorPrimary().getFormatting();
-            Formatting secondaryFormatting = configuration.getOptions().factionChatColorSecondary().getFormatting();
+            ChatFormatting primaryFormatting = configuration.getOptions().factionChatColorPrimary().getFormatting();
+            ChatFormatting secondaryFormatting = configuration.getOptions().factionChatColorSecondary().getFormatting();
 
             // check if color already matches formatting
-            List<Text> siblings = text.getSiblings();
+            List<Component> siblings = text.getSiblings();
             if (siblings.size() != 3 || messageMatchesColor(siblings, primaryFormatting, secondaryFormatting)) {
                 return true;
             }
@@ -136,12 +135,12 @@ public class FactionListener implements IMessageReceiveListener, IMessageSendLis
                 return true;
             }
 
-            player.sendMessage(empty()
-                    .append(literal(playerPrefix).formatted(primaryFormatting))
+            player.sendSystemMessage(empty()
+                    .append(literal(playerPrefix).withStyle(primaryFormatting))
                     .append(literal(" "))
-                    .append(literal(senderPlayerName).formatted(primaryFormatting))
-                    .append(literal(": ").formatted(DARK_GRAY))
-                    .append(literal(factionMessage).formatted(secondaryFormatting)), false);
+                    .append(literal(senderPlayerName).withStyle(primaryFormatting))
+                    .append(literal(": ").withStyle(DARK_GRAY))
+                    .append(literal(factionMessage).withStyle(secondaryFormatting)));
 
             return false;
         }
@@ -160,21 +159,23 @@ public class FactionListener implements IMessageReceiveListener, IMessageSendLis
         return true;
     }
 
-    private boolean messageMatchesColor(@NonNull List<Text> siblings, Formatting primaryFormatting, Formatting secondaryFormatting) {
+    private boolean messageMatchesColor(@NonNull List<Component> siblings,
+                                        ChatFormatting primaryFormatting,
+                                        ChatFormatting secondaryFormatting) {
         TextColor primaryFormattingCurrent = siblings.get(0).getStyle().getColor();
         TextColor secondaryFormattingCurrent = siblings.get(2).getStyle().getColor();
-        return primaryFormattingCurrent == null || secondaryFormattingCurrent == null || primaryFormattingCurrent.getRgb() == primaryFormatting.getColorValue() || secondaryFormattingCurrent.getRgb() == secondaryFormatting.getColorValue();
+        return primaryFormattingCurrent == null || secondaryFormattingCurrent == null || primaryFormattingCurrent.getValue() == primaryFormatting.getColor() || secondaryFormattingCurrent.getValue() == secondaryFormatting.getColor();
     }
 
     @FunctionalInterface
     public interface ReinforcementConsumer<Type, Sender, NaviPoint, Distance> {
 
-        Text create(String type, String sender, String naviPoint, String distance);
+        Component create(String type, String sender, String naviPoint, String distance);
     }
 
     @FunctionalInterface
     public interface ReinforcementOnTheWayConsumer<Sender, Target, Distance> {
 
-        Text create(String sender, String target, String distance);
+        Component create(String sender, String target, String distance);
     }
 }

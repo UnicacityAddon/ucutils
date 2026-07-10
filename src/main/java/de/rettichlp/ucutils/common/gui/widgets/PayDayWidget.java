@@ -1,45 +1,44 @@
 package de.rettichlp.ucutils.common.gui.widgets;
 
-import de.rettichlp.ucutils.common.gui.widgets.base.AbstractUCUtilsTextWidget;
-import de.rettichlp.ucutils.common.gui.widgets.base.IOptionWidget;
-import de.rettichlp.ucutils.common.gui.widgets.base.UCUtilsWidget;
-import de.rettichlp.ucutils.common.gui.widgets.base.UCUtilsWidgetConfiguration;
+import de.rettichlp.therettingtoncompanion.gui.options.list.TRCOptionsList;
+import de.rettichlp.therettingtoncompanion.gui.widgets.base.AbstractTRCTextWidget;
+import de.rettichlp.therettingtoncompanion.gui.widgets.base.WidgetConfiguration;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import net.minecraft.client.gui.widget.DirectionalLayoutWidget;
-import net.minecraft.client.gui.widget.Widget;
-import net.minecraft.text.MutableText;
-import net.minecraft.text.Text;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 
 import java.awt.Color;
 
+import static de.rettichlp.therettingtoncompanion.gui.OnOffCycleButtonEntry.ON;
 import static de.rettichlp.ucutils.UCUtils.configuration;
-import static de.rettichlp.ucutils.UCUtils.renderService;
+import static de.rettichlp.ucutils.common.services.RenderService.keyValue;
 import static java.awt.Color.RED;
 import static java.lang.String.valueOf;
 import static java.lang.System.currentTimeMillis;
-import static net.minecraft.client.gui.widget.DirectionalLayoutWidget.horizontal;
-import static net.minecraft.text.Text.empty;
-import static net.minecraft.text.Text.of;
-import static net.minecraft.text.Text.translatable;
-import static net.minecraft.util.Formatting.DARK_GRAY;
+import static net.minecraft.ChatFormatting.DARK_GRAY;
+import static net.minecraft.client.gui.components.Tooltip.create;
+import static net.minecraft.network.chat.Component.empty;
+import static net.minecraft.network.chat.Component.literal;
+import static net.minecraft.network.chat.Component.translatable;
 
-@UCUtilsWidget(registryName = "payday", defaultX = 126.0, defaultY = 4.0)
-public class PayDayWidget extends AbstractUCUtilsTextWidget<PayDayWidget.Configuration> {
+public class PayDayWidget extends AbstractTRCTextWidget<PayDayWidget.Configuration> {
 
-    private static final Text WIDGETS_PAYDAY_OPTIONS_NAME = translatable("ucutils.options.widgets.payday.options.name");
-    private static final Text WIDGETS_PAYDAY_OPTIONS_TOOLTIP = translatable("ucutils.options.widgets.payday.options.tooltip");
-    private static final Text WIDGETS_PAYDAY_OPTIONS_SALARY_NAME = translatable("ucutils.options.widgets.payday.options.salary.name");
-    private static final Text WIDGETS_PAYDAY_OPTIONS_SALARY_TOOLTIP = translatable("ucutils.options.widgets.payday.options.salary.tooltip");
-    private static final Text WIDGETS_PAYDAY_OPTIONS_EXPERIENCE_NAME = translatable("ucutils.options.widgets.payday.options.experience.name");
-    private static final Text WIDGETS_PAYDAY_OPTIONS_EXPERIENCE_TOOLTIP = translatable("ucutils.options.widgets.payday.options.experience.tooltip");
+    private static final Component WIDGETS_PAYDAY_OPTIONS_NAME = translatable("ucutils.options.widgets.payday.options.name");
+    private static final Component WIDGETS_PAYDAY_OPTIONS_TOOLTIP = translatable("ucutils.options.widgets.payday.options.tooltip");
+    private static final Component WIDGETS_PAYDAY_OPTIONS_SALARY_NAME = translatable("ucutils.options.widgets.payday.options.salary.name");
+    private static final Component WIDGETS_PAYDAY_OPTIONS_SALARY_TOOLTIP = translatable("ucutils.options.widgets.payday.options.salary.tooltip");
+    private static final Component WIDGETS_PAYDAY_OPTIONS_EXPERIENCE_NAME = translatable("ucutils.options.widgets.payday.options.experience.name");
+    private static final Component WIDGETS_PAYDAY_OPTIONS_EXPERIENCE_TOOLTIP = translatable("ucutils.options.widgets.payday.options.experience.tooltip");
 
     @Override
-    public Text text() {
-        MutableText payDayInfoText = keyValue("PayDay", empty()
-                .append(of(valueOf(configuration.getMinutesSinceLastPayDay())))
-                .append(of("/").copy().formatted(DARK_GRAY))
-                .append(of("60")));
+    public Component text() {
+        MutableComponent payDayInfoText = keyValue("PayDay", empty()
+                .append(literal(valueOf(configuration.getMinutesSinceLastPayDay())))
+                .append(literal("/").withStyle(DARK_GRAY))
+                .append(literal("60")));
 
         if (getWidgetConfiguration().isShowSalary()) {
             payDayInfoText.append(" ").append(keyValue("Gehalt", configuration.getPredictedPayDaySalary() + "$"));
@@ -49,40 +48,39 @@ public class PayDayWidget extends AbstractUCUtilsTextWidget<PayDayWidget.Configu
             payDayInfoText.append(" ").append(keyValue("Exp", valueOf(configuration.getPredictedPayDayExp())));
         }
 
-        return payDayInfoText;
-    }
-
-    @Override
-    public Color getBackgroundColor() {
-        // with over 100.000$ on bank and PayDay within next 5 minutes, animate background
-        return configuration.getMinutesSinceLastPayDay() >= 55 && configuration.getMoneyBankAmount() > 100000 && (currentTimeMillis() / 500 % 2 == 0)
+        Color fontColor = configuration.getMinutesSinceLastPayDay() >= 55 && configuration.getMoneyBankAmount() > 100000 && (currentTimeMillis() / 500 % 2 == 0)
                 ? RED
-                : super.getBackgroundColor();
+                : getWidgetConfiguration().getColor();
+
+        return payDayInfoText.withColor(fontColor.getRGB());
     }
 
     @Override
-    public Text getDisplayName() {
+    public @Nullable String getRegistryName() {
+        return "payday";
+    }
+
+    @Override
+    public Component getLabel() {
         return WIDGETS_PAYDAY_OPTIONS_NAME;
     }
 
     @Override
-    public Text getTooltip() {
+    public Component getTooltip() {
         return WIDGETS_PAYDAY_OPTIONS_TOOLTIP;
+    }
+
+    @Override
+    public void addOptions(@NonNull TRCOptionsList optionsList) {
+        optionsList.addToggleButton(WIDGETS_PAYDAY_OPTIONS_SALARY_NAME, create(WIDGETS_PAYDAY_OPTIONS_SALARY_TOOLTIP), getWidgetConfiguration().isShowSalary(), (_, value) -> getWidgetConfiguration().setShowSalary(value == ON));
+        optionsList.addToggleButton(WIDGETS_PAYDAY_OPTIONS_EXPERIENCE_NAME, create(WIDGETS_PAYDAY_OPTIONS_EXPERIENCE_TOOLTIP), getWidgetConfiguration().isShowExperience(), (_, value) -> getWidgetConfiguration().setShowExperience(value == ON));
     }
 
     @Data
     @EqualsAndHashCode(callSuper = false)
-    public static class Configuration extends UCUtilsWidgetConfiguration implements IOptionWidget {
+    public static class Configuration extends WidgetConfiguration {
 
         private boolean showSalary = true;
         private boolean showExperience = true;
-
-        @Override
-        public Widget optionsWidget() {
-            DirectionalLayoutWidget directionalLayoutWidget = horizontal().spacing(8);
-            renderService.addToggleButton(directionalLayoutWidget, WIDGETS_PAYDAY_OPTIONS_SALARY_NAME, WIDGETS_PAYDAY_OPTIONS_SALARY_TOOLTIP, (options, value) -> this.showSalary = value, options -> this.showSalary, 150);
-            renderService.addToggleButton(directionalLayoutWidget, WIDGETS_PAYDAY_OPTIONS_EXPERIENCE_NAME, WIDGETS_PAYDAY_OPTIONS_EXPERIENCE_TOOLTIP, (options, value) -> this.showExperience = value, options -> this.showExperience, 150);
-            return directionalLayoutWidget;
-        }
     }
 }

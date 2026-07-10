@@ -3,17 +3,18 @@ package de.rettichlp.ucutils.listener.impl.faction;
 import de.rettichlp.ucutils.common.models.Countdown;
 import de.rettichlp.ucutils.common.registry.UCUtilsListener;
 import de.rettichlp.ucutils.listener.IMessageReceiveListener;
-import net.minecraft.text.ClickEvent;
-import net.minecraft.text.HoverEvent;
-import net.minecraft.text.MutableText;
-import net.minecraft.text.Text;
-import net.minecraft.util.Formatting;
+import net.minecraft.ChatFormatting;
+import net.minecraft.network.chat.ClickEvent;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.HoverEvent;
+import net.minecraft.network.chat.MutableComponent;
 
 import java.awt.Color;
 import java.time.Duration;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import static de.rettichlp.ucutils.UCUtils.LOGGER;
 import static de.rettichlp.ucutils.UCUtils.commandService;
 import static de.rettichlp.ucutils.UCUtils.player;
 import static de.rettichlp.ucutils.UCUtils.storage;
@@ -24,17 +25,17 @@ import static java.lang.String.valueOf;
 import static java.time.Duration.ofMinutes;
 import static java.time.LocalDateTime.now;
 import static java.util.regex.Pattern.compile;
-import static net.minecraft.text.Text.empty;
-import static net.minecraft.text.Text.literal;
-import static net.minecraft.util.Formatting.BOLD;
-import static net.minecraft.util.Formatting.DARK_AQUA;
-import static net.minecraft.util.Formatting.DARK_GRAY;
-import static net.minecraft.util.Formatting.DARK_GREEN;
-import static net.minecraft.util.Formatting.GOLD;
-import static net.minecraft.util.Formatting.GRAY;
-import static net.minecraft.util.Formatting.GREEN;
-import static net.minecraft.util.Formatting.RED;
-import static net.minecraft.util.Formatting.YELLOW;
+import static net.minecraft.ChatFormatting.BOLD;
+import static net.minecraft.ChatFormatting.DARK_AQUA;
+import static net.minecraft.ChatFormatting.DARK_GRAY;
+import static net.minecraft.ChatFormatting.DARK_GREEN;
+import static net.minecraft.ChatFormatting.GOLD;
+import static net.minecraft.ChatFormatting.GRAY;
+import static net.minecraft.ChatFormatting.GREEN;
+import static net.minecraft.ChatFormatting.RED;
+import static net.minecraft.ChatFormatting.YELLOW;
+import static net.minecraft.network.chat.Component.empty;
+import static net.minecraft.network.chat.Component.literal;
 
 @UCUtilsListener
 public class MedicListener implements IMessageReceiveListener {
@@ -51,7 +52,7 @@ public class MedicListener implements IMessageReceiveListener {
     private static final Pattern STORAGE_INGREDIENT_SHARE_PATTERN = compile("^.+ (?:\\[UC])?(?<playerName>[a-zA-Z0-9_]+): (?<ingredient1>\\d+)x Wirkstoff \\| (?<ingredient2>\\d+)x Trägerstoff \\| (?<ingredient3>\\d+)x Zusatzstoff$");
     private static final Pattern STORAGE_INGREDIENT_ACCEPT_PATTERN = compile("^.+ (?:\\[UC])?(?<playerName>[a-zA-Z0-9_]+): Ich nehme (?<ingredient>Wirkstoff|Trägerstoff|Zusatzstoff)! \\(geschätzt: (?<amountBefore>\\d+) → (?<amountAfter>\\d+)\\)$");
 
-    private static final MutableText STORAGE_TEXT = empty()
+    private static final MutableComponent STORAGE_TEXT = empty()
             .append(literal("ʟ").withColor(Color.decode("#AA0000").getRGB()))
             .append(literal("ᴀ").withColor(Color.decode("#BF1515").getRGB()))
             .append(literal("ʙ").withColor(Color.decode("#D52B2B").getRGB()))
@@ -59,10 +60,10 @@ public class MedicListener implements IMessageReceiveListener {
             .append(literal("ʀ").withColor(Color.decode("#FF5555").getRGB()));
 
     @Override
-    public boolean onMessageReceive(Text text, String message) {
+    public boolean onMessageReceive(Component text, String message) {
         Matcher medicBandageMatcher = MEDIC_BANDAGE_PATTERN.matcher(message);
         if (medicBandageMatcher.find()) {
-            storage.getCountdowns().add(new Countdown("Bandage", MEDIC_BANDAGE_DURATION));
+            new Countdown("Bandage", MEDIC_BANDAGE_DURATION);
             return true;
         }
 
@@ -75,7 +76,7 @@ public class MedicListener implements IMessageReceiveListener {
 
         Matcher medicPillMatcher = MEDIC_PILL_PATTERN.matcher(message);
         if (medicPillMatcher.find()) {
-            storage.getCountdowns().add(new Countdown("Schmerzpille", MEDIC_PILL_DURATION));
+            new Countdown("Schmerzpille", MEDIC_PILL_DURATION);
             return true;
         }
 
@@ -95,33 +96,43 @@ public class MedicListener implements IMessageReceiveListener {
         Matcher laborTransportStartedMatcher = LABOR_TRANSPORT_STARTED_PATTERN.matcher(message);
         if (laborTransportStartedMatcher.find()) {
             Duration duration = ofMinutes(5).plusSeconds(56); // please don't ask why it is like this
-            storage.getCountdowns().add(new Countdown("Labor Transport", duration, () -> {}));
+            new Countdown("Labor Transport", duration, () -> {});
             return true;
         }
 
         Matcher storageIngredientShareMatcher = STORAGE_INGREDIENT_SHARE_PATTERN.matcher(message);
         if (storageIngredientShareMatcher.find()) {
             String playerName = storageIngredientShareMatcher.group("playerName");
-            int ingredient1 = parseInt(storageIngredientShareMatcher.group("ingredient1"));
-            int ingredient2 = parseInt(storageIngredientShareMatcher.group("ingredient2"));
-            int ingredient3 = parseInt(storageIngredientShareMatcher.group("ingredient3"));
 
-            player.sendMessage(empty(), false);
+            int ingredient1;
+            int ingredient2;
+            int ingredient3;
 
-            MutableText storageText = empty()
-                    .append(literal("[").formatted(DARK_GRAY))
+            try {
+                ingredient1 = parseInt(storageIngredientShareMatcher.group("ingredient1"));
+                ingredient2 = parseInt(storageIngredientShareMatcher.group("ingredient2"));
+                ingredient3 = parseInt(storageIngredientShareMatcher.group("ingredient3"));
+            } catch (NumberFormatException e) {
+                LOGGER.warn("Could not parse ingredient amounts from message: {}", message);
+                return true;
+            }
+
+            player.sendSystemMessage(empty());
+
+            MutableComponent storageText = empty()
+                    .append(literal("[").withStyle(DARK_GRAY))
                     .append(STORAGE_TEXT)
-                    .append(literal("] ").formatted(DARK_GRAY))
-                    .append(literal("Aktueller Bestand (geteilt von " + playerName + ")").formatted(GRAY))
-                    .append(literal(":").formatted(DARK_GRAY));
+                    .append(literal("] ").withStyle(DARK_GRAY))
+                    .append(literal("Aktueller Bestand (geteilt von " + playerName + ")").withStyle(GRAY))
+                    .append(literal(":").withStyle(DARK_GRAY));
 
-            player.sendMessage(storageText, false);
+            player.sendSystemMessage(storageText);
 
-            player.sendMessage(getIngredientText("Wirkstoff", ingredient1), false);
-            player.sendMessage(getIngredientText("Trägerstoff", ingredient2), false);
-            player.sendMessage(getIngredientText("Zusatzstoff", ingredient3), false);
+            player.sendSystemMessage(getIngredientText("Wirkstoff", ingredient1));
+            player.sendSystemMessage(getIngredientText("Trägerstoff", ingredient2));
+            player.sendSystemMessage(getIngredientText("Zusatzstoff", ingredient3));
 
-            player.sendMessage(empty(), false);
+            player.sendSystemMessage(empty());
             return false;
         }
 
@@ -132,42 +143,42 @@ public class MedicListener implements IMessageReceiveListener {
             int amountBefore = parseInt(storageIngredientAcceptMatcher.group("amountBefore"));
             int amountAfter = parseInt(storageIngredientAcceptMatcher.group("amountAfter"));
 
-            player.sendMessage(empty()
-                    .append(literal("[").formatted(DARK_GRAY))
+            player.sendSystemMessage(empty()
+                    .append(literal("[").withStyle(DARK_GRAY))
                     .append(STORAGE_TEXT)
-                    .append(literal("] ").formatted(DARK_GRAY))
-                    .append(literal(playerName).formatted(RED))
-                    .append(literal(" übernimmt ").formatted(GRAY))
-                    .append(literal(ingredient).formatted(RED))
-                    .append(literal(":").formatted(DARK_GRAY)), false);
+                    .append(literal("] ").withStyle(DARK_GRAY))
+                    .append(literal(playerName).withStyle(RED))
+                    .append(literal(" übernimmt ").withStyle(GRAY))
+                    .append(literal(ingredient).withStyle(RED))
+                    .append(literal(":").withStyle(DARK_GRAY)));
 
-            player.sendMessage(empty()
-                    .append(literal("  > ").formatted(DARK_GRAY))
-                    .append(literal("Geschätzte Menge nach Transport").formatted(GRAY))
-                    .append(literal(": ").formatted(DARK_GRAY))
-                    .append(literal(amountBefore + " → ").formatted(GRAY))
-                    .append(literal(valueOf(amountAfter)).formatted(getColor(amountAfter), BOLD)), false);
+            player.sendSystemMessage(empty()
+                    .append(literal("  > ").withStyle(DARK_GRAY))
+                    .append(literal("Geschätzte Menge nach Transport").withStyle(GRAY))
+                    .append(literal(": ").withStyle(DARK_GRAY))
+                    .append(literal(amountBefore + " → ").withStyle(GRAY))
+                    .append(literal(valueOf(amountAfter)).withStyle(getColor(amountAfter), BOLD)));
             return false;
         }
 
         return true;
     }
 
-    private MutableText getIngredientText(String ingredient, int amount) {
+    private MutableComponent getIngredientText(String ingredient, int amount) {
         return empty()
-                .append(literal("  > ").formatted(DARK_GRAY))
-                .append(literal("[").formatted(DARK_GRAY))
-                .append(literal("Ich übernehme!").styled(style -> style
-                        .withFormatting(DARK_AQUA)
+                .append(literal("  > ").withStyle(DARK_GRAY))
+                .append(literal("[").withStyle(DARK_GRAY))
+                .append(literal("Ich übernehme!").withStyle(style -> style
+                        .withColor(DARK_AQUA)
                         .withHoverEvent(new HoverEvent.ShowText(literal("Klicke um bescheid zu sagen, dass Du den Transport übernimmst")))
                         .withClickEvent(new ClickEvent.RunCommand("/f Ich nehme " + ingredient + "! (geschätzt: " + amount + " → " + (amount + 20) + ")"))))
-                .append(literal("] ").formatted(DARK_GRAY))
-                .append(literal(ingredient).formatted(GRAY))
-                .append(literal(": ").formatted(DARK_GRAY))
-                .append(literal(valueOf(amount)).formatted(getColor(amount), BOLD));
+                .append(literal("] ").withStyle(DARK_GRAY))
+                .append(literal(ingredient).withStyle(GRAY))
+                .append(literal(": ").withStyle(DARK_GRAY))
+                .append(literal(valueOf(amount)).withStyle(getColor(amount), BOLD));
     }
 
-    private Formatting getColor(int amount) {
+    private ChatFormatting getColor(int amount) {
         if (amount >= 80) {
             return DARK_GREEN;
         } else if (amount >= 60) {

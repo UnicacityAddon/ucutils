@@ -7,7 +7,7 @@ import java.net.http.HttpResponse;
 
 import static de.rettichlp.ucutils.UCUtils.LOGGER;
 import static de.rettichlp.ucutils.UCUtils.notificationService;
-import static net.minecraft.text.Text.translatable;
+import static net.minecraft.network.chat.Component.translatable;
 
 @Getter
 public class ApiException extends RuntimeException {
