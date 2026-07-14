@@ -14,6 +14,7 @@ import static de.rettichlp.ucutils.common.models.Company.fromDisplayName;
 import static java.awt.Color.BLUE;
 import static java.lang.Double.parseDouble;
 import static java.lang.Integer.parseInt;
+import static java.util.regex.Pattern.compile;
 import static net.minecraft.ChatFormatting.DARK_GREEN;
 import static net.minecraft.ChatFormatting.DARK_RED;
 import static net.minecraft.ChatFormatting.GOLD;
@@ -25,19 +26,34 @@ import static net.minecraft.core.component.DataComponents.LORE;
 
 public record StockMarketEntry(Company company, double price, double changeMoney, double changePercentage, int ownership, double buyPrice) {
 
-    private static final Pattern PRICE_PATTERN = Pattern.compile("Kurs: (?<price>\\d+\\.\\d+)\\$");
-    private static final Pattern CHANGE_PATTERN = Pattern.compile("Änderung: (?<money>-?\\d+\\.\\d+)\\$ \\((?<percentage>-?\\d+\\.\\d+)%\\) [▼▲]");
-    private static final Pattern OWNERSHIP_PATTERN = Pattern.compile("Besitz: (?<ownership>\\d+)/\\d+");
-    private static final Pattern BUY_PRICE_PATTERN = Pattern.compile("EK-Preis: (?<price>-?\\d+\\.\\d+)\\$");
+    private static final Pattern PRICE_PATTERN = compile("Kurs: (?<price>\\d+\\.\\d+)\\$");
+    private static final Pattern CHANGE_PATTERN = compile("Änderung: (?<money>-?\\d+\\.\\d+)\\$ \\((?<percentage>-?\\d+\\.\\d+)%\\) [▼▲]");
+    private static final Pattern OWNERSHIP_PATTERN = compile("Besitz: (?<ownership>\\d+)/\\d+");
+    private static final Pattern BUY_PRICE_PATTERN = compile("EK-Preis: (?<price>-?\\d+\\.\\d+)\\$");
 
     public @Nullable Color getColor() {
-        double diff = this.price - this.buyPrice;
-
+        // check if price is below or equal to min value
         if (this.price <= this.company.getMinValue()) {
             return BLUE;
         }
 
+        // check if user has bought any stock
+        if (this.ownership == 0) {
+            return null;
+        }
+
+        // get color value
+        Integer colorValue = getColorValue();
+        if (colorValue == null) {
+            return null;
+        }
+
+        return new Color(colorValue);
+    }
+
+    private @Nullable Integer getColorValue() {
         Integer colorValue;
+        double diff = this.price - this.buyPrice;
 
         if (diff >= 75) {
             colorValue = DARK_GREEN.getColor();
@@ -53,11 +69,7 @@ public record StockMarketEntry(Company company, double price, double changeMoney
             colorValue = DARK_RED.getColor();
         }
 
-        if (colorValue == null) {
-            return null;
-        }
-
-        return new Color(colorValue);
+        return colorValue;
     }
 
     public static @Nullable StockMarketEntry fromItemStack(@NotNull ItemStack itemStack) {
@@ -114,10 +126,6 @@ public record StockMarketEntry(Company company, double price, double changeMoney
                 String buyPriceMatcherPriceString = buyPriceMatcher.group("price");
                 buyPrice = parseDouble(buyPriceMatcherPriceString);
             }
-        }
-
-        if (price == 0 || buyPrice == 0) {
-            return null;
         }
 
         return new StockMarketEntry(company, price, changeMoney, changePercentage, ownership, buyPrice);
