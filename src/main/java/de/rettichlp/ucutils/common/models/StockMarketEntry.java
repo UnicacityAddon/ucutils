@@ -116,7 +116,7 @@ public record StockMarketEntry(Company company, double price, double changeMoney
             }
         }
 
-        if (price == 0 || buyPrice == 0) {
+        if (price == 0) {
             return null;
         }
 
