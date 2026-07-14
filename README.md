@@ -22,6 +22,11 @@ reibungsloser und angenehmer gestalten.
 - Beim Beten wird nach 15 Sekunden automatisch der zweite Befehl ausgeführt
 - Es gibt Benachrichtigungen, wenn ein Spieler den Server betritt oder verlässt, einen Report betritt oder verlässt, den Baumodus
   betritt oder verlässt und den Admindienst betritt oder verlässt
+- Beim Anklicken eines Bankautomaten wird das verfügbare Geld (im Automaten) angezeigt
+- Die Hitbox eines Spielers wird in der Fraktionsfarbe des Spielers angezeigt
+- Der Aktienmarkt besitzt farbliche Hervorhebungen, die den Gewinn anzeigen
+- Die Benachrichtigung, dass man ein Levelup kaufen kann, ist weniger penetrant und in die EXP-Nachricht integriert
+- Sollte bei `/einzahlen` der Bankautomat nicht so viel Platz haben wie eingezahlt werden soll, wird ein zusätzlicher Button angezeigt, der so viel Geld einzahlt, bis der Bankautomat voll ist
 
 ### Auto
 
@@ -42,7 +47,8 @@ Folgende Funktionen sind nur für Spieler ohne Premium-Rang verfügbar, da Spiel
 - Der Fraktionschat kann individuell eingefärbt werden
 - Für den Rettungsdienst gibt es im Herstellungs-Inventar für Medikamente einen Button, um die benötigte Anzahl an Stoffen in den
   Fraktionschat zu senden
-- Für den Dealer und Schwarzmarkt wird (in der Übersicht) angezeigt, an welchem Ort der Händler gefunden wurde
+- Für den Bluthändler, Dealer und Schwarzmarkt wird eine Nachricht angezeigt, wenn sich dieser in unmittelbarer Nähe befindet
+- Für den Bluthändler, Dealer und Schwarzmarkt wird (in der Übersicht) angezeigt, an welchem Ort er gefunden wurde
 
 ### Jobs
 
@@ -58,10 +64,10 @@ Folgende Funktionen sind nur für Spieler ohne Premium-Rang verfügbar, da Spiel
 
 ### Widgets
 
-- Aktuelles Datum und Uhrzeit
 - Informationen über den PayDay (Dauer bis zum nächsten PayDay, Gehalt und Erfahrung) einschließlich Reichensteuer-Warnung
 - Status des Autos (offen/abgeschlossen)
 - Geld auf der Hand und auf der Bank
+- Offene Notrufe
 
 ## Befehle
 
