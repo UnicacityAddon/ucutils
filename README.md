@@ -26,7 +26,10 @@ reibungsloser und angenehmer gestalten.
 - Die Hitbox eines Spielers wird in der Fraktionsfarbe des Spielers angezeigt
 - Der Aktienmarkt besitzt farbliche Hervorhebungen, die den Gewinn anzeigen
 - Die Benachrichtigung, dass man ein Levelup kaufen kann, ist weniger penetrant und in die EXP-Nachricht integriert
-- Sollte bei `/einzahlen` der Bankautomat nicht so viel Platz haben wie eingezahlt werden soll, wird ein zusätzlicher Button angezeigt, der so viel Geld einzahlt, bis der Bankautomat voll ist
+- Sollte bei `/einzahlen` der Bankautomat nicht so viel Platz haben wie eingezahlt werden soll, wird ein zusätzlicher Button angezeigt,
+  der so viel Geld einzahlt, bis der Bankautomat voll ist
+- Mit dem `/aktien` Befehl wird die Aktien-App auf dem Händy direkt geöffnet, sodass man nicht mehr manuell durch das Handy navigieren
+  muss
 
 ### Auto
 
@@ -36,6 +39,7 @@ reibungsloser und angenehmer gestalten.
 - Wenn man schleicht und ein Auto rechtsklickt, wird `/checkkfz` ausgeführt
 
 Folgende Funktionen sind nur für Spieler ohne Premium-Rang verfügbar, da Spieler mit Premium diese Funktion vom Server aus können:
+
 - Das Auf-/Abschließen eines Fahrzeuges wurde teilweise automatisiert (automatisches Klicken des Items im Inventar)
 - Beim Rechtsklick auf das eigene Fahrzeug wird automatisch `/car lock` ausgeführt
 - Steigt man in ein Fahrzeug ein, wird dieses automatisch gestartet und abgeschlossen
