@@ -35,6 +35,6 @@ public abstract class EntityHitboxDebugRendererMixin {
 
         String playerName = player.getPlainTextName();
         Faction faction = ofNullable(storage.getPlayerFactionCache().get(playerName)).orElseGet(() -> storage.getFaction(playerName));
-        return stroke(faction.getAwtColor().getRGB());
+        return stroke(faction.getColor().getRGB());
     }
 }

@@ -1,7 +1,6 @@
 package de.rettichlp.ucutils.common.configuration.options;
 
 import de.rettichlp.ucutils.common.gui.screens.components.CyclingButtonEntry;
-import de.rettichlp.ucutils.common.models.Color;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -10,6 +9,8 @@ import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.network.chat.Component;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
+
+import java.awt.Color;
 
 import static de.rettichlp.ucutils.common.configuration.options.Options.AtmInformationType.NONE;
 import static de.rettichlp.ucutils.common.configuration.options.Options.ReinforcementType.UNICACITYADDON;
@@ -37,8 +38,8 @@ public class Options {
     private boolean showHydration = true;
     private boolean checkUnicacityServer = true;
     private boolean changeFactionChatColor = false;
-    private Color factionChatColorPrimary = Color.BLUE;
-    private Color factionChatColorSecondary = Color.DARK_AQUA;
+    private int factionChatPrimaryColorValue = new Color(85, 85, 255).getRGB();
+    private int factionChatSecondaryColorValue = new Color(0, 170, 170).getRGB();
 
     @Getter
     @AllArgsConstructor

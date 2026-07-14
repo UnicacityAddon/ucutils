@@ -6,7 +6,6 @@ import de.rettichlp.ucutils.common.registry.UCUtilsListener;
 import de.rettichlp.ucutils.listener.IMessageReceiveListener;
 import de.rettichlp.ucutils.listener.IMessageSendListener;
 import lombok.NonNull;
-import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextColor;
@@ -112,12 +111,12 @@ public class FactionListener implements IMessageReceiveListener, IMessageSendLis
                 return true;
             }
 
-            ChatFormatting primaryFormatting = configuration.getOptions().factionChatColorPrimary().getFormatting();
-            ChatFormatting secondaryFormatting = configuration.getOptions().factionChatColorSecondary().getFormatting();
+            int primaryColorValue = configuration.getOptions().factionChatPrimaryColorValue();
+            int secondaryColorValue = configuration.getOptions().factionChatSecondaryColorValue();
 
             // check if color already matches formatting
             List<Component> siblings = text.getSiblings();
-            if (siblings.size() != 3 || messageMatchesColor(siblings, primaryFormatting, secondaryFormatting)) {
+            if (siblings.size() != 3 || messageMatchesColor(siblings, primaryColorValue, secondaryColorValue)) {
                 return true;
             }
 
@@ -136,11 +135,11 @@ public class FactionListener implements IMessageReceiveListener, IMessageSendLis
             }
 
             player.sendSystemMessage(empty()
-                    .append(literal(playerPrefix).withStyle(primaryFormatting))
+                    .append(literal(playerPrefix).withColor(primaryColorValue))
                     .append(literal(" "))
-                    .append(literal(senderPlayerName).withStyle(primaryFormatting))
+                    .append(literal(senderPlayerName).withColor(secondaryColorValue))
                     .append(literal(": ").withStyle(DARK_GRAY))
-                    .append(literal(factionMessage).withStyle(secondaryFormatting)));
+                    .append(literal(factionMessage).withColor(secondaryColorValue)));
 
             return false;
         }
@@ -159,12 +158,10 @@ public class FactionListener implements IMessageReceiveListener, IMessageSendLis
         return true;
     }
 
-    private boolean messageMatchesColor(@NonNull List<Component> siblings,
-                                        ChatFormatting primaryFormatting,
-                                        ChatFormatting secondaryFormatting) {
-        TextColor primaryFormattingCurrent = siblings.get(0).getStyle().getColor();
-        TextColor secondaryFormattingCurrent = siblings.get(2).getStyle().getColor();
-        return primaryFormattingCurrent == null || secondaryFormattingCurrent == null || primaryFormattingCurrent.getValue() == primaryFormatting.getColor() || secondaryFormattingCurrent.getValue() == secondaryFormatting.getColor();
+    private boolean messageMatchesColor(@NonNull List<Component> siblings, int primaryColorValue, int secondaryColorValue) {
+        TextColor primaryCurrent = siblings.get(0).getStyle().getColor();
+        TextColor secondaryCurrent = siblings.get(2).getStyle().getColor();
+        return primaryCurrent == null || secondaryCurrent == null || primaryCurrent.getValue() == primaryColorValue || secondaryCurrent.getValue() == secondaryColorValue;
     }
 
     @FunctionalInterface
