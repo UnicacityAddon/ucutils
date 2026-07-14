@@ -92,8 +92,19 @@ public abstract class AbstractContainerScreenMixin<T extends AbstractContainerMe
                 }
             }
             case "ᴀᴋᴛɪᴇɴᴍᴀʀᴋᴛ", "Handy-Aktien" -> {
+                storage.setStockMarketCommandRunning(false);
                 extractStockMarketHighlight(graphics, mouseX, mouseY, a);
                 extractStockMarketLegend(graphics, mouseX, mouseY, a);
+            }
+            case "Telefon" -> {
+                if (storage.isStockMarketCommandRunning()) {
+                    clickOnItemWithName("Apps", gameMode);
+                }
+            }
+            case "App-Menü" -> {
+                if (storage.isStockMarketCommandRunning()) {
+                    clickOnItemWithName("Aktien", gameMode);
+                }
             }
             default -> {
                 if (commandService.isSuperUser()) {
@@ -205,6 +216,14 @@ public abstract class AbstractContainerScreenMixin<T extends AbstractContainerMe
         String amountString = itemLore.lines().get(1).getString();
         Matcher matcher = compile("\\d+").matcher(amountString);
         return matcher.find() ? parseInt(matcher.group()) : 0;
+    }
+
+    @Unique
+    private void clickOnItemWithName(String itemName, MultiPlayerGameMode gameMode) {
+        getMenu().slots.stream()
+                .filter(slot -> slot.getItem().getHoverName().getString().equals(itemName))
+                .findFirst()
+                .ifPresent(slot -> gameMode.handleContainerInput(getMenu().containerId, slot.index, 0, PICKUP, player));
     }
 
     private static class CompanyShareTooltipPositioner implements ClientTooltipPositioner {

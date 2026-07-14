@@ -109,6 +109,10 @@ public class Storage {
 
     @Getter
     @Setter
+    private boolean stockMarketCommandRunning = false;
+
+    @Getter
+    @Setter
     @Nullable
     private Vec3 summerTreasurePosition;
 
@@ -163,6 +167,8 @@ public class Storage {
         LOGGER.info("minecartEntityToHighlight: {}", this.minecartEntityToHighlight);
         // premium
         LOGGER.info("premium: {}", this.premium);
+        // stockMarketCommandRunning
+        LOGGER.info("stockMarketCommandRunning: {}", this.stockMarketCommandRunning);
         // summerTreasurePosition
         LOGGER.info("summerTreasurePosition: {}", this.summerTreasurePosition);
         // team
