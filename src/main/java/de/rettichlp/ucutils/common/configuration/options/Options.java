@@ -32,10 +32,11 @@ public class Options {
     private final SoundOptions sound = new SoundOptions();
     private final NotificationOptions notification = new NotificationOptions();
 
+    private boolean checkUnicacityServer = true;
     private ReinforcementType reinforcementType = UNICACITYADDON;
     private AtmInformationType atmInformationType = NONE;
     private boolean showHydration = true;
-    private boolean checkUnicacityServer = true;
+    private boolean autoCollectChestsFromTrashCans = false;
 
     @Getter
     @AllArgsConstructor
