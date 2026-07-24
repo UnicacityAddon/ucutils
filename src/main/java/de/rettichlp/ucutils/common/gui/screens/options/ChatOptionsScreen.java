@@ -1,6 +1,5 @@
 package de.rettichlp.ucutils.common.gui.screens.options;
 
-import de.rettichlp.ucutils.common.configuration.options.Options;
 import de.rettichlp.ucutils.common.gui.screens.OptionsScreen;
 import de.rettichlp.ucutils.common.gui.screens.components.CyclingButtonEntry;
 import de.rettichlp.ucutils.common.models.Color;
@@ -33,9 +32,9 @@ public class ChatOptionsScreen extends OptionsScreen {
 
         directionalLayoutWidget.addChild(new StringWidget(TEXT_FACTION, this.font), LayoutSettings::alignHorizontallyCenter);
 
-        renderService.addToggleButton(directionalLayoutWidget, FACTION_COLOR_NAME, FACTION_COLOR_TOOLTIP, Options::changeFactionChatColor, Options::changeFactionChatColor, 308);
-        renderService.addCyclingButton(directionalLayoutWidget, FACTION_COLOR_PRIMARY, Color.values(), CyclingButtonEntry::getDisplayName, Options::factionChatColorPrimary, Options::factionChatColorPrimary, 308);
-        renderService.addCyclingButton(directionalLayoutWidget, FACTION_COLOR_SECONDARY, Color.values(), CyclingButtonEntry::getDisplayName, Options::factionChatColorSecondary, Options::factionChatColorSecondary, 308);
+        renderService.addToggleButton(directionalLayoutWidget, FACTION_COLOR_NAME, FACTION_COLOR_TOOLTIP, (options, value) -> options.chatOptions().changeFactionChatColor(value), options -> options.chatOptions().changeFactionChatColor(), 308);
+        renderService.addCyclingButton(directionalLayoutWidget, FACTION_COLOR_PRIMARY, Color.values(), CyclingButtonEntry::getDisplayName, (options, color) -> options.chatOptions().factionChatColorPrimary(color), options -> options.chatOptions().factionChatColorPrimary(), 308);
+        renderService.addCyclingButton(directionalLayoutWidget, FACTION_COLOR_SECONDARY, Color.values(), CyclingButtonEntry::getDisplayName, (options, color) -> options.chatOptions().factionChatColorSecondary(color), options -> options.chatOptions().factionChatColorSecondary(), 308);
 
         directionalLayoutWidget.visitWidgets(this::addRenderableWidget);
     }
