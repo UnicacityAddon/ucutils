@@ -55,6 +55,7 @@ import static net.minecraft.network.chat.Component.empty;
 import static net.minecraft.network.chat.Component.literal;
 import static net.minecraft.network.chat.Component.translatable;
 import static net.minecraft.world.inventory.ContainerInput.PICKUP;
+import static net.minecraft.world.item.Items.CHEST;
 import static net.minecraft.world.item.Items.PLAYER_HEAD;
 
 @Mixin(AbstractContainerScreen.class)
@@ -104,6 +105,15 @@ public abstract class AbstractContainerScreenMixin<T extends AbstractContainerMe
             case "App-Menü" -> {
                 if (storage.isStockMarketCommandRunning()) {
                     clickOnItemWithName("Aktien", gameMode);
+                }
+            }
+            case "Mülleimer" -> {
+                if (configuration.getOptions().autoCollectChestsFromTrashCans()) {
+                    for (int i = 0; i < 5; i++) {
+                        if (getMenu().slots.get(i).getItem().is(CHEST)) {
+                            gameMode.handleContainerInput(getMenu().containerId, i, 0, PICKUP, player);
+                        }
+                    }
                 }
             }
             default -> {
