@@ -108,12 +108,12 @@ public class FactionListener implements IMessageReceiveListener, IMessageSendLis
 
         Matcher factionChatMatcher = FACTION_CHAT_PATTERN.matcher(message);
         if (factionChatMatcher.find()) {
-            if (!configuration.getOptions().changeFactionChatColor()) {
+            if (!configuration.getOptions().chatOptions().changeFactionChatColor()) {
                 return true;
             }
 
-            ChatFormatting primaryFormatting = configuration.getOptions().factionChatColorPrimary().getFormatting();
-            ChatFormatting secondaryFormatting = configuration.getOptions().factionChatColorSecondary().getFormatting();
+            ChatFormatting primaryFormatting = configuration.getOptions().chatOptions().factionChatColorPrimary().getFormatting();
+            ChatFormatting secondaryFormatting = configuration.getOptions().chatOptions().factionChatColorSecondary().getFormatting();
 
             // check if color already matches formatting
             List<Component> siblings = text.getSiblings();

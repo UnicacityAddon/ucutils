@@ -1,7 +1,6 @@
 package de.rettichlp.ucutils.common.configuration.options;
 
 import de.rettichlp.ucutils.common.gui.screens.components.CyclingButtonEntry;
-import de.rettichlp.ucutils.common.models.Color;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -28,6 +27,7 @@ import static net.minecraft.network.chat.Component.translatable;
 public class Options {
 
     private final NameTagOptions nameTag = new NameTagOptions();
+    private final ChatOptions chatOptions = new ChatOptions();
     private final CarOptions car = new CarOptions();
     private final SoundOptions sound = new SoundOptions();
     private final NotificationOptions notification = new NotificationOptions();
@@ -36,9 +36,6 @@ public class Options {
     private AtmInformationType atmInformationType = NONE;
     private boolean showHydration = true;
     private boolean checkUnicacityServer = true;
-    private boolean changeFactionChatColor = false;
-    private Color factionChatColorPrimary = Color.BLUE;
-    private Color factionChatColorSecondary = Color.DARK_AQUA;
 
     @Getter
     @AllArgsConstructor
