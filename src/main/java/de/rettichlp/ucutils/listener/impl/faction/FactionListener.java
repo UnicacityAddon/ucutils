@@ -8,7 +8,6 @@ import de.rettichlp.ucutils.listener.IMessageReceiveListener;
 import de.rettichlp.ucutils.listener.IMessageSendListener;
 import lombok.NonNull;
 import net.minecraft.ChatFormatting;
-import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.HoverEvent;
 import net.minecraft.network.chat.TextColor;
@@ -23,6 +22,7 @@ import static de.rettichlp.ucutils.UCUtils.commandService;
 import static de.rettichlp.ucutils.UCUtils.configuration;
 import static de.rettichlp.ucutils.UCUtils.player;
 import static de.rettichlp.ucutils.UCUtils.storage;
+import static de.rettichlp.ucutils.UCUtils.utilService;
 import static de.rettichlp.ucutils.common.Storage.ToggledChat.NONE;
 import static de.rettichlp.ucutils.common.configuration.options.Options.ReinforcementType.UNICACITYADDON;
 import static de.rettichlp.ucutils.common.models.Faction.RETTUNGSDIENST;
@@ -99,18 +99,19 @@ public class FactionListener implements IMessageReceiveListener, IMessageSendLis
         Matcher reinforcementButtonMatcher = REINFORCEMENT_BUTTON_PATTERN.matcher(message);
         if (reinforcementButtonMatcher.find()) {
             if (this.isReinforcementRelevantForFaction) {
-                text.copy().append(SPACE).append(literal("✨").withStyle(style -> style
-                        .withColor(MAGENTA.getRGB())
-                        .withHoverEvent(new HoverEvent.ShowText(translatable("ucutils.reinforcement_hotkey_available", MOD_NAME)))));
+                player.sendSystemMessage(text.copy().append(SPACE).append(literal("✨").withStyle(style -> style
+                        .withColor(MAGENTA.brighter().getRGB())
+                        .withBold(true)
+                        .withHoverEvent(new HoverEvent.ShowText(translatable("ucutils.reinforcement_hotkey_available", MOD_NAME))))));
             }
 
             boolean modernReinforcementStyle = configuration.getOptions().reinforcementType() == UNICACITYADDON;
             if (modernReinforcementStyle) {
                 // send empty line after buttons
-                Minecraft.getInstance().execute(() -> player.sendSystemMessage(empty()));
+                utilService.delayedAction(() -> player.sendSystemMessage(empty()), 50);
             }
 
-            return true;
+            return !this.isReinforcementRelevantForFaction;
         }
 
         Matcher reinforcementOnTheWayMatcher = REINFORCMENT_ON_THE_WAY_PATTERN.matcher(message);
