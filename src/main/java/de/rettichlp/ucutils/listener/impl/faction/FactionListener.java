@@ -10,6 +10,7 @@ import lombok.NonNull;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.HoverEvent;
 import net.minecraft.network.chat.TextColor;
 
 import java.util.List;
@@ -17,6 +18,7 @@ import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import static de.rettichlp.ucutils.UCUtils.MOD_NAME;
 import static de.rettichlp.ucutils.UCUtils.commandService;
 import static de.rettichlp.ucutils.UCUtils.configuration;
 import static de.rettichlp.ucutils.UCUtils.player;
@@ -24,6 +26,7 @@ import static de.rettichlp.ucutils.UCUtils.storage;
 import static de.rettichlp.ucutils.common.Storage.ToggledChat.NONE;
 import static de.rettichlp.ucutils.common.configuration.options.Options.ReinforcementType.UNICACITYADDON;
 import static de.rettichlp.ucutils.common.models.Faction.RETTUNGSDIENST;
+import static java.awt.Color.MAGENTA;
 import static java.util.Optional.ofNullable;
 import static java.util.regex.Pattern.compile;
 import static net.minecraft.ChatFormatting.AQUA;
@@ -32,8 +35,10 @@ import static net.minecraft.ChatFormatting.DARK_AQUA;
 import static net.minecraft.ChatFormatting.DARK_GRAY;
 import static net.minecraft.ChatFormatting.GRAY;
 import static net.minecraft.ChatFormatting.RED;
+import static net.minecraft.network.chat.CommonComponents.SPACE;
 import static net.minecraft.network.chat.Component.empty;
 import static net.minecraft.network.chat.Component.literal;
+import static net.minecraft.network.chat.Component.translatable;
 
 @UCUtilsListener
 public class FactionListener implements IMessageReceiveListener, IMessageSendListener {
@@ -61,6 +66,8 @@ public class FactionListener implements IMessageReceiveListener, IMessageSendLis
             .append(literal(distance + "m").withStyle(DARK_AQUA))
             .append(literal(")").withStyle(GRAY));
 
+    private boolean isReinforcementRelevantForFaction = false;
+
     @Override
     public boolean onMessageReceive(Component text, String message) {
         Matcher reinforcementMatcher = REINFORCEMENT_PATTERN.matcher(message);
@@ -74,7 +81,8 @@ public class FactionListener implements IMessageReceiveListener, IMessageSendLis
             // save reinforcement sender if relevant for faction
             Faction faction = storage.getFaction(player.getPlainTextName());
             boolean isMedicRequest = type.equals("Medic benötigt");
-            if ((faction == RETTUNGSDIENST) == isMedicRequest) {
+            this.isReinforcementRelevantForFaction = (faction == RETTUNGSDIENST) == isMedicRequest;
+            if (this.isReinforcementRelevantForFaction) {
                 storage.setLastRelevantReinforcementSenderName(senderPlayerName);
             }
 
@@ -90,6 +98,12 @@ public class FactionListener implements IMessageReceiveListener, IMessageSendLis
 
         Matcher reinforcementButtonMatcher = REINFORCEMENT_BUTTON_PATTERN.matcher(message);
         if (reinforcementButtonMatcher.find()) {
+            if (this.isReinforcementRelevantForFaction) {
+                text.copy().append(SPACE).append(literal("✨").withStyle(style -> style
+                        .withColor(MAGENTA.getRGB())
+                        .withHoverEvent(new HoverEvent.ShowText(translatable("ucutils.reinforcement_hotkey_available", MOD_NAME)))));
+            }
+
             boolean modernReinforcementStyle = configuration.getOptions().reinforcementType() == UNICACITYADDON;
             if (modernReinforcementStyle) {
                 // send empty line after buttons
