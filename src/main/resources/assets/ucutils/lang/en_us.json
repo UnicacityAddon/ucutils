@@ -21,7 +21,7 @@
   "ucutils.color.yellow": "Yellow",
   "ucutils.color.white": "White",
 
-  "ucutils.key.category.name": "UCUtils",
+  "key.category.ucutils.name": "UCUtils",
   "ucutils.key.reinforcement_accept": "Reinforcement accept",
 
   "ucutils.notification.error.api": "API request error (%s)",
