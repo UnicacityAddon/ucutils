@@ -1,6 +1,7 @@
 package de.rettichlp.ucutils.listener.impl.faction;
 
 import de.rettichlp.ucutils.common.Storage;
+import de.rettichlp.ucutils.common.models.Faction;
 import de.rettichlp.ucutils.common.models.FactionMember;
 import de.rettichlp.ucutils.common.registry.UCUtilsListener;
 import de.rettichlp.ucutils.listener.IMessageReceiveListener;
@@ -22,6 +23,7 @@ import static de.rettichlp.ucutils.UCUtils.player;
 import static de.rettichlp.ucutils.UCUtils.storage;
 import static de.rettichlp.ucutils.common.Storage.ToggledChat.NONE;
 import static de.rettichlp.ucutils.common.configuration.options.Options.ReinforcementType.UNICACITYADDON;
+import static de.rettichlp.ucutils.common.models.Faction.RETTUNGSDIENST;
 import static java.util.Optional.ofNullable;
 import static java.util.regex.Pattern.compile;
 import static net.minecraft.ChatFormatting.AQUA;
@@ -68,6 +70,13 @@ public class FactionListener implements IMessageReceiveListener, IMessageSendLis
             String senderPlayerName = reinforcementMatcher.group("senderPlayerName");
             String naviPoint = reinforcementMatcher.group("naviPoint");
             String distance = reinforcementMatcher.group("distance");
+
+            // save reinforcement sender if relevant for faction
+            Faction faction = storage.getFaction(player.getPlainTextName());
+            boolean isMedicRequest = type.equals("Medic benötigt");
+            if ((faction == RETTUNGSDIENST) == isMedicRequest) {
+                storage.setLastRelevantReinforcementSenderName(senderPlayerName);
+            }
 
             boolean modernReinforcementStyle = configuration.getOptions().reinforcementType() == UNICACITYADDON;
             if (modernReinforcementStyle) {
