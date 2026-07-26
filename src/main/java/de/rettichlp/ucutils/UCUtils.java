@@ -29,6 +29,7 @@ import static java.util.concurrent.TimeUnit.MINUTES;
 public class UCUtils implements ModInitializer {
 
     public static final String MOD_ID = "ucutils";
+    public static final String MOD_NAME = "UCUtils";
 
     // This logger is used to write text to the console and the log file.
     // It is considered best practice to use your mod id as the logger's name.

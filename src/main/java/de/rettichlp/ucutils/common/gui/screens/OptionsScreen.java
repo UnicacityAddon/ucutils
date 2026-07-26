@@ -7,6 +7,7 @@ import net.minecraft.network.chat.Component;
 
 import java.net.URI;
 
+import static de.rettichlp.ucutils.UCUtils.MOD_NAME;
 import static de.rettichlp.ucutils.UCUtils.configuration;
 import static net.minecraft.client.gui.layouts.LinearLayout.horizontal;
 import static net.minecraft.client.gui.screens.ConfirmLinkScreen.confirmLink;
@@ -25,19 +26,19 @@ public abstract class OptionsScreen extends UCUtilsScreen {
 
     public OptionsScreen(Screen parent) {
         super(empty()
-                .append("UCUtils").append(" ")
+                .append(MOD_NAME).append(" ")
                 .append(translatable("options.title")), parent);
     }
 
     public OptionsScreen(Screen parent, Component subTitle) {
         super(empty()
-                .append("UCUtils").append(" ")
+                .append(MOD_NAME).append(" ")
                 .append(translatable("options.title")), subTitle, parent);
     }
 
     public OptionsScreen(Screen parent, Component subTitel, boolean renderBackground) {
         super(empty()
-                .append("UCUtils").append(" ")
+                .append(MOD_NAME).append(" ")
                 .append(translatable("options.title")), subTitel, parent, renderBackground);
     }
 
