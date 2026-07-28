@@ -27,7 +27,7 @@ public abstract class KeyboardHandlerMixin {
                      ordinal = 0))
     private void ucutils$keyPressInvoke(long handle, int action, KeyEvent event, CallbackInfo ci) {
         // only with closed chat
-        if (!this.minecraft.gui.getChat().isChatFocused()) {
+        if (!this.minecraft.gui.hud.getChat().isChatFocused()) {
             if (REINFORCEMENT_ACCEPT_KEY.matches(event)) {
                 String lastRelevantReinforcementSenderName = storage.getLastRelevantReinforcementSenderName();
 

@@ -7,8 +7,6 @@ import de.rettichlp.ucutils.common.registry.UCUtilsListener;
 import de.rettichlp.ucutils.listener.IMessageReceiveListener;
 import de.rettichlp.ucutils.listener.IMessageSendListener;
 import lombok.NonNull;
-import net.minecraft.client.Minecraft;
-import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.HoverEvent;
 import net.minecraft.network.chat.TextColor;
@@ -137,8 +135,8 @@ public class FactionListener implements IMessageReceiveListener, IMessageSendLis
                 return true;
             }
 
-            ChatFormatting primaryFormatting = configuration.getOptions().chatOptions().factionChatColorPrimary().getFormatting();
-            ChatFormatting secondaryFormatting = configuration.getOptions().chatOptions().factionChatColorSecondary().getFormatting();
+            int primaryColorValue = configuration.getOptions().chatOptions().factionChatColorPrimary().getRGB();
+            int secondaryColorValue = configuration.getOptions().chatOptions().factionChatColorSecondary().getRGB();
 
             // check if color already matches formatting
             List<Component> siblings = text.getSiblings();

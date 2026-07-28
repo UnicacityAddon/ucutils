@@ -2,7 +2,6 @@ package de.rettichlp.ucutils.common.gui.screens.options;
 
 import de.rettichlp.therettingtoncompanion.gui.ColorButton;
 import de.rettichlp.therettingtoncompanion.gui.screens.ColorSelectionPopupScreen;
-import de.rettichlp.ucutils.common.configuration.options.Options;
 import de.rettichlp.ucutils.common.gui.screens.OptionsScreen;
 import net.minecraft.client.gui.components.StringWidget;
 import net.minecraft.client.gui.layouts.LayoutSettings;
@@ -36,19 +35,19 @@ public class ChatOptionsScreen extends OptionsScreen {
 
         directionalLayoutWidget.addChild(new StringWidget(TEXT_FACTION, this.font), LayoutSettings::alignHorizontallyCenter);
 
-        renderService.addToggleButton(directionalLayoutWidget, FACTION_COLOR_NAME, FACTION_COLOR_TOOLTIP, Options::changeFactionChatColor, Options::changeFactionChatColor, 308);
+        renderService.addToggleButton(directionalLayoutWidget, FACTION_COLOR_NAME, FACTION_COLOR_TOOLTIP, (options, value) -> options.chatOptions().changeFactionChatColor(value), options -> options.chatOptions().changeFactionChatColor(), 308);
 
-        Color factionChatPrimaryColor = new Color(configuration.getOptions().chatOptions().factionChatPrimaryColorValue());
+        Color factionChatPrimaryColor = configuration.getOptions().chatOptions().factionChatColorPrimary();
         ColorButton factionChatPrimaryColorButton = new ColorButton(0, 0, 308, 20, factionChatPrimaryColor, button -> this.minecraft.gui.setScreen(new ColorSelectionPopupScreen(this.minecraft.gui.screen(), factionChatPrimaryColor, color -> {
-            configuration.getOptions().factionChatPrimaryColorValue(color.getRGB());
+            configuration.getOptions().chatOptions().factionChatColorPrimary(color);
             ((ColorButton) button).setColor(color);
         })));
 
         directionalLayoutWidget.addChild(factionChatPrimaryColorButton);
 
-        Color factionChatSecondaryColor = new Color(configuration.getOptions().chatOptions().factionChatSecondaryColorValue());
+        Color factionChatSecondaryColor = configuration.getOptions().chatOptions().factionChatColorSecondary();
         ColorButton factionChatSecondaryColorButton = new ColorButton(0, 0, 308, 20, factionChatSecondaryColor, button -> this.minecraft.gui.setScreen(new ColorSelectionPopupScreen(this.minecraft.gui.screen(), factionChatSecondaryColor, color -> {
-            configuration.getOptions().factionChatSecondaryColorValue(color.getRGB());
+            configuration.getOptions().chatOptions().factionChatColorSecondary(color);
             ((ColorButton) button).setColor(color);
         })));
 

@@ -1,12 +1,14 @@
 package de.rettichlp.ucutils.common.configuration.options;
 
-import de.rettichlp.ucutils.common.models.Color;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
+import org.jspecify.annotations.NonNull;
 
-import static de.rettichlp.ucutils.common.models.Color.BLUE;
-import static de.rettichlp.ucutils.common.models.Color.DARK_AQUA;
+import java.awt.Color;
+
+import static net.minecraft.network.chat.TextColor.BLUE;
+import static net.minecraft.network.chat.TextColor.DARK_AQUA;
 
 @Getter
 @Setter
@@ -14,6 +16,22 @@ import static de.rettichlp.ucutils.common.models.Color.DARK_AQUA;
 public class ChatOptions {
 
     private boolean changeFactionChatColor = false;
-    private Color factionChatColorPrimary = BLUE;
-    private Color factionChatColorSecondary = DARK_AQUA;
+    private int factionChatColorPrimary = BLUE.getValue();
+    private int factionChatColorSecondary = DARK_AQUA.getValue();
+
+    public Color factionChatColorPrimary() {
+        return new Color(this.factionChatColorPrimary);
+    }
+
+    public void factionChatColorPrimary(@NonNull Color factionChatColorPrimary) {
+        this.factionChatColorPrimary = factionChatColorPrimary.getRGB();
+    }
+
+    public Color factionChatColorSecondary() {
+        return new Color(this.factionChatColorSecondary);
+    }
+
+    public void factionChatColorSecondary(@NonNull Color factionChatColorSecondary) {
+        this.factionChatColorSecondary = factionChatColorSecondary.getRGB();
+    }
 }
