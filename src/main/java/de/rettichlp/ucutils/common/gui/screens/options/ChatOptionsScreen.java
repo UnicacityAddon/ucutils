@@ -38,7 +38,7 @@ public class ChatOptionsScreen extends OptionsScreen {
 
         renderService.addToggleButton(directionalLayoutWidget, FACTION_COLOR_NAME, FACTION_COLOR_TOOLTIP, Options::changeFactionChatColor, Options::changeFactionChatColor, 308);
 
-        Color factionChatPrimaryColor = new Color(configuration.getOptions().factionChatPrimaryColorValue());
+        Color factionChatPrimaryColor = new Color(configuration.getOptions().chatOptions().factionChatPrimaryColorValue());
         ColorButton factionChatPrimaryColorButton = new ColorButton(0, 0, 308, 20, factionChatPrimaryColor, button -> this.minecraft.gui.setScreen(new ColorSelectionPopupScreen(this.minecraft.gui.screen(), factionChatPrimaryColor, color -> {
             configuration.getOptions().factionChatPrimaryColorValue(color.getRGB());
             ((ColorButton) button).setColor(color);
@@ -46,7 +46,7 @@ public class ChatOptionsScreen extends OptionsScreen {
 
         directionalLayoutWidget.addChild(factionChatPrimaryColorButton);
 
-        Color factionChatSecondaryColor = new Color(configuration.getOptions().factionChatSecondaryColorValue());
+        Color factionChatSecondaryColor = new Color(configuration.getOptions().chatOptions().factionChatSecondaryColorValue());
         ColorButton factionChatSecondaryColorButton = new ColorButton(0, 0, 308, 20, factionChatSecondaryColor, button -> this.minecraft.gui.setScreen(new ColorSelectionPopupScreen(this.minecraft.gui.screen(), factionChatSecondaryColor, color -> {
             configuration.getOptions().factionChatSecondaryColorValue(color.getRGB());
             ((ColorButton) button).setColor(color);

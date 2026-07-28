@@ -2,6 +2,7 @@
   "ucutils.legend": "Legende",
   "ucutils.minimum_price": "Mindestpreis",
   "ucutils.price_difference": "Preisdifferenz",
+  "ucutils.reinforcement_hotkey_available": "Reinforcement Hotkey verfügbar von %s",
 
   "ucutils.color.black": "Schwarz",
   "ucutils.color.dark_blue": "Dunkelblau",
@@ -19,6 +20,9 @@
   "ucutils.color.light_purple": "Helllila",
   "ucutils.color.yellow": "Gelb",
   "ucutils.color.white": "Weiß",
+
+  "key.category.ucutils.name": "UCUtils",
+  "ucutils.key.reinforcement_accept": "Reinforcement annehmen",
 
   "ucutils.notification.error.api": "Fehler bei der API Abfrage (%s)",
   "ucutils.notification.error.configuration": "Konfiguration konnte nicht geladen werden",
@@ -84,6 +88,8 @@
   "ucutils.options.atm_information.value.both.tooltip": "Zeigt sowohl die Fraktions- als auch die Gruppierungsbank an",
   "ucutils.options.hydration.name": "Durstanzeige",
   "ucutils.options.hydration.tooltip": "Zeigt deinen Durst über der Hungeranzeige an",
+  "ucutils.options.auto_trash_can.name": "Automatischer Mülleimer",
+  "ucutils.options.auto_trash_can.tooltip": "Sammelt automatisch Kisten aus Mülleimern",
   "ucutils.options.check_unicacity_server.name": "UnicaCity Check",
   "ucutils.options.check_unicacity_server.tooltip": "Überprüft ob du auf UnicaCity spielst. Wenn aktiviert sind bestimmte Funktionen nur auf UnicaCity aktiviert um Probleme mit anderen Servern zu vermeiden.",
   "ucutils.options.faction_chat_color.name": "Farbe des Fraktionschats",

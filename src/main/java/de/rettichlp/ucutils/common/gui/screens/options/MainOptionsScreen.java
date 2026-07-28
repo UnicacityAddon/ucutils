@@ -27,6 +27,8 @@ public class MainOptionsScreen extends OptionsScreen {
     private static final Component HYDRATION_NAME = translatable("ucutils.options.hydration.name");
     private static final Component HYDRATION_TOOLTIP = translatable("ucutils.options.hydration.tooltip");
     private static final Component BANK_INFORMATION_NAME = translatable("ucutils.options.atm_information.name");
+    private static final Component AUTO_TRASH_CAN_NAME = translatable("ucutils.options.auto_trash_can.name");
+    private static final Component AUTO_TRASH_CAN_TOOLTIP = translatable("ucutils.options.auto_trash_can.tooltip");
 
     public MainOptionsScreen() {
         super(new PauseScreen(true));
@@ -54,6 +56,9 @@ public class MainOptionsScreen extends OptionsScreen {
         LinearLayout directionalLayoutWidget4 = directionalLayoutWidget.addChild(horizontal().spacing(8));
         renderService.addToggleButton(directionalLayoutWidget4, HYDRATION_NAME, HYDRATION_TOOLTIP, Options::showHydration, Options::showHydration, 150);
         renderService.addCyclingButton(directionalLayoutWidget4, BANK_INFORMATION_NAME, Options.AtmInformationType.values(), Options.AtmInformationType::getDisplayName, Options::atmInformationType, Options::atmInformationType, 150);
+
+        LinearLayout directionalLayoutWidget5 = directionalLayoutWidget.addChild(horizontal().spacing(8));
+        renderService.addToggleButton(directionalLayoutWidget5, AUTO_TRASH_CAN_NAME, AUTO_TRASH_CAN_TOOLTIP, Options::autoCollectChestsFromTrashCans, Options::autoCollectChestsFromTrashCans, 150);
 
         directionalLayoutWidget.visitWidgets(this::addRenderableWidget);
     }

@@ -1,13 +1,16 @@
 package de.rettichlp.ucutils.listener.impl.faction;
 
 import de.rettichlp.ucutils.common.Storage;
+import de.rettichlp.ucutils.common.models.Faction;
 import de.rettichlp.ucutils.common.models.FactionMember;
 import de.rettichlp.ucutils.common.registry.UCUtilsListener;
 import de.rettichlp.ucutils.listener.IMessageReceiveListener;
 import de.rettichlp.ucutils.listener.IMessageSendListener;
 import lombok.NonNull;
 import net.minecraft.client.Minecraft;
+import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.HoverEvent;
 import net.minecraft.network.chat.TextColor;
 
 import java.util.List;
@@ -15,12 +18,16 @@ import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import static de.rettichlp.ucutils.UCUtils.MOD_NAME;
 import static de.rettichlp.ucutils.UCUtils.commandService;
 import static de.rettichlp.ucutils.UCUtils.configuration;
 import static de.rettichlp.ucutils.UCUtils.player;
 import static de.rettichlp.ucutils.UCUtils.storage;
+import static de.rettichlp.ucutils.UCUtils.utilService;
 import static de.rettichlp.ucutils.common.Storage.ToggledChat.NONE;
 import static de.rettichlp.ucutils.common.configuration.options.Options.ReinforcementType.UNICACITYADDON;
+import static de.rettichlp.ucutils.common.models.Faction.RETTUNGSDIENST;
+import static java.awt.Color.MAGENTA;
 import static java.util.Optional.ofNullable;
 import static java.util.regex.Pattern.compile;
 import static net.minecraft.ChatFormatting.AQUA;
@@ -29,14 +36,16 @@ import static net.minecraft.ChatFormatting.DARK_AQUA;
 import static net.minecraft.ChatFormatting.DARK_GRAY;
 import static net.minecraft.ChatFormatting.GRAY;
 import static net.minecraft.ChatFormatting.RED;
+import static net.minecraft.network.chat.CommonComponents.SPACE;
 import static net.minecraft.network.chat.Component.empty;
 import static net.minecraft.network.chat.Component.literal;
+import static net.minecraft.network.chat.Component.translatable;
 
 @UCUtilsListener
 public class FactionListener implements IMessageReceiveListener, IMessageSendListener {
 
     private static final Pattern REINFORCEMENT_PATTERN = compile("^(?:(?<type>.+)! )?(?<senderRank>.+) (?:\\[UC])?(?<senderPlayerName>[a-zA-Z0-9_]+) benötigt Unterstützung in der Nähe von (?<naviPoint>.+)! \\((?<distance>\\d+) Meter entfernt\\)$");
-    private static final Pattern REINFORCEMENT_BUTTON_PATTERN = compile("^ §7» §cRoute anzeigen §7\\| §cUnterwegs$");
+    private static final Pattern REINFORCEMENT_BUTTON_PATTERN = compile("^§7» §c§lRoute anzeigen §8\\| §c§lUnterwegs$");
     private static final Pattern REINFORCMENT_ON_THE_WAY_PATTERN = compile("^(?<senderRank>.+) (?:\\[UC])?(?<senderPlayerName>[a-zA-Z0-9_]+) kommt zum Verstärkungsruf von (?:\\[UC])?(?<target>[a-zA-Z0-9_]+)! \\((?<distance>\\d+) Meter entfernt\\)$");
 
     private static final Pattern FACTION_CHAT_PATTERN = compile("^(?<playerPrefix>[\\p{L} ]+) (?:\\[UC])?(?<senderPlayerName>[a-zA-Z0-9_]+): (?<message>.+)$");
@@ -58,6 +67,8 @@ public class FactionListener implements IMessageReceiveListener, IMessageSendLis
             .append(literal(distance + "m").withStyle(DARK_AQUA))
             .append(literal(")").withStyle(GRAY));
 
+    private boolean isReinforcementRelevantForFaction = false;
+
     @Override
     public boolean onMessageReceive(Component text, String message) {
         Matcher reinforcementMatcher = REINFORCEMENT_PATTERN.matcher(message);
@@ -67,6 +78,14 @@ public class FactionListener implements IMessageReceiveListener, IMessageSendLis
             String senderPlayerName = reinforcementMatcher.group("senderPlayerName");
             String naviPoint = reinforcementMatcher.group("naviPoint");
             String distance = reinforcementMatcher.group("distance");
+
+            // save reinforcement sender if relevant for faction
+            Faction faction = storage.getFaction(player.getPlainTextName());
+            boolean isMedicRequest = type.equals("Medic benötigt");
+            this.isReinforcementRelevantForFaction = (faction == RETTUNGSDIENST) == isMedicRequest;
+            if (this.isReinforcementRelevantForFaction) {
+                storage.setLastRelevantReinforcementSenderName(senderPlayerName);
+            }
 
             boolean modernReinforcementStyle = configuration.getOptions().reinforcementType() == UNICACITYADDON;
             if (modernReinforcementStyle) {
@@ -80,13 +99,20 @@ public class FactionListener implements IMessageReceiveListener, IMessageSendLis
 
         Matcher reinforcementButtonMatcher = REINFORCEMENT_BUTTON_PATTERN.matcher(message);
         if (reinforcementButtonMatcher.find()) {
+            if (this.isReinforcementRelevantForFaction) {
+                player.sendSystemMessage(text.copy().append(SPACE).append(literal("✨").withStyle(style -> style
+                        .withColor(MAGENTA.brighter().getRGB())
+                        .withBold(true)
+                        .withHoverEvent(new HoverEvent.ShowText(translatable("ucutils.reinforcement_hotkey_available", MOD_NAME))))));
+            }
+
             boolean modernReinforcementStyle = configuration.getOptions().reinforcementType() == UNICACITYADDON;
             if (modernReinforcementStyle) {
                 // send empty line after buttons
-                Minecraft.getInstance().execute(() -> player.sendSystemMessage(empty()));
+                utilService.delayedAction(() -> player.sendSystemMessage(empty()), 50);
             }
 
-            return true;
+            return !this.isReinforcementRelevantForFaction;
         }
 
         Matcher reinforcementOnTheWayMatcher = REINFORCMENT_ON_THE_WAY_PATTERN.matcher(message);
@@ -107,12 +133,12 @@ public class FactionListener implements IMessageReceiveListener, IMessageSendLis
 
         Matcher factionChatMatcher = FACTION_CHAT_PATTERN.matcher(message);
         if (factionChatMatcher.find()) {
-            if (!configuration.getOptions().changeFactionChatColor()) {
+            if (!configuration.getOptions().chatOptions().changeFactionChatColor()) {
                 return true;
             }
 
-            int primaryColorValue = configuration.getOptions().factionChatPrimaryColorValue();
-            int secondaryColorValue = configuration.getOptions().factionChatSecondaryColorValue();
+            ChatFormatting primaryFormatting = configuration.getOptions().chatOptions().factionChatColorPrimary().getFormatting();
+            ChatFormatting secondaryFormatting = configuration.getOptions().chatOptions().factionChatColorSecondary().getFormatting();
 
             // check if color already matches formatting
             List<Component> siblings = text.getSiblings();
