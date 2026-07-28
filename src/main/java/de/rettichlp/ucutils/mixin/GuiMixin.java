@@ -49,7 +49,7 @@ public abstract class GuiMixin {
     private static final Identifier HYDRATION_FULL_TEXTURE = fromNamespaceAndPath(MOD_ID, "textures/hud/hydration_full.png");
 
     @Unique
-    private static final Identifier CAPTCHA_IDENTIFIER = fromNamespaceAndPath("ucutils", "captcha");
+    private static final Identifier CAPTCHA_IDENTIFIER = fromNamespaceAndPath(MOD_ID, "captcha");
 
     @Shadow
     @Final

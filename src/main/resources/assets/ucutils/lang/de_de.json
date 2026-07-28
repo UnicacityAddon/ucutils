@@ -2,6 +2,7 @@
   "ucutils.legend": "Legende",
   "ucutils.minimum_price": "Mindestpreis",
   "ucutils.price_difference": "Preisdifferenz",
+  "ucutils.reinforcement_hotkey_available": "Reinforcement Hotkey verfügbar von %s",
 
   "ucutils.color.black": "Schwarz",
   "ucutils.color.dark_blue": "Dunkelblau",
@@ -19,6 +20,9 @@
   "ucutils.color.light_purple": "Helllila",
   "ucutils.color.yellow": "Gelb",
   "ucutils.color.white": "Weiß",
+
+  "key.category.ucutils.name": "UCUtils",
+  "ucutils.key.reinforcement_accept": "Reinforcement annehmen",
 
   "ucutils.notification.error.api": "Fehler bei der API Abfrage (%s)",
   "ucutils.notification.error.configuration": "Konfiguration konnte nicht geladen werden",

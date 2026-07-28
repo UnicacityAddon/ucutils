@@ -16,19 +16,26 @@ import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallback;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientLifecycleEvents;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
+import net.minecraft.client.KeyMapping;
 import net.minecraft.client.multiplayer.ClientPacketListener;
 import net.minecraft.client.player.LocalPlayer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import static com.mojang.blaze3d.platform.InputConstants.Type.KEYSYM;
 import static java.lang.Boolean.getBoolean;
 import static java.lang.System.currentTimeMillis;
 import static java.util.Objects.isNull;
 import static java.util.concurrent.TimeUnit.MINUTES;
+import static net.fabricmc.fabric.api.client.keymapping.v1.KeyMappingHelper.registerKeyMapping;
+import static net.minecraft.client.KeyMapping.Category.register;
+import static net.minecraft.resources.Identifier.fromNamespaceAndPath;
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_UNKNOWN;
 
 public class UCUtils implements ModInitializer {
 
     public static final String MOD_ID = "ucutils";
+    public static final String MOD_NAME = "UCUtils";
 
     // This logger is used to write text to the console and the log file.
     // It is considered best practice to use your mod id as the logger's name.
@@ -47,6 +54,9 @@ public class UCUtils implements ModInitializer {
     public static final Storage storage = new Storage();
     public static final Configuration configuration = new Configuration().loadFromFile();
     public static final ResyncableTimer synchronisedMinuteTimer = new ResyncableTimer(1, 1, MINUTES);
+
+    public static final KeyMapping.Category KEY_CATEGORY = register(fromNamespaceAndPath(MOD_ID, "name"));
+    public static final KeyMapping REINFORCEMENT_ACCEPT_KEY = registerKeyMapping(new KeyMapping("ucutils.key.reinforcement_accept", KEYSYM, GLFW_KEY_UNKNOWN, KEY_CATEGORY));
 
     public static LocalPlayer player;
     public static ClientPacketListener networkHandler;
