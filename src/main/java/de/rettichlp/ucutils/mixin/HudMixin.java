@@ -4,8 +4,8 @@ import com.llamalad7.mixinextras.sugar.Local;
 import com.mojang.blaze3d.platform.NativeImage;
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.client.gui.Hud;
 import net.minecraft.client.renderer.texture.AbstractTexture;
 import net.minecraft.client.renderer.texture.DynamicTexture;
 import net.minecraft.resources.Identifier;
@@ -36,8 +36,8 @@ import static net.minecraft.client.renderer.RenderPipelines.GUI_TEXTURED;
 import static net.minecraft.resources.Identifier.fromNamespaceAndPath;
 import static org.spongepowered.asm.mixin.injection.At.Shift.AFTER;
 
-@Mixin(Gui.class)
-public abstract class GuiMixin {
+@Mixin(Hud.class)
+public abstract class HudMixin {
 
     @Unique
     private static final Identifier HYDRATION_EMPTY_TEXTURE = fromNamespaceAndPath(MOD_ID, "textures/hud/hydration_empty.png");
@@ -55,7 +55,7 @@ public abstract class GuiMixin {
     @Final
     private Minecraft minecraft;
 
-    @Inject(method = "extractChat", at = @At("TAIL"))
+    @Inject(method = "extractRenderState", at = @At("TAIL"))
     private void ucutils$extractChatTail(GuiGraphicsExtractor graphics, DeltaTracker deltaTracker, CallbackInfo ci) {
         if (storage.getCaptchaMap() == null) {
             return;
@@ -82,7 +82,7 @@ public abstract class GuiMixin {
     @Inject(method = "extractPlayerHealth",
             at = @At(
                     value = "INVOKE",
-                    target = "Lnet/minecraft/client/gui/Gui;extractHearts(Lnet/minecraft/client/gui/GuiGraphicsExtractor;Lnet/minecraft/world/entity/player/Player;IIIIFIIIZ)V",
+                    target = "Lnet/minecraft/client/gui/Hud;extractHearts(Lnet/minecraft/client/gui/GuiGraphicsExtractor;Lnet/minecraft/world/entity/player/Player;IIIIFIIIZ)V",
                     shift = AFTER))
     private void ucutils$extractPlayerHealthInvoke(GuiGraphicsExtractor graphics,
                                                    CallbackInfo ci,
