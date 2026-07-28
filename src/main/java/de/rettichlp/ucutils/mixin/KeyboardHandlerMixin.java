@@ -13,6 +13,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import static de.rettichlp.ucutils.UCUtils.REINFORCEMENT_ACCEPT_KEY;
 import static de.rettichlp.ucutils.UCUtils.commandService;
 import static de.rettichlp.ucutils.UCUtils.storage;
+import static org.spongepowered.asm.mixin.injection.At.Shift.AFTER;
 
 @Mixin(KeyboardHandler.class)
 public abstract class KeyboardHandlerMixin {
@@ -23,8 +24,8 @@ public abstract class KeyboardHandlerMixin {
 
     @Inject(method = "keyPress",
             at = @At(value = "INVOKE",
-                     target = "Lnet/minecraft/client/KeyMapping;matches(Lnet/minecraft/client/input/KeyEvent;)Z",
-                     ordinal = 0))
+                     target = "Lnet/minecraft/client/KeyMapping;click(Lcom/mojang/blaze3d/platform/InputConstants$Key;)V",
+                     shift = AFTER))
     private void ucutils$keyPressInvoke(long handle, int action, KeyEvent event, CallbackInfo ci) {
         // only with closed chat
         if (!this.minecraft.gui.hud.getChat().isChatFocused()) {
