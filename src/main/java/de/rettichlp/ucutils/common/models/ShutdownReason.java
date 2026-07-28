@@ -29,7 +29,7 @@ public enum ShutdownReason {
             @Override
             public void run() {
                 Minecraft minecraft = Minecraft.getInstance();
-                minecraft.execute(() -> minecraft.setScreen(new ShutdownScreen(ShutdownReason.this)));
+                minecraft.execute(() -> minecraft.gui.setScreen(new ShutdownScreen(ShutdownReason.this)));
             }
         }, 100);
     }

@@ -42,6 +42,11 @@ public class UCUtils implements ModInitializer {
     // That way, it's clear which mod wrote info, warnings, and errors.
     public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
 
+    public static final Api api = new Api();
+    public static final Storage storage = new Storage();
+    public static final Configuration configuration = new Configuration().loadFromFile();
+    public static final ResyncableTimer synchronisedMinuteTimer = new ResyncableTimer(1, 1, MINUTES);
+
     public static final CommandService commandService = new CommandService();
     public static final MessageService messageService = new MessageService();
     public static final NameTagService nameTagService = new NameTagService();
@@ -49,11 +54,6 @@ public class UCUtils implements ModInitializer {
     public static final RenderService renderService = new RenderService();
     public static final SyncService syncService = new SyncService();
     public static final UtilService utilService = new UtilService();
-
-    public static final Api api = new Api();
-    public static final Storage storage = new Storage();
-    public static final Configuration configuration = new Configuration().loadFromFile();
-    public static final ResyncableTimer synchronisedMinuteTimer = new ResyncableTimer(1, 1, MINUTES);
 
     public static final KeyMapping.Category KEY_CATEGORY = register(fromNamespaceAndPath(MOD_ID, "name"));
     public static final KeyMapping REINFORCEMENT_ACCEPT_KEY = registerKeyMapping(new KeyMapping("ucutils.key.reinforcement_accept", KEYSYM, GLFW_KEY_UNKNOWN, KEY_CATEGORY));
