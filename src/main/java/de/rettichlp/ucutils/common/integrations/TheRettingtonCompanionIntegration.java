@@ -64,7 +64,7 @@ public class TheRettingtonCompanionIntegration implements TheRettingtonCompanion
                 toHiddenMessage(compile("\\[Holzfäller] 3 Perk\\(s\\) geladen\\.")),
                 // faction: medics
                 toHiddenMessage(compile("\\[ʟᴀʙᴏʀ] \\d+ Kräuter-Rezept\\(e\\) ausgegeben \\(\\d+g Gras verbraucht · \\d+g verbleibend\\)\\.")),
-                toHiddenMessage(compile("\\[Tierarzt] Standort: 300 99 210 – behandle das Tier per Sneak-Rechtsklick\\."))
+                toHiddenMessage(compile("\\[Tierarzt] Standort: -?\\d+ -?\\d+ -?\\d+ – behandle das Tier per Sneak-Rechtsklick\\."))
         );
     }
 
