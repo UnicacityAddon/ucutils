@@ -8,11 +8,16 @@ import de.rettichlp.ucutils.common.gui.widgets.CarLockedWidget;
 import de.rettichlp.ucutils.common.gui.widgets.MoneyWidget;
 import de.rettichlp.ucutils.common.gui.widgets.PayDayWidget;
 import de.rettichlp.ucutils.common.gui.widgets.ServiceCountWidget;
+import org.jetbrains.annotations.Contract;
+import org.jspecify.annotations.NonNull;
 
 import java.util.List;
 import java.util.Set;
+import java.util.regex.Pattern;
 
+import static de.rettichlp.ucutils.UCUtils.MOD_ID;
 import static de.rettichlp.ucutils.UCUtils.notificationService;
+import static java.util.regex.Pattern.compile;
 
 public class TheRettingtonCompanionIntegration implements TheRettingtonCompanionApi {
 
@@ -33,6 +38,38 @@ public class TheRettingtonCompanionIntegration implements TheRettingtonCompanion
 
     @Override
     public Set<HiddenMessageEntry.HiddenMessage> getHiddenMessages() {
-        return Set.of();
+        return Set.of(
+                // join
+                toHiddenMessage(compile("» Dein Account wird nicht mit einem Passwort geschützt!")),
+                toHiddenMessage(compile("» Schütze deinen Account mit /passwort new \\[Passwort]\\.")),
+                // rotators
+                toHiddenMessage(compile("\\[Voten] Du kannst uns täglich mit deinen Votes unterstützen!\\n\\[Voten] Sammle genug Votepunkte um dir tolle Geschenke im Voteshop zu holen!")),
+                toHiddenMessage(compile("\\[Forum] Hast du schon einen Account in unserem Forum\\?\\n\\[Forum] Werde noch heute ein Teil dieser großartigen Community!")),
+                toHiddenMessage(compile("\\[Regeln] Unwissenheit schützt vor Strafe nicht!\\n\\[Regeln] Informiere dich in unserem Regelwerk\\.")),
+                toHiddenMessage(compile("\\[TikTok] Kennst du schon unseren TikTok Account\\?\\n\\[TikTok] Folge uns jetzt auf TikTok!")),
+                toHiddenMessage(compile("\\[Discord] Kennst du schon unseren Community-Discord\\?\\n\\[Discord] Updates, Ankündigungen und vieles mehr findest du dort!")),
+                toHiddenMessage(compile("\\[LabyMod] Wir sind offizieller Partner von LabyMod!\\n\\[LabyMod] Schau dir doch mal die LabyMod Client-Mod an\\.")),
+                toHiddenMessage(compile("\\[Premium] Noch keinen Premium-Account\\?\\n\\[Premium] Besuch doch mal unseren Shop!")),
+                toHiddenMessage(compile("\\[Passwort] Ist dein Account schon mit einen Passwort geschützt\\?\\n\\[Passwort] Schütze deinen Account noch heute mit einen Passwort!")),
+                toHiddenMessage(compile("\\[Instagram] Folgst du schon dem offiziellen UnicaCity Instagram-Account\\?\\n\\[Instagram] Du kannst uns unter dem Namen UnicaCity oder @unicacityeu finden!")),
+                toHiddenMessage(compile("\\[Teamspeak] Besuche uns doch auf unserem Teamspeak Server\\.\\n\\[Teamspeak] Die IP ist: unicacity\\.eu")),
+                toHiddenMessage(compile("\\[BattlePass] Hol dir tolle Belohnungen mit unserem BattlePass!\\n\\[BattlePass] Öffne ihn jederzeit mit /battlepass\\.")),
+                // rubbish
+                toHiddenMessage(compile("Du hast etwas aus dem Mülleimer genommen\\.")),
+                toHiddenMessage(compile("Du durchwühlst den Mülleimer\\.")),
+                // cooking
+                toHiddenMessage(compile("\\[Küche] \uD83C\uDF73 Klicke das schwebende Item bevor es verschwindet!")),
+                toHiddenMessage(compile("\\[Küche] ✔ Erwischt! Qualität steigt\\.")),
+                // lumberjack
+                toHiddenMessage(compile("\\[Holzfäller] 3 Perk\\(s\\) geladen\\.")),
+                // faction: medics
+                toHiddenMessage(compile("\\[ʟᴀʙᴏʀ] \\d+ Kräuter-Rezept\\(e\\) ausgegeben \\(\\d+g Gras verbraucht · \\d+g verbleibend\\)\\.")),
+                toHiddenMessage(compile("\\[Tierarzt] Standort: 300 99 210 – behandle das Tier per Sneak-Rechtsklick\\."))
+        );
+    }
+
+    @Contract(value = "_ -> new", pure = true)
+    private HiddenMessageEntry.@NonNull HiddenMessage toHiddenMessage(@NonNull Pattern pattern) {
+        return new HiddenMessageEntry.HiddenMessage(pattern.pattern(), MOD_ID);
     }
 }
