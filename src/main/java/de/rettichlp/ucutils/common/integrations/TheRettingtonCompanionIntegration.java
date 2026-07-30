@@ -1,6 +1,7 @@
 package de.rettichlp.ucutils.common.integrations;
 
 import de.rettichlp.therettingtoncompanion.TheRettingtonCompanionApi;
+import de.rettichlp.therettingtoncompanion.gui.options.list.HiddenMessageEntry;
 import de.rettichlp.therettingtoncompanion.gui.widgets.base.AbstractTRCWidget;
 import de.rettichlp.therettingtoncompanion.models.Notification;
 import de.rettichlp.ucutils.common.gui.widgets.CarLockedWidget;
@@ -28,5 +29,10 @@ public class TheRettingtonCompanionIntegration implements TheRettingtonCompanion
                 new PayDayWidget(),
                 new ServiceCountWidget()
         );
+    }
+
+    @Override
+    public Set<HiddenMessageEntry.HiddenMessage> getHiddenMessages() {
+        return Set.of();
     }
 }
