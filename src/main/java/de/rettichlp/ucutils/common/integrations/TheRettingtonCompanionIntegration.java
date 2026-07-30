@@ -43,6 +43,7 @@ public class TheRettingtonCompanionIntegration implements TheRettingtonCompanion
                 toHiddenMessage(compile("» Dein Account wird nicht mit einem Passwort geschützt!")),
                 toHiddenMessage(compile("» Schütze deinen Account mit /passwort new \\[Passwort]\\.")),
                 // rotators
+                toHiddenMessage(compile("\\[F\\.A\\.Q] Du hast Fragen zum Server\\? Dann schau doch mal in unser FAQ rein\\.\\n\\[F\\.A\\.Q] Dort sind viele Antworten auf all deine Fragen\\.")),
                 toHiddenMessage(compile("\\[Voten] Du kannst uns täglich mit deinen Votes unterstützen!\\n\\[Voten] Sammle genug Votepunkte um dir tolle Geschenke im Voteshop zu holen!")),
                 toHiddenMessage(compile("\\[Forum] Hast du schon einen Account in unserem Forum\\?\\n\\[Forum] Werde noch heute ein Teil dieser großartigen Community!")),
                 toHiddenMessage(compile("\\[Regeln] Unwissenheit schützt vor Strafe nicht!\\n\\[Regeln] Informiere dich in unserem Regelwerk\\.")),
