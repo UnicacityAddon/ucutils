@@ -55,6 +55,10 @@ public class TheRettingtonCompanionIntegration implements TheRettingtonCompanion
                 toHiddenMessage(compile("\\[Instagram] Folgst du schon dem offiziellen UnicaCity Instagram-Account\\?\\n\\[Instagram] Du kannst uns unter dem Namen UnicaCity oder @unicacityeu finden!")),
                 toHiddenMessage(compile("\\[Teamspeak] Besuche uns doch auf unserem Teamspeak Server\\.\\n\\[Teamspeak] Die IP ist: unicacity\\.eu")),
                 toHiddenMessage(compile("\\[BattlePass] Hol dir tolle Belohnungen mit unserem BattlePass!\\n\\[BattlePass] Öffne ihn jederzeit mit /battlepass\\.")),
+                // vote
+                toHiddenMessage(compile(" » Mit deinen Votes kannst du uns täglich unterstützen!")),
+                toHiddenMessage(compile(" » Du siehst bei /vote alle Seiten bei welchen du voten kannst\\.")),
+                toHiddenMessage(compile(" » Du erhältst diese Nachricht nach dem Voten nicht mehr\\.")),
                 // rubbish
                 toHiddenMessage(compile("Du hast etwas aus dem Mülleimer genommen\\.")),
                 toHiddenMessage(compile("Du durchwühlst den Mülleimer\\.")),
