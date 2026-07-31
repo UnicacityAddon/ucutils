@@ -37,8 +37,8 @@ public class TheRettingtonCompanionIntegration implements TheRettingtonCompanion
     }
 
     @Override
-    public Set<HiddenMessageEntry.HiddenMessage> getHiddenMessages() {
-        return Set.of(
+    public List<HiddenMessageEntry.HiddenMessage> getHiddenMessages() {
+        return List.of(
                 // join
                 toHiddenMessage(compile("» Dein Account wird nicht mit einem Passwort geschützt!")),
                 toHiddenMessage(compile("» Schütze deinen Account mit /passwort new \\[Passwort]\\.")),
