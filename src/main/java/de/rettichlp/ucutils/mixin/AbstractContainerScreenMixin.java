@@ -239,7 +239,12 @@ public abstract class AbstractContainerScreenMixin<T extends AbstractContainerMe
     private static class CompanyShareTooltipPositioner implements ClientTooltipPositioner {
 
         @Override
-        public @NonNull Vector2ic positionTooltip(int screenWidth, int screenHeight, int x, int y, int tooltipWidth, int tooltipHeight) {
+        public @NonNull Vector2ic positionTooltip(int screenWidth,
+                                                  int screenHeight,
+                                                  int x,
+                                                  int y,
+                                                  int tooltipWidth,
+                                                  int tooltipHeight) {
             return new Vector2i(x, y).add(12, 8);
         }
     }

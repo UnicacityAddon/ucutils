@@ -10,8 +10,6 @@ import net.minecraft.network.chat.Component;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 
-import java.awt.Color;
-
 import static de.rettichlp.ucutils.common.configuration.options.Options.AtmInformationType.NONE;
 import static de.rettichlp.ucutils.common.configuration.options.Options.ReinforcementType.UNICACITYADDON;
 import static net.minecraft.ChatFormatting.AQUA;
