@@ -32,7 +32,7 @@ public class TheRettingtonCompanionIntegration implements TheRettingtonCompanion
     }
 
     @Override
-    public Set<HiddenMessageEntry.HiddenMessage> getHiddenMessages() {
-        return Set.of();
+    public List<HiddenMessageEntry.HiddenMessage> getHiddenMessages() {
+        return List.of();
     }
 }
