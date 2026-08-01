@@ -30,6 +30,9 @@ reibungsloser und angenehmer gestalten.
   der so viel Geld einzahlt, bis der Bankautomat voll ist
 - Mit dem `/aktien` Befehl wird die Aktien-App auf dem Händy direkt geöffnet, sodass man nicht mehr manuell durch das Handy navigieren
   muss
+- Kisten werden automatisch aus Mülleimern eingesammelt
+- Es werden bestimmte Nachrichten im Chat ausgeblendet (konfigurierbar
+  über [The Rettington Companion](https://modrinth.com/mod/the-rettington-companion))
 
 ### Auto
 
@@ -53,6 +56,8 @@ Folgende Funktionen sind nur für Spieler ohne Premium-Rang verfügbar, da Spiel
   Fraktionschat zu senden
 - Für den Bluthändler, Dealer und Schwarzmarkt wird eine Nachricht angezeigt, wenn sich dieser in unmittelbarer Nähe befindet
 - Für den Bluthändler, Dealer und Schwarzmarkt wird (in der Übersicht) angezeigt, an welchem Ort er gefunden wurde
+- Es gibt einen Hotkey, um (für die entsprechende Fraktion relevante) Reinforcements automatisch anzunehmen (diese Reinforcements sind
+  mit ✨ markiert)
 
 ### Jobs
 
@@ -90,3 +95,16 @@ Folgende Funktionen sind nur für Spieler ohne Premium-Rang verfügbar, da Spiel
 | `/ff`  | Aktiviert und deaktiviert das dauerhafte Schreiben im F-Chat ohne den `/f` Befehl jedes Mal eingeben zu müssen |
 | `/dd`  | Aktiviert und deaktiviert das dauerhafte Schreiben im D-Chat ohne den `/d` Befehl jedes Mal eingeben zu müssen |
 | `/ww`  | Aktiviert und deaktiviert das dauerhafte Flüstern ohne den `/w` Befehl jedes Mal eingeben zu müssen            |
+
+**Fraktionen**
+
+| Befehl             | Beschreibung                                   |
+|--------------------|------------------------------------------------|
+| `/vm <Spieler...>` | Alias für: `/asu <Spieler...> Versuchter Mord` |
+
+**ATM**
+
+| Befehl                                   | Beschreibung                                             |
+|------------------------------------------|----------------------------------------------------------|
+| `/überweisen <Spieler> <Betrag> <Grund>` | Alias für: `/bank überweisen <Spieler> <Betrag> <Grund>` |
+| `/abbuchen <Betrag>`                     | Alias für: `/bank abbuchen <Betrag>`                     |
