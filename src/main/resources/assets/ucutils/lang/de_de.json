@@ -117,6 +117,8 @@
   "ucutils.options.widgets.payday.options.experience.tooltip": "Zeigt an, wie viel Erfahrung du seit dem letzten PayDay gesammelt hast",
   "ucutils.options.widgets.service_count.options.name": "Notrufe",
   "ucutils.options.widgets.service_count.options.tooltip": "Zeigt an wie viele Notrufe gerade offen sind",
+  "ucutils.options.widgets.corpse_count.options.name": "Leichen",
+  "ucutils.options.widgets.corpse_count.options.tooltip": "Zeigt an wie viele Leichen sich in der Nähe befinden",
 
   "ucutils.screen.shutdown_abort.button.name": "Herunterfahren abbrechen",
 

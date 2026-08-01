@@ -115,8 +115,10 @@
   "ucutils.options.widgets.payday.options.salary.tooltip": "Shows predicted PayDay salary from part time jobs",
   "ucutils.options.widgets.payday.options.experience.name": "Experience",
   "ucutils.options.widgets.payday.options.experience.tooltip": "Shows experience gained since last PayDay",
-  "ucutils.options.widgets.service_count.options.name": "Service Count",
+  "ucutils.options.widgets.service_count.options.name": "Service count",
   "ucutils.options.widgets.service_count.options.tooltip": "Shows the number of active services",
+  "ucutils.options.widgets.corpse_count.options.name": "Corpse count",
+  "ucutils.options.widgets.corpse_count.options.tooltip": "Shows the number of corpses nearby",
 
   "ucutils.screen.shutdown_abort.button.name": "Abort shutdown",
 
