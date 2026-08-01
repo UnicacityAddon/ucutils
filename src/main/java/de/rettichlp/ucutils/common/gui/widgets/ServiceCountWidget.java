@@ -3,6 +3,8 @@ package de.rettichlp.ucutils.common.gui.widgets;
 import de.rettichlp.therettingtoncompanion.gui.options.list.TRCOptionsList;
 import de.rettichlp.therettingtoncompanion.gui.widgets.base.AbstractTRCTextWidget;
 import de.rettichlp.therettingtoncompanion.gui.widgets.base.WidgetConfiguration;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 import net.minecraft.network.chat.Component;
 import org.jspecify.annotations.NonNull;
 import org.jspecify.annotations.Nullable;
@@ -44,5 +46,7 @@ public class ServiceCountWidget extends AbstractTRCTextWidget<ServiceCountWidget
         return super.isVisible() && (storage.getActiveServices() > 0 || isWidgetPositionScreen());
     }
 
+    @Data
+    @EqualsAndHashCode(callSuper = false)
     public static class Configuration extends WidgetConfiguration {}
 }

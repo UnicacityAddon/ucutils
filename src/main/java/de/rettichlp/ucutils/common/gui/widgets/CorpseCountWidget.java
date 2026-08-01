@@ -4,6 +4,8 @@ import de.rettichlp.therettingtoncompanion.gui.options.list.TRCOptionsList;
 import de.rettichlp.therettingtoncompanion.gui.widgets.base.AbstractTRCTextWidget;
 import de.rettichlp.therettingtoncompanion.gui.widgets.base.WidgetConfiguration;
 import de.rettichlp.ucutils.common.models.Faction;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.entity.Entity;
@@ -99,5 +101,7 @@ public class CorpseCountWidget extends AbstractTRCTextWidget<CorpseCountWidget.C
                 .toList();
     }
 
+    @Data
+    @EqualsAndHashCode(callSuper = false)
     public static class Configuration extends WidgetConfiguration {}
 }

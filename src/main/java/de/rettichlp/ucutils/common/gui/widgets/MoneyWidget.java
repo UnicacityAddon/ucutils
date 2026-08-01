@@ -3,7 +3,8 @@ package de.rettichlp.ucutils.common.gui.widgets;
 import de.rettichlp.therettingtoncompanion.gui.options.list.TRCOptionsList;
 import de.rettichlp.therettingtoncompanion.gui.widgets.base.AbstractTRCTextWidget;
 import de.rettichlp.therettingtoncompanion.gui.widgets.base.WidgetConfiguration;
-import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 import net.minecraft.network.chat.Component;
 import org.jspecify.annotations.NonNull;
 import org.jspecify.annotations.Nullable;
@@ -47,6 +48,7 @@ public class MoneyWidget extends AbstractTRCTextWidget<MoneyWidget.Configuration
     @Override
     public void addOptions(@NonNull TRCOptionsList optionsList) {}
 
-    @AllArgsConstructor
+    @Data
+    @EqualsAndHashCode(callSuper = false)
     public static class Configuration extends WidgetConfiguration {}
 }
