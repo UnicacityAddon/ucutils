@@ -8,6 +8,7 @@
 [![Modrinth](https://img.shields.io/badge/Verf%C3%BCgbar%20auf-Modrinth-1bd96a?logo=modrinth)](https://modrinth.com/mod/ucutils)
 [![Modrinth Downloads](https://img.shields.io/modrinth/dt/ucutils?logo=modrinth&label=Downloads&color=00AF5C)](https://modrinth.com/mod/ucutils)
 [![Modrinth Game Versions](https://img.shields.io/modrinth/game-versions/ucutils?logo=modrinth&label=Minecraft&color=00AF5C)](https://modrinth.com/mod/ucutils/versions)
+[![GitHub Release](https://img.shields.io/github/v/release/UnicacityAddon/UCUtils?logo=github&label=GitHub%20Release)]([https://github.com/UnicacityAddon/UCUtils](https://github.com/UnicacityAddon/UCUtils))
 
 </div>
 
