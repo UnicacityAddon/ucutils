@@ -5,6 +5,7 @@ import de.rettichlp.therettingtoncompanion.gui.options.list.HiddenMessageEntry;
 import de.rettichlp.therettingtoncompanion.gui.widgets.base.AbstractTRCWidget;
 import de.rettichlp.therettingtoncompanion.models.Notification;
 import de.rettichlp.ucutils.common.gui.widgets.CarLockedWidget;
+import de.rettichlp.ucutils.common.gui.widgets.CorpseCountWidget;
 import de.rettichlp.ucutils.common.gui.widgets.MoneyWidget;
 import de.rettichlp.ucutils.common.gui.widgets.PayDayWidget;
 import de.rettichlp.ucutils.common.gui.widgets.ServiceCountWidget;
@@ -30,6 +31,7 @@ public class TheRettingtonCompanionIntegration implements TheRettingtonCompanion
     public List<AbstractTRCWidget<?>> getWidgets() {
         return List.of(
                 new CarLockedWidget(),
+                new CorpseCountWidget(),
                 new MoneyWidget(),
                 new PayDayWidget(),
                 new ServiceCountWidget()

@@ -64,8 +64,16 @@ public class RenderService {
     }
 
     public static @NonNull MutableComponent keyValue(String key, Component value) {
+        return keyValue(literal(key).withStyle(GRAY), value);
+    }
+
+    public static @NonNull MutableComponent keyValue(@NonNull MutableComponent key, String value) {
+        return keyValue(key, literal(value));
+    }
+
+    public static @NonNull MutableComponent keyValue(@NonNull MutableComponent key, Component value) {
         return empty()
-                .append(literal(key).withStyle(GRAY))
+                .append(key.withStyle(GRAY))
                 .append(literal(":").withStyle(DARK_GRAY)).append(" ")
                 .append(value);
     }
