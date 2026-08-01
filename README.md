@@ -17,6 +17,7 @@ reibungsloser und angenehmer gestalten.
 
 ## Inhaltsverzeichnis
 
+- [Installation](#installation)
 - [Features & Funktionen](#features--funktionen)
     - [Allgemein](#allgemein)
     - [Auto](#auto)
@@ -24,6 +25,16 @@ reibungsloser und angenehmer gestalten.
     - [Jobs](#jobs)
     - [Widgets](#widgets)
 - [Befehle](#befehle)
+
+## Installation
+
+UCUtils kann in nahezu jedem gängigen Launcher installiert werden, der eine Modrinth-Verknüpfung besitzt (z.B. der offizielle Modrinth
+Launcher, LabyMod-Launcher, Prism Launcher, MultiMC oder ATLauncher). Dort einfach nach *UCUtils* suchen und installieren. Alle
+benötigten Abhängigkeiten ([Fabric API](https://modrinth.com/mod/fabric-api)
+und [The Rettington Companion](https://modrinth.com/mod/the-rettington-companion)) werden dabei automatisch mit installiert.
+
+> 🆘 Solltest du dabei Hilfe benötigen oder auf Probleme stoßen, eröffne gerne ein Ticket auf
+> meinem [Discord](https://discord.gg/mZGAAwhPHu).
 
 ## Features & Funktionen
 
