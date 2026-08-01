@@ -94,9 +94,10 @@ reibungsloser und angenehmer gestalten.
 
 ### Widgets
 
-- Informationen über den PayDay (Dauer bis zum nächsten PayDay, Gehalt und Erfahrung) einschließlich Reichensteuer-Warnung
 - Status des Autos (offen/abgeschlossen)
+- Anzahl der bewusstlosen Spieler in der Nähe (optional unterteilt in Fraktionen)
 - Geld auf der Hand und auf der Bank
+- Informationen über den PayDay (Dauer bis zum nächsten PayDay, Gehalt und Erfahrung) einschließlich Reichensteuer-Warnung
 - Offene Notrufe
 
 ## Befehle
