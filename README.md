@@ -1,14 +1,35 @@
-# ucutils
+<div align="center">
+
+# UCUtils
+
+**Eine Fabric-Mod für den UnicaCity-Rollenspielserver**
+
+[![Fabric](https://img.shields.io/badge/Loader-Fabric-DBB69D?logo=fabric)](https://fabricmc.net/)
+[![Modrinth](https://img.shields.io/badge/Verf%C3%BCgbar%20auf-Modrinth-1bd96a?logo=modrinth)](https://modrinth.com/mod/ucutils)
+[![Modrinth Downloads](https://img.shields.io/modrinth/dt/ucutils?logo=modrinth&label=Downloads&color=00AF5C)](https://modrinth.com/mod/ucutils)
+[![Modrinth Game Versions](https://img.shields.io/modrinth/game-versions/ucutils?logo=modrinth&label=Minecraft&color=00AF5C)](https://modrinth.com/mod/ucutils/versions)
+
+</div>
 
 UCUtils ist eine Mod für den UnicaCity-Rollenspielserver, die vom früheren UnicacityAddon inspiriert wurde. Sie bietet nützliche
 Befehle, Komfortfunktionen und speziell für UnicaCity entwickelte Tools, die das Gameplay verbessern und alltägliche Interaktionen
 reibungsloser und angenehmer gestalten.
 
+## Inhaltsverzeichnis
+
+- [Features & Funktionen](#features--funktionen)
+    - [Allgemein](#allgemein)
+    - [Auto](#auto)
+    - [Fraktionen](#fraktionen)
+    - [Jobs](#jobs)
+    - [Widgets](#widgets)
+- [Befehle](#befehle)
+
 ## Features & Funktionen
 
 ### Allgemein
 
-- Sollte ein Command mit einem Großbuchstaben eingegeben werden (z. B. `/Afk` statt `/afk`) wird dieser Command automatisch zu einem
+- Sollte ein Command mit einem Großbuchstaben eingegeben werden (z. B. `/Afk` statt `/afk`), wird dieser Command automatisch zu einem
   gültigen Command umgewandelt
 - Statt `/navi Haus:<Hausnummer>` kann `/navi <Hausnummer>` genutzt werden
 - Als Business-Besitzer wird in der Business-Info ein Button angezeigt, um die Einnahmen direkt abzubuchen
@@ -18,7 +39,7 @@ reibungsloser und angenehmer gestalten.
 - Über der Hungerleiste wird der Durst angezeigt
 - Über den Spielernamen wird AFK angezeigt, wenn der Spieler AFK ist
 - Für Teammitglieder wird eine Warnung angezeigt, wenn sie sich im Admindienst befinden und eine Waffe in der Hand haben
-- Bei der Mieterübersicht wird angezeigt wie lang ein Mieter offline ist und ein Button um diesen zu kündigen
+- Bei der Mieterübersicht wird angezeigt, wie lang ein Mieter offline ist, und ein Button, um diesen zu kündigen
 - Beim Beten wird nach 15 Sekunden automatisch der zweite Befehl ausgeführt
 - Es gibt Benachrichtigungen, wenn ein Spieler den Server betritt oder verlässt, einen Report betritt oder verlässt, den Baumodus
   betritt oder verlässt und den Admindienst betritt oder verlässt
@@ -41,11 +62,11 @@ reibungsloser und angenehmer gestalten.
 - Werden die Koordinaten eines Autos angezeigt, wird automatisch eine Navigation zu diesen gestartet
 - Wenn man schleicht und ein Auto rechtsklickt, wird `/checkkfz` ausgeführt
 
-Folgende Funktionen sind nur für Spieler ohne Premium-Rang verfügbar, da Spieler mit Premium diese Funktion vom Server aus können:
-
-- Das Auf-/Abschließen eines Fahrzeuges wurde teilweise automatisiert (automatisches Klicken des Items im Inventar)
-- Beim Rechtsklick auf das eigene Fahrzeug wird automatisch `/car lock` ausgeführt
-- Steigt man in ein Fahrzeug ein, wird dieses automatisch gestartet und abgeschlossen
+> ℹ️ Folgende Funktionen sind nur für Spieler **ohne Premium-Rang** verfügbar, da Spieler mit Premium diese Funktion vom Server aus
+> nutzen können:
+> - Das Auf-/Abschließen eines Fahrzeuges wurde teilweise automatisiert (automatisches Klicken des Items im Inventar)
+> - Beim Rechtsklick auf das eigene Fahrzeug wird automatisch `/car lock` ausgeführt
+> - Steigt man in ein Fahrzeug ein, wird dieses automatisch gestartet und abgeschlossen
 
 ### Fraktionen
 
@@ -67,7 +88,7 @@ Folgende Funktionen sind nur für Spieler ohne Premium-Rang verfügbar, da Spiel
 - Der Müllmann-Job gibt am Ende den gesammelten Müll automatisch ab, ohne dass der `/dropwaste` Command ausgeführt werden muss
 - Für den Pizzalieferanten-Job wird `/getpizza` automatisch ausgeführt, bis 10 Pizzen gesammelt wurden
 - Es werden Countdowns angezeigt, bis ein Job wieder ausgeführt werden kann
-- Aktive Mining XP-Booster werden angezeigt
+- Aktive Mining-XP-Booster werden angezeigt
 - Das Angel-Captcha wird zusätzlich in der Mitte des Bildschirms angezeigt, damit es nicht vom Chat verdeckt wird
 - Nach der erfolgreichen Eingabe des Angel-Captchas wird die Angel automatisch wieder ausgeworfen
 
@@ -80,31 +101,37 @@ Folgende Funktionen sind nur für Spieler ohne Premium-Rang verfügbar, da Spiel
 
 ## Befehle
 
-**Allgemein**
+### Allgemein
 
-| Befehl                            | Beschreibung                                                                                                    |
-|-----------------------------------|-----------------------------------------------------------------------------------------------------------------|
-| `/ucutils (<sync>)`               | Zeigt nützliche Status-Informationen über das Projekt an oder startet eine Synchronisierung                     |
-| `/screenshot`                     | Erstellt einen Screenshot in einer bestimmten Kategorie                                                         |
-| `/shutdown <friedhof\|gefängnis>` | Aktiviert das automatische Herunterfahren des PCs nachdem man nicht mehr auf dem Friedhof oder im Gefängnis ist |
+| Befehl                            | Beschreibung                                                                                                     |
+|-----------------------------------|------------------------------------------------------------------------------------------------------------------|
+| `/ucutils (sync)`                 | Zeigt nützliche Status-Informationen über das Projekt an oder startet eine Synchronisierung                      |
+| `/screenshot (Kategorie)`         | Erstellt einen Screenshot in einer bestimmten Kategorie                                                          |
+| `/shutdown [friedhof\|gefängnis]` | Aktiviert das automatische Herunterfahren des PCs, nachdem man nicht mehr auf dem Friedhof oder im Gefängnis ist |
 
-**Chat**
+### Chat
 
-| Befehl | Beschreibung                                                                                                   |
-|--------|----------------------------------------------------------------------------------------------------------------|
-| `/ff`  | Aktiviert und deaktiviert das dauerhafte Schreiben im F-Chat ohne den `/f` Befehl jedes Mal eingeben zu müssen |
-| `/dd`  | Aktiviert und deaktiviert das dauerhafte Schreiben im D-Chat ohne den `/d` Befehl jedes Mal eingeben zu müssen |
-| `/ww`  | Aktiviert und deaktiviert das dauerhafte Flüstern ohne den `/w` Befehl jedes Mal eingeben zu müssen            |
+| Befehl | Beschreibung                                                                                                    |
+|--------|-----------------------------------------------------------------------------------------------------------------|
+| `/ff`  | Aktiviert und deaktiviert das dauerhafte Schreiben im F-Chat, ohne den `/f` Befehl jedes Mal eingeben zu müssen |
+| `/dd`  | Aktiviert und deaktiviert das dauerhafte Schreiben im D-Chat, ohne den `/d` Befehl jedes Mal eingeben zu müssen |
+| `/ww`  | Aktiviert und deaktiviert das dauerhafte Flüstern, ohne den `/w` Befehl jedes Mal eingeben zu müssen            |
 
-**Fraktionen**
+### Fraktionen
 
-| Befehl             | Beschreibung                                   |
-|--------------------|------------------------------------------------|
-| `/vm <Spieler...>` | Alias für: `/asu <Spieler...> Versuchter Mord` |
+| Befehl                       | Beschreibung                                             |
+|------------------------------|----------------------------------------------------------|
+| `/vm [Spieler] (Spieler...)` | Alias für: `/asu [Spieler] (Spieler...) Versuchter Mord` |
 
-**ATM**
+### ATM
 
 | Befehl                                   | Beschreibung                                             |
 |------------------------------------------|----------------------------------------------------------|
-| `/überweisen <Spieler> <Betrag> <Grund>` | Alias für: `/bank überweisen <Spieler> <Betrag> <Grund>` |
-| `/abbuchen <Betrag>`                     | Alias für: `/bank abbuchen <Betrag>`                     |
+| `/überweisen [Spieler] [Betrag] (Grund)` | Alias für: `/bank überweisen [Spieler] [Betrag] (Grund)` |
+| `/abbuchen [Betrag]`                     | Alias für: `/bank abbuchen [Betrag]`                     |
+
+<div align="center">
+
+📥 [**Jetzt auf Modrinth herunterladen**](https://modrinth.com/mod/ucutils)
+
+</div>
