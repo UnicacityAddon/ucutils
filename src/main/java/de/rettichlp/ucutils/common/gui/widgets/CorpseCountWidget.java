@@ -32,15 +32,12 @@ import static net.minecraft.world.item.Items.WITHER_SKELETON_SKULL;
 
 public class CorpseCountWidget extends AbstractTRCTextWidget<CorpseCountWidget.Configuration> {
 
-    private static final Component WIDGETS_CORPSE_COUNT_OPTIONS_NAME = translatable("ucutils.options.widgets.corpse_count.options.name");
-    private static final Component WIDGETS_CORPSE_COUNT_OPTIONS_TOOLTIP = translatable("ucutils.options.widgets.corpse_count.options.tooltip");
-
     @Override
     public Component text() {
         LinkedHashMap<Faction, Long> factionCorpseCountMap = getFactionCorpseCountMap();
 
         MutableComponent component = empty()
-                .append(literal("Corpse"));
+                .append(translatable("ucutils.options.widgets.corpse_count.label"));
 
         factionCorpseCountMap.forEach((faction, amount) -> component
                 .append(literal(amount.toString()).withColor(faction.getColor()))
@@ -57,12 +54,12 @@ public class CorpseCountWidget extends AbstractTRCTextWidget<CorpseCountWidget.C
 
     @Override
     public Component getLabel() {
-        return WIDGETS_CORPSE_COUNT_OPTIONS_NAME;
+        return translatable("ucutils.options.widgets.corpse_count.options.name");
     }
 
     @Override
     public Component getTooltip() {
-        return WIDGETS_CORPSE_COUNT_OPTIONS_TOOLTIP;
+        return translatable("ucutils.options.widgets.corpse_count.options.tooltip");
     }
 
     @Override

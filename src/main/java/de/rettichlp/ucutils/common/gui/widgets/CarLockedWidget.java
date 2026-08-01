@@ -28,18 +28,16 @@ import static net.minecraft.network.chat.Component.translatable;
 
 public class CarLockedWidget extends AbstractTRCTextWidget<CarLockedWidget.Configuration> {
 
-    private static final Component WIDGETS_CAR_LOCKED_OPTIONS_NAME = translatable("ucutils.options.widgets.car_locked.options.name");
-    private static final Component WIDGETS_CAR_LOCKED_OPTIONS_TOOLTIP = translatable("ucutils.options.widgets.car_locked.options.tooltip");
-    private static final Component WIDGETS_CAR_LOCKED_OPTIONS_STYLE_NAME = translatable("ucutils.options.widgets.car_locked.options.style.name");
-
     @Override
     public Component text() {
         return getWidgetConfiguration().getStyle() == MINIMALISTIC
                 ? (storage.isCarLocked() ? literal("🔒").withStyle(GREEN) : literal("🔓").withStyle(GOLD))
                 : empty()
-                .append(literal("Fahrzeug").withStyle(GRAY))
+                .append(translatable("ucutils.options.widgets.car_locked.label").withStyle(GRAY))
                 .append(literal(":").withStyle(DARK_GRAY)).append(" ")
-                .append(storage.isCarLocked() ? literal("zu").withStyle(GREEN) : literal("offen").withStyle(GOLD));
+                .append(storage.isCarLocked()
+                        ? translatable("ucutils.options.widgets.car_locked.locked").withStyle(GREEN)
+                        : translatable("ucutils.options.widgets.car_locked.unlocked").withStyle(GOLD));
     }
 
     @Override
@@ -49,17 +47,17 @@ public class CarLockedWidget extends AbstractTRCTextWidget<CarLockedWidget.Confi
 
     @Override
     public Component getLabel() {
-        return WIDGETS_CAR_LOCKED_OPTIONS_NAME;
+        return translatable("ucutils.options.widgets.car_locked.options.name");
     }
 
     @Override
     public Component getTooltip() {
-        return WIDGETS_CAR_LOCKED_OPTIONS_TOOLTIP;
+        return translatable("ucutils.options.widgets.car_locked.options.tooltip");
     }
 
     @Override
     public void addOptions(@NonNull TRCOptionsList optionsList) {
-        optionsList.addCycleButton(WIDGETS_CAR_LOCKED_OPTIONS_STYLE_NAME, create(WIDGETS_CAR_LOCKED_OPTIONS_TOOLTIP), getWidgetConfiguration().getStyle(), asList(Style.values()), (_, value) -> getWidgetConfiguration().setStyle(value));
+        optionsList.addCycleButton(translatable("ucutils.options.widgets.car_locked.options.style.name"), create(translatable("ucutils.options.widgets.car_locked.options.style.tooltip")), getWidgetConfiguration().getStyle(), asList(Style.values()), (_, value) -> getWidgetConfiguration().setStyle(value));
     }
 
     @Getter
