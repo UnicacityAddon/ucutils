@@ -130,6 +130,8 @@
   "ucutils.options.widgets.corpse_count.label": "Corpses",
   "ucutils.options.widgets.corpse_count.options.name": "Corpse count",
   "ucutils.options.widgets.corpse_count.options.tooltip": "Shows the number of corpses nearby",
+  "ucutils.options.widgets.corpse_count.options.show_factions.name": "Show factions",
+  "ucutils.options.widgets.corpse_count.options.show_factions.tooltip": "Shows the number of corpses per faction",
 
   "ucutils.screen.shutdown_abort.button.name": "Abort shutdown",
 

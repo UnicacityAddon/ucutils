@@ -130,6 +130,8 @@
   "ucutils.options.widgets.corpse_count.label": "Leichen",
   "ucutils.options.widgets.corpse_count.options.name": "Leichen",
   "ucutils.options.widgets.corpse_count.options.tooltip": "Zeigt an wie viele Leichen sich in der Nähe befinden",
+  "ucutils.options.widgets.corpse_count.options.show_factions.name": "Fraktionen anzeigen",
+  "ucutils.options.widgets.corpse_count.options.show_factions.tooltip": "Zeigt die Anzahl der Leichen pro Fraktion an",
 
   "ucutils.screen.shutdown_abort.button.name": "Herunterfahren abbrechen",
 

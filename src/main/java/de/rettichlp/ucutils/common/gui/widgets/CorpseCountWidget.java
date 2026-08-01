@@ -20,12 +20,18 @@ import org.jspecify.annotations.Nullable;
 import java.util.LinkedHashMap;
 import java.util.List;
 
+import static de.rettichlp.therettingtoncompanion.gui.OnOffCycleButtonEntry.ON;
 import static de.rettichlp.ucutils.UCUtils.player;
+import static de.rettichlp.ucutils.common.models.Faction.NULL;
 import static de.rettichlp.ucutils.common.services.RenderService.keyValue;
+import static java.lang.String.valueOf;
+import static java.lang.System.currentTimeMillis;
+import static net.minecraft.client.gui.components.Tooltip.create;
 import static net.minecraft.network.chat.CommonComponents.SPACE;
 import static net.minecraft.network.chat.Component.empty;
 import static net.minecraft.network.chat.Component.literal;
 import static net.minecraft.network.chat.Component.translatable;
+import static net.minecraft.network.chat.TextColor.DARK_GRAY;
 import static net.minecraft.network.chat.TextColor.GRAY;
 import static net.minecraft.world.item.Items.SKELETON_SKULL;
 import static net.minecraft.world.item.Items.WITHER_SKELETON_SKULL;
@@ -36,14 +42,26 @@ public class CorpseCountWidget extends AbstractTRCTextWidget<CorpseCountWidget.C
 
     @Override
     public Component text() {
-        this.factionCorpseCountMap = getFactionCorpseCountMap();
+        long totalCount = this.factionCorpseCountMap.values().stream()
+                .mapToLong(Long::longValue)
+                .sum();
 
-        MutableComponent component = empty();
+        MutableComponent component = empty()
+                .append(literal(valueOf(totalCount)))
+                .append(literal("x").withColor(GRAY));
 
-        this.factionCorpseCountMap.forEach((faction, amount) -> component
-                .append(literal(amount.toString()).withColor(faction.getColor()))
-                .append(literal("x").withColor(GRAY))
-                .append(SPACE));
+        if (getWidgetConfiguration().isShowFactions()) {
+            MutableComponent factionComponent = empty();
+            this.factionCorpseCountMap.forEach((faction, amount) -> factionComponent
+                    .append(literal(amount.toString()).withColor(faction.getColor()))
+                    .append(literal("x").withColor(GRAY))
+                    .append(SPACE));
+
+            component
+                    .append(literal(" (").withColor(DARK_GRAY))
+                    .append(factionComponent)
+                    .append(literal(")").withColor(DARK_GRAY));
+        }
 
         return keyValue(translatable("ucutils.options.widgets.corpse_count.label"), component);
     }
@@ -64,10 +82,16 @@ public class CorpseCountWidget extends AbstractTRCTextWidget<CorpseCountWidget.C
     }
 
     @Override
-    public void addOptions(@NonNull TRCOptionsList optionsList) {}
+    public void addOptions(@NonNull TRCOptionsList optionsList) {
+        optionsList.addToggleButton(translatable("ucutils.options.widgets.corpse_count.options.show_factions.name"), create(translatable("ucutils.options.widgets.corpse_count.options.show_factions.tooltip")), getWidgetConfiguration().isShowFactions(), (_, value) -> getWidgetConfiguration().setShowFactions(value == ON));
+    }
 
     @Override
     public boolean isVisible() {
+        // every second re-scan for nearby corpses
+        if (currentTimeMillis() / 1000 % 2 == 0) {
+            this.factionCorpseCountMap = getFactionCorpseCountMap();
+        }
         // visible if in the position options screen to allow positioning
         return super.isVisible() && (!this.factionCorpseCountMap.isEmpty() || isWidgetPositionScreen());
     }
@@ -77,6 +101,10 @@ public class CorpseCountWidget extends AbstractTRCTextWidget<CorpseCountWidget.C
         List<Component> corpseNames = getCorpseItemEntities().stream().map(Entity::getCustomName).toList();
 
         for (Faction faction : Faction.values()) {
+            if (faction == NULL) {
+                continue;
+            }
+
             long count = corpseNames.stream()
                     .filter(name -> name.getString().contains(faction.getIcon()))
                     .count();
@@ -103,5 +131,8 @@ public class CorpseCountWidget extends AbstractTRCTextWidget<CorpseCountWidget.C
 
     @Data
     @EqualsAndHashCode(callSuper = false)
-    public static class Configuration extends WidgetConfiguration {}
+    public static class Configuration extends WidgetConfiguration {
+
+        private boolean showFactions = true;
+    }
 }
