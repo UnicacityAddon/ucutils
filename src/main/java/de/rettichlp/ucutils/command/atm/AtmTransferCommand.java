@@ -21,13 +21,19 @@ public class AtmTransferCommand extends CommandBase {
                 .then(argument("player", greedyString())
                         .suggests(PLAYER_NAMES_SUGGESTION_PROVIDER)
                         .then(argument("amount", integer(1))
-                                .then(argument("reason", greedyString()))
+                                .then(argument("reason", greedyString())
                                         .executes(context -> {
                                             String player = context.getArgument("player", String.class);
                                             int amount = getInteger(context, "amount");
                                             String reason = context.getArgument("reason", String.class);
                                             commandService.sendCommand("bank überweisen " + player + " " + amount + " " + reason);
                                             return 1;
-                                        })));
+                                        }))
+                                .executes(context -> {
+                                    String player = context.getArgument("player", String.class);
+                                    int amount = getInteger(context, "amount");
+                                    commandService.sendCommand("bank überweisen " + player + " " + amount);
+                                    return 1;
+                                })));
     }
 }
