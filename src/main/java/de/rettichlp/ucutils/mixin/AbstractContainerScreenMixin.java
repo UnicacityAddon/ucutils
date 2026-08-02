@@ -55,6 +55,7 @@ import static net.minecraft.network.chat.Component.empty;
 import static net.minecraft.network.chat.Component.literal;
 import static net.minecraft.network.chat.Component.translatable;
 import static net.minecraft.world.inventory.ContainerInput.PICKUP;
+import static net.minecraft.world.item.Items.CHEST;
 import static net.minecraft.world.item.Items.PLAYER_HEAD;
 
 @Mixin(AbstractContainerScreen.class)
@@ -92,8 +93,28 @@ public abstract class AbstractContainerScreenMixin<T extends AbstractContainerMe
                 }
             }
             case "ᴀᴋᴛɪᴇɴᴍᴀʀᴋᴛ", "Handy-Aktien" -> {
+                storage.setStockMarketCommandRunning(false);
                 extractStockMarketHighlight(graphics, mouseX, mouseY, a);
                 extractStockMarketLegend(graphics, mouseX, mouseY, a);
+            }
+            case "Telefon" -> {
+                if (storage.isStockMarketCommandRunning()) {
+                    clickOnItemWithName("Apps", gameMode);
+                }
+            }
+            case "App-Menü" -> {
+                if (storage.isStockMarketCommandRunning()) {
+                    clickOnItemWithName("Aktien", gameMode);
+                }
+            }
+            case "Mülleimer" -> {
+                if (configuration.getOptions().autoCollectChestsFromTrashCans()) {
+                    for (int i = 0; i < 5; i++) {
+                        if (getMenu().slots.get(i).getItem().is(CHEST)) {
+                            gameMode.handleContainerInput(getMenu().containerId, i, 0, PICKUP, player);
+                        }
+                    }
+                }
             }
             default -> {
                 if (commandService.isSuperUser()) {
@@ -207,10 +228,23 @@ public abstract class AbstractContainerScreenMixin<T extends AbstractContainerMe
         return matcher.find() ? parseInt(matcher.group()) : 0;
     }
 
+    @Unique
+    private void clickOnItemWithName(String itemName, MultiPlayerGameMode gameMode) {
+        getMenu().slots.stream()
+                .filter(slot -> slot.getItem().getHoverName().getString().equals(itemName))
+                .findFirst()
+                .ifPresent(slot -> gameMode.handleContainerInput(getMenu().containerId, slot.index, 0, PICKUP, player));
+    }
+
     private static class CompanyShareTooltipPositioner implements ClientTooltipPositioner {
 
         @Override
-        public @NonNull Vector2ic positionTooltip(int screenWidth, int screenHeight, int x, int y, int tooltipWidth, int tooltipHeight) {
+        public @NonNull Vector2ic positionTooltip(int screenWidth,
+                                                  int screenHeight,
+                                                  int x,
+                                                  int y,
+                                                  int tooltipWidth,
+                                                  int tooltipHeight) {
             return new Vector2i(x, y).add(12, 8);
         }
     }

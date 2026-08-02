@@ -30,7 +30,7 @@ public abstract class PauseScreenMixin extends Screen {
     private void ucutils$createPauseMenuInvoke(CallbackInfo ci,
                                                @Local(name = "gridLayout") GridLayout gridLayout,
                                                @Local(name = "helper") GridLayout.@NotNull RowHelper helper) {
-        Button buttonWidget = Button.builder(literal("UCUtils Settings"), _ -> this.minecraft.setScreen(new MainOptionsScreen()))
+        Button buttonWidget = Button.builder(literal("UCUtils Settings"), _ -> this.minecraft.gui.setScreen(new MainOptionsScreen()))
                 .width(204)
                 .build();
 

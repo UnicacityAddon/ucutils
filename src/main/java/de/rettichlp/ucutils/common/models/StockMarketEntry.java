@@ -12,15 +12,13 @@ import java.util.regex.Pattern;
 
 import static de.rettichlp.ucutils.common.models.Company.fromDisplayName;
 import static java.awt.Color.BLUE;
+import static java.awt.Color.GREEN;
+import static java.awt.Color.ORANGE;
+import static java.awt.Color.RED;
+import static java.awt.Color.YELLOW;
 import static java.lang.Double.parseDouble;
 import static java.lang.Integer.parseInt;
 import static java.util.regex.Pattern.compile;
-import static net.minecraft.ChatFormatting.DARK_GREEN;
-import static net.minecraft.ChatFormatting.DARK_RED;
-import static net.minecraft.ChatFormatting.GOLD;
-import static net.minecraft.ChatFormatting.GREEN;
-import static net.minecraft.ChatFormatting.RED;
-import static net.minecraft.ChatFormatting.YELLOW;
 import static net.minecraft.ChatFormatting.stripFormatting;
 import static net.minecraft.core.component.DataComponents.LORE;
 
@@ -42,34 +40,25 @@ public record StockMarketEntry(Company company, double price, double changeMoney
             return null;
         }
 
-        // get color value
-        Integer colorValue = getColorValue();
-        if (colorValue == null) {
-            return null;
-        }
-
-        return new Color(colorValue);
-    }
-
-    private @Nullable Integer getColorValue() {
-        Integer colorValue;
+        // get color
+        Color color;
         double diff = this.price - this.buyPrice;
 
         if (diff >= 75) {
-            colorValue = DARK_GREEN.getColor();
+            color = GREEN.darker();
         } else if (diff >= 60) {
-            colorValue = GREEN.getColor();
+            color = GREEN;
         } else if (diff >= 45) {
-            colorValue = YELLOW.getColor();
+            color = YELLOW;
         } else if (diff >= 30) {
-            colorValue = GOLD.getColor();
+            color = ORANGE;
         } else if (diff >= 15) {
-            colorValue = RED.getColor();
+            color = RED;
         } else {
-            colorValue = DARK_RED.getColor();
+            color = RED.darker();
         }
 
-        return colorValue;
+        return color;
     }
 
     public static @Nullable StockMarketEntry fromItemStack(@NotNull ItemStack itemStack) {

@@ -3,6 +3,8 @@ package de.rettichlp.ucutils.common.gui.widgets;
 import de.rettichlp.therettingtoncompanion.gui.options.list.TRCOptionsList;
 import de.rettichlp.therettingtoncompanion.gui.widgets.base.AbstractTRCTextWidget;
 import de.rettichlp.therettingtoncompanion.gui.widgets.base.WidgetConfiguration;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 import net.minecraft.network.chat.Component;
 import org.jspecify.annotations.NonNull;
 import org.jspecify.annotations.Nullable;
@@ -15,12 +17,9 @@ import static net.minecraft.network.chat.Component.translatable;
 
 public class ServiceCountWidget extends AbstractTRCTextWidget<ServiceCountWidget.Configuration> {
 
-    private static final Component WIDGETS_SERVICE_COUNT_OPTIONS_NAME = translatable("ucutils.options.widgets.service_count.options.name");
-    private static final Component WIDGETS_SERVICE_COUNT_OPTIONS_TOOLTIP = translatable("ucutils.options.widgets.service_count.options.tooltip");
-
     @Override
     public Component text() {
-        return keyValue("Services", valueOf(storage.getActiveServices())).withColor(RED.getRGB());
+        return keyValue(translatable("ucutils.options.widgets.service_count.label"), valueOf(storage.getActiveServices())).withColor(RED.getRGB());
     }
 
     @Override
@@ -30,12 +29,12 @@ public class ServiceCountWidget extends AbstractTRCTextWidget<ServiceCountWidget
 
     @Override
     public Component getLabel() {
-        return WIDGETS_SERVICE_COUNT_OPTIONS_NAME;
+        return translatable("ucutils.options.widgets.service_count.options.name");
     }
 
     @Override
     public Component getTooltip() {
-        return WIDGETS_SERVICE_COUNT_OPTIONS_TOOLTIP;
+        return translatable("ucutils.options.widgets.service_count.options.tooltip");
     }
 
     @Override
@@ -47,5 +46,7 @@ public class ServiceCountWidget extends AbstractTRCTextWidget<ServiceCountWidget
         return super.isVisible() && (storage.getActiveServices() > 0 || isWidgetPositionScreen());
     }
 
+    @Data
+    @EqualsAndHashCode(callSuper = false)
     public static class Configuration extends WidgetConfiguration {}
 }

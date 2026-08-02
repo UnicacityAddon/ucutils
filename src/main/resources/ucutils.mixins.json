@@ -21,7 +21,8 @@
     "ClientPlayNetworkHandlerMixin",
     "EntityHitboxDebugRendererMixin",
     "EntityRendererMixin",
-    "GuiMixin",
+    "HudMixin",
+    "KeyboardHandlerMixin",
     "LocalPlayerMixin",
     "PauseScreenMixin",
     "PlayerTabOverlayMixin"

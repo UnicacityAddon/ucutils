@@ -60,6 +60,10 @@ public class Storage {
 
     @Getter
     @Setter
+    private String lastRelevantReinforcementSenderName = "";
+
+    @Getter
+    @Setter
     @Nullable
     private Vec3 blackMarketPosition;
 
@@ -109,6 +113,10 @@ public class Storage {
 
     @Getter
     @Setter
+    private boolean stockMarketCommandRunning = false;
+
+    @Getter
+    @Setter
     @Nullable
     private Vec3 summerTreasurePosition;
 
@@ -149,6 +157,8 @@ public class Storage {
         LOGGER.info("wantedEntries[{}]: {}", this.wantedEntries.size(), this.wantedEntries);
         // activeServices
         LOGGER.info("activeServices: {}", this.activeServices);
+        // lastRelevantReinforcementSenderName
+        LOGGER.info("lastRelevantReinforcementSenderName: {}", this.lastRelevantReinforcementSenderName);
         // carLocked
         LOGGER.info("carLocked: {}", this.carLocked);
         // currentJob
@@ -163,6 +173,8 @@ public class Storage {
         LOGGER.info("minecartEntityToHighlight: {}", this.minecartEntityToHighlight);
         // premium
         LOGGER.info("premium: {}", this.premium);
+        // stockMarketCommandRunning
+        LOGGER.info("stockMarketCommandRunning: {}", this.stockMarketCommandRunning);
         // summerTreasurePosition
         LOGGER.info("summerTreasurePosition: {}", this.summerTreasurePosition);
         // team

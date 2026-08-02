@@ -73,7 +73,7 @@ public abstract class UCUtilsScreen extends Screen {
 
     @Override
     public void onClose() {
-        this.minecraft.setScreen(null);
+        this.minecraft.gui.setScreen(null);
         doOnClose();
     }
 
@@ -93,7 +93,7 @@ public abstract class UCUtilsScreen extends Screen {
 
     public void back() {
         if (nonNull(this.parent)) {
-            this.minecraft.setScreen(this.parent);
+            this.minecraft.gui.setScreen(this.parent);
             doOnClose();
         } else {
             onClose();

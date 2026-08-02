@@ -27,6 +27,8 @@ public class MainOptionsScreen extends OptionsScreen {
     private static final Component HYDRATION_NAME = translatable("ucutils.options.hydration.name");
     private static final Component HYDRATION_TOOLTIP = translatable("ucutils.options.hydration.tooltip");
     private static final Component BANK_INFORMATION_NAME = translatable("ucutils.options.atm_information.name");
+    private static final Component AUTO_TRASH_CAN_NAME = translatable("ucutils.options.auto_trash_can.name");
+    private static final Component AUTO_TRASH_CAN_TOOLTIP = translatable("ucutils.options.auto_trash_can.tooltip");
 
     public MainOptionsScreen() {
         super(new PauseScreen(true));
@@ -40,20 +42,23 @@ public class MainOptionsScreen extends OptionsScreen {
         renderService.addCyclingButton(directionalLayoutWidget, REINFORCEMENT_STYLE_NAME, Options.ReinforcementType.values(), Options.ReinforcementType::getDisplayName, Options::reinforcementType, Options::reinforcementType, 308);
 
         LinearLayout directionalLayoutWidget1 = directionalLayoutWidget.addChild(horizontal().spacing(8));
-        directionalLayoutWidget1.addChild(Button.builder(TEXT_NAMETAG, button -> this.minecraft.setScreen(new NameTagOptionsScreen(this))).width(150).build());
-        directionalLayoutWidget1.addChild(Button.builder(TEXT_CHAT, button -> this.minecraft.setScreen(new ChatOptionsScreen(this))).width(150).build());
+        directionalLayoutWidget1.addChild(Button.builder(TEXT_NAMETAG, _ -> this.minecraft.gui.setScreen(new NameTagOptionsScreen(this))).width(150).build());
+        directionalLayoutWidget1.addChild(Button.builder(TEXT_CHAT, _ -> this.minecraft.gui.setScreen(new ChatOptionsScreen(this))).width(150).build());
 
         LinearLayout directionalLayoutWidget2 = directionalLayoutWidget.addChild(horizontal().spacing(8));
-        directionalLayoutWidget2.addChild(Button.builder(TEXT_CAR, button -> this.minecraft.setScreen(new CarOptionsScreen(this))).width(150).build());
-        directionalLayoutWidget2.addChild(Button.builder(TEXT_SOUNDS, button -> this.minecraft.setScreen(new SoundOptionsScreen(this))).width(150).build());
+        directionalLayoutWidget2.addChild(Button.builder(TEXT_CAR, _ -> this.minecraft.gui.setScreen(new CarOptionsScreen(this))).width(150).build());
+        directionalLayoutWidget2.addChild(Button.builder(TEXT_SOUNDS, _ -> this.minecraft.gui.setScreen(new SoundOptionsScreen(this))).width(150).build());
 
         LinearLayout directionalLayoutWidget3 = directionalLayoutWidget.addChild(horizontal().spacing(8));
-        directionalLayoutWidget3.addChild(Button.builder(TEXT_WIDGETS, button -> this.minecraft.setScreen(new TRCOptionsScreen("widgets", this, true))).width(150).build());
-        directionalLayoutWidget3.addChild(Button.builder(TEXT_NOTIFICATIONS, button -> this.minecraft.setScreen(new NotificationOptionsScreen(this))).width(150).build());
+        directionalLayoutWidget3.addChild(Button.builder(TEXT_WIDGETS, _ -> this.minecraft.gui.setScreen(new TRCOptionsScreen("widgets", this, true))).width(150).build());
+        directionalLayoutWidget3.addChild(Button.builder(TEXT_NOTIFICATIONS, _ -> this.minecraft.gui.setScreen(new NotificationOptionsScreen(this))).width(150).build());
 
         LinearLayout directionalLayoutWidget4 = directionalLayoutWidget.addChild(horizontal().spacing(8));
         renderService.addToggleButton(directionalLayoutWidget4, HYDRATION_NAME, HYDRATION_TOOLTIP, Options::showHydration, Options::showHydration, 150);
         renderService.addCyclingButton(directionalLayoutWidget4, BANK_INFORMATION_NAME, Options.AtmInformationType.values(), Options.AtmInformationType::getDisplayName, Options::atmInformationType, Options::atmInformationType, 150);
+
+        LinearLayout directionalLayoutWidget5 = directionalLayoutWidget.addChild(horizontal().spacing(8));
+        renderService.addToggleButton(directionalLayoutWidget5, AUTO_TRASH_CAN_NAME, AUTO_TRASH_CAN_TOOLTIP, Options::autoCollectChestsFromTrashCans, Options::autoCollectChestsFromTrashCans, 150);
 
         directionalLayoutWidget.visitWidgets(this::addRenderableWidget);
     }

@@ -34,7 +34,7 @@ public enum ScreenshotType {
     private final String displayName;
 
     public void take(Consumer<File> onSuccess) {
-        Minecraft.getInstance().execute(() -> takeScreenshot(Minecraft.getInstance().getMainRenderTarget(), nativeImage -> {
+        Minecraft.getInstance().execute(() -> takeScreenshot(Minecraft.getInstance().gameRenderer.mainRenderTarget(), nativeImage -> {
             try {
                 File screenshotFile = getScreenshotFile();
                 nativeImage.writeToFile(screenshotFile);

@@ -26,26 +26,19 @@ import static net.minecraft.network.chat.Component.translatable;
 
 public class PayDayWidget extends AbstractTRCTextWidget<PayDayWidget.Configuration> {
 
-    private static final Component WIDGETS_PAYDAY_OPTIONS_NAME = translatable("ucutils.options.widgets.payday.options.name");
-    private static final Component WIDGETS_PAYDAY_OPTIONS_TOOLTIP = translatable("ucutils.options.widgets.payday.options.tooltip");
-    private static final Component WIDGETS_PAYDAY_OPTIONS_SALARY_NAME = translatable("ucutils.options.widgets.payday.options.salary.name");
-    private static final Component WIDGETS_PAYDAY_OPTIONS_SALARY_TOOLTIP = translatable("ucutils.options.widgets.payday.options.salary.tooltip");
-    private static final Component WIDGETS_PAYDAY_OPTIONS_EXPERIENCE_NAME = translatable("ucutils.options.widgets.payday.options.experience.name");
-    private static final Component WIDGETS_PAYDAY_OPTIONS_EXPERIENCE_TOOLTIP = translatable("ucutils.options.widgets.payday.options.experience.tooltip");
-
     @Override
     public Component text() {
-        MutableComponent payDayInfoText = keyValue("PayDay", empty()
+        MutableComponent payDayInfoText = keyValue(translatable("ucutils.options.widgets.payday.label"), empty()
                 .append(literal(valueOf(configuration.getMinutesSinceLastPayDay())))
                 .append(literal("/").withStyle(DARK_GRAY))
                 .append(literal("60")));
 
         if (getWidgetConfiguration().isShowSalary()) {
-            payDayInfoText.append(" ").append(keyValue("Gehalt", configuration.getPredictedPayDaySalary() + "$"));
+            payDayInfoText.append(" ").append(keyValue(translatable("ucutils.options.widgets.payday.label_salary"), configuration.getPredictedPayDaySalary() + "$"));
         }
 
         if (getWidgetConfiguration().isShowExperience()) {
-            payDayInfoText.append(" ").append(keyValue("Exp", valueOf(configuration.getPredictedPayDayExp())));
+            payDayInfoText.append(" ").append(keyValue(translatable("ucutils.options.widgets.payday.label_exp"), valueOf(configuration.getPredictedPayDayExp())));
         }
 
         Color fontColor = configuration.getMinutesSinceLastPayDay() >= 55 && configuration.getMoneyBankAmount() > 100000 && (currentTimeMillis() / 500 % 2 == 0)
@@ -62,18 +55,18 @@ public class PayDayWidget extends AbstractTRCTextWidget<PayDayWidget.Configurati
 
     @Override
     public Component getLabel() {
-        return WIDGETS_PAYDAY_OPTIONS_NAME;
+        return translatable("ucutils.options.widgets.payday.options.name");
     }
 
     @Override
     public Component getTooltip() {
-        return WIDGETS_PAYDAY_OPTIONS_TOOLTIP;
+        return translatable("ucutils.options.widgets.payday.options.tooltip");
     }
 
     @Override
     public void addOptions(@NonNull TRCOptionsList optionsList) {
-        optionsList.addToggleButton(WIDGETS_PAYDAY_OPTIONS_SALARY_NAME, create(WIDGETS_PAYDAY_OPTIONS_SALARY_TOOLTIP), getWidgetConfiguration().isShowSalary(), (_, value) -> getWidgetConfiguration().setShowSalary(value == ON));
-        optionsList.addToggleButton(WIDGETS_PAYDAY_OPTIONS_EXPERIENCE_NAME, create(WIDGETS_PAYDAY_OPTIONS_EXPERIENCE_TOOLTIP), getWidgetConfiguration().isShowExperience(), (_, value) -> getWidgetConfiguration().setShowExperience(value == ON));
+        optionsList.addToggleButton(translatable("ucutils.options.widgets.payday.options.salary.name"), create(translatable("ucutils.options.widgets.payday.options.salary.tooltip")), getWidgetConfiguration().isShowSalary(), (_, value) -> getWidgetConfiguration().setShowSalary(value == ON));
+        optionsList.addToggleButton(translatable("ucutils.options.widgets.payday.options.experience.name"), create(translatable("ucutils.options.widgets.payday.options.experience.tooltip")), getWidgetConfiguration().isShowExperience(), (_, value) -> getWidgetConfiguration().setShowExperience(value == ON));
     }
 
     @Data

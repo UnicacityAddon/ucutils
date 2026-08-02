@@ -25,6 +25,7 @@ import static java.lang.Math.max;
 import static java.lang.System.currentTimeMillis;
 import static java.util.Optional.ofNullable;
 import static java.util.regex.Pattern.compile;
+import static net.minecraft.ChatFormatting.GOLD;
 import static net.minecraft.ChatFormatting.GRAY;
 import static net.minecraft.ChatFormatting.RED;
 import static net.minecraft.ChatFormatting.UNDERLINE;
@@ -42,6 +43,7 @@ public class EconomyListener implements IMessageReceiveListener {
     private static final Pattern BANK_TRANSFER_FBANK_PATTERN = compile("^Du hast der Fraktion (?<faction>.+) (?<amount>\\d+)\\$ überwiesen!$");
     private static final Pattern BANK_NEW_BALANCE_BANK_PATTERN = compile("^Neuer Bankkontostand: (?<amount>\\d+)\\$$");
     private static final Pattern BANK_NEW_BALANCE_CASH_PATTERN = compile("^Neuer Bargeldbestand: (?<amount>\\d+)\\$$");
+    private static final Pattern BANK_DEPOSIT_ATM_TOO_MUCH_PATTERN = compile("^Du versuchst (?<amount>\\d+)\\$ einzuzahlen, der Bankautomat hat aber nur Platz für (?<availableAmount>\\d+)\\$\\. Fortfahren\\? \\[Bestätigen]$");
 
     // cash
     private static final Pattern CASH_GIVE_PATTERN = compile("^Du hast (?:\\[UC])?(?<playerName>[a-zA-Z0-9_]+) (?<amount>\\d+)\\$ gegeben!$");
@@ -63,7 +65,7 @@ public class EconomyListener implements IMessageReceiveListener {
 
     // stock market
     private static final Pattern STOCK_MARKET_BUY_PATTERN = compile("^\\[Aktien] Du hast (?<amount>\\d+)x (?<company>.+) für (?<price>\\d+)\\$ gekauft\\. \\(Gebühr: (?<fee>\\d+)\\$\\)$");
-    private static final Pattern STOCK_MARKET_SELL_PATTERN = compile("^\\[Aktien] (?<amount>\\d+)x (?<company>.+) verkauft für (?<price>\\d+)\\$\\. \\(Gebühr: (?<fee>\\d+)\\$\\) (?<brutto>[+-]\\d+)\\$ Brutto / (?<netto>[+-]\\d+)\\$ Netto$");
+    private static final Pattern STOCK_MARKET_SELL_PATTERN = compile("^\\[Aktien] (?<amount>\\d+)x (?<company>.+) verkauft für (?<price>\\d+)\\$\\. \\(Gebühr: (?<fee>\\d+)\\$, Steuer: (?<tax>\\d+)\\$\\) (?<brutto>[+-]\\d+)\\$ Brutto / (?<netto>[+-]\\d+)\\$ Netto$");
 
     // other
     private static final Pattern BUSINESS_CASH_PATTERN = compile("^Kasse: (\\d+)\\$$");
@@ -145,6 +147,22 @@ public class EconomyListener implements IMessageReceiveListener {
             int amount = parseInt(bankNewBalanceCashMatcher.group("amount"));
             configuration.setMoneyCashAmount(amount);
             return true;
+        }
+
+        Matcher bankDepositAtmTooMuchMatcher = BANK_DEPOSIT_ATM_TOO_MUCH_PATTERN.matcher(message);
+        if (bankDepositAtmTooMuchMatcher.find()) {
+            int availableAmount = parseInt(bankDepositAtmTooMuchMatcher.group("availableAmount"));
+
+            MutableComponent modified = text.copy()
+                    .append(SPACE)
+                    .append(literal("[" + availableAmount + "$ einzahlen]").withStyle(style -> style
+                            .withColor(GOLD)
+                            .withClickEvent(new ClickEvent.RunCommand("/bank einzahlen " + availableAmount))
+                            .withHoverEvent(new HoverEvent.ShowText(literal("Nur " + availableAmount + "$ einzahlen").withStyle(GOLD)))));
+
+            player.sendSystemMessage(modified);
+
+            return false;
         }
 
         Matcher cashGiveMatcher = CASH_GIVE_PATTERN.matcher(message);
