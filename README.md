@@ -66,6 +66,7 @@ und [The Rettington Companion](https://modrinth.com/mod/the-rettington-companion
 - Kisten werden automatisch aus Mülleimern eingesammelt
 - Es werden bestimmte Nachrichten im Chat ausgeblendet (konfigurierbar
   über [The Rettington Companion](https://modrinth.com/mod/the-rettington-companion))
+- Sollte ein Spieler abwesend sein, wird bei `/id` angezeigt wie lang dieser schon abwesend ist
 
 ### Auto
 
