@@ -90,6 +90,8 @@
   "ucutils.options.hydration.tooltip": "Zeigt deinen Durst über der Hungeranzeige an",
   "ucutils.options.auto_trash_can.name": "Automatischer Mülleimer",
   "ucutils.options.auto_trash_can.tooltip": "Sammelt automatisch Kisten aus Mülleimern",
+  "ucutils.options.highlight_corpses.name": "Leichen hervorheben",
+  "ucutils.options.highlight_corpses.tooltip": "Lässt Leichen in der Farbe ihrer Fraktion leuchten",
   "ucutils.options.check_unicacity_server.name": "UnicaCity Check",
   "ucutils.options.check_unicacity_server.tooltip": "Überprüft ob du auf UnicaCity spielst. Wenn aktiviert sind bestimmte Funktionen nur auf UnicaCity aktiviert um Probleme mit anderen Servern zu vermeiden.",
   "ucutils.options.faction_chat_color.name": "Farbe des Fraktionschats",

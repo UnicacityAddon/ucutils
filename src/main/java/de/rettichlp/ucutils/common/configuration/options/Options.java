@@ -37,6 +37,7 @@ public class Options {
     private AtmInformationType atmInformationType = NONE;
     private boolean showHydration = true;
     private boolean autoCollectChestsFromTrashCans = false;
+    private boolean highlightCorpses = true;
 
     @Getter
     @AllArgsConstructor

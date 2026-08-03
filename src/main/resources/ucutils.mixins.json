@@ -22,6 +22,7 @@
     "EntityHitboxDebugRendererMixin",
     "EntityRendererMixin",
     "HudMixin",
+    "ItemEntityRendererMixin",
     "KeyboardHandlerMixin",
     "LocalPlayerMixin",
     "PauseScreenMixin",
