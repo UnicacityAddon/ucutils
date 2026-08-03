@@ -3,11 +3,13 @@ package de.rettichlp.ucutils.common.gui.screens.options;
 import de.rettichlp.therettingtoncompanion.gui.screens.TRCOptionsScreen;
 import de.rettichlp.ucutils.common.configuration.options.Options;
 import de.rettichlp.ucutils.common.gui.screens.OptionsScreen;
+import de.rettichlp.ucutils.common.gui.screens.components.ToggleButtonWidget;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.layouts.LinearLayout;
 import net.minecraft.client.gui.screens.PauseScreen;
 import net.minecraft.network.chat.Component;
 
+import static de.rettichlp.ucutils.UCUtils.commandService;
 import static de.rettichlp.ucutils.UCUtils.renderService;
 import static net.minecraft.client.gui.layouts.LinearLayout.horizontal;
 import static net.minecraft.client.gui.layouts.LinearLayout.vertical;
@@ -61,7 +63,8 @@ public class MainOptionsScreen extends OptionsScreen {
 
         LinearLayout directionalLayoutWidget5 = directionalLayoutWidget.addChild(horizontal().spacing(8));
         renderService.addToggleButton(directionalLayoutWidget5, AUTO_TRASH_CAN_NAME, AUTO_TRASH_CAN_TOOLTIP, Options::autoCollectChestsFromTrashCans, Options::autoCollectChestsFromTrashCans, 150);
-        renderService.addToggleButton(directionalLayoutWidget5, HIGHLIGHT_CORPSES_NAME, HIGHLIGHT_CORPSES_TOOLTIP, Options::highlightCorpses, Options::highlightCorpses, 150);
+        ToggleButtonWidget toggleButtonWidget = renderService.addToggleButton(directionalLayoutWidget5, HIGHLIGHT_CORPSES_NAME, HIGHLIGHT_CORPSES_TOOLTIP, Options::highlightCorpses, Options::highlightCorpses, 150);
+        toggleButtonWidget.active = commandService.isSuperUser();
 
         directionalLayoutWidget.visitWidgets(this::addRenderableWidget);
     }
