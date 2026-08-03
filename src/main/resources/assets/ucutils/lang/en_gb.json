@@ -1,4 +1,5 @@
 {
+  "ucutils.feature_disabled": "This feature is disabled due to UnicaCity guidelines!",
   "ucutils.legend": "Legend",
   "ucutils.minimum_price": "Minimum price",
   "ucutils.price_difference": "Price difference",

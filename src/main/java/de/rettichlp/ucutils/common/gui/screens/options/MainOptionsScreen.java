@@ -13,7 +13,9 @@ import static de.rettichlp.ucutils.UCUtils.commandService;
 import static de.rettichlp.ucutils.UCUtils.renderService;
 import static net.minecraft.client.gui.layouts.LinearLayout.horizontal;
 import static net.minecraft.client.gui.layouts.LinearLayout.vertical;
+import static net.minecraft.network.chat.CommonComponents.NEW_LINE;
 import static net.minecraft.network.chat.Component.translatable;
+import static net.minecraft.util.CommonColors.RED;
 
 public class MainOptionsScreen extends OptionsScreen {
 
@@ -32,7 +34,7 @@ public class MainOptionsScreen extends OptionsScreen {
     private static final Component AUTO_TRASH_CAN_NAME = translatable("ucutils.options.auto_trash_can.name");
     private static final Component AUTO_TRASH_CAN_TOOLTIP = translatable("ucutils.options.auto_trash_can.tooltip");
     private static final Component HIGHLIGHT_CORPSES_NAME = translatable("ucutils.options.highlight_corpses.name");
-    private static final Component HIGHLIGHT_CORPSES_TOOLTIP = translatable("ucutils.options.highlight_corpses.tooltip");
+    private static final Component HIGHLIGHT_CORPSES_TOOLTIP = translatable("ucutils.options.highlight_corpses.tooltip").append(NEW_LINE).append(translatable("ucutils.feature_disabled").withColor(RED));
 
     public MainOptionsScreen() {
         super(new PauseScreen(true));
