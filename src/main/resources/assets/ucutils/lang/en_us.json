@@ -1,4 +1,5 @@
 {
+  "ucutils.feature_disabled": "This feature is disabled due to UnicaCity guidelines!",
   "ucutils.legend": "Legend",
   "ucutils.minimum_price": "Minimum price",
   "ucutils.price_difference": "Price difference",
@@ -90,6 +91,8 @@
   "ucutils.options.hydration.tooltip": "Displays your hydration above your hunger bar",
   "ucutils.options.auto_trash_can.name": "Auto trash can",
   "ucutils.options.auto_trash_can.tooltip": "Automatically collects chests from trash cans",
+  "ucutils.options.highlight_corpses.name": "Highlight corpses",
+  "ucutils.options.highlight_corpses.tooltip": "Makes corpses glow in their faction's color",
   "ucutils.options.check_unicacity_server.name": "Check for UnicaCity",
   "ucutils.options.check_unicacity_server.tooltip": "Checks if you are playing on the UnicaCity server. If enabled, certain features will only be available on the UnicaCity server to prevent issues on other servers.",
   "ucutils.options.faction_chat_color.name": "Faction chat color",
