@@ -61,6 +61,8 @@ public class TheRettingtonCompanionIntegration implements TheRettingtonCompanion
                 toHiddenMessage(compile(" » Mit deinen Votes kannst du uns täglich unterstützen!")),
                 toHiddenMessage(compile(" » Du siehst bei /vote alle Seiten bei welchen du voten kannst\\.")),
                 toHiddenMessage(compile(" » Du erhältst diese Nachricht nach dem Voten nicht mehr\\.")),
+                // afk
+                toHiddenMessage(compile(" {2}Info: Deine PayDay-Zeit läuft nun weiter\\.")),
                 // rubbish
                 toHiddenMessage(compile("Du hast etwas aus dem Mülleimer genommen\\.")),
                 toHiddenMessage(compile("Du durchwühlst den Mülleimer\\.")),
