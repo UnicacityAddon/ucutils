@@ -10,14 +10,14 @@ import net.minecraft.network.chat.Component;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 
-import static de.rettichlp.ucutils.common.configuration.options.OtherOptions.AtmInformationType.NONE;
+import static de.rettichlp.ucutils.common.configuration.options.MiscellaneousOptions.AtmInformationType.NONE;
 import static net.minecraft.client.gui.components.Tooltip.create;
 import static net.minecraft.network.chat.Component.translatable;
 
 @Getter
 @Setter
 @Accessors(fluent = true)
-public class OtherOptions {
+public class MiscellaneousOptions {
 
     private boolean showHydration = true;
     private AtmInformationType atmInformationType = NONE;

@@ -24,7 +24,7 @@ public class MainOptionsScreen extends OptionsScreen {
     private static final Component TEXT_SOUNDS = translatable("ucutils.options.text.sounds");
     private static final Component TEXT_WIDGETS = translatable("ucutils.options.text.widgets");
     private static final Component TEXT_NOTIFICATIONS = translatable("ucutils.options.text.notifications");
-    private static final Component TEXT_OTHER = translatable("ucutils.options.text.other");
+    private static final Component TEXT_MISCELLANEOUS = translatable("ucutils.options.text.miscellaneous");
 
     public MainOptionsScreen() {
         super(new PauseScreen(true));
@@ -49,7 +49,7 @@ public class MainOptionsScreen extends OptionsScreen {
         directionalLayoutWidget3.addChild(Button.builder(TEXT_WIDGETS, _ -> this.minecraft.gui.setScreen(new TRCOptionsScreen("widgets", this, true))).width(150).build());
         directionalLayoutWidget3.addChild(Button.builder(TEXT_NOTIFICATIONS, _ -> this.minecraft.gui.setScreen(new NotificationOptionsScreen(this))).width(150).build());
 
-        directionalLayoutWidget.addChild(Button.builder(TEXT_OTHER, _ -> this.minecraft.gui.setScreen(new OtherOptionsScreen(this))).width(308).build());
+        directionalLayoutWidget.addChild(Button.builder(TEXT_MISCELLANEOUS, _ -> this.minecraft.gui.setScreen(new MiscellaneousOptionsScreen(this))).width(308).build());
 
         directionalLayoutWidget.visitWidgets(this::addRenderableWidget);
     }

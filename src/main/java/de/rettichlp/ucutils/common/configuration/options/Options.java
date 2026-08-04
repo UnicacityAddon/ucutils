@@ -29,7 +29,7 @@ public class Options {
     private final CarOptions car = new CarOptions();
     private final SoundOptions sound = new SoundOptions();
     private final NotificationOptions notification = new NotificationOptions();
-    private final OtherOptions other = new OtherOptions();
+    private final MiscellaneousOptions miscellaneous = new MiscellaneousOptions();
 
     private boolean checkUnicacityServer = true;
     private ReinforcementType reinforcementType = UNICACITYADDON;

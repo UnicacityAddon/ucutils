@@ -51,7 +51,7 @@
   "ucutils.options.text.widgets": "Widgets",
   "ucutils.options.text.sounds": "Sounds",
   "ucutils.options.text.notifications": "Benachrichtigungen",
-  "ucutils.options.text.other": "Sonstiges",
+  "ucutils.options.text.miscellaneous": "Sonstiges",
 
   "ucutils.options.car.premium_info": "Diese Einstellungen sind nur ohne Premium relevant. Für Premium Spieler können diese Einstellungen auf UnicaCity mit '/settings' getätigt werden.",
   "ucutils.options.car.general.fast_find.name": "Instant finden",
