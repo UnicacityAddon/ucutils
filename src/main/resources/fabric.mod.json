@@ -40,7 +40,10 @@
     "minecraft": "~26.2",
     "java": ">=25",
     "fabric-api": "*",
-    "the-rettington-companion": ">=2.2.0"
+    "the-rettington-companion": [
+      "0.0.0",
+      ">=2.2.0"
+    ]
   },
   "recommends": {
     "modmenu": ">=20.0.0"

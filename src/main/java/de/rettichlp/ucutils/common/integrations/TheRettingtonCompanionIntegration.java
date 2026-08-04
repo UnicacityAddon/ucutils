@@ -46,6 +46,7 @@ public class TheRettingtonCompanionIntegration implements TheRettingtonCompanion
                 toHiddenMessage(compile("» Schütze deinen Account mit /passwort new \\[Passwort]\\.")),
                 // rotators
                 toHiddenMessage(compile("\\[F\\.A\\.Q] Du hast Fragen zum Server\\? Dann schau doch mal in unser FAQ rein\\.\\n\\[F\\.A\\.Q] Dort sind viele Antworten auf all deine Fragen\\.")),
+                toHiddenMessage(compile("\\[Shop] Hast du schon die tollen Sachen in unserem Shop entdeckt\\?\\n\\[Shop] Wir bedanken uns bei allen Unterstützern!")),
                 toHiddenMessage(compile("\\[Voten] Du kannst uns täglich mit deinen Votes unterstützen!\\n\\[Voten] Sammle genug Votepunkte um dir tolle Geschenke im Voteshop zu holen!")),
                 toHiddenMessage(compile("\\[Forum] Hast du schon einen Account in unserem Forum\\?\\n\\[Forum] Werde noch heute ein Teil dieser großartigen Community!")),
                 toHiddenMessage(compile("\\[Regeln] Unwissenheit schützt vor Strafe nicht!\\n\\[Regeln] Informiere dich in unserem Regelwerk\\.")),
@@ -61,6 +62,8 @@ public class TheRettingtonCompanionIntegration implements TheRettingtonCompanion
                 toHiddenMessage(compile(" » Mit deinen Votes kannst du uns täglich unterstützen!")),
                 toHiddenMessage(compile(" » Du siehst bei /vote alle Seiten bei welchen du voten kannst\\.")),
                 toHiddenMessage(compile(" » Du erhältst diese Nachricht nach dem Voten nicht mehr\\.")),
+                // afk
+                toHiddenMessage(compile(" {2}Info: Deine PayDay-Zeit läuft nun weiter\\.")),
                 // rubbish
                 toHiddenMessage(compile("Du hast etwas aus dem Mülleimer genommen\\.")),
                 toHiddenMessage(compile("Du durchwühlst den Mülleimer\\.")),

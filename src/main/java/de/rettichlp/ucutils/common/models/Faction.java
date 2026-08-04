@@ -3,6 +3,8 @@ package de.rettichlp.ucutils.common.models;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import net.minecraft.network.chat.TextColor;
+import net.minecraft.world.Nameable;
+import org.jspecify.annotations.NonNull;
 
 import static net.minecraft.network.chat.TextColor.BLUE;
 import static net.minecraft.network.chat.TextColor.DARK_AQUA;
@@ -41,4 +43,24 @@ public enum Faction {
     private final boolean isBadFaction;
     private final TextColor color;
     private final String icon;
+
+    public static @NonNull Faction getFactionByCorpse(@NonNull Nameable itemEntity) {
+        if (itemEntity.getCustomName() == null) {
+            throw new IllegalArgumentException("ItemEntity has no custom name");
+        }
+
+        String corpseName = itemEntity.getCustomName().getString();
+
+        for (Faction faction : Faction.values()) {
+            if (faction == NULL) {
+                continue;
+            }
+
+            if (corpseName.contains(faction.getIcon())) {
+                return faction;
+            }
+        }
+
+        return NULL;
+    }
 }

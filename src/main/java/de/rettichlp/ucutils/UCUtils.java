@@ -91,7 +91,7 @@ public class UCUtils implements ModInitializer {
 
             // delayed to wait for afk message if in same minute
             utilService.delayedAction(() -> {
-                if (storage.isUnicaCity() && !nameTagService.isAfk(player.getPlainTextName()) && configuration.getOptions().showHydration()) {
+                if (storage.isUnicaCity() && !nameTagService.isAfk(player.getPlainTextName()) && configuration.getOptions().miscellaneous().showHydration()) {
                     commandService.sendCommandWithHiddenOutput("health");
                 }
             }, 50);

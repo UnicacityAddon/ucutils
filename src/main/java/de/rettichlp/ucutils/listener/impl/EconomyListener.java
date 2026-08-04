@@ -91,7 +91,7 @@ public class EconomyListener implements IMessageReceiveListener {
             List<String> commands = new ArrayList<>();
             commands.add("atminfo");
 
-            switch (configuration.getOptions().atmInformationType()) {
+            switch (configuration.getOptions().miscellaneous().atmInformationType()) {
                 case NONE -> {
                 }
                 case F_BANK -> commands.add("fbank");

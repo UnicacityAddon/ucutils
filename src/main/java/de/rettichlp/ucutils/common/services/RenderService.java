@@ -45,7 +45,7 @@ public class RenderService {
         widget.addChild(cycleButton);
     }
 
-    public void addToggleButton(@NotNull LinearLayout widget,
+    public ToggleButtonWidget addToggleButton(@NotNull LinearLayout widget,
                                 Component name,
                                 Component tooltip,
                                 BiConsumer<Options, Boolean> onPress,
@@ -57,6 +57,7 @@ public class RenderService {
         toggleButton.setTooltip(Tooltip.create(tooltip));
 
         widget.addChild(toggleButton);
+        return toggleButton;
     }
 
     public static @NonNull MutableComponent keyValue(String key, String value) {
