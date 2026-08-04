@@ -90,7 +90,7 @@ public class ClientPacketListenerMixin {
             }
             case Dolphin dolphin when configuration.getOptions().miscellaneous().hideDolphins() && !dolphin.hasCustomName() -> {
                 world.removeEntity(dolphin.getId(), DISCARDED);
-                LOGGER.info("Dophin from fisher chest was not spawned at {}", entityPos);
+                LOGGER.info("Dolphin from fisher chest was not spawned at {}", entityPos);
             }
             case ArmorStand armorStand when armorStand.hasCustomName() -> {
                 String customNameString = requireNonNull(armorStand.getCustomName()).getString();
