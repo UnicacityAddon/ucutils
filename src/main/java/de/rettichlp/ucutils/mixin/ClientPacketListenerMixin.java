@@ -15,6 +15,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import static de.rettichlp.ucutils.UCUtils.LOGGER;
+import static de.rettichlp.ucutils.UCUtils.configuration;
 import static de.rettichlp.ucutils.UCUtils.player;
 import static de.rettichlp.ucutils.UCUtils.storage;
 import static java.util.Objects.requireNonNull;
@@ -87,9 +88,9 @@ public class ClientPacketListenerMixin {
                     }
                 }
             }
-            case Dolphin dolphin when !dolphin.hasCustomName() -> {
-                LOGGER.info("Dolphin from fisher chest was not spawned at {}", entityPos);
+            case Dolphin dolphin when configuration.getOptions().miscellaneous().hideDolphins() && !dolphin.hasCustomName() -> {
                 world.removeEntity(dolphin.getId(), DISCARDED);
+                LOGGER.info("Dolphin from fisher chest was not spawned at {}", entityPos);
             }
             case ArmorStand armorStand when armorStand.hasCustomName() -> {
                 String customNameString = requireNonNull(armorStand.getCustomName()).getString();
