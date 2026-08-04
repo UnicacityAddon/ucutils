@@ -36,6 +36,7 @@ import static net.minecraft.ChatFormatting.RED;
 import static net.minecraft.ChatFormatting.YELLOW;
 import static net.minecraft.network.chat.Component.empty;
 import static net.minecraft.network.chat.Component.literal;
+import static net.minecraft.network.chat.TextColor.LIGHT_PURPLE;
 
 @UCUtilsListener
 public class MedicListener implements IMessageReceiveListener {
@@ -45,6 +46,8 @@ public class MedicListener implements IMessageReceiveListener {
 
     private static final Pattern MEDIC_BANDAGE_PATTERN = compile("^(?:\\[UC])?(?<playerName>[a-zA-Z0-9_]+) hat dich bandagiert\\.$");
     private static final Pattern MEDIC_BANDAGE_GIVE_PATTERN = compile("^Du hast (?:\\[UC])?(?<playerName>[a-zA-Z0-9_]+) bandagiert\\.$");
+    private static final Pattern MEDIC_BANDAGE_ALREADY_GIVEN_PATTERN = compile("^Der Spieler ist bereits bandagiert\\. \\(\\d+ Sekunden? verbleibend\\)$");
+    private static final Pattern MEDIC_BANDAGE_ALREADY_GIVEN_SELF_PATTERN = compile("^Du bist bereits bandagiert\\. \\(\\d+ Sekunden? verbleibend\\)$");
     private static final Pattern MEDIC_PILL_PATTERN = compile("^\\[Medic] Doktor (?:\\[UC])?(?<playerName>[a-zA-Z0-9_]+) hat dir Schmerzpillen verabreicht\\.$");
     private static final Pattern MEDIC_PILL_GIVE_PATTERN = compile("^\\[Medic] Du hast (?:\\[UC])?(?<playerName>[a-zA-Z0-9_]+) Schmerzpillen verabreicht\\.$");
     private static final Pattern MEDIC_REVIVE_START_PATTERN = compile("^Du beginnst mit der Wiederbelebung von (?:\\[UC])?(?<playerName>[a-zA-Z0-9_]+)\\.\\.\\.$");
@@ -72,6 +75,18 @@ public class MedicListener implements IMessageReceiveListener {
             String playerName = medicBandageGiveMatcher.group("playerName");
             storage.getMedicBandageCooldowns().put(playerName, now().plus(MEDIC_BANDAGE_DURATION));
             return true;
+        }
+
+        Matcher medicBandageAlreadyGivenMatcher = MEDIC_BANDAGE_ALREADY_GIVEN_PATTERN.matcher(message);
+        if (medicBandageAlreadyGivenMatcher.find()) {
+            player.sendOverlayMessage(literal(message.replace(".", ":").replace("(", "").replace(")", "")).withColor(LIGHT_PURPLE));
+            return false;
+        }
+
+        Matcher medicBandageAlreadyGivenSelfMatcher = MEDIC_BANDAGE_ALREADY_GIVEN_SELF_PATTERN.matcher(message);
+        if (medicBandageAlreadyGivenSelfMatcher.find()) {
+            player.sendOverlayMessage(literal(message.replace(".", ":").replace("(", "").replace(")", "")).withColor(LIGHT_PURPLE));
+            return false;
         }
 
         Matcher medicPillMatcher = MEDIC_PILL_PATTERN.matcher(message);
