@@ -1,18 +1,20 @@
 package de.rettichlp.ucutils.mixin;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.multiplayer.ClientPacketListener;
 import net.minecraft.network.protocol.game.ClientboundSetEntityDataPacket;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.animal.dolphin.Dolphin;
 import net.minecraft.world.entity.decoration.ArmorStand;
 import net.minecraft.world.entity.npc.villager.Villager;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import static de.rettichlp.ucutils.UCUtils.LOGGER;
 import static de.rettichlp.ucutils.UCUtils.player;
 import static de.rettichlp.ucutils.UCUtils.storage;
 import static java.util.Objects.requireNonNull;
@@ -23,6 +25,7 @@ import static net.minecraft.ChatFormatting.RED;
 import static net.minecraft.ChatFormatting.YELLOW;
 import static net.minecraft.network.chat.Component.empty;
 import static net.minecraft.network.chat.Component.literal;
+import static net.minecraft.world.entity.Entity.RemovalReason.DISCARDED;
 import static org.spongepowered.asm.mixin.injection.At.Shift.AFTER;
 
 @Mixin(ClientPacketListener.class)
@@ -37,7 +40,7 @@ public class ClientPacketListenerMixin {
             return;
         }
 
-        Level world = Minecraft.getInstance().level;
+        ClientLevel world = Minecraft.getInstance().level;
         if (world == null) {
             return;
         }
@@ -83,6 +86,10 @@ public class ClientPacketListenerMixin {
                                 .append(literal("Der Bluthändler ist in der Nähe!").withStyle(GRAY)));
                     }
                 }
+            }
+            case Dolphin dolphin when !dolphin.hasCustomName() -> {
+                LOGGER.info("Dolphin from fisher chest was not spawned at {}", entityPos);
+                world.removeEntity(dolphin.getId(), DISCARDED);
             }
             case ArmorStand armorStand when armorStand.hasCustomName() -> {
                 String customNameString = requireNonNull(armorStand.getCustomName()).getString();

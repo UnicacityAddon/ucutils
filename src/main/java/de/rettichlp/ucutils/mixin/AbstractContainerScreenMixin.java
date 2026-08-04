@@ -108,7 +108,7 @@ public abstract class AbstractContainerScreenMixin<T extends AbstractContainerMe
                 }
             }
             case "Mülleimer" -> {
-                if (configuration.getOptions().autoCollectChestsFromTrashCans()) {
+                if (configuration.getOptions().miscellaneous().autoCollectChestsFromTrashCans()) {
                     for (int i = 0; i < 5; i++) {
                         if (getMenu().slots.get(i).getItem().is(CHEST)) {
                             gameMode.handleContainerInput(getMenu().containerId, i, 0, PICKUP, player);
