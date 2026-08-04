@@ -92,7 +92,7 @@ public abstract class HudMixin {
             return;
         }
 
-        if (!configuration.getOptions().showHydration() || storage.getHydration() < 0) {
+        if (!configuration.getOptions().miscellaneous().showHydration() || storage.getHydration() < 0) {
             return;
         }
 

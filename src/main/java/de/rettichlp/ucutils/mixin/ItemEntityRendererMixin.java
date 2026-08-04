@@ -29,7 +29,7 @@ public abstract class ItemEntityRendererMixin extends EntityRenderer<ItemEntity,
             return;
         }
 
-        if (!configuration.getOptions().highlightCorpses()) {
+        if (!configuration.getOptions().miscellaneous().highlightCorpses()) {
             return;
         }
 
