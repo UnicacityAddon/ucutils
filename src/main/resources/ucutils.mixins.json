@@ -21,6 +21,7 @@
     "ClientPlayNetworkHandlerMixin",
     "EntityHitboxDebugRendererMixin",
     "EntityRendererMixin",
+    "FontSetMixin",
     "HudMixin",
     "ItemEntityRendererMixin",
     "KeyboardHandlerMixin",
