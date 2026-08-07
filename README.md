@@ -70,6 +70,7 @@ und [The Rettington Companion](https://modrinth.com/mod/the-rettington-companion
 - Die Nachricht, dass man keine Bandage vergeben kann, wird nur noch in der ActionBar angezeigt, da der Chat durch diese Nachrichten
   zugespammt wird
 - Beim Öffnen von Schatzkisten können die Delfine deaktiviert werden
+- Der "Malle, I love you" Sound kann nun optional deaktiviert werden
 
 ### Auto
 
