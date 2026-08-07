@@ -27,6 +27,7 @@
     "KeyboardHandlerMixin",
     "LocalPlayerMixin",
     "PauseScreenMixin",
-    "PlayerTabOverlayMixin"
+    "PlayerTabOverlayMixin",
+    "SoundManagerMixin"
   ]
 }

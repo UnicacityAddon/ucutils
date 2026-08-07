@@ -27,6 +27,8 @@ public class MiscellaneousOptionsScreen extends OptionsScreen {
     private static final Component HIGHLIGHT_CORPSES_TOOLTIP = translatable("ucutils.options.highlight_corpses.tooltip").append(NEW_LINE).append(translatable("ucutils.feature_disabled").withColor(RED));
     private static final Component HIDE_DOLPHINS_NAME = translatable("ucutils.options.hide_dolphins.name");
     private static final Component HIDE_DOLPHINS_TOOLTIP = translatable("ucutils.options.hide_dolphins.tooltip");
+    private static final Component BLOCK_MALLE_SOUND_NAME = translatable("ucutils.options.block_malle_sound.name");
+    private static final Component BLOCK_MALLE_SOUND_TOOLTIP = translatable("ucutils.options.block_malle_sound.tooltip");
 
     public MiscellaneousOptionsScreen(Screen parent) {
         super(parent, TEXT_MISCELLANEOUS);
@@ -47,6 +49,7 @@ public class MiscellaneousOptionsScreen extends OptionsScreen {
 
         LinearLayout directionalLayoutWidget3 = directionalLayoutWidget.addChild(horizontal().spacing(8));
         renderService.addToggleButton(directionalLayoutWidget3, HIDE_DOLPHINS_NAME, HIDE_DOLPHINS_TOOLTIP, (options, value) -> options.miscellaneous().hideDolphins(value), options -> options.miscellaneous().hideDolphins(), 150);
+        renderService.addToggleButton(directionalLayoutWidget3, BLOCK_MALLE_SOUND_NAME, BLOCK_MALLE_SOUND_TOOLTIP, (options, value) -> options.miscellaneous().blockMalleSound(value), options -> options.miscellaneous().blockMalleSound(), 150);
 
         directionalLayoutWidget.visitWidgets(this::addRenderableWidget);
     }
