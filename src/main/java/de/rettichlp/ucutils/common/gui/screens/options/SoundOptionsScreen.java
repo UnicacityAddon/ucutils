@@ -2,13 +2,15 @@ package de.rettichlp.ucutils.common.gui.screens.options;
 
 import de.rettichlp.ucutils.common.configuration.options.SoundOptions;
 import de.rettichlp.ucutils.common.gui.screens.OptionsScreen;
-import net.minecraft.client.gui.layouts.LinearLayout;
+import de.rettichlp.ucutils.common.gui.screens.components.CyclingButtonEntry;
+import de.rettichlp.ucutils.common.gui.screens.components.ToggleButtonWidget;
+import net.minecraft.client.gui.components.CycleButton;
+import net.minecraft.client.gui.layouts.GridLayout;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 
-import static de.rettichlp.ucutils.UCUtils.renderService;
-import static net.minecraft.client.gui.layouts.LinearLayout.horizontal;
-import static net.minecraft.client.gui.layouts.LinearLayout.vertical;
+import static de.rettichlp.ucutils.UCUtils.configuration;
+import static net.minecraft.client.gui.components.Tooltip.create;
 import static net.minecraft.network.chat.Component.translatable;
 
 public class SoundOptionsScreen extends OptionsScreen {
@@ -34,24 +36,59 @@ public class SoundOptionsScreen extends OptionsScreen {
 
     @Override
     public void initBody() {
-        LinearLayout directionalLayoutWidget = this.layout.addToContents(vertical().spacing(4));
+        GridLayout gridLayout = this.layout.addToContents(new GridLayout());
+        gridLayout.columnSpacing(8).rowSpacing(4);
+        GridLayout.RowHelper gridLayoutRowHelper = gridLayout.createRowHelper(2);
 
-        LinearLayout directionalLayoutWidget1 = directionalLayoutWidget.addChild(horizontal().spacing(8));
-        renderService.addCyclingButton(directionalLayoutWidget1, SOUND_BANK_ROBBERY_NAME, SoundOptions.StateSelect.values(), SoundOptions.StateSelect::getDisplayName, (options, e) -> options.sound().bankRobbery(e), options -> options.sound().bankRobbery(), 150);
-        renderService.addCyclingButton(directionalLayoutWidget1, SOUND_BOMB_NAME, SoundOptions.StateSelect.values(), SoundOptions.StateSelect::getDisplayName, (options, e) -> options.sound().bomb(e), options -> options.sound().bomb(), 150);
+        SoundOptions soundOptions = configuration.getOptions().sound();
 
-        LinearLayout directionalLayoutWidget2 = directionalLayoutWidget.addChild(horizontal().spacing(8));
-        renderService.addToggleButton(directionalLayoutWidget2, SOUND_CONTRACT_SET_NAME, SOUND_CONTRACT_SET_TOOLTIP, (options, value) -> options.sound().contractSet(value), options -> options.sound().contractSet(), 150);
-        renderService.addToggleButton(directionalLayoutWidget2, SOUND_CONTRACT_FULFILLED_NAME, SOUND_CONTRACT_FULFILLED_TOOLTIP, (options, value) -> options.sound().contractFulfilled(value), options -> options.sound().contractFulfilled(), 150);
+        CycleButton<SoundOptions.StateSelect> cycleButton1 = CycleButton.builder(SoundOptions.StateSelect::getDisplayName, soundOptions.bankRobbery())
+                .withValues(SoundOptions.StateSelect.values())
+                .withTooltip(CyclingButtonEntry::getTooltip)
+                .create(SOUND_BANK_ROBBERY_NAME, (_, value) -> soundOptions.bankRobbery(value));
+        cycleButton1.setWidth(150);
+        gridLayoutRowHelper.addChild(cycleButton1);
 
-        LinearLayout directionalLayoutWidget3 = directionalLayoutWidget.addChild(horizontal().spacing(8));
-        renderService.addToggleButton(directionalLayoutWidget3, SOUND_SERVICE_NAME, SOUND_SERVICE_TOOLTIP, (options, value) -> options.sound().service(value), options -> options.sound().service(), 150);
-        renderService.addCyclingButton(directionalLayoutWidget3, SOUND_FIRE_NAME, SoundOptions.MedicSelect.values(), SoundOptions.MedicSelect::getDisplayName, (options, e) -> options.sound().fire(e), options -> options.sound().fire(), 150);
+        CycleButton<SoundOptions.StateSelect> cycleButton2 = CycleButton.builder(SoundOptions.StateSelect::getDisplayName, soundOptions.bomb())
+                .withValues(SoundOptions.StateSelect.values())
+                .withTooltip(CyclingButtonEntry::getTooltip)
+                .create(SOUND_BOMB_NAME, (_, value) -> soundOptions.bomb(value));
+        cycleButton2.setWidth(150);
+        gridLayoutRowHelper.addChild(cycleButton2);
 
-        LinearLayout directionalLayoutWidget4 = directionalLayoutWidget.addChild(horizontal().spacing(8));
-        renderService.addToggleButton(directionalLayoutWidget4, SOUND_REPORT_NAME, SOUND_REPORT_TOOLTIP, (options, value) -> options.sound().report(value), options -> options.sound().report(), 150);
-        renderService.addToggleButton(directionalLayoutWidget4, SOUND_NOTIFICATION_NAME, SOUND_NOTIFICATION_TOOLTIP, (options, value) -> options.sound().notification(value), options -> options.sound().notification(), 150);
+        ToggleButtonWidget toggleButton1 = new ToggleButtonWidget(SOUND_CONTRACT_SET_NAME, soundOptions::contractSet, soundOptions.contractSet());
+        toggleButton1.setWidth(150);
+        toggleButton1.setTooltip(create(SOUND_CONTRACT_SET_TOOLTIP));
+        gridLayoutRowHelper.addChild(toggleButton1);
 
-        directionalLayoutWidget.visitWidgets(this::addRenderableWidget);
+        ToggleButtonWidget toggleButton2 = new ToggleButtonWidget(SOUND_CONTRACT_FULFILLED_NAME, soundOptions::contractFulfilled, soundOptions.contractFulfilled());
+        toggleButton2.setWidth(150);
+        toggleButton2.setTooltip(create(SOUND_CONTRACT_FULFILLED_TOOLTIP));
+        gridLayoutRowHelper.addChild(toggleButton2);
+
+        ToggleButtonWidget toggleButton3 = new ToggleButtonWidget(SOUND_SERVICE_NAME, soundOptions::service, soundOptions.service());
+        toggleButton3.setWidth(150);
+        toggleButton3.setTooltip(create(SOUND_SERVICE_TOOLTIP));
+        gridLayoutRowHelper.addChild(toggleButton3);
+
+        CycleButton<SoundOptions.MedicSelect> cycleButton3 = CycleButton.builder(SoundOptions.MedicSelect::getDisplayName, soundOptions.fire())
+                .withValues(SoundOptions.MedicSelect.values())
+                .withTooltip(CyclingButtonEntry::getTooltip)
+                .create(SOUND_FIRE_NAME, (_, value) -> soundOptions.fire(value));
+        cycleButton3.setWidth(150);
+        gridLayoutRowHelper.addChild(cycleButton3);
+
+        ToggleButtonWidget toggleButton4 = new ToggleButtonWidget(SOUND_REPORT_NAME, soundOptions::report, soundOptions.report());
+        toggleButton4.setWidth(150);
+        toggleButton4.setTooltip(create(SOUND_REPORT_TOOLTIP));
+        gridLayoutRowHelper.addChild(toggleButton4);
+
+        ToggleButtonWidget toggleButton5 = new ToggleButtonWidget(SOUND_NOTIFICATION_NAME, soundOptions::notification, soundOptions.notification());
+        toggleButton5.setWidth(150);
+        toggleButton5.setTooltip(create(SOUND_NOTIFICATION_TOOLTIP));
+        gridLayoutRowHelper.addChild(toggleButton5);
+
+        gridLayout.arrangeElements();
+        gridLayout.visitWidgets(this::addRenderableWidget);
     }
 }
