@@ -3,12 +3,14 @@ package de.rettichlp.ucutils.common.gui.screens.options;
 import de.rettichlp.ucutils.common.configuration.options.MiscellaneousOptions;
 import de.rettichlp.ucutils.common.gui.screens.OptionsScreen;
 import de.rettichlp.ucutils.common.gui.screens.components.ToggleButtonWidget;
+import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.layouts.LinearLayout;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 
 import static de.rettichlp.ucutils.UCUtils.commandService;
 import static de.rettichlp.ucutils.UCUtils.renderService;
+import static net.minecraft.client.gui.components.Tooltip.create;
 import static net.minecraft.client.gui.layouts.LinearLayout.horizontal;
 import static net.minecraft.client.gui.layouts.LinearLayout.vertical;
 import static net.minecraft.network.chat.CommonComponents.NEW_LINE;
@@ -43,7 +45,7 @@ public class MiscellaneousOptionsScreen extends OptionsScreen {
         renderService.addCyclingButton(directionalLayoutWidget1, BANK_INFORMATION_NAME, MiscellaneousOptions.AtmInformationType.values(), MiscellaneousOptions.AtmInformationType::getDisplayName, (options, value) -> options.miscellaneous().atmInformationType(value), options -> options.miscellaneous().atmInformationType(), 150);
 
         LinearLayout directionalLayoutWidget2 = directionalLayoutWidget.addChild(horizontal().spacing(8));
-        renderService.addToggleButton(directionalLayoutWidget2, AUTO_TRASH_CAN_NAME, AUTO_TRASH_CAN_TOOLTIP, (options, value) -> options.miscellaneous().autoCollectChestsFromTrashCans(value), options -> options.miscellaneous().autoCollectChestsFromTrashCans(), 150);
+        directionalLayoutWidget2.addChild(Button.builder(AUTO_TRASH_CAN_NAME, _ -> this.minecraft.gui.setScreen(new TrashCanOptionsScreen(this))).tooltip(create(AUTO_TRASH_CAN_TOOLTIP)).width(150).build());
         ToggleButtonWidget toggleButtonWidget = renderService.addToggleButton(directionalLayoutWidget2, HIGHLIGHT_CORPSES_NAME, HIGHLIGHT_CORPSES_TOOLTIP, (options, value) -> options.miscellaneous().highlightCorpses(value), options -> options.miscellaneous().highlightCorpses(), 150);
         toggleButtonWidget.active = commandService.isSuperUser();
 
