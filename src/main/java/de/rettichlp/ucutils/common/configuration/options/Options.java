@@ -10,6 +10,9 @@ import net.minecraft.network.chat.Component;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import static de.rettichlp.ucutils.common.configuration.options.Options.ReinforcementType.UNICACITYADDON;
 import static net.minecraft.ChatFormatting.AQUA;
 import static net.minecraft.ChatFormatting.BLUE;
@@ -18,6 +21,9 @@ import static net.minecraft.ChatFormatting.RED;
 import static net.minecraft.client.gui.components.Tooltip.create;
 import static net.minecraft.network.chat.Component.empty;
 import static net.minecraft.network.chat.Component.literal;
+import static net.minecraft.world.item.Items.CHEST;
+import static net.minecraft.world.item.Items.ENDER_CHEST;
+import static net.minecraft.world.item.Items.TRAPPED_CHEST;
 
 @Getter
 @Setter
@@ -33,6 +39,7 @@ public class Options {
 
     private boolean checkUnicacityServer = true;
     private ReinforcementType reinforcementType = UNICACITYADDON;
+    private Set<String> autoCollectFromTrashCan = new HashSet<>(Set.of(CHEST.toString(), TRAPPED_CHEST.toString(), ENDER_CHEST.toString()));
 
     @Getter
     @AllArgsConstructor

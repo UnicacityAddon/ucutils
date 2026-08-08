@@ -91,7 +91,7 @@
   "ucutils.options.hydration.name": "Hydration display",
   "ucutils.options.hydration.tooltip": "Displays your hydration above your hunger bar",
   "ucutils.options.auto_trash_can.name": "Auto trash can",
-  "ucutils.options.auto_trash_can.tooltip": "Automatically collects chests from trash cans",
+  "ucutils.options.auto_trash_can.tooltip": "Automatically collects items from trash cans",
   "ucutils.options.highlight_corpses.name": "Highlight corpses",
   "ucutils.options.highlight_corpses.tooltip": "Makes corpses glow in their faction's color",
   "ucutils.options.hide_dolphins.name": "Hide dolphins",
