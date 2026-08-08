@@ -63,7 +63,7 @@ und [The Rettington Companion](https://modrinth.com/mod/the-rettington-companion
   der so viel Geld einzahlt, bis der Bankautomat voll ist
 - Mit dem `/aktien` Befehl wird die Aktien-App auf dem Händy direkt geöffnet, sodass man nicht mehr manuell durch das Handy navigieren
   muss
-- Kisten werden automatisch aus Mülleimern eingesammelt
+- Gegenstände werden automatisch aus Mülleimern eingesammelt
 - Es werden bestimmte Nachrichten im Chat ausgeblendet (konfigurierbar
   über [The Rettington Companion](https://modrinth.com/mod/the-rettington-companion))
 - Sollte ein Spieler abwesend sein, wird bei `/id` angezeigt wie lang dieser schon abwesend ist
