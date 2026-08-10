@@ -9,10 +9,11 @@ import net.minecraft.world.item.ItemStack;
 import org.jspecify.annotations.NonNull;
 
 import java.time.ZoneId;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.concurrent.ScheduledExecutorService;
 
 import static de.rettichlp.ucutils.UCUtils.MOD_ID;
+import static java.util.concurrent.Executors.newSingleThreadScheduledExecutor;
+import static java.util.concurrent.TimeUnit.MILLISECONDS;
 import static net.minecraft.world.item.Items.SKELETON_SKULL;
 import static net.minecraft.world.item.Items.WITHER_SKELETON_SKULL;
 
@@ -21,13 +22,14 @@ public class UtilService {
     @Getter
     private final ZoneId serverZoneId = ZoneId.of("Europe/Berlin");
 
+    private final ScheduledExecutorService delayedActionScheduler = newSingleThreadScheduledExecutor(runnable -> {
+        Thread thread = new Thread(runnable, "ucutils-delayed-action");
+        thread.setDaemon(true);
+        return thread;
+    });
+
     public void delayedAction(Runnable runnable, long milliseconds) {
-        new Timer().schedule(new TimerTask() {
-            @Override
-            public void run() {
-                Minecraft.getInstance().execute(runnable);
-            }
-        }, milliseconds);
+        this.delayedActionScheduler.schedule(() -> Minecraft.getInstance().execute(runnable), milliseconds, MILLISECONDS);
     }
 
     public String getVersion() {
