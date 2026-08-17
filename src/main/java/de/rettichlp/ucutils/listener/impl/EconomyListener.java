@@ -68,6 +68,7 @@ public class EconomyListener implements IMessageReceiveListener {
     private static final Pattern STOCK_MARKET_SELL_PATTERN = compile("^\\[Aktien] (?<amount>\\d+)x (?<company>.+) verkauft für (?<price>\\d+)\\$\\. \\(Gebühr: (?<fee>\\d+)\\$, Steuer: (?<tax>\\d+)\\$\\) (?<brutto>[+-]\\d+)\\$ Brutto / (?<netto>[+-]\\d+)\\$ Netto$");
 
     // other
+    private static final Pattern ATM_MONEY_AMOUNT_PATTERN = compile("ATM \\d+: (?<moneyAtmAmount>\\d+)\\$/100000\\$");
     private static final Pattern BUSINESS_CASH_PATTERN = compile("^Kasse: (\\d+)\\$$");
     private static final Pattern EXP_PATTERN = compile("(?<amount>[+-]\\d+) Exp!( \\(x(?<multiplier>\\d)\\))?$");
     private static final Pattern MAX_EXP_REACHED_PATTERN = compile("^Du hast die maximale Exp erreicht! Benutze /buylevel um ein Level aufzusteigen\\.$");
@@ -303,6 +304,13 @@ public class EconomyListener implements IMessageReceiveListener {
         if (stockMarketSellMatcher.find()) {
             int price = parseInt(stockMarketSellMatcher.group("price"));
             configuration.setMoneyCashAmount(configuration.getMoneyCashAmount() + price);
+            return true;
+        }
+
+        Matcher moneyAtmAmountMatcher = ATM_MONEY_AMOUNT_PATTERN.matcher(message);
+        if (moneyAtmAmountMatcher.find()) {
+            int moneyAtmAmount = parseInt(moneyAtmAmountMatcher.group("moneyAtmAmount"));
+            storage.setMoneyAtmAmount(moneyAtmAmount);
             return true;
         }
 
