@@ -192,6 +192,11 @@ public class Storage {
     }
 
     public Faction getFaction(String playerName) {
+        Faction cachedFaction = this.playerFactionCache.get(playerName);
+        if (cachedFaction != null) {
+            return cachedFaction;
+        }
+
         Faction faction = this.factionEntries.stream()
                 .filter(factionEntry -> factionEntry.members().stream()
                         .anyMatch(factionMember -> factionMember.username().equalsIgnoreCase(playerName)))

@@ -27,12 +27,13 @@ import static net.minecraft.network.chat.Component.translatable;
 public class SyncService {
 
     public void syncFactionMembers() {
+        storage.getFactionEntries().clear();
+        storage.getPlayerFactionCache().clear();
+
         for (Faction faction : Faction.values()) {
             if (faction == NULL) {
                 continue;
             }
-
-            storage.getFactionEntries().clear();
 
             api.getFactionMembers(faction, factionMembers -> {
                 // to faction entry
