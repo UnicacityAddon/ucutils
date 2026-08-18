@@ -31,6 +31,8 @@ public class MiscellaneousOptionsScreen extends OptionsScreen {
     private static final Component HIDE_DOLPHINS_TOOLTIP = translatable("ucutils.options.hide_dolphins.tooltip");
     private static final Component BLOCK_MALLE_SOUND_NAME = translatable("ucutils.options.block_malle_sound.name");
     private static final Component BLOCK_MALLE_SOUND_TOOLTIP = translatable("ucutils.options.block_malle_sound.tooltip");
+    private static final Component AUTO_SIREN_NAME = translatable("ucutils.options.auto_siren.name");
+    private static final Component AUTO_SIREN_TOOLTIP = translatable("ucutils.options.auto_siren.tooltip");
 
     public MiscellaneousOptionsScreen(Screen parent) {
         super(parent, TEXT_MISCELLANEOUS);
@@ -77,6 +79,11 @@ public class MiscellaneousOptionsScreen extends OptionsScreen {
         toggleButton4.setWidth(150);
         toggleButton4.setTooltip(create(BLOCK_MALLE_SOUND_TOOLTIP));
         gridLayoutRowHelper.addChild(toggleButton4);
+
+        ToggleButtonWidget toggleButton5 = new ToggleButtonWidget(AUTO_SIREN_NAME, miscellaneousOptions::autoSiren, miscellaneousOptions.autoSiren());
+        toggleButton5.setWidth(150);
+        toggleButton5.setTooltip(create(AUTO_SIREN_TOOLTIP));
+        gridLayoutRowHelper.addChild(toggleButton5);
 
         gridLayout.arrangeElements();
         gridLayout.visitWidgets(this::addRenderableWidget);

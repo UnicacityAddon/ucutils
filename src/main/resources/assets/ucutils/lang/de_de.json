@@ -98,6 +98,8 @@
   "ucutils.options.hide_dolphins.tooltip": "Verhindert das Spawnen von Delfinen während des öffnens einer Schatzkiste",
   "ucutils.options.block_malle_sound.name": "Malle-Sound blockieren",
   "ucutils.options.block_malle_sound.tooltip": "Verhindert das Abspielen des \"Malle, I love you\"-Sounds",
+  "ucutils.options.auto_siren.name": "Automatische Sirene",
+  "ucutils.options.auto_siren.tooltip": "Aktiviert automatisch die Sirene, wenn du in den Dienst gehst",
   "ucutils.options.check_unicacity_server.name": "UnicaCity Check",
   "ucutils.options.check_unicacity_server.tooltip": "Überprüft ob du auf UnicaCity spielst. Wenn aktiviert sind bestimmte Funktionen nur auf UnicaCity aktiviert um Probleme mit anderen Servern zu vermeiden.",
   "ucutils.options.faction_chat_color.name": "Farbe des Fraktionschats",

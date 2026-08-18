@@ -24,6 +24,7 @@ public class MiscellaneousOptions {
     private boolean highlightCorpses = false; // feature rejected by UnicaCity team
     private boolean hideDolphins = false;
     private boolean blockMalleSound = false;
+    private boolean autoSiren = true;
 
     @Getter
     @AllArgsConstructor
