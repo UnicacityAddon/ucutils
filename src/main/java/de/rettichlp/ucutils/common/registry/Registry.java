@@ -15,6 +15,8 @@ import net.fabricmc.fabric.api.client.message.v1.ClientReceiveMessageEvents;
 import net.fabricmc.fabric.api.client.message.v1.ClientSendMessageEvents;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 
@@ -33,6 +35,7 @@ public class Registry {
     private static final String NAVI_TARGET_REACHED_MESSAGE = "Du hast dein Ziel erreicht.";
 
     private final Set<IUCUtilsListener> listenerInstances = getListenerInstances();
+    private final Map<Class<?>, Set<?>> listenersByInterface = new HashMap<>();
 
     private boolean initialized = false;
 
@@ -134,12 +137,15 @@ public class Registry {
                 .collect(toSet());
     }
 
+    @SuppressWarnings("unchecked")
     private <T> Set<T> getListenersImplementing(Class<T> listenerInterface) {
-        return storage.isUnicaCity()
-                ? this.listenerInstances.stream()
-                .filter(listenerInterface::isInstance)
-                .map(listenerInterface::cast)
-                .collect(toSet())
-                : emptySet();
+        if (!storage.isUnicaCity()) {
+            return emptySet();
+        }
+
+        return (Set<T>) this.listenersByInterface.computeIfAbsent(listenerInterface, iface -> this.listenerInstances.stream()
+                .filter(iface::isInstance)
+                .map(iface::cast)
+                .collect(toSet()));
     }
 }
