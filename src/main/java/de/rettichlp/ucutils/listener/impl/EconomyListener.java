@@ -68,6 +68,7 @@ public class EconomyListener implements IMessageReceiveListener {
     private static final Pattern STOCK_MARKET_SELL_PATTERN = compile("^\\[Aktien] (?<amount>\\d+)x (?<company>.+) verkauft für (?<price>\\d+)\\$\\. \\(Gebühr: (?<fee>\\d+)\\$, Steuer: (?<tax>\\d+)\\$\\) (?<brutto>[+-]\\d+)\\$ Brutto / (?<netto>[+-]\\d+)\\$ Netto$");
 
     // other
+    private static final Pattern ATM_MONEY_AMOUNT_PATTERN = compile("ATM \\d+: (?<moneyAtmAmount>\\d+)\\$/100000\\$");
     private static final Pattern BUSINESS_CASH_PATTERN = compile("^Kasse: (\\d+)\\$$");
     private static final Pattern EXP_PATTERN = compile("(?<amount>[+-]\\d+) Exp!( \\(x(?<multiplier>\\d)\\))?$");
     private static final Pattern MAX_EXP_REACHED_PATTERN = compile("^Du hast die maximale Exp erreicht! Benutze /buylevel um ein Level aufzusteigen\\.$");
@@ -77,6 +78,7 @@ public class EconomyListener implements IMessageReceiveListener {
     private static final Pattern MEDIC_REVIVE_PATTERN = compile("^Du wirst von (?:\\[UC])?(?<playerName>[a-zA-Z0-9_]+) wiederbelebt\\.$");
     private static final Pattern REVIVE_ADMIN_PATTERN = compile("^Du wurdest von \\[UC](?<playerName>[a-zA-Z0-9_]+) wiederbelebt\\.$");
     private static final Pattern BACK_IN_LIFE_PATTERN = compile("^\\[Friedhof] Du lebst nun wieder\\.$");
+    private static final Pattern LUMBERJACK_SELL_PATTERN = compile("^\\[Holzfäller] Du hast (\\d+x .+|dein ganzes Inventar abgeladen: \\d+ Items) für §6(?<amount>\\d+)\\$§a( §6\\(\\+\\d+% Bonus\\))?( verkauft)?\\.$");
 
     private long lastMedicReviveAction = 0;
     private boolean maxExperiencePerLevelReached = false;
@@ -306,6 +308,13 @@ public class EconomyListener implements IMessageReceiveListener {
             return true;
         }
 
+        Matcher moneyAtmAmountMatcher = ATM_MONEY_AMOUNT_PATTERN.matcher(message);
+        if (moneyAtmAmountMatcher.find()) {
+            int moneyAtmAmount = parseInt(moneyAtmAmountMatcher.group("moneyAtmAmount"));
+            storage.setMoneyAtmAmount(moneyAtmAmount);
+            return true;
+        }
+
         Matcher businessCashMatcher = BUSINESS_CASH_PATTERN.matcher(message);
         if (businessCashMatcher.find()) {
             String amountString = businessCashMatcher.group(1);
@@ -384,6 +393,13 @@ public class EconomyListener implements IMessageReceiveListener {
             }
 
             storage.setDead(false);
+            return true;
+        }
+
+        Matcher lumberjackSellMatcher = LUMBERJACK_SELL_PATTERN.matcher(message);
+        if (lumberjackSellMatcher.find()) {
+            int amount = parseInt(lumberjackSellMatcher.group("amount"));
+            configuration.setMoneyCashAmount(configuration.getMoneyCashAmount() + amount);
         }
 
         return true;
