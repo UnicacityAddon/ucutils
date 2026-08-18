@@ -97,12 +97,12 @@ public abstract class AbstractContainerScreenMixin<T extends AbstractContainerMe
                 extractStockMarketHighlight(graphics, mouseX, mouseY, a);
                 extractStockMarketLegend(graphics, mouseX, mouseY, a);
             }
-            case "Telefon" -> {
+            case "ʜᴀɴᴅʏ » üʙᴇʀsɪᴄʜᴛ" -> {
                 if (storage.isStockMarketCommandRunning()) {
-                    clickOnItemWithName("Apps", gameMode);
+                    clickOnItemWithName("ᴀᴘᴘs", gameMode);
                 }
             }
-            case "App-Menü" -> {
+            case "ʜᴀɴᴅʏ » ᴀᴘᴘ-ᴍᴇɴü" -> {
                 if (storage.isStockMarketCommandRunning()) {
                     clickOnItemWithName("Aktien", gameMode);
                 }
