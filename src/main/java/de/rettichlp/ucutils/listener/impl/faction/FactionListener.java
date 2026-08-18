@@ -42,6 +42,8 @@ import static net.minecraft.network.chat.Component.translatable;
 @UCUtilsListener
 public class FactionListener implements IMessageReceiveListener, IMessageSendListener {
 
+    private static final Pattern DUTY_PATTERN = compile("^(Du bist nun als Arzt im Dienst!|Du hast den Dienst wieder angetreten\\.)$");
+
     private static final Pattern REINFORCEMENT_PATTERN = compile("^(?:(?<type>.+)! )?(?<senderRank>.+) (?:\\[UC])?(?<senderPlayerName>[a-zA-Z0-9_]+) benötigt Unterstützung in der Nähe von (?<naviPoint>.+)! \\((?<distance>\\d+) Meter entfernt\\)$");
     private static final Pattern REINFORCEMENT_BUTTON_PATTERN = compile("^§7» §c§lRoute anzeigen §8\\| §c§lUnterwegs$");
     private static final Pattern REINFORCMENT_ON_THE_WAY_PATTERN = compile("^(?<senderRank>.+) (?:\\[UC])?(?<senderPlayerName>[a-zA-Z0-9_]+) kommt zum Verstärkungsruf von (?:\\[UC])?(?<target>[a-zA-Z0-9_]+)! \\((?<distance>\\d+) Meter entfernt\\)$");
@@ -69,6 +71,14 @@ public class FactionListener implements IMessageReceiveListener, IMessageSendLis
 
     @Override
     public boolean onMessageReceive(Component text, String message) {
+        Matcher dutyMatcher = DUTY_PATTERN.matcher(message);
+        if (dutyMatcher.find()) {
+            if (configuration.getOptions().miscellaneous().autoSiren()) {
+                commandService.sendCommand("sirene");
+            }
+            return true;
+        }
+
         Matcher reinforcementMatcher = REINFORCEMENT_PATTERN.matcher(message);
         if (reinforcementMatcher.find()) {
             String type = ofNullable(reinforcementMatcher.group("type")).orElse("Reinforcement");

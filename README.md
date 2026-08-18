@@ -98,6 +98,7 @@ und [The Rettington Companion](https://modrinth.com/mod/the-rettington-companion
   mit ✨ markiert)
 - Leichen werden leuchtend hervorgehoben, wenn man sich in der Nähe befindet (aktuell deaktiviert, da es gegen Server-Richtlinien
   verstößt)
+- Es gibt eine Option, die für Polizei, FBI und Rettungsdienst die Sirene aktiviert, sobald man den Dienst betritt
 
 ### Jobs
 
