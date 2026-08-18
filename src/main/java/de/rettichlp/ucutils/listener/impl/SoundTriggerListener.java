@@ -29,16 +29,14 @@ public class SoundTriggerListener implements IMessageReceiveListener {
 
     @Override
     public boolean onMessageReceive(Component text, String message) {
-        Faction playerFaction = storage.getFaction(player.getGameProfile().name());
-
         Matcher bankRobberyMatcher = BANK_ROBBERY_PATTERN.matcher(message);
-        if (bankRobberyMatcher.find() && configuration.getOptions().sound().bankRobbery().verify(playerFaction)) {
+        if (bankRobberyMatcher.find() && configuration.getOptions().sound().bankRobbery().verify(playerFaction())) {
             BANK_ROBBERY.play();
             return true;
         }
 
         Matcher bombFoundMatcher = BOMB_FOUND_PATTERN.matcher(message);
-        if (bombFoundMatcher.find() && configuration.getOptions().sound().bomb().verify(playerFaction)) {
+        if (bombFoundMatcher.find() && configuration.getOptions().sound().bomb().verify(playerFaction())) {
             BOMB_SOUND.play();
             return true;
         }
@@ -56,11 +54,15 @@ public class SoundTriggerListener implements IMessageReceiveListener {
         }
 
         Matcher fireStartMatcher = FIRE_START_PATTERN.matcher(message);
-        if (fireStartMatcher.find() && configuration.getOptions().sound().fire().verify(playerFaction)) {
+        if (fireStartMatcher.find() && configuration.getOptions().sound().fire().verify(playerFaction())) {
             FIRE.play();
             return true;
         }
 
         return true;
+    }
+
+    private Faction playerFaction() {
+        return storage.getFaction(player.getGameProfile().name());
     }
 }
