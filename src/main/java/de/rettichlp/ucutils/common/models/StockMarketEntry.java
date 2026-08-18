@@ -30,6 +30,11 @@ public record StockMarketEntry(Company company, double price, double changeMoney
     private static final Pattern BUY_PRICE_PATTERN = compile("EK-Preis: (?<price>-?\\d+\\.\\d+)\\$");
 
     public @Nullable Color getColor() {
+        // check if company is insolvent
+        if (this.price <= 0) {
+            return null;
+        }
+
         // check if price is below or equal to min value
         if (this.price <= this.company.getMinValue()) {
             return BLUE;
