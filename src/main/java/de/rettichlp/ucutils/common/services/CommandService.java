@@ -7,8 +7,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledFuture;
 
 import static de.rettichlp.ucutils.UCUtils.LOGGER;
 import static de.rettichlp.ucutils.UCUtils.nameTagService;
@@ -18,6 +18,8 @@ import static de.rettichlp.ucutils.UCUtils.storage;
 import static java.lang.Boolean.getBoolean;
 import static java.lang.System.currentTimeMillis;
 import static java.util.Objects.nonNull;
+import static java.util.concurrent.Executors.newSingleThreadScheduledExecutor;
+import static java.util.concurrent.TimeUnit.MILLISECONDS;
 
 public class CommandService {
 
@@ -30,6 +32,12 @@ public class CommandService {
 
     @Getter
     private final List<String> requestCommands = new ArrayList<>();
+
+    private final ScheduledExecutorService commandScheduler = newSingleThreadScheduledExecutor(runnable -> {
+        Thread thread = new Thread(runnable, "ucutils-command-scheduler");
+        thread.setDaemon(true);
+        return thread;
+    });
 
     public void sendCommand(String command) {
         LOGGER.info("UCUtils executing command: {}", command);
@@ -53,18 +61,16 @@ public class CommandService {
     public void sendCommands(List<String> commandStrings, long cooldownMillis) {
         // to modifiable list
         List<String> commands = new ArrayList<>(commandStrings);
+        ScheduledFuture<?>[] taskHolder = new ScheduledFuture<?>[1];
 
-        new Timer().scheduleAtFixedRate(new TimerTask() {
-            @Override
-            public void run() {
-                if (commands.isEmpty()) {
-                    this.cancel();
-                    return;
-                }
-
-                sendCommand(commands.removeFirst());
+        taskHolder[0] = this.commandScheduler.scheduleAtFixedRate(() -> {
+            if (commands.isEmpty()) {
+                taskHolder[0].cancel(false);
+                return;
             }
-        }, 0, cooldownMillis);
+
+            sendCommand(commands.removeFirst());
+        }, 0, cooldownMillis, MILLISECONDS);
     }
 
     public void sendCommandsWithAwaitingResponse(@NotNull List<String> commands) {
