@@ -71,6 +71,7 @@ und [The Rettington Companion](https://modrinth.com/mod/the-rettington-companion
   zugespammt wird
 - Beim Öffnen von Schatzkisten können die Delfine deaktiviert werden
 - Der "Malle, I love you" Sound kann nun optional deaktiviert werden
+- `/reichensteuer` Befehl für Spieler ohne Premium Rang
 
 ### Auto
 
