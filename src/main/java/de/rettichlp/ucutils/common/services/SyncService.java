@@ -28,7 +28,6 @@ public class SyncService {
 
     public void syncFactionMembers() {
         storage.getFactionEntries().clear();
-        storage.getPlayerFactionCache().clear();
 
         for (Faction faction : Faction.values()) {
             if (faction == NULL) {
