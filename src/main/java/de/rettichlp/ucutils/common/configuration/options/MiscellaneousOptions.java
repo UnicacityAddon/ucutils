@@ -21,9 +21,10 @@ public class MiscellaneousOptions {
 
     private boolean showHydration = true;
     private AtmInformationType atmInformationType = NONE;
-    private boolean autoCollectChestsFromTrashCans = false;
     private boolean highlightCorpses = false; // feature rejected by UnicaCity team
     private boolean hideDolphins = false;
+    private boolean blockMalleSound = false;
+    private boolean autoSiren = true;
 
     @Getter
     @AllArgsConstructor

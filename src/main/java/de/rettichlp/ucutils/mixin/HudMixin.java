@@ -11,6 +11,7 @@ import net.minecraft.client.renderer.texture.DynamicTexture;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.profiling.Profiler;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.level.saveddata.maps.MapId;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -51,26 +52,34 @@ public abstract class HudMixin {
     @Unique
     private static final Identifier CAPTCHA_IDENTIFIER = fromNamespaceAndPath(MOD_ID, "captcha");
 
+    @Unique
+    private MapId loadedCaptchaMap;
+
     @Shadow
     @Final
     private Minecraft minecraft;
 
     @Inject(method = "extractRenderState", at = @At("TAIL"))
     private void ucutils$extractChatTail(GuiGraphicsExtractor graphics, DeltaTracker deltaTracker, CallbackInfo ci) {
-        if (storage.getCaptchaMap() == null) {
+        MapId captchaMap = storage.getCaptchaMap();
+        if (captchaMap == null) {
+            this.loadedCaptchaMap = null;
             return;
         }
 
-        NativeImage nativeImage;
-        try (InputStream is = newInputStream(Path.of("screenshots/ucutils/captcha.png"))) {
-            nativeImage = read(is);
-        } catch (Exception e) {
-            LOGGER.error("Failed to read captcha image", e);
-            return;
-        }
+        if (!captchaMap.equals(this.loadedCaptchaMap)) {
+            NativeImage nativeImage;
+            try (InputStream is = newInputStream(Path.of("screenshots/ucutils/captcha.png"))) {
+                nativeImage = read(is);
+            } catch (Exception e) {
+                LOGGER.error("Failed to read captcha image", e);
+                return;
+            }
 
-        AbstractTexture texture = new DynamicTexture(() -> "captcha", nativeImage);
-        this.minecraft.getTextureManager().register(CAPTCHA_IDENTIFIER, texture);
+            AbstractTexture texture = new DynamicTexture(() -> "captcha", nativeImage);
+            this.minecraft.getTextureManager().register(CAPTCHA_IDENTIFIER, texture);
+            this.loadedCaptchaMap = captchaMap;
+        }
 
         int side = graphics.guiWidth() / 4;
         int x = graphics.guiWidth() / 2 - side / 2;

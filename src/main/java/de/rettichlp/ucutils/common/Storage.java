@@ -109,6 +109,10 @@ public class Storage {
 
     @Getter
     @Setter
+    private int moneyAtmAmount = 0;
+
+    @Getter
+    @Setter
     private boolean premium = false;
 
     @Getter
@@ -171,6 +175,8 @@ public class Storage {
         LOGGER.info("joinTimestamp: {}", this.joinTimestamp);
         // minecartEntityToHighlight
         LOGGER.info("minecartEntityToHighlight: {}", this.minecartEntityToHighlight);
+        // moneyAtmAmount
+        LOGGER.info("moneyAtmAmount: {}", this.moneyAtmAmount);
         // premium
         LOGGER.info("premium: {}", this.premium);
         // stockMarketCommandRunning
@@ -186,6 +192,11 @@ public class Storage {
     }
 
     public Faction getFaction(String playerName) {
+        Faction cachedFaction = this.playerFactionCache.get(playerName);
+        if (cachedFaction != null) {
+            return cachedFaction;
+        }
+
         Faction faction = this.factionEntries.stream()
                 .filter(factionEntry -> factionEntry.members().stream()
                         .anyMatch(factionMember -> factionMember.username().equalsIgnoreCase(playerName)))

@@ -38,6 +38,8 @@ public class CorpseCountWidget extends AbstractTRCTextWidget<CorpseCountWidget.C
 
     private EnumMap<Faction, Long> factionCorpseCountMap = new EnumMap<>(Faction.class);
 
+    private long lastCorpseScanTime = 0;
+
     @Override
     public Component text() {
         long totalCount = this.factionCorpseCountMap.values().stream()
@@ -87,8 +89,10 @@ public class CorpseCountWidget extends AbstractTRCTextWidget<CorpseCountWidget.C
     @Override
     public boolean isVisible() {
         // every second re-scan for nearby corpses
-        if (currentTimeMillis() / 1000 % 2 == 0) {
+        long now = currentTimeMillis();
+        if (now - this.lastCorpseScanTime >= 1000) {
             this.factionCorpseCountMap = getFactionCorpseCountMap();
+            this.lastCorpseScanTime = now;
         }
         // visible if in the position options screen to allow positioning
         return super.isVisible() && (!this.factionCorpseCountMap.isEmpty() || isWidgetPositionScreen());

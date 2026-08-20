@@ -55,7 +55,7 @@ public class ModCommand extends CommandBase {
                     messageService.sendModMessage("UCUtils Version " + version, false);
 
                     messageService.sendModMessage(empty()
-                            .append(Component.literal("Autors").withStyle(GRAY))
+                            .append(Component.literal("Authors").withStyle(GRAY))
                             .append(Component.literal(":").withStyle(DARK_GRAY)).append(" ")
                             .append(Component.literal(authors).withStyle(WHITE)), false);
 

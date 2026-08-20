@@ -21,11 +21,13 @@
     "ClientPlayNetworkHandlerMixin",
     "EntityHitboxDebugRendererMixin",
     "EntityRendererMixin",
+    "FontSetMixin",
     "HudMixin",
     "ItemEntityRendererMixin",
     "KeyboardHandlerMixin",
     "LocalPlayerMixin",
     "PauseScreenMixin",
-    "PlayerTabOverlayMixin"
+    "PlayerTabOverlayMixin",
+    "SoundManagerMixin"
   ]
 }

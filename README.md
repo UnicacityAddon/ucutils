@@ -63,10 +63,15 @@ und [The Rettington Companion](https://modrinth.com/mod/the-rettington-companion
   der so viel Geld einzahlt, bis der Bankautomat voll ist
 - Mit dem `/aktien` Befehl wird die Aktien-App auf dem Händy direkt geöffnet, sodass man nicht mehr manuell durch das Handy navigieren
   muss
-- Kisten werden automatisch aus Mülleimern eingesammelt
+- Gegenstände werden automatisch aus Mülleimern eingesammelt
 - Es werden bestimmte Nachrichten im Chat ausgeblendet (konfigurierbar
   über [The Rettington Companion](https://modrinth.com/mod/the-rettington-companion))
 - Sollte ein Spieler abwesend sein, wird bei `/id` angezeigt wie lang dieser schon abwesend ist
+- Die Nachricht, dass man keine Bandage vergeben kann, wird nur noch in der ActionBar angezeigt, da der Chat durch diese Nachrichten
+  zugespammt wird
+- Beim Öffnen von Schatzkisten können die Delfine deaktiviert werden
+- Der "Malle, I love you" Sound kann nun optional deaktiviert werden
+- `/reichensteuer` Befehl für Spieler ohne Premium Rang
 
 ### Auto
 
@@ -92,6 +97,9 @@ und [The Rettington Companion](https://modrinth.com/mod/the-rettington-companion
 - Für den Bluthändler, Dealer und Schwarzmarkt wird (in der Übersicht) angezeigt, an welchem Ort er gefunden wurde
 - Es gibt einen Hotkey, um (für die entsprechende Fraktion relevante) Reinforcements automatisch anzunehmen (diese Reinforcements sind
   mit ✨ markiert)
+- Leichen werden leuchtend hervorgehoben, wenn man sich in der Nähe befindet (aktuell deaktiviert, da es gegen Server-Richtlinien
+  verstößt)
+- Es gibt eine Option, die für Polizei, FBI und Rettungsdienst die Sirene aktiviert, sobald man den Dienst betritt
 
 ### Jobs
 
@@ -112,6 +120,14 @@ und [The Rettington Companion](https://modrinth.com/mod/the-rettington-companion
 - Geld auf der Hand und auf der Bank
 - Informationen über den PayDay (Dauer bis zum nächsten PayDay, Gehalt und Erfahrung) einschließlich Reichensteuer-Warnung
 - Offene Notrufe
+
+### Fehlerbehebungen auf Serverseite
+
+> ℹ️ Folgende Funktionen sind Fehlerbehebungen für UnicaCity, die das Serverteam selbst nicht beheben kann:
+
+- Maskierte Spieler haben einen verschleierten Namen (`§k`). Die Verschleierung nutzt auch Buchstaben, die im Resourcepack des Servers
+  zu Texturen überschrieben wurden. Dadurch wird in den Namen für maskierte Spieler ab und zu eine Textur anstatt Buchstaben angezeigt.
+  Dieses Problem wird durch die Mod behoben.
 
 ## Befehle
 

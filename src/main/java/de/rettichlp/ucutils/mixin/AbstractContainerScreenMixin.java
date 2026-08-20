@@ -29,6 +29,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import java.awt.Color;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.stream.Stream;
 
@@ -55,7 +56,6 @@ import static net.minecraft.network.chat.Component.empty;
 import static net.minecraft.network.chat.Component.literal;
 import static net.minecraft.network.chat.Component.translatable;
 import static net.minecraft.world.inventory.ContainerInput.PICKUP;
-import static net.minecraft.world.item.Items.CHEST;
 import static net.minecraft.world.item.Items.PLAYER_HEAD;
 
 @Mixin(AbstractContainerScreen.class)
@@ -97,22 +97,24 @@ public abstract class AbstractContainerScreenMixin<T extends AbstractContainerMe
                 extractStockMarketHighlight(graphics, mouseX, mouseY, a);
                 extractStockMarketLegend(graphics, mouseX, mouseY, a);
             }
-            case "Telefon" -> {
+            case "ʜᴀɴᴅʏ » üʙᴇʀsɪᴄʜᴛ" -> {
                 if (storage.isStockMarketCommandRunning()) {
-                    clickOnItemWithName("Apps", gameMode);
+                    clickOnItemWithName("ᴀᴘᴘs", gameMode);
                 }
             }
-            case "App-Menü" -> {
+            case "ʜᴀɴᴅʏ » ᴀᴘᴘ-ᴍᴇɴü" -> {
                 if (storage.isStockMarketCommandRunning()) {
                     clickOnItemWithName("Aktien", gameMode);
                 }
             }
             case "Mülleimer" -> {
-                if (configuration.getOptions().miscellaneous().autoCollectChestsFromTrashCans()) {
-                    for (int i = 0; i < 5; i++) {
-                        if (getMenu().slots.get(i).getItem().is(CHEST)) {
-                            gameMode.handleContainerInput(getMenu().containerId, i, 0, PICKUP, player);
-                        }
+                Set<String> autoCollectFromTrashCan = configuration.getOptions().autoCollectFromTrashCan();
+
+                for (int i = 0; i < 5; i++) {
+                    ItemStack itemStack = getMenu().slots.get(i).getItem();
+                    boolean shouldCollect = autoCollectFromTrashCan.contains(itemStack.getItem().toString());
+                    if (shouldCollect) {
+                        gameMode.handleContainerInput(getMenu().containerId, i, 0, PICKUP, player);
                     }
                 }
             }

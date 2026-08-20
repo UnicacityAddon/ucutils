@@ -1,6 +1,7 @@
 package de.rettichlp.ucutils.common.services;
 
 import net.minecraft.ChatFormatting;
+import net.minecraft.client.multiplayer.PlayerInfo;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.scores.Team;
@@ -34,21 +35,18 @@ public class NameTagService {
             .append(literal("]").withStyle(DARK_GRAY));
 
     public boolean isAfk(String targetName) {
-        return networkHandler.getOnlinePlayers().stream()
-                .filter(entry -> entry.getProfile().name().equals(targetName))
-                .anyMatch(entry -> {
-                    Team team = entry.getTeam();
-                    return team != null && !isADuty(targetName) && team.getCollisionRule() == NEVER;
-                });
+        PlayerInfo playerInfo = networkHandler.getPlayerInfo(targetName);
+        if (playerInfo == null) {
+            return false;
+        }
+
+        Team team = playerInfo.getTeam();
+        return team != null && !isADuty(playerInfo) && team.getCollisionRule() == NEVER;
     }
 
-    public boolean isADuty(String targetName) {
-        return networkHandler.getOnlinePlayers().stream()
-                .filter(entry -> entry.getProfile().name().equals(targetName))
-                .anyMatch(entry -> {
-                    Component displayName = entry.getTabListDisplayName();
-                    return displayName != null && displayName.contains(A_DUTY_PREFIX);
-                });
+    private boolean isADuty(@NotNull PlayerInfo playerInfo) {
+        Component displayName = playerInfo.getTabListDisplayName();
+        return displayName != null && displayName.contains(A_DUTY_PREFIX);
     }
 
     public @NotNull ChatFormatting getWantedPointColor(int wantedPointAmount) {
