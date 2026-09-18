@@ -67,6 +67,7 @@ public class WantedListener implements IMessageReceiveListener {
     private static final Pattern ROB_OIL_RIG_SUCCESS_PATTERN = compile("^HQ: Der Bohrinsel-Raub konnte verhindert werden!$");
     private static final Pattern ROB_OIL_RIG_FAILURE_PATTERN = compile("^HQ: Der Bohrinsel-Raub konnte nicht verhindert werden!$");
     private static final Pattern FINE_PATTERN = compile("^HQ: (Beamter|Beamtin) (?:\\[UC])?(?<playerName>[a-zA-Z0-9_]+) hat (?:\\[UC])?(?<targetName>[a-zA-Z0-9_]+) ein (?<price>\\d+)\\$ Bußgeld gegeben, over\\.$");
+    private static final Pattern PLANT_BURN_PATTERN = compile("^HQ: (?<rank>.+) (?:\\[UC])?(?<playerName>[a-zA-Z0-9_]+) hat erfolgreich eine (?<plantType>Pulver|Kräuter|Blütenharz) Plant(age)? verbrannt,? over\\.$");
 
     private static final int COLOR_PRIMARY = decode("#4498DB").getRGB();
     private static final int COLOR_SECONDARY = decode("#C8E7FF").getRGB();
@@ -473,6 +474,16 @@ public class WantedListener implements IMessageReceiveListener {
             String price = fineMatcher.group("price");
 
             Component component = HQ_MULTI_MESSAGE.create("Bußgeld", playerName, targetName, price + "$", "");
+            player.sendSystemMessage(component);
+            return false;
+        }
+
+        Matcher plantBurnMatcher = PLANT_BURN_PATTERN.matcher(message);
+        if (plantBurnMatcher.find()) {
+            String playerName = plantBurnMatcher.group("playerName");
+            String plantType = plantBurnMatcher.group("plantType");
+
+            Component component = HQ_SINGLE_MESSAGE.create("Plantage", playerName, plantType + " Plantage verbrannt", "");
             player.sendSystemMessage(component);
             return false;
         }
