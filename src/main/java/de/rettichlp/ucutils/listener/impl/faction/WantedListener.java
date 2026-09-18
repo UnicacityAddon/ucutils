@@ -42,6 +42,7 @@ public class WantedListener implements IMessageReceiveListener {
     private static final Pattern WANTED_KILL_PATTERN = compile("^HQ: (?:\\[UC])?(?<targetName>[a-zA-Z0-9_]+) wurde von (?:\\[UC])?(?<playerName>[a-zA-Z0-9_]+) getötet\\.\nHQ: Fahndungsgrund: (?<reason>.+) \\| Fahndungszeit: (?<time>.+)\\.$");
     private static final Pattern WANTED_ARREST_PATTERN = compile("^HQ: (?:\\[UC])?(?<targetName>[a-zA-Z0-9_]+) wurde von (?:\\[UC])?(?<playerName>[a-zA-Z0-9_]+) eingesperrt\\.\nHQ: Fahndungsgrund: (?<reason>.+) \\| Fahndungszeit: (?<time>.+)\\.$");
     private static final Pattern WANTED_UNARREST_PATTERN = compile("^HQ: (?:\\[UC])?(?<playerName>[a-zA-Z0-9_]+) hat (?:\\[UC])?(?<targetName>[a-zA-Z0-9_]+) aus dem Gefängnis entlassen\\.$");
+    private static final Pattern WANTED_NOT_WANTED_PATTERN = compile("^HQ: Die Person wird nicht gesucht, over\\.$");
     private static final Pattern CAR_CHECK_PATTERN = compile("^HQ: Das Fahrzeug mit dem Kennzeichen (?<plate>[A-Z0-9-]+) ist auf den Spieler (?:\\[UC])?(?<targetName>[a-zA-Z0-9_]+) registriert, over\\.$");
     private static final Pattern CAR_CHECK_UNREGISTERED_PATTERN = compile("^HQ: Das Fahrzeug ist nicht registriert, over\\.$");
     private static final Pattern CAR_PARKTICKET_PATTERN = compile("^HQ: Officer (?:\\[UC])?(?<playerName>[a-zA-Z0-9_]+) hat ein Strafzettel an das Fahrzeug \\[(?<plate>[A-Z0-9-]*)] vergeben\\.$");
@@ -232,6 +233,13 @@ public class WantedListener implements IMessageReceiveListener {
             String targetName = wantedUnarrestMatcher.group("targetName");
 
             Component component = HQ_MULTI_MESSAGE.create("Entlassen", playerName, targetName, "", "");
+            player.sendSystemMessage(component);
+            return false;
+        }
+
+        Matcher wantedNotWantedMatcher = WANTED_NOT_WANTED_PATTERN.matcher(message);
+        if (wantedNotWantedMatcher.find()) {
+            Component component = HQ_NOBODY_MESSAGE.create("Gesucht", "Die Person wird nicht gesucht.", "");
             player.sendSystemMessage(component);
             return false;
         }
