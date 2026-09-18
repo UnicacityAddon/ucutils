@@ -66,6 +66,7 @@ public class WantedListener implements IMessageReceiveListener {
     private static final Pattern ROB_OIL_RIG_PATTERN = compile("^HQ: Die Bohrinsel wird überfallen!$");
     private static final Pattern ROB_OIL_RIG_SUCCESS_PATTERN = compile("^HQ: Der Bohrinsel-Raub konnte verhindert werden!$");
     private static final Pattern ROB_OIL_RIG_FAILURE_PATTERN = compile("^HQ: Der Bohrinsel-Raub konnte nicht verhindert werden!$");
+    private static final Pattern FINE_PATTERN = compile("^HQ: (Beamter|Beamtin) (?:\\[UC])?(?<playerName>[a-zA-Z0-9_]+) hat (?:\\[UC])?(?<targetName>[a-zA-Z0-9_]+) ein (?<price>\\d+)\\$ Bußgeld gegeben, over\\.$");
 
     private static final int COLOR_PRIMARY = decode("#4498DB").getRGB();
     private static final int COLOR_SECONDARY = decode("#C8E7FF").getRGB();
@@ -461,6 +462,17 @@ public class WantedListener implements IMessageReceiveListener {
         Matcher robOilRigFailureMatcher = ROB_OIL_RIG_FAILURE_PATTERN.matcher(message);
         if (robOilRigFailureMatcher.find()) {
             Component component = HQ_NOBODY_MESSAGE.create("Überfall", "Bohrinselraub nicht verhindert!", "");
+            player.sendSystemMessage(component);
+            return false;
+        }
+
+        Matcher fineMatcher = FINE_PATTERN.matcher(message);
+        if (fineMatcher.find()) {
+            String playerName = fineMatcher.group("playerName");
+            String targetName = fineMatcher.group("targetName");
+            String price = fineMatcher.group("price");
+
+            Component component = HQ_MULTI_MESSAGE.create("Bußgeld", playerName, targetName, price + "$", "");
             player.sendSystemMessage(component);
             return false;
         }
