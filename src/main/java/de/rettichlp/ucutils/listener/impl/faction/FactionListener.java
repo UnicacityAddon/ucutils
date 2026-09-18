@@ -10,6 +10,7 @@ import lombok.NonNull;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.HoverEvent;
 import net.minecraft.network.chat.TextColor;
+import org.jspecify.annotations.Nullable;
 
 import java.util.List;
 import java.util.Optional;
@@ -44,19 +45,20 @@ public class FactionListener implements IMessageReceiveListener, IMessageSendLis
 
     private static final Pattern DUTY_PATTERN = compile("^(Du bist nun als Arzt im Dienst!|Du hast den Dienst wieder angetreten\\.)$");
 
-    private static final Pattern REINFORCEMENT_PATTERN = compile("^(?:(?<type>.+)! )?(?<senderRank>.+) (?:\\[UC])?(?<senderPlayerName>[a-zA-Z0-9_]+) benötigt Unterstützung in der Nähe von (?<naviPoint>.+)! \\((?<distance>\\d+) Meter entfernt\\)$");
+    private static final Pattern REINFORCEMENT_PATTERN = compile("^(?:(?<type>.+)! )?(?<senderRank>.+) (?:\\[UC])?(?<senderPlayerName>[a-zA-Z0-9_]+) benötigt Unterstützung in der Nähe von (?<naviPoint>.+)! \\((?<distance>\\d+) Meter entfernt\\)(?<drugAmount> \\(.+\\))?$");
     private static final Pattern REINFORCEMENT_BUTTON_PATTERN = compile("^§7» §c§lRoute anzeigen §8\\| §c§lUnterwegs$");
     private static final Pattern REINFORCMENT_ON_THE_WAY_PATTERN = compile("^(?<senderRank>.+) (?:\\[UC])?(?<senderPlayerName>[a-zA-Z0-9_]+) kommt zum Verstärkungsruf von (?:\\[UC])?(?<target>[a-zA-Z0-9_]+)! \\((?<distance>\\d+) Meter entfernt\\)( \\(Start: .+\\))?$");
 
     private static final Pattern FACTION_CHAT_PATTERN = compile("^(?<playerPrefix>[\\p{L} ]+) (?:\\[UC])?(?<senderPlayerName>[a-zA-Z0-9_]+): (?<message>.+)$");
 
-    private static final ReinforcementConsumer<String, String, String, String> REINFORCEMENT = (type, sender, naviPoint, distance) -> empty()
+    private static final ReinforcementConsumer<String, String, String, String, String> REINFORCEMENT = (type, sender, naviPoint, distance, drugAmount) -> empty()
             .append(literal(type).withColor(RED).withStyle(BOLD)).append(SPACE)
             .append(literal(sender).withColor(AQUA)).append(SPACE)
             .append(literal("-").withColor(GRAY)).append(SPACE)
             .append(literal(naviPoint).withColor(AQUA)).append(SPACE)
             .append(literal("-").withColor(GRAY)).append(SPACE)
-            .append(literal(distance + "m").withColor(DARK_AQUA));
+            .append(literal(distance + "m").withColor(DARK_AQUA))
+            .append(literal(drugAmount != null ? drugAmount : "").withColor(DARK_AQUA));
 
     private static final ReinforcementOnTheWayConsumer<String, String, String> REINFORCEMENT_ON_THE_WAY = (sender, target, distance) -> empty()
             .append(literal("➥").withColor(GRAY)).append(SPACE)
@@ -86,6 +88,7 @@ public class FactionListener implements IMessageReceiveListener, IMessageSendLis
             String senderPlayerName = reinforcementMatcher.group("senderPlayerName");
             String naviPoint = reinforcementMatcher.group("naviPoint");
             String distance = reinforcementMatcher.group("distance");
+            String drugAmount = reinforcementMatcher.group("drugAmount");
 
             // save reinforcement sender if relevant for faction
             Faction faction = storage.getFaction(player.getPlainTextName());
@@ -97,7 +100,7 @@ public class FactionListener implements IMessageReceiveListener, IMessageSendLis
 
             boolean modernReinforcementStyle = configuration.getOptions().reinforcementType() == UNICACITYADDON;
             if (modernReinforcementStyle) {
-                Component reinforcementText = REINFORCEMENT.create(type, senderRank + " " + senderPlayerName, naviPoint, distance);
+                Component reinforcementText = REINFORCEMENT.create(type, senderRank + " " + senderPlayerName, naviPoint, distance, drugAmount);
                 player.sendSystemMessage(empty());
                 player.sendSystemMessage(reinforcementText);
             }
@@ -199,9 +202,9 @@ public class FactionListener implements IMessageReceiveListener, IMessageSendLis
     }
 
     @FunctionalInterface
-    public interface ReinforcementConsumer<Type, Sender, NaviPoint, Distance> {
+    public interface ReinforcementConsumer<Type, Sender, NaviPoint, Distance, DrugAmount> {
 
-        Component create(String type, String sender, String naviPoint, String distance);
+        Component create(String type, String sender, String naviPoint, String distance, @Nullable String drugAmount);
     }
 
     @FunctionalInterface
