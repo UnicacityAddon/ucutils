@@ -48,7 +48,7 @@ und [The Rettington Companion](https://modrinth.com/mod/the-rettington-companion
 - Wirft man eine Glasflasche in der Nähe eines Shops weg, wird diese als Pfand abgegeben
 - Es wird angezeigt, wie lang der Cooldown für Bandagen und Schmerzpillen ist
 - Es werden Sounds abgespielt für Notrufe, Bomben, Feuer, Staatsbankraub und weitere Situationen
-- Über der Hungerleiste wird der Durst angezeigt
+- Über der Hungerleiste wird der Durst angezeigt (wählbar zwischen 3 Texturen)
 - Über den Spielernamen wird AFK angezeigt, wenn der Spieler AFK ist
 - Für Teammitglieder wird eine Warnung angezeigt, wenn sie sich im Admindienst befinden und eine Waffe in der Hand haben
 - Bei der Mieterübersicht wird angezeigt, wie lang ein Mieter offline ist, und ein Button, um diesen zu kündigen
@@ -100,6 +100,7 @@ und [The Rettington Companion](https://modrinth.com/mod/the-rettington-companion
 - Leichen werden leuchtend hervorgehoben, wenn man sich in der Nähe befindet (aktuell deaktiviert, da es gegen Server-Richtlinien
   verstößt)
 - Es gibt eine Option, die für Polizei, FBI und Rettungsdienst die Sirene aktiviert, sobald man den Dienst betritt
+- Für die Polizei werden bei einer Kofferraum-Durchsuchung gefundene Gegenstände hervorgehoben
 
 ### Jobs
 
@@ -119,7 +120,9 @@ und [The Rettington Companion](https://modrinth.com/mod/the-rettington-companion
 - Anzahl der bewusstlosen Spieler in der Nähe (optional unterteilt in Fraktionen)
 - Geld auf der Hand und auf der Bank
 - Informationen über den PayDay (Dauer bis zum nächsten PayDay, Gehalt und Erfahrung) einschließlich Reichensteuer-Warnung
-- Offene Notrufe
+- Polizei & Rettungsdienst: Offene Notrufe
+- Rettungsdienst: Aktueller eigener `/status`
+- Kirche: Cooldown, bis man wieder jemanden segnen kann
 
 ### Fehlerbehebungen auf Serverseite
 

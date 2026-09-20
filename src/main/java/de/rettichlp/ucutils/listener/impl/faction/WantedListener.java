@@ -38,10 +38,11 @@ public class WantedListener implements IMessageReceiveListener {
     private static final Pattern WANTED_MODIFY_PATTERN = compile("^HQ: (?<rank>.+) (?:\\[UC])?(?<playerName>[a-zA-Z0-9_]+) hat (?:\\[UC])?(?<targetName>[a-zA-Z0-9_]+)s WantedPunkte verändert!$");
     private static final Pattern WANTED_MODIFY_REASON_PATTERN = compile("^HQ: Neuer Grund: (?<reason>.+) \\[(?<oldWantedPoints>\\d+) » (?<newWantedPoints>\\d+) WantedPunkte]$");
     private static final Pattern WANTED_TICKET_PATTERN = compile("^HQ: (?<rank>.+) (?:\\[UC])?(?<playerName>[a-zA-Z0-9_]+) hat (?:\\[UC])?(?<targetName>[a-zA-Z0-9_]+) ein Ticket über (?<price>\\d+)\\$ ausgestellt\\. Bestätigung ausstehend, over\\.$");
-    private static final Pattern WANTED_DELETE_PATTERN = compile("^HQ: (?<rank>.+) (?:\\[UC])?(?<playerName>[a-zA-Z0-9_]+) hat (?:\\[UC])?(?<targetName>[a-zA-Z0-9_]+)(?:'s)* Akten gelöscht, over\\.$");
+    private static final Pattern WANTED_DELETE_PATTERN = compile("^HQ: (?<rank>.+) (?:\\[UC])?(?<playerName>[a-zA-Z0-9_]+) hat (?:\\[UC])?(?<targetName>[a-zA-Z0-9_]+) (seine|ihre) Akten gelöscht, over\\.$");
     private static final Pattern WANTED_KILL_PATTERN = compile("^HQ: (?:\\[UC])?(?<targetName>[a-zA-Z0-9_]+) wurde von (?:\\[UC])?(?<playerName>[a-zA-Z0-9_]+) getötet\\.\nHQ: Fahndungsgrund: (?<reason>.+) \\| Fahndungszeit: (?<time>.+)\\.$");
     private static final Pattern WANTED_ARREST_PATTERN = compile("^HQ: (?:\\[UC])?(?<targetName>[a-zA-Z0-9_]+) wurde von (?:\\[UC])?(?<playerName>[a-zA-Z0-9_]+) eingesperrt\\.\nHQ: Fahndungsgrund: (?<reason>.+) \\| Fahndungszeit: (?<time>.+)\\.$");
     private static final Pattern WANTED_UNARREST_PATTERN = compile("^HQ: (?:\\[UC])?(?<playerName>[a-zA-Z0-9_]+) hat (?:\\[UC])?(?<targetName>[a-zA-Z0-9_]+) aus dem Gefängnis entlassen\\.$");
+    private static final Pattern WANTED_NOT_WANTED_PATTERN = compile("^HQ: Die Person wird nicht gesucht, over\\.$");
     private static final Pattern CAR_CHECK_PATTERN = compile("^HQ: Das Fahrzeug mit dem Kennzeichen (?<plate>[A-Z0-9-]+) ist auf den Spieler (?:\\[UC])?(?<targetName>[a-zA-Z0-9_]+) registriert, over\\.$");
     private static final Pattern CAR_CHECK_UNREGISTERED_PATTERN = compile("^HQ: Das Fahrzeug ist nicht registriert, over\\.$");
     private static final Pattern CAR_PARKTICKET_PATTERN = compile("^HQ: Officer (?:\\[UC])?(?<playerName>[a-zA-Z0-9_]+) hat ein Strafzettel an das Fahrzeug \\[(?<plate>[A-Z0-9-]*)] vergeben\\.$");
@@ -57,7 +58,17 @@ public class WantedListener implements IMessageReceiveListener {
     private static final Pattern TAKE_GUNS_PATTERN = compile("^(Beamter|Beamtin) (?:\\[UC])?(?<playerName>[a-zA-Z0-9_]+) hat (?:\\[UC])?(?<targetName>[a-zA-Z0-9_]+) die Waffen abgenommen\\.$");
     private static final Pattern TAKE_DRUGS_PATTERN = compile("^(Beamter|Beamtin) (?:\\[UC])?(?<playerName>[a-zA-Z0-9_]+) hat (?:\\[UC])?(?<targetName>[a-zA-Z0-9_]+) (seine|ihre) Drogen abgenommen.$");
     private static final Pattern TRACKER_AGENT_PATTERN = compile("^HQ: (Agent|Agentin) (?:\\[UC])?(?<playerName>[a-zA-Z0-9_]+) hat ein Peilsender an (?:\\[UC])?(?<targetName>[a-zA-Z0-9_]+) befestigt, over\\.$");
+    private static final Pattern ROB_HOUSE_PATTERN = compile("^HQ: Ein Einbruch bei Haus (?<houseNumber>\\d+) wurde gemeldet, over\\.$");
+    private static final Pattern ROB_LABOR_PATTERN = compile("^HQ: Es wurde ein Einbruch im Labor gemeldet, over\\.$");
     private static final Pattern ROB_PATTERN = compile("^HQ: Achtung! Es wurde ein Raubüberfall gemeldet\\. Ort: (?<location>.+)\\.$");
+    private static final Pattern ROB_CONTAINER_PATTERN = compile("^HQ: Am Containerhafen wird ein Container aufgebrochen!$");
+    private static final Pattern ROB_CONTAINER_SUCCESS_PATTERN = compile("^HQ: Der Containerraub konnte verhindert werden!$");
+    private static final Pattern ROB_CONTAINER_FAILURE_PATTERN = compile("^HQ: Der Containerraub konnte nicht verhindert werden!$");
+    private static final Pattern ROB_OIL_RIG_PATTERN = compile("^HQ: Die Bohrinsel wird überfallen!$");
+    private static final Pattern ROB_OIL_RIG_SUCCESS_PATTERN = compile("^HQ: Der Bohrinsel-Raub konnte verhindert werden!$");
+    private static final Pattern ROB_OIL_RIG_FAILURE_PATTERN = compile("^HQ: Der Bohrinsel-Raub konnte nicht verhindert werden!$");
+    private static final Pattern FINE_PATTERN = compile("^HQ: (Beamter|Beamtin) (?:\\[UC])?(?<playerName>[a-zA-Z0-9_]+) hat (?:\\[UC])?(?<targetName>[a-zA-Z0-9_]+) ein (?<price>\\d+)\\$ Bußgeld gegeben, over\\.$");
+    private static final Pattern PLANT_BURN_PATTERN = compile("^HQ: (?<rank>.+) (?:\\[UC])?(?<playerName>[a-zA-Z0-9_]+) hat erfolgreich eine (?<plantType>Pulver|Kräuter|Blütenharz) Plant(age)? verbrannt,? over\\.$");
 
     private static final int COLOR_PRIMARY = decode("#4498DB").getRGB();
     private static final int COLOR_SECONDARY = decode("#C8E7FF").getRGB();
@@ -226,6 +237,13 @@ public class WantedListener implements IMessageReceiveListener {
             return false;
         }
 
+        Matcher wantedNotWantedMatcher = WANTED_NOT_WANTED_PATTERN.matcher(message);
+        if (wantedNotWantedMatcher.find()) {
+            Component component = HQ_NOBODY_MESSAGE.create("Gesucht", "Die Person wird nicht gesucht.", "");
+            player.sendSystemMessage(component);
+            return false;
+        }
+
         Matcher carCheckMatcher = CAR_CHECK_PATTERN.matcher(message);
         if (carCheckMatcher.find()) {
             String targetName = carCheckMatcher.group("targetName");
@@ -390,11 +408,90 @@ public class WantedListener implements IMessageReceiveListener {
             return false;
         }
 
+        Matcher robHouseMatcher = ROB_HOUSE_PATTERN.matcher(message);
+        if (robHouseMatcher.find()) {
+            String houseNumber = robHouseMatcher.group("houseNumber");
+
+            Component component = HQ_NOBODY_MESSAGE.create("Einbruch", "Haus: " + houseNumber, "");
+            player.sendSystemMessage(component);
+            return false;
+        }
+
+        Matcher robLaborMatcher = ROB_LABOR_PATTERN.matcher(message);
+        if (robLaborMatcher.find()) {
+            Component component = HQ_NOBODY_MESSAGE.create("Einbruch", "Labor-Einbruch gestartet!", "");
+            player.sendSystemMessage(component);
+            return false;
+        }
+
         Matcher robMatcher = ROB_PATTERN.matcher(message);
         if (robMatcher.find()) {
             String location = robMatcher.group("location");
 
-            Component component = HQ_NOBODY_MESSAGE.create("Raubüberfall", "Es wurde ein Raubüberfall bei " + location + " gemeldet.", "");
+            Component component = HQ_NOBODY_MESSAGE.create("Überfall", "Raubüberfall bei " + location, "");
+            player.sendSystemMessage(component);
+            return false;
+        }
+
+        Matcher robContainerMatcher = ROB_CONTAINER_PATTERN.matcher(message);
+        if (robContainerMatcher.find()) {
+            Component component = HQ_NOBODY_MESSAGE.create("Überfall", "Containerraub gestartet!", "");
+            player.sendSystemMessage(component);
+            return false;
+        }
+
+        Matcher robContainerSuccessMatcher = ROB_CONTAINER_SUCCESS_PATTERN.matcher(message);
+        if (robContainerSuccessMatcher.find()) {
+            Component component = HQ_NOBODY_MESSAGE.create("Überfall", "Containerraub verhindert!", "");
+            player.sendSystemMessage(component);
+            return false;
+        }
+
+        Matcher robContainerFailureMatcher = ROB_CONTAINER_FAILURE_PATTERN.matcher(message);
+        if (robContainerFailureMatcher.find()) {
+            Component component = HQ_NOBODY_MESSAGE.create("Überfall", "Containerraub nicht verhindert!", "");
+            player.sendSystemMessage(component);
+            return false;
+        }
+
+        Matcher robOilRigMatcher = ROB_OIL_RIG_PATTERN.matcher(message);
+        if (robOilRigMatcher.find()) {
+            Component component = HQ_NOBODY_MESSAGE.create("Überfall", "Bohrinselraub gestartet!", "");
+            player.sendSystemMessage(component);
+            return false;
+        }
+
+        Matcher robOilRigSuccessMatcher = ROB_OIL_RIG_SUCCESS_PATTERN.matcher(message);
+        if (robOilRigSuccessMatcher.find()) {
+            Component component = HQ_NOBODY_MESSAGE.create("Überfall", "Bohrinselraub verhindert!", "");
+            player.sendSystemMessage(component);
+            return false;
+        }
+
+        Matcher robOilRigFailureMatcher = ROB_OIL_RIG_FAILURE_PATTERN.matcher(message);
+        if (robOilRigFailureMatcher.find()) {
+            Component component = HQ_NOBODY_MESSAGE.create("Überfall", "Bohrinselraub nicht verhindert!", "");
+            player.sendSystemMessage(component);
+            return false;
+        }
+
+        Matcher fineMatcher = FINE_PATTERN.matcher(message);
+        if (fineMatcher.find()) {
+            String playerName = fineMatcher.group("playerName");
+            String targetName = fineMatcher.group("targetName");
+            String price = fineMatcher.group("price");
+
+            Component component = HQ_MULTI_MESSAGE.create("Bußgeld", playerName, targetName, price + "$", "");
+            player.sendSystemMessage(component);
+            return false;
+        }
+
+        Matcher plantBurnMatcher = PLANT_BURN_PATTERN.matcher(message);
+        if (plantBurnMatcher.find()) {
+            String playerName = plantBurnMatcher.group("playerName");
+            String plantType = plantBurnMatcher.group("plantType");
+
+            Component component = HQ_SINGLE_MESSAGE.create("Plantage", playerName, plantType + " Plantage verbrannt", "");
             player.sendSystemMessage(component);
             return false;
         }
