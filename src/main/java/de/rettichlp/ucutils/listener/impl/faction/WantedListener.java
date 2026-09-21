@@ -35,10 +35,11 @@ public class WantedListener implements IMessageReceiveListener {
 
     private static final Pattern WANTED_GIVE_PATTERN = compile("^HQ: Gesuchter: (?:\\[UC])?(?<targetName>[a-zA-Z0-9_]+)\\. Grund: (?<reason>.+)$");
     private static final Pattern WANTED_GIVE_POINTS_PATTERN = compile("^HQ: (?:\\[UC])?(?<targetName>[a-zA-Z0-9_]+)'s momentanes WantedLevel: (?<wantedPointAmount>\\d+)$");
+    private static final Pattern WANTED_GIVE_ALREADY_PATTERN = compile("^HQ: Dieser Grund wurde bei (?:\\[UC])?(?<playerName>[a-zA-Z0-9_]+) bereits vergeben\\.$");
     private static final Pattern WANTED_MODIFY_PATTERN = compile("^HQ: (?<rank>.+) (?:\\[UC])?(?<playerName>[a-zA-Z0-9_]+) hat (?:\\[UC])?(?<targetName>[a-zA-Z0-9_]+)s WantedPunkte verändert!$");
     private static final Pattern WANTED_MODIFY_REASON_PATTERN = compile("^HQ: Neuer Grund: (?<reason>.+) \\[(?<oldWantedPoints>\\d+) » (?<newWantedPoints>\\d+) WantedPunkte]$");
     private static final Pattern WANTED_TICKET_PATTERN = compile("^HQ: (?<rank>.+) (?:\\[UC])?(?<playerName>[a-zA-Z0-9_]+) hat (?:\\[UC])?(?<targetName>[a-zA-Z0-9_]+) ein Ticket über (?<price>\\d+)\\$ ausgestellt\\. Bestätigung ausstehend, over\\.$");
-    private static final Pattern WANTED_DELETE_PATTERN = compile("^HQ: (?<rank>.+) (?:\\[UC])?(?<playerName>[a-zA-Z0-9_]+) hat (?:\\[UC])?(?<targetName>[a-zA-Z0-9_]+)('s)? (seine|ihre)? Akten gelöscht, over\\.$");
+    private static final Pattern WANTED_DELETE_PATTERN = compile("^HQ: (?<rank>.+) (?:\\[UC])?(?<playerName>[a-zA-Z0-9_]+) hat (?:\\[UC])?(?<targetName>[a-zA-Z0-9_]+)('s)?( seine| ihre)? Akten gelöscht, over\\.$");
     private static final Pattern WANTED_KILL_PATTERN = compile("^HQ: (?:\\[UC])?(?<targetName>[a-zA-Z0-9_]+) wurde von (?:\\[UC])?(?<playerName>[a-zA-Z0-9_]+) getötet\\.\nHQ: Fahndungsgrund: (?<reason>.+) \\| Fahndungszeit: (?<time>.+)\\.$");
     private static final Pattern WANTED_ARREST_PATTERN = compile("^HQ: (?:\\[UC])?(?<targetName>[a-zA-Z0-9_]+) wurde von (?:\\[UC])?(?<playerName>[a-zA-Z0-9_]+) eingesperrt\\.\nHQ: Fahndungsgrund: (?<reason>.+) \\| Fahndungszeit: (?<time>.+)\\.$");
     private static final Pattern WANTED_UNARREST_PATTERN = compile("^HQ: (?:\\[UC])?(?<playerName>[a-zA-Z0-9_]+) hat (?:\\[UC])?(?<targetName>[a-zA-Z0-9_]+) aus dem Gefängnis entlassen\\.$");
@@ -152,6 +153,13 @@ public class WantedListener implements IMessageReceiveListener {
                     .append(literal(":").withColor(COLOR_SECONDARY)).append(SPACE)
                     .append(literal(valueOf(wantedPoints)).withColor(COLOR_PRIMARY));
 
+            player.sendSystemMessage(component);
+            return false;
+        }
+
+        Matcher wantedGiveAlreadyMatcher = WANTED_GIVE_ALREADY_PATTERN.matcher(message);
+        if (wantedGiveAlreadyMatcher.find()) {
+            Component component = HQ_NOBODY_MESSAGE.create("Gesucht", "Grund wurde bereits vergeben.", "");
             player.sendSystemMessage(component);
             return false;
         }
