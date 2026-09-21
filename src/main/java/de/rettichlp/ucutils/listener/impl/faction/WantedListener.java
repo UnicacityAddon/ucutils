@@ -38,7 +38,7 @@ public class WantedListener implements IMessageReceiveListener {
     private static final Pattern WANTED_MODIFY_PATTERN = compile("^HQ: (?<rank>.+) (?:\\[UC])?(?<playerName>[a-zA-Z0-9_]+) hat (?:\\[UC])?(?<targetName>[a-zA-Z0-9_]+)s WantedPunkte verändert!$");
     private static final Pattern WANTED_MODIFY_REASON_PATTERN = compile("^HQ: Neuer Grund: (?<reason>.+) \\[(?<oldWantedPoints>\\d+) » (?<newWantedPoints>\\d+) WantedPunkte]$");
     private static final Pattern WANTED_TICKET_PATTERN = compile("^HQ: (?<rank>.+) (?:\\[UC])?(?<playerName>[a-zA-Z0-9_]+) hat (?:\\[UC])?(?<targetName>[a-zA-Z0-9_]+) ein Ticket über (?<price>\\d+)\\$ ausgestellt\\. Bestätigung ausstehend, over\\.$");
-    private static final Pattern WANTED_DELETE_PATTERN = compile("^HQ: (?<rank>.+) (?:\\[UC])?(?<playerName>[a-zA-Z0-9_]+) hat (?:\\[UC])?(?<targetName>[a-zA-Z0-9_]+) (seine|ihre) Akten gelöscht, over\\.$");
+    private static final Pattern WANTED_DELETE_PATTERN = compile("^HQ: (?<rank>.+) (?:\\[UC])?(?<playerName>[a-zA-Z0-9_]+) hat (?:\\[UC])?(?<targetName>[a-zA-Z0-9_]+)('s)? (seine|ihre)? Akten gelöscht, over\\.$");
     private static final Pattern WANTED_KILL_PATTERN = compile("^HQ: (?:\\[UC])?(?<targetName>[a-zA-Z0-9_]+) wurde von (?:\\[UC])?(?<playerName>[a-zA-Z0-9_]+) getötet\\.\nHQ: Fahndungsgrund: (?<reason>.+) \\| Fahndungszeit: (?<time>.+)\\.$");
     private static final Pattern WANTED_ARREST_PATTERN = compile("^HQ: (?:\\[UC])?(?<targetName>[a-zA-Z0-9_]+) wurde von (?:\\[UC])?(?<playerName>[a-zA-Z0-9_]+) eingesperrt\\.\nHQ: Fahndungsgrund: (?<reason>.+) \\| Fahndungszeit: (?<time>.+)\\.$");
     private static final Pattern WANTED_UNARREST_PATTERN = compile("^HQ: (?:\\[UC])?(?<playerName>[a-zA-Z0-9_]+) hat (?:\\[UC])?(?<targetName>[a-zA-Z0-9_]+) aus dem Gefängnis entlassen\\.$");
@@ -46,7 +46,7 @@ public class WantedListener implements IMessageReceiveListener {
     private static final Pattern CAR_CHECK_PATTERN = compile("^HQ: Das Fahrzeug mit dem Kennzeichen (?<plate>[A-Z0-9-]+) ist auf den Spieler (?:\\[UC])?(?<targetName>[a-zA-Z0-9_]+) registriert, over\\.$");
     private static final Pattern CAR_CHECK_UNREGISTERED_PATTERN = compile("^HQ: Das Fahrzeug ist nicht registriert, over\\.$");
     private static final Pattern CAR_PARKTICKET_PATTERN = compile("^HQ: Officer (?:\\[UC])?(?<playerName>[a-zA-Z0-9_]+) hat ein Strafzettel an das Fahrzeug \\[(?<plate>[A-Z0-9-]*)] vergeben\\.$");
-    private static final Pattern CAR_PARKTICKET_REMOVE_PATTERN = compile("^HQ: (?:\\[UC])?(?<playerName>[a-zA-Z0-9_]+) hat ein Strafzettel von dem Fahrzeug \\[(?<plate>[A-Z0-9-]*)] entfernt\\.$");
+    private static final Pattern CAR_PARKTICKET_REMOVE_PATTERN = compile("^HQ: (?<rank>.+) (?:\\[UC])?(?<playerName>[a-zA-Z0-9_]+) hat ein Strafzettel von dem Fahrzeug \\[(?<plate>[A-Z0-9-]*)] entfernt\\.$");
     private static final Pattern CAR_PARKTICKET_PRESENT_PATTERN = compile("^HQ: Das Fahrzeug hat einen Strafzettel aufgrund von (?<reason>.+) in Höhe von (?<price>\\d+)\\$, over\\.$");
     private static final Pattern SEARCH_TRUNK_PATTERN = compile("^Du hast den Kofferraum vom Fahrzeug \"(?<plate>[A-Z0-9-]*)\" durchsucht\\.$");
     private static final Pattern WANTED_LIST_HEADER_PATTERN = compile("Online Spieler mit WantedPunkten:");
