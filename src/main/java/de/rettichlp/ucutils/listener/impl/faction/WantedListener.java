@@ -58,6 +58,8 @@ public class WantedListener implements IMessageReceiveListener {
     private static final Pattern TAKE_GUNS_PATTERN = compile("^(Beamter|Beamtin) (?:\\[UC])?(?<playerName>[a-zA-Z0-9_]+) hat (?:\\[UC])?(?<targetName>[a-zA-Z0-9_]+) die Waffen abgenommen\\.$");
     private static final Pattern TAKE_DRUGS_PATTERN = compile("^(Beamter|Beamtin) (?:\\[UC])?(?<playerName>[a-zA-Z0-9_]+) hat (?:\\[UC])?(?<targetName>[a-zA-Z0-9_]+) (seine|ihre) Drogen abgenommen.$");
     private static final Pattern TRACKER_AGENT_PATTERN = compile("^HQ: (Agent|Agentin) (?:\\[UC])?(?<playerName>[a-zA-Z0-9_]+) hat ein Peilsender an (?:\\[UC])?(?<targetName>[a-zA-Z0-9_]+) befestigt, over\\.$");
+    private static final Pattern ROB_FBI_START_PATTERN = compile("^HQ: Es wurde ein Einbruch beim Polizeicomputer gemeldet, over\\.$");
+    private static final Pattern ROB_FBI_SUCCESS_PATTERN = compile("^HQ: Es gibt einen unautorisierten Zugriff auf den Polizeicomputer\\.$");
     private static final Pattern ROB_HOUSE_PATTERN = compile("^HQ: Ein Einbruch bei Haus (?<houseNumber>\\d+) wurde gemeldet, over\\.$");
     private static final Pattern ROB_LABOR_PATTERN = compile("^HQ: Es wurde ein Einbruch im Labor gemeldet, over\\.$");
     private static final Pattern ROB_PATTERN = compile("^HQ: Achtung! Es wurde ein Raubüberfall gemeldet\\. Ort: (?<location>.+)\\.$");
@@ -404,6 +406,20 @@ public class WantedListener implements IMessageReceiveListener {
             String targetName = trackerMatcher.group("targetName");
 
             Component component = HQ_MULTI_MESSAGE.create("Peilsender", playerName, targetName, "", "");
+            player.sendSystemMessage(component);
+            return false;
+        }
+
+        Matcher robFbiStartMatcher = ROB_FBI_START_PATTERN.matcher(message);
+        if (robFbiStartMatcher.find()) {
+            Component component = HQ_NOBODY_MESSAGE.create("Einbruch", "Einbruch beim Polizeicomputer gemeldet!", "");
+            player.sendSystemMessage(component);
+            return false;
+        }
+
+        Matcher robFbiSuccessMatcher = ROB_FBI_SUCCESS_PATTERN.matcher(message);
+        if (robFbiSuccessMatcher.find()) {
+            Component component = HQ_NOBODY_MESSAGE.create("Einbruch", "Unautorisierter Zugriff auf den Polizeicomputer!", "");
             player.sendSystemMessage(component);
             return false;
         }
