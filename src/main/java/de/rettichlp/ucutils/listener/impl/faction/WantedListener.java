@@ -45,6 +45,7 @@ public class WantedListener implements IMessageReceiveListener {
     private static final Pattern WANTED_NOT_WANTED_PATTERN = compile("^HQ: Die Person wird nicht gesucht, over\\.$");
     private static final Pattern CAR_CHECK_PATTERN = compile("^HQ: Das Fahrzeug mit dem Kennzeichen (?<plate>[A-Z0-9-]+) ist auf den Spieler (?:\\[UC])?(?<targetName>[a-zA-Z0-9_]+) registriert, over\\.$");
     private static final Pattern CAR_CHECK_UNREGISTERED_PATTERN = compile("^HQ: Das Fahrzeug ist nicht registriert, over\\.$");
+    private static final Pattern CAR_CHECK_NOT_FOUND_PATTERN = compile("^HQ: Es wurde kein registriertes Fahrzeug in ihrer Nähe gefunden, over\\.$");
     private static final Pattern CAR_PARKTICKET_PATTERN = compile("^HQ: Officer (?:\\[UC])?(?<playerName>[a-zA-Z0-9_]+) hat ein Strafzettel an das Fahrzeug \\[(?<plate>[A-Z0-9-]*)] vergeben\\.$");
     private static final Pattern CAR_PARKTICKET_REMOVE_PATTERN = compile("^HQ: (?<rank>.+) (?:\\[UC])?(?<playerName>[a-zA-Z0-9_]+) hat ein Strafzettel von dem Fahrzeug \\[(?<plate>[A-Z0-9-]*)] entfernt\\.$");
     private static final Pattern CAR_PARKTICKET_PRESENT_PATTERN = compile("^HQ: Das Fahrzeug hat einen Strafzettel aufgrund von (?<reason>.+) in Höhe von (?<price>\\d+)\\$, over\\.$");
@@ -261,6 +262,13 @@ public class WantedListener implements IMessageReceiveListener {
         Matcher carCheckUnregisteredMatcher = CAR_CHECK_UNREGISTERED_PATTERN.matcher(message);
         if (carCheckUnregisteredMatcher.find()) {
             Component component = HQ_NOBODY_MESSAGE.create("Fahrzeug", "Das Fahrzeug ist nicht registriert.", "");
+            player.sendSystemMessage(component);
+            return false;
+        }
+
+        Matcher carCheckNotFoundMatcher = CAR_CHECK_NOT_FOUND_PATTERN.matcher(message);
+        if (carCheckNotFoundMatcher.find()) {
+            Component component = HQ_NOBODY_MESSAGE.create("Fahrzeug", "Kein registriertes Fahrzeug in der Nähe gefunden.", "");
             player.sendSystemMessage(component);
             return false;
         }
