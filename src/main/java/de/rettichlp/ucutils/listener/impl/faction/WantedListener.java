@@ -69,7 +69,7 @@ public class WantedListener implements IMessageReceiveListener {
     private static final Pattern ROB_CONTAINER_SUCCESS_PATTERN = compile("^HQ: Der Containerraub konnte verhindert werden!$");
     private static final Pattern ROB_CONTAINER_FAILURE_PATTERN = compile("^HQ: Der Containerraub konnte nicht verhindert werden!$");
     private static final Pattern ROB_OIL_RIG_PATTERN = compile("^HQ: Die Bohrinsel wird überfallen!$");
-    private static final Pattern ROB_OIL_RIG_SUCCESS_PATTERN = compile("^HQ: Der Bohrinsel-Raub konnte verhindert werden!$");
+    private static final Pattern ROB_OIL_RIG_SUCCESS_PATTERN = compile("^HQ: Der Bohrinsel-Raub wurde erfolgreich verhindert!$");
     private static final Pattern ROB_OIL_RIG_FAILURE_PATTERN = compile("^HQ: Der Bohrinsel-Raub konnte nicht verhindert werden!$");
     private static final Pattern FINE_PATTERN = compile("^HQ: (Beamter|Beamtin) (?:\\[UC])?(?<playerName>[a-zA-Z0-9_]+) hat (?:\\[UC])?(?<targetName>[a-zA-Z0-9_]+) ein (?<price>\\d+)\\$ Bußgeld gegeben, over\\.$");
     private static final Pattern PLANT_BURN_PATTERN = compile("^HQ: (?<rank>.+) (?:\\[UC])?(?<playerName>[a-zA-Z0-9_]+) hat erfolgreich eine (?<plantType>Pulver|Kräuter|Blütenharz) Plant(age)? verbrannt,? over\\.$");
