@@ -74,6 +74,7 @@ public class WantedListener implements IMessageReceiveListener {
     private static final Pattern FINE_PATTERN = compile("^HQ: (Beamter|Beamtin) (?:\\[UC])?(?<playerName>[a-zA-Z0-9_]+) hat (?:\\[UC])?(?<targetName>[a-zA-Z0-9_]+) ein (?<price>\\d+)\\$ Bußgeld gegeben, over\\.$");
     private static final Pattern PLANT_BURN_PATTERN = compile("^HQ: (?<rank>.+) (?:\\[UC])?(?<playerName>[a-zA-Z0-9_]+) hat erfolgreich eine (?<plantType>Pulver|Kräuter|Blütenharz) Plant(age)? verbrannt,? over\\.$");
     private static final Pattern EVIDENCE_ROOM_DROP_PATTERN = compile("^HQ: (?<rank>.+) (?:\\[UC])?(?<playerName>[a-zA-Z0-9_]+) hat (?<amount>\\d+)g (?<drugType>Pulver|Kräuter|Blütenharz) \\((?<purity>.+)\\) \\((?<amountTotal>\\d+)g\\) in der Asservatenkammer verstaut\\.$");
+    private static final Pattern EVIDENCE_ROOM_DROP_SELF_PATTERN = compile("^HQ: (?<rank>.+) (?:\\[UC])?(?<playerName>[a-zA-Z0-9_]+) hat (?<amount>\\d+)g (?<drugType>Pulver|Kräuter|Blütenharz) \\((?<purity>.+)\\) in der Asservatenkammer verstaut\\.$");
 
     private static final int COLOR_PRIMARY = decode("#4498DB").getRGB();
     private static final int COLOR_SECONDARY = decode("#C8E7FF").getRGB();
@@ -538,6 +539,18 @@ public class WantedListener implements IMessageReceiveListener {
             String amountTotal = evidenceRoomDropMatcher.group("amountTotal");
 
             Component component = HQ_SINGLE_MESSAGE.create("Asservatenkammer", playerName, amount + "g " + drugType + " (" + purity + ") verstaut (" + amountTotal + "g)", "");
+            player.sendSystemMessage(component);
+            return false;
+        }
+
+        Matcher evidenceRoomDropSelfMatcher = EVIDENCE_ROOM_DROP_SELF_PATTERN.matcher(message);
+        if (evidenceRoomDropSelfMatcher.find()) {
+            String playerName = evidenceRoomDropSelfMatcher.group("playerName");
+            String amount = evidenceRoomDropSelfMatcher.group("amount");
+            String drugType = evidenceRoomDropSelfMatcher.group("drugType");
+            String purity = evidenceRoomDropSelfMatcher.group("purity");
+
+            Component component = HQ_SINGLE_MESSAGE.create("Asservatenkammer", playerName, amount + "g " + drugType + " (" + purity + ") verstaut", "");
             player.sendSystemMessage(component);
             return false;
         }
