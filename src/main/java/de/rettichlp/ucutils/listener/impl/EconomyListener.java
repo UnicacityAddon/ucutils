@@ -45,6 +45,7 @@ public class EconomyListener implements IMessageReceiveListener {
     private static final Pattern BANK_NEW_BALANCE_CASH_PATTERN = compile("^Neuer Bargeldbestand: (?<amount>\\d+)\\$$");
     private static final Pattern BANK_DEPOSIT_ATM_TOO_MUCH_PATTERN = compile("^Du versuchst (?<amount>\\d+)\\$ einzuzahlen, der Bankautomat hat aber nur Platz für (?<availableAmount>\\d+)\\$\\. Fortfahren\\? \\[Bestätigen]$");
     private static final Pattern BANK_DAILY_REWARD_PATTERN = compile("^• \\+ (?<amount>\\d+)\\$ \\(auf die Bank\\)$");
+    private static final Pattern BANK_REMOVE_PATTERN = compile("^-(?<amount>\\d+)\\$ \\(Karte\\)$");
 
     // cash
     private static final Pattern CASH_GIVE_PATTERN = compile("^Du hast (?:\\[UC])?(?<playerName>[a-zA-Z0-9_]+) (?<amount>\\d+)\\$ gegeben!$");
@@ -173,6 +174,13 @@ public class EconomyListener implements IMessageReceiveListener {
         if (bankDailyRewardMatcher.find()) {
             int amount = parseInt(bankDailyRewardMatcher.group("amount"));
             configuration.setMoneyBankAmount(configuration.getMoneyBankAmount() + amount);
+            return true;
+        }
+
+        Matcher bankRemoveMatcher = BANK_REMOVE_PATTERN.matcher(message);
+        if (bankRemoveMatcher.find()) {
+            int amount = parseInt(bankRemoveMatcher.group("amount"));
+            configuration.setMoneyBankAmount(configuration.getMoneyBankAmount() - amount);
             return true;
         }
 
