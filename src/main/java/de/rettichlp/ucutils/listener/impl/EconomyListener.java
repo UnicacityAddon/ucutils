@@ -417,6 +417,7 @@ public class EconomyListener implements IMessageReceiveListener {
             }
 
             storage.setDead(false);
+            commandService.sendCommand("togglephone");
             return true;
         }
 

@@ -72,6 +72,7 @@ und [The Rettington Companion](https://modrinth.com/mod/the-rettington-companion
 - Beim Öffnen von Schatzkisten können die Delfine deaktiviert werden
 - Der "Malle, I love you" Sound kann nun optional deaktiviert werden
 - `/reichensteuer` Befehl für Spieler ohne Premium Rang
+- Nach einem Aufenthalt auf dem Friedhof wird das Handy automatisch wieder eingeschaltet
 
 ### Auto
 
