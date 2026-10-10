@@ -57,6 +57,7 @@ public class WantedListener implements IMessageReceiveListener {
     private static final Pattern LICENSE_DRIVING_TAKE_PATTERN = compile("^(Agent|Agentin|Beamter|Beamtin) (?:\\[UC])?(?<playerName>[a-zA-Z0-9_]+) hat (?:\\[UC])?(?<targetName>[a-zA-Z0-9_]+)(?:'s)* Führerschein abgenommen\\.$");
     private static final Pattern LICENSE_GUN_GIVE_PATTERN = compile("^(Agent|Agentin|Beamter|Beamtin) (?:\\[UC])?(?<playerName>[a-zA-Z0-9_]+) hat (?:\\[UC])?(?<targetName>[a-zA-Z0-9_]+)(?:'s)* Waffenschein zurückgegeben\\.$");
     private static final Pattern LICENSE_GUN_TAKE_PATTERN = compile("^(Agent|Agentin|Beamter|Beamtin) (?:\\[UC])?(?<playerName>[a-zA-Z0-9_]+) hat (?:\\[UC])?(?<targetName>[a-zA-Z0-9_]+)(?:'s)* Waffenschein abgenommen\\.$");
+    private static final Pattern NO_GUNS_PATTERN = compile("^Der Spieler hat keine Waffen dabei\\.$");
     private static final Pattern TAKE_GUNS_PATTERN = compile("^(Beamter|Beamtin) (?:\\[UC])?(?<playerName>[a-zA-Z0-9_]+) hat (?:\\[UC])?(?<targetName>[a-zA-Z0-9_]+) die Waffen abgenommen\\.$");
     private static final Pattern TAKE_DRUGS_PATTERN = compile("^(Beamter|Beamtin) (?:\\[UC])?(?<playerName>[a-zA-Z0-9_]+) hat (?:\\[UC])?(?<targetName>[a-zA-Z0-9_]+) (seine|ihre) Drogen abgenommen.$");
     private static final Pattern TRACKER_AGENT_PATTERN = compile("^HQ: (Agent|Agentin) (?:\\[UC])?(?<playerName>[a-zA-Z0-9_]+) hat ein Peilsender an (?:\\[UC])?(?<targetName>[a-zA-Z0-9_]+) befestigt, over\\.$");
@@ -73,8 +74,9 @@ public class WantedListener implements IMessageReceiveListener {
     private static final Pattern ROB_OIL_RIG_FAILURE_PATTERN = compile("^HQ: Der Bohrinsel-Raub konnte nicht verhindert werden!$");
     private static final Pattern FINE_PATTERN = compile("^HQ: (Beamter|Beamtin) (?:\\[UC])?(?<playerName>[a-zA-Z0-9_]+) hat (?:\\[UC])?(?<targetName>[a-zA-Z0-9_]+) ein (?<price>\\d+)\\$ Bußgeld gegeben, over\\.$");
     private static final Pattern PLANT_BURN_PATTERN = compile("^HQ: (?<rank>.+) (?:\\[UC])?(?<playerName>[a-zA-Z0-9_]+) hat erfolgreich eine (?<plantType>Pulver|Kräuter|Blütenharz) Plant(age)? verbrannt,? over\\.$");
-    private static final Pattern EVIDENCE_ROOM_DROP_PATTERN = compile("^HQ: (?<rank>.+) (?:\\[UC])?(?<playerName>[a-zA-Z0-9_]+) hat (?<amount>\\d+)g (?<drugType>Pulver|Kräuter|Blütenharz) \\((?<purity>.+)\\) \\((?<amountTotal>\\d+)g\\) in der Asservatenkammer verstaut\\.$");
-    private static final Pattern EVIDENCE_ROOM_DROP_SELF_PATTERN = compile("^HQ: (?<rank>.+) (?:\\[UC])?(?<playerName>[a-zA-Z0-9_]+) hat (?<amount>\\d+)g (?<drugType>Pulver|Kräuter|Blütenharz) \\((?<purity>.+)\\) in der Asservatenkammer verstaut\\.$");
+    private static final Pattern EVIDENCE_ROOM_DROP_PATTERN = compile("^HQ: (?<rank>.+) (?:\\[UC])?(?<playerName>[a-zA-Z0-9_]+) hat (?<amount>\\d+)g (?<drugType>Pulver|Kräuter|Kristalle|Blütenharz) \\((?<purity>.+)\\) \\((?<amountTotal>\\d+)g\\) in der Asservatenkammer verstaut\\.$");
+    private static final Pattern EVIDENCE_ROOM_DROP_SELF_PATTERN = compile("^HQ: (?<rank>.+) (?:\\[UC])?(?<playerName>[a-zA-Z0-9_]+) hat (?<amount>\\d+)g (?<drugType>Pulver|Kräuter|Kristalle|Blütenharz) \\((?<purity>.+)\\) in der Asservatenkammer verstaut\\.$");
+    private static final Pattern EVIDENCE_ROOM_GET_PATTERN = compile("^HQ: (?<rank>.+) (?:\\[UC])?(?<playerName>[a-zA-Z0-9_]+) hat (?<amount>\\d+)g (?<drugType>Pulver|Kräuter|Kristalle|Blütenharz) \\((?<purity>.+)\\) aus der Asservatenkammer genommen\\.$");
 
     private static final int COLOR_PRIMARY = decode("#4498DB").getRGB();
     private static final int COLOR_SECONDARY = decode("#C8E7FF").getRGB();
@@ -398,6 +400,13 @@ public class WantedListener implements IMessageReceiveListener {
             return false;
         }
 
+        Matcher noGunsMatcher = NO_GUNS_PATTERN.matcher(message);
+        if (noGunsMatcher.find()) {
+            Component component = HQ_NOBODY_MESSAGE.create("Waffenabnahme", "Der Spieler hat keine Waffen dabei.", "");
+            player.sendSystemMessage(component);
+            return false;
+        }
+
         Matcher takeGunsMatcher = TAKE_GUNS_PATTERN.matcher(message);
         if (takeGunsMatcher.find()) {
             String playerName = takeGunsMatcher.group("playerName");
@@ -551,6 +560,18 @@ public class WantedListener implements IMessageReceiveListener {
             String purity = evidenceRoomDropSelfMatcher.group("purity");
 
             Component component = HQ_SINGLE_MESSAGE.create("Asservatenkammer", playerName, amount + "g " + drugType + " (" + purity + ") verstaut", "");
+            player.sendSystemMessage(component);
+            return false;
+        }
+
+        Matcher evidenceRoomGetMatcher = EVIDENCE_ROOM_GET_PATTERN.matcher(message);
+        if (evidenceRoomGetMatcher.find()) {
+            String playerName = evidenceRoomGetMatcher.group("playerName");
+            String amount = evidenceRoomGetMatcher.group("amount");
+            String drugType = evidenceRoomGetMatcher.group("drugType");
+            String purity = evidenceRoomGetMatcher.group("purity");
+
+            Component component = HQ_SINGLE_MESSAGE.create("Asservatenkammer", playerName, amount + "g " + drugType + " (" + purity + ") entnommen", "");
             player.sendSystemMessage(component);
             return false;
         }
