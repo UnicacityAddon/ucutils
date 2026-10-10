@@ -61,7 +61,7 @@ public class UCUtils implements ModInitializer {
     public static LocalPlayer player;
     public static ClientPacketListener networkHandler;
 
-    private static final String NEOPROTECT_ENTRYPOINT = "c970141b-0cca-4ad2-894b-21ac9c171cbe.shield.neoprotect.ovh";
+    private static final String NEOPROTECT_ENTRYPOINT = "addaf897-afbb-45e7-9236-d2f192755dc7\\.shield\\.neoprotect\\.ovh";
 
     private final Registry registry = new Registry();
 
