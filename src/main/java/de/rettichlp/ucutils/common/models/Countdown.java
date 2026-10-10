@@ -2,7 +2,6 @@ package de.rettichlp.ucutils.common.models;
 
 import de.rettichlp.therettingtoncompanion.models.Notification;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
@@ -20,12 +19,15 @@ import static net.minecraft.network.chat.TextColor.GRAY;
 import static net.minecraft.network.chat.TextColor.WHITE;
 
 @Getter
-@RequiredArgsConstructor
 public class Countdown {
 
     private final LocalDateTime startTime = now();
     private final String title;
     private final Duration duration;
+
+    public Countdown(String title, Duration duration) {
+        this(title, duration, () -> {});
+    }
 
     public Countdown(String title, Duration duration, Runnable runAfter) {
         this.title = title;
