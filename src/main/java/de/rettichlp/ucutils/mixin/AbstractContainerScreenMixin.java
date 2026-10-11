@@ -58,6 +58,7 @@ import static net.minecraft.network.chat.TextColor.RED;
 import static net.minecraft.network.chat.TextColor.YELLOW;
 import static net.minecraft.world.inventory.ContainerInput.PICKUP;
 import static net.minecraft.world.item.Items.FERN;
+import static net.minecraft.world.item.Items.HONEYCOMB;
 import static net.minecraft.world.item.Items.PLAYER_HEAD;
 import static net.minecraft.world.item.Items.QUARTZ;
 import static net.minecraft.world.item.Items.SUGAR;
@@ -243,7 +244,7 @@ public abstract class AbstractContainerScreenMixin<T extends AbstractContainerMe
                 int x = this.leftPos + slot.x;
                 int y = this.topPos + slot.y;
 
-                Color color = (itemStack.is(SUGAR) || itemStack.is(FERN) || itemStack.is(QUARTZ)) ? Color.RED : Color.GREEN;
+                Color color = (itemStack.is(SUGAR) || itemStack.is(FERN) || itemStack.is(QUARTZ) || itemStack.is(HONEYCOMB)) ? Color.RED : Color.GREEN;
                 int argb = (0x80 << 24) | (color.getRGB() & 0x00FFFFFF);
                 graphics.fill(x, y, x + 16, y + 16, argb);
             }

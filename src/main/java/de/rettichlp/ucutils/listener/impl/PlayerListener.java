@@ -14,6 +14,7 @@ import java.util.regex.Pattern;
 
 import static de.rettichlp.ucutils.UCUtils.LOGGER;
 import static de.rettichlp.ucutils.UCUtils.commandService;
+import static de.rettichlp.ucutils.UCUtils.configuration;
 import static de.rettichlp.ucutils.UCUtils.player;
 import static de.rettichlp.ucutils.UCUtils.storage;
 import static de.rettichlp.ucutils.common.models.ShutdownReason.CEMETERY;
@@ -68,6 +69,7 @@ public class PlayerListener implements IMessageReceiveListener {
         Matcher deadMatcher = DEAD_PATTERN.matcher(message);
         if (deadMatcher.find()) {
             storage.setDead(true);
+            configuration.setMoneyCashAmount(0);
             return true;
         }
 
